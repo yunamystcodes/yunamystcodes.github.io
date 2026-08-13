@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="YunaMyst - Códigos de Summoners War: Sky Arena. Códigos novos e ativos para resgatar recompensas.">
+  <title>YunaMyst • Códigos Summoners War</title>
+  <style>
+    :root{
+      --bg:#070313;
+      --panel:rgba(12,5,28,.88);
+      --purple:#c77cff;
+      --gold:#f4c13d;
+      --green:#35f27c;
+      --line:#7b2bd1;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#fff}
+    body{
+      background:
+        radial-gradient(circle at 50% 25%, rgba(73,39,150,.5), transparent 42%),
+        linear-gradient(180deg,#090316 0%,#120525 48%,#05020d 100%);
+      overflow-x:hidden;
+    }
+    .top{
+      min-height:108px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 28px;
+      background:linear-gradient(90deg,#080212,#100523,#080212);
+      border-bottom:1px solid rgba(180,100,255,.18);
+    }
+    .brand{
+      font-family:Georgia,serif;font-weight:800;font-size:46px;line-height:.9;
+      letter-spacing:-1px;color:#fff;text-shadow:0 2px 0 #bda4ff;
+    }
+    .brand small{
+      display:block;margin-top:8px;margin-left:14px;font:700 13px Arial,sans-serif;
+      letter-spacing:6px;color:#f0bf45;
+    }
+    .lang{
+      border:1px solid #a66be5;border-radius:18px;padding:16px 18px;
+      font-size:21px;font-weight:700;background:rgba(12,5,29,.7)
+    }
+    .hero{
+      position:relative;text-align:center;padding:22px 18px 34px;
+      min-height:510px;
+      background:
+        radial-gradient(ellipse at center,rgba(64,35,145,.42),rgba(3,1,12,.15) 55%,rgba(3,1,12,.72)),
+        linear-gradient(135deg,#152c6c,#3b1c79 48%,#12072d);
+    }
+    .hero:before{
+      content:"";position:absolute;inset:0;opacity:.18;
+      background:
+        radial-gradient(circle at 18% 55%,#8ed8ff 0 7%,transparent 7.5%),
+        radial-gradient(circle at 82% 28%,#74d8ff 0 8%,transparent 8.5%),
+        radial-gradient(circle at 88% 58%,#f3a46c 0 7%,transparent 7.5%);
+      pointer-events:none;
+    }
+    .hero>*{position:relative}
+    .community{
+      color:#d79aff;font-weight:800;letter-spacing:4px;font-size:20px;margin:4px 0 16px;
+    }
+    h1{
+      margin:0 auto 18px;max-width:850px;
+      font-family:Georgia,serif;font-size:clamp(52px,9vw,92px);line-height:.88;
+      letter-spacing:-2px;text-shadow:0 4px 14px rgba(0,0,0,.55);
+    }
+    h1 span{
+      display:block;
+      background:linear-gradient(#fff 0 38%,#d59cff 55%,#ffc46e 86%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .subtitle{font-size:23px;line-height:1.35;margin:0 auto 30px;max-width:760px}
+    .whatsapp{
+      max-width:900px;margin:0 auto;border:2px solid #8e35e9;border-radius:28px;
+      background:rgba(22,5,42,.88);padding:25px 30px;display:flex;align-items:center;
+      gap:28px;text-align:left;box-shadow:0 0 28px rgba(122,39,214,.22)
+    }
+    .wa-icon{
+      flex:0 0 92px;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;
+      background:#16dc6b;color:#03120a;font-size:48px
+    }
+    .whatsapp strong{display:block;color:#43f287;font-size:29px;margin-bottom:8px}
+    .whatsapp p{margin:0;color:#e6dff0;font-size:21px;line-height:1.35}
+    .arrow{margin-left:auto;font-size:36px}
+    .codes{
+      max-width:960px;margin:-2px auto 0;padding:0 18px 34px;
+    }
+    .panel{
+      background:rgba(8,3,20,.92);border:1px solid #7a2bd0;border-radius:28px;overflow:hidden;
+      box-shadow:0 0 32px rgba(104,24,189,.16)
+    }
+    .panel-head{
+      padding:28px 30px;border-bottom:1px solid rgba(160,84,230,.25);
+      display:flex;justify-content:space-between;align-items:center;gap:15px;
+      font-size:29px;font-weight:800
+    }
+    .updated{font-size:20px;color:#d596ff}
+    .code-card{
+      margin:26px 30px;padding:28px;border:1px solid #8a37e0;border-radius:25px;
+      display:grid;grid-template-columns:120px 1fr auto auto;align-items:center;gap:24px;
+      background:rgba(25,7,48,.74);position:relative
+    }
+    .new{
+      position:absolute;left:-12px;top:-15px;background:#ff315f;padding:9px 18px;
+      font-weight:800;transform:rotate(-45deg) translateX(-9px);transform-origin:center
+    }
+    .gift{
+      width:100px;height:100px;border-radius:50%;display:grid;place-items:center;
+      border:1px solid #9e49ee;background:radial-gradient(circle,#6a22a6,#241044);
+      font-size:50px
+    }
+    .code{font-size:31px;font-weight:800;margin-bottom:10px}
+    .date{font-size:18px;color:#b9aecb;line-height:1.4}
+    button,.iphone{
+      border:0;border-radius:18px;padding:18px 28px;font-size:20px;font-weight:800;
+      white-space:nowrap;cursor:pointer
+    }
+    .copy{background:linear-gradient(#ffd35d,#e9aa20);color:#120900}
+    .iphone{background:#f4f4f7;color:#111}
+    .all{text-align:center;color:#f4c13d;font-size:28px;font-weight:800;padding:16px 20px 8px}
+    footer{text-align:center;color:#9f94b1;font-size:17px;padding:16px 20px 34px;line-height:1.45}
+    @media(max-width:700px){
+      .top{min-height:95px;padding:14px 18px}.brand{font-size:38px}.brand small{font-size:10px;letter-spacing:4px}
+      .lang{font-size:17px;padding:12px 14px}.hero{padding-top:20px;min-height:0}
+      .community{font-size:16px;letter-spacing:3px}
+      h1{font-size:clamp(46px,13vw,72px)}
+      .subtitle{font-size:19px}
+      .whatsapp{padding:20px 18px;gap:18px;border-radius:22px}
+      .wa-icon{flex-basis:72px;width:72px;height:72px;font-size:38px}
+      .whatsapp strong{font-size:21px}.whatsapp p{font-size:16px}.arrow{font-size:28px}
+      .codes{padding:0 16px 25px}.panel-head{padding:23px 20px;font-size:24px;flex-wrap:wrap}
+      .updated{font-size:16px}.code-card{margin:20px 16px;padding:22px 16px;grid-template-columns:78px 1fr;gap:15px}
+      .gift{width:72px;height:72px;font-size:38px}.code{font-size:24px}
+      .copy,.iphone{grid-column:auto;padding:14px 18px;font-size:16px}
+      .iphone{grid-column:2}.all{font-size:22px}
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">YunaMyst<small>SUMMONERS WAR</small></div>
+    <div class="lang">🇵🇹 PT<span style="font-size:.75em">▼</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="community">✦ COMUNIDADE YUNAMYST ✦</div>
+      <h1><span>CÓDIGOS DE</span><span>SUMMONERS</span><span>WAR 2026</span></h1>
+      <p class="subtitle">Códigos novos e ativos para resgatar as tuas recompensas!</p>
+
+      <a class="whatsapp" href="#" style="text-decoration:none;color:inherit">
+        <div class="wa-icon">☎</div>
+        <div>
+          <strong>ENTRA NO GRUPO DO WHATSAPP!</strong>
+          <p>Participa no grupo para não perder nenhum código!</p>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+    </section>
+
+    <section class="codes">
+      <div class="panel">
+        <div class="panel-head">
+          <div>🎁 CÓDIGOS ATIVOS</div>
+          <div class="updated">⟳ Sempre atualizados!</div>
+        </div>
+
+        <div class="code-card">
+          <div class="new">NOVO</div>
+          <div class="gift">🎁</div>
+          <div>
+            <div class="code">AUGSW2026V7N</div>
+            <div class="date">📅 Código de agosto 2026</div>
+          </div>
+          <button class="copy" onclick="navigator.clipboard?.writeText('AUGSW2026V7N');this.textContent='COPIADO ✓'">▣ COPIAR</button>
+          <a class="iphone" href="https://withhive.com/" target="_blank" rel="noopener" style="text-decoration:none"> LINK IPHONE</a>
+        </div>
+
+        <div class="all">VER TODOS OS CÓDIGOS　⌄</div>
+        <footer>YunaMyst • Códigos Summoners War: Sky Arena • Site de comunidade independente</footer>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
