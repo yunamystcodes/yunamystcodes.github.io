@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="Códigos ativos de Summoners War atualizados pela YunaMyst.">
+<meta name="build-version" content="2026-08-16-layout-hotfix-2">
 <title>YunaMyst — Códigos Summoners War</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -40,8 +41,7 @@ body{font-family:Arial,Helvetica,sans-serif;color:#fff;background:#05030b;overfl
 .codes-title{padding:20px;border-bottom:1px solid rgba(255,255,255,.1);font-size:23px}
 .codes-title span{float:right;color:#d99cff;font-size:14px;margin-top:4px}
 .codes{padding:12px;display:flex;flex-direction:column;gap:12px;position:relative;isolation:isolate}
-/* FIX DEFINITIVO: cada cartão fica sempre no fluxo normal e nunca pode sobrepor outro */
-.codes>.code{display:grid!important;position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;float:none!important;clear:both!important;transform:none!important;order:initial!important;width:100%!important;margin:0!important}
+.codes>.code{display:grid!important;position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;float:none!important;clear:both!important;transform:none!important;order:initial!important;width:100%!important;margin:0!important}
 .code{grid-template-columns:58px minmax(120px,1fr) 58px 58px 58px 128px 128px;gap:10px;align-items:center;z-index:0;padding:18px 14px;border:1px solid rgba(180,80,255,.45);border-radius:17px;background:linear-gradient(100deg,rgba(29,10,48,.98),rgba(8,6,22,.98));min-height:105px;min-width:0;overflow:hidden}
 .gift{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#7d39c8,#1d0b35);border:1px solid #e1a0ff;font-size:26px;box-shadow:0 0 14px rgba(191,99,255,.22)}
 .cinfo{min-width:0;overflow:hidden}
@@ -70,14 +70,12 @@ button,.link{height:45px;width:100%;min-width:0;padding:0 10px;border-radius:9px
 .faq-item.active .faq-q{color:#d99cff}
 .mobile-extra{display:none}
 footer{text-align:center;color:#8d8599;padding:30px 0 45px;font-size:12px}
-
 @media(max-width:1050px) and (min-width:851px){
  .layout{grid-template-columns:200px minmax(0,1fr) 220px}
  .code{grid-template-columns:52px minmax(110px,1fr) 48px 48px 48px 108px 108px;gap:7px}
  .cinfo strong{font-size:16px}
  .copy,.link{font-size:11px;padding:0 6px}
 }
-
 @media(max-width:850px){
  .container{width:calc(100% - 18px)}
  .top{height:76px}
@@ -93,13 +91,12 @@ footer{text-align:center;color:#8d8599;padding:30px 0 45px;font-size:12px}
  .codes-title{font-size:19px;padding:17px 14px}
  .codes-title span{font-size:12px}
  .codes{padding:10px;display:flex;flex-direction:column;gap:12px}
- /* MOBILE: 1 cartão por vez, sem sobreposição */
- .codes>.code{display:grid!important;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:58px 66px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;column-gap:6px!important;row-gap:8px!important;padding:12px 9px!important;min-height:182px!important;height:auto!important;margin:0!important;width:100%!important;align-items:center!important;overflow:hidden!important;position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;z-index:0!important;float:none!important;clear:both!important;transform:none!important}
+ .codes>.code{display:grid!important;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:58px 66px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;column-gap:6px!important;row-gap:8px!important;padding:12px 9px!important;min-height:182px!important;height:auto!important;margin:0!important;width:100%!important;align-items:center!important;overflow:hidden!important;position:relative!important;inset:auto!important;z-index:0!important;float:none!important;clear:both!important;transform:none!important}
  .code>.gift{grid-area:gift!important;width:44px!important;height:44px!important;align-self:center!important;margin:0!important}
  .code>.cinfo{grid-area:info!important;min-width:0!important;align-self:center!important;width:auto!important;display:block!important;overflow:hidden!important}
  .cinfo strong{font-size:16px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;line-height:1.1!important}
  .cinfo small{font-size:10px!important;margin-top:5px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
- .code>.reward{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;width:100%!important;height:62px!important;margin:0!important;padding:2px!important;border:0!important;background:transparent!important;text-align:center!important;visibility:visible!important;opacity:1!important;position:relative!important;top:auto!important;left:auto!important;z-index:1!important}
+ .code>.reward{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;width:100%!important;height:62px!important;margin:0!important;padding:2px!important;border:0!important;background:transparent!important;text-align:center!important;visibility:visible!important;opacity:1!important;position:relative!important;inset:auto!important;top:auto!important;left:auto!important;z-index:1!important}
  .code>.reward:nth-child(3){grid-area:r1!important}
  .code>.reward:nth-child(4){grid-area:r2!important}
  .code>.reward:nth-child(5){grid-area:r3!important}
@@ -109,8 +106,8 @@ footer{text-align:center;color:#8d8599;padding:30px 0 45px;font-size:12px}
  .scroll{width:29px;height:21px}
  .energy{font-size:25px}
  .mana{width:21px;height:26px}
- .code>.copy{grid-area:copy!important;width:100%!important;height:44px!important;font-size:12px!important;padding:0!important;margin:0!important;position:relative!important;top:auto!important;left:auto!important;z-index:5!important}
- .code>.link{grid-area:link!important;width:100%!important;height:44px!important;font-size:12px!important;padding:0!important;margin:0!important;position:relative!important;top:auto!important;left:auto!important;z-index:5!important}
+ .code>.copy{grid-area:copy!important;width:100%!important;height:44px!important;font-size:12px!important;padding:0!important;margin:0!important;position:relative!important;inset:auto!important;z-index:5!important}
+ .code>.link{grid-area:link!important;width:100%!important;height:44px!important;font-size:12px!important;padding:0!important;margin:0!important;position:relative!important;inset:auto!important;z-index:5!important}
  .mobile-extra{display:block;margin-top:18px}
  .mobile-extra .panel{margin-bottom:12px}
  .mobile-extra h2{padding:17px;font-size:19px;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -122,7 +119,6 @@ footer{text-align:center;color:#8d8599;padding:30px 0 45px;font-size:12px}
  .wicon{width:52px;height:52px}
  .hero h1 br{display:none}
 }
-
 @media(max-width:390px){
  .code{grid-template-columns:40px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:54px 62px 42px!important;column-gap:5px!important;row-gap:7px!important;padding:11px 7px!important;min-height:173px!important}
  .code>.gift{width:40px!important;height:40px!important}
@@ -134,6 +130,16 @@ footer{text-align:center;color:#8d8599;padding:30px 0 45px;font-size:12px}
  .scroll{width:25px;height:19px}
  .energy{font-size:22px}
  .mana{width:19px;height:23px}
+}
+/* HOTFIX: impede sobreposição mesmo quando o carregador de códigos injeta estilos inline. */
+.codes,.codes *{box-sizing:border-box}
+.codes{position:relative!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;height:auto!important;min-height:0!important;overflow:visible!important}
+.codes > *{position:relative!important;float:none!important;clear:both!important;transform:none!important;inset:auto!important;order:initial!important}
+.codes > .code{display:grid!important;position:relative!important;inset:auto!important;float:none!important;clear:both!important;transform:none!important;order:initial!important;width:100%!important;height:auto!important;min-height:105px!important;margin:0!important;overflow:hidden!important;flex:none!important;z-index:0!important}
+@media(max-width:850px){
+ .codes{display:flex!important;flex-direction:column!important;gap:12px!important;overflow:visible!important}
+ .codes > .code{display:grid!important;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:58px 66px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;min-height:182px!important;height:auto!important;flex:none!important;margin:0!important;position:relative!important;inset:auto!important;overflow:hidden!important}
+ .codes > .code > .copy,.codes > .code > .link{width:100%!important;height:44px!important;position:relative!important;inset:auto!important;transform:none!important;z-index:5!important}
 }
 </style>
 </head>
@@ -160,19 +166,37 @@ function copiar(c,b){
  else{const ta=document.createElement('textarea');ta.value=c;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();done();}
 }
 document.querySelectorAll('.faq-q').forEach(q=>q.onclick=()=>q.parentElement.classList.toggle('active'));
-/* Blindagem contra qualquer código externo que tente colocar cartões por cima uns dos outros. */
-function corrigirLayout(){
+function normalizarCartoes(){
  const lista=document.querySelector('#codigos .codes');
  if(!lista)return;
- lista.style.display='flex';lista.style.flexDirection='column';lista.style.gap='12px';
- [...lista.children].forEach(card=>{
-  if(!card.classList.contains('code'))return;
-  card.style.position='relative';card.style.top='auto';card.style.right='auto';card.style.bottom='auto';card.style.left='auto';card.style.float='none';card.style.clear='both';card.style.transform='none';card.style.margin='0';card.style.width='100%';
+ lista.style.setProperty('display','flex','important');
+ lista.style.setProperty('flex-direction','column','important');
+ lista.style.setProperty('gap','12px','important');
+ lista.style.setProperty('position','relative','important');
+ const cards=[...lista.querySelectorAll('.code')];
+ cards.forEach(card=>{
+  if(card.parentElement!==lista) lista.appendChild(card);
+  ['position','top','right','bottom','left','float','clear','transform','order','margin','width','height'].forEach(p=>card.style.removeProperty(p));
+  card.style.setProperty('position','relative','important');
+  card.style.setProperty('inset','auto','important');
+  card.style.setProperty('float','none','important');
+  card.style.setProperty('clear','both','important');
+  card.style.setProperty('transform','none','important');
+  card.style.setProperty('order','initial','important');
+  card.style.setProperty('width','100%','important');
+  card.style.setProperty('margin','0','important');
+  card.style.setProperty('z-index','0','important');
  });
 }
-document.addEventListener('DOMContentLoaded',corrigirLayout);
-const lista=document.querySelector('#codigos .codes');
-if(lista)new MutationObserver(corrigirLayout).observe(lista,{childList:true,subtree:true});
+function iniciarCorrecao(){
+ normalizarCartoes();
+ const lista=document.querySelector('#codigos .codes');
+ if(lista&&!window.__layoutObserver){
+  window.__layoutObserver=new MutationObserver(()=>normalizarCartoes());
+  window.__layoutObserver.observe(lista,{childList:true,subtree:true});
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciarCorrecao);else iniciarCorrecao();
 </script>
 </body>
 </html>
