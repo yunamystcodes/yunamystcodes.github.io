@@ -1,0 +1,96 @@
+name: Final expired codes toggle fix
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch index.html
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = 'YUNA_EXPIRED_TOGGLE_REAL_FIX_2026_08_17'
+          if marker not in s:
+              patch = r'''
+<!-- YUNA_EXPIRED_TOGGLE_REAL_FIX_2026_08_17 -->
+<style>
+.yuna-expired-hidden{display:none!important}
+</style>
+<script>
+(function(){
+  function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
+  function findHeader(node){
+    var el=node;
+    while(el && el!==document.body){
+      var t=text(el);
+      if(t.length<=100 && /CÓDIGOS EXPIRADOS(?:\s*\(\d+\))?/i.test(t)) return el;
+      el=el.parentElement;
+    }
+    return null;
+  }
+  function findList(header){
+    var parent=header.parentElement;
+    if(!parent) return null;
+    var kids=[].slice.call(parent.children);
+    var i=kids.indexOf(header);
+    for(var n=i+1;n<kids.length;n++){
+      var x=kids[n];
+      if(/CÓDIGO EXPIRADO/i.test(text(x)) || x.querySelector('.code,[class*="expired"],button,a')) return x;
+    }
+    var p=header.parentElement;
+    var candidates=p.querySelectorAll('.code,[class*="expired"]');
+    if(candidates.length) return candidates[0].parentElement;
+    return null;
+  }
+  function setup(){
+    var all=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');
+    all.forEach(function(el){
+      if(el.dataset.yunaRealExpiredToggle==='1') return;
+      var t=text(el);
+      if(t.length>100 || !/CÓDIGOS EXPIRADOS(?:\s*\(\d+\))?/i.test(t)) return;
+      var header=el;
+      var list=findList(header);
+      if(!list) return;
+      el.dataset.yunaRealExpiredToggle='1';
+      el.style.cursor='pointer';
+      el.setAttribute('role','button');
+      el.setAttribute('aria-expanded','true');
+      el.addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var hidden=list.classList.toggle('yuna-expired-hidden');
+        el.setAttribute('aria-expanded', hidden?'false':'true');
+      },true);
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();
+  new MutationObserver(setup).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+'''
+              s=s.replace('</body>', patch+'</body>')
+              p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Commit patch and remove workflow
+        shell: bash
+        run: |
+          git config user.name "YunaMyst Fix"
+          git config user.email "actions@users.noreply.github.com"
+          rm -f .github/workflows/fix-expired-toggle-now.yml
+          git add index.html .github/workflows/fix-expired-toggle-now.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix expired codes collapse on PC and mobile"
+          git push
