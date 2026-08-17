@@ -16,28 +16,123 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Patch expired section toggle
+      - name: Patch index
         shell: python
         run: |
           from pathlib import Path
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = 'YUNA_EXPIRED_TOGGLE_FIX_2026_08_17'
+          marker = 'YUNA_EXPIRED_TOGGLE_ROBUST_2026_08_17'
           if marker in s:
-              print('Patch already present')
+              print('Robust patch already present')
               raise SystemExit(0)
 
-          patch = r'''\n<!-- YUNA_EXPIRED_TOGGLE_FIX_2026_08_17 -->\n<script>\n(function(){\n  function installExpiredToggle(){\n    var nodes=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');\n    nodes.forEach(function(title){\n      if(title.dataset.yunaExpiredToggle==='1') return;\n      var text=(title.textContent||'').replace(/\\s+/g,' ').trim().toUpperCase();\n      if(text.indexOf('CÓDIGOS EXPIRADOS')===-1) return;\n\n      var panel=title.closest('.panel') || title.parentElement;\n      if(!panel) return;\n      var list=panel.querySelector('.codes');\n      if(!list) list=panel.querySelector('[class*="expired"], [id*="expired"]');\n      if(!list) return;\n\n      title.dataset.yunaExpiredToggle='1';\n      title.style.cursor='pointer';\n      title.setAttribute('role','button');\n      title.setAttribute('aria-expanded','true');\n\n      title.addEventListener('click',function(e){\n        if(e.target.closest('a,button') && e.target!==title) return;\n        var closed=list.dataset.yunaClosed==='1';\n        list.dataset.yunaClosed=closed?'0':'1';\n        list.style.setProperty('display',closed?'flex':'none','important');\n        title.setAttribute('aria-expanded',closed?'true':'false');\n        var arrow=title.querySelector('.yuna-expired-arrow');\n        if(arrow) arrow.textContent=closed?'⌃':'⌄';\n      });\n\n      var arrow=document.createElement('span');\n      arrow.className='yuna-expired-arrow';\n      arrow.textContent='⌃';\n      arrow.style.marginLeft='8px';\n      arrow.style.fontWeight='900';\n      title.appendChild(arrow);\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',installExpiredToggle);\n  else installExpiredToggle();\n  new MutationObserver(installExpiredToggle).observe(document.body,{childList:true,subtree:true});\n})();\n</script>\n'''
+          patch = r'''<!-- YUNA_EXPIRED_TOGGLE_ROBUST_2026_08_17 -->
+<style>
+.yuna-expired-hidden{display:none!important}
+</style>
+<script>
+(function(){
+  function norm(s){return (s||'').replace(/\s+/g,' ').trim().toUpperCase();}
+  function findHeading(){
+    var all=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');
+    for(var i=0;i<all.length;i++){
+      var t=norm(all[i].textContent);
+      if(t.indexOf('CÓDIGOS EXPIRADOS')!==-1) return all[i];
+    }
+    return null;
+  }
+  function findContainer(heading){
+    var el=heading;
+    for(var level=0;el && el!==document.body && level<10;level++,el=el.parentElement){
+      var hits=[].filter.call(el.querySelectorAll('*'),function(x){
+        var t=norm(x.textContent);
+        return t.indexOf('CÓDIGO EXPIRADO')!==-1 && x.children.length<6;
+      });
+      if(hits.length>=2) return el;
+    }
+    return heading.parentElement;
+  }
+  function collectCards(container,heading){
+    var result=[];
+    if(!container) return result;
+    var all=container.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var el=all[i];
+      if(el===heading || heading.contains(el)) continue;
+      var text=norm(el.textContent);
+      if(text.indexOf('CÓDIGO EXPIRADO')===-1) continue;
+      var hasChildMatch=false;
+      for(var j=0;j<el.children.length;j++){
+        if(norm(el.children[j].textContent).indexOf('CÓDIGO EXPIRADO')!==-1){hasChildMatch=true;break;}
+      }
+      if(hasChildMatch) continue;
+      var card=el;
+      for(var k=0;k<8 && card.parentElement && card.parentElement!==container;k++){
+        var cls=norm(card.className);
+        if(/CODE|CARD|ITEM|ROW|EXPIRED|COUPON/.test(cls)) break;
+        card=card.parentElement;
+      }
+      if(card!==container && result.indexOf(card)<0) result.push(card);
+    }
+    return result;
+  }
+  function install(){
+    var heading=findHeading();
+    if(!heading) return false;
+    var container=findContainer(heading);
+    var cards=collectCards(container,heading);
+    if(!container || !cards.length) return false;
+    if(heading.dataset.yunaRobustToggle==='1') return true;
 
-          s = s.replace('</body>', patch + '</body>') if '</body>' in s else s + patch
-          p.write_text(s, encoding='utf-8')
+    heading.dataset.yunaRobustToggle='1';
+    heading.style.cursor='pointer';
+    heading.setAttribute('role','button');
+    heading.setAttribute('aria-expanded','true');
 
-      - name: Commit patched index
+    heading.addEventListener('click',function(e){
+      if(e.target.closest('a,button') && e.target!==heading) return;
+      var closed=heading.dataset.yunaClosed==='1';
+      var fresh=collectCards(container,heading);
+      fresh.forEach(function(card){
+        card.classList.toggle('yuna-expired-hidden',!closed);
+      });
+      heading.dataset.yunaClosed=closed?'0':'1';
+      heading.setAttribute('aria-expanded',closed?'true':'false');
+    });
+    return true;
+  }
+
+  function start(){
+    if(install()) return;
+    var observer=new MutationObserver(function(){
+      if(install()) observer.disconnect();
+    });
+    observer.observe(document.documentElement,{childList:true,subtree:true});
+    setTimeout(function(){try{observer.disconnect()}catch(e){} install();},20000);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
+})();
+</script>
+'''
+
+          if '</body>' in s:
+              s=s.replace('</body>', patch + '\n</body>')
+          else:
+              s += '\n' + patch
+          p.write_text(s,encoding='utf-8')
+
+      - name: Commit index fix
+        shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git diff --cached --quiet && exit 0
-          git commit -m 'Fix expired codes collapse toggle'
+          if git diff --cached --quiet; then
+            echo 'No index changes needed'
+            exit 0
+          fi
+          git commit -m 'Fix expired codes toggle [expired-toggle-fix]'
           git push
