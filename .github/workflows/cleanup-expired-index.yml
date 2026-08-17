@@ -21,44 +21,60 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<!-- YUNA-EXPIRED-FIX -->'
+          marker = 'YUNA-EXPIRED-REAL-TOGGLE-2026-08-17'
           if marker not in s:
-              snippet = r'''<!-- YUNA-EXPIRED-FIX -->
+              snippet = r'''<!-- YUNA-EXPIRED-REAL-TOGGLE-2026-08-17 -->
           <style>
-          .yuna-expired-panel{margin-top:18px;padding:18px;border:1px solid rgba(190,102,255,.4);border-radius:18px;background:linear-gradient(180deg,rgba(12,7,29,.96),rgba(5,4,17,.96));color:#fff}
-          .yuna-expired-panel h3{margin:0 0 12px;color:#d99cff;font-size:20px}
-          .yuna-expired-list{display:flex;flex-direction:column;gap:8px}
-          .yuna-expired-item{padding:10px 12px;border:1px solid rgba(180,80,255,.25);border-radius:10px;color:#aaa;background:rgba(20,10,30,.65);font-weight:700}
+          .yuna-expired-hidden{display:none!important}
           </style>
           <script>
           (function(){
-            const BLOCKED=new Set(['MYSTICAL','QUANTITY','CRYSTAL','PURCHASES','SUMMONING','LENGEDARY']);
-            function clean(){
-              const lists=[...document.querySelectorAll('.codes')];
-              if(!lists.length)return;
-              const active=lists[0];
-              let panel=document.querySelector('.yuna-expired-panel');
-              if(!panel){
-                panel=document.createElement('section');panel.className='yuna-expired-panel';
-                panel.innerHTML='<h3>⛔ Códigos Expirados</h3><div class="yuna-expired-list"></div>';
-                active.parentElement.appendChild(panel);
-              }
-              const out=panel.querySelector('.yuna-expired-list');
-              const already=new Set([...out.children].map(x=>x.dataset.code));
-              [...active.querySelectorAll('.code')].forEach(card=>{
-                const raw=card.dataset.code || card.querySelector('.cinfo strong')?.textContent || '';
-                const code=raw.trim().toUpperCase();
-                if(BLOCKED.has(code)){
-                  if(!already.has(code)){
-                    const item=document.createElement('div');item.className='yuna-expired-item';item.dataset.code=code;item.textContent=code+' — expirado';out.appendChild(item);
-                  }
-                  card.remove();
-                }
-              });
-              if(!out.children.length)panel.style.display='none';
+            function txt(el){return (el&&el.textContent||'').replace(/\s+/g,' ').trim();}
+            function isHeader(el){
+              var t=txt(el);
+              return t.length<=100 && /CÓDIGOS EXPIRADOS(?:\s*\(\d+\))?/i.test(t);
             }
-            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',clean,{once:true});else clean();
-            setTimeout(clean,500);setTimeout(clean,1500);
+            function findList(header){
+              if(!header) return null;
+              var parent=header.parentElement;
+              if(!parent) return null;
+              var kids=[].slice.call(parent.children);
+              var idx=kids.indexOf(header);
+              for(var i=idx+1;i<kids.length;i++){
+                var x=kids[i], t=txt(x);
+                if(x.querySelector && (x.querySelector('.code,[class*="expired"]') || /CÓDIGO EXPIRADO/i.test(t))) return x;
+              }
+              var direct=parent.querySelector('.yuna-expired-list');
+              if(direct) return direct;
+              var codes=[].slice.call(parent.querySelectorAll('.code'));
+              if(codes.length){
+                var holder=codes[0].parentElement;
+                if(holder && holder!==header) return holder;
+              }
+              return null;
+            }
+            function setup(){
+              document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a').forEach(function(el){
+                if(el.dataset.yunaRealToggle==='1') return;
+                if(!isHeader(el)) return;
+                var list=findList(el);
+                if(!list) return;
+                el.dataset.yunaRealToggle='1';
+                el.style.cursor='pointer';
+                el.setAttribute('role','button');
+                el.setAttribute('aria-expanded','true');
+                el.addEventListener('click',function(e){
+                  e.preventDefault();
+                  e.stopImmediatePropagation();
+                  var current=findList(el)||list;
+                  var hidden=current.classList.toggle('yuna-expired-hidden');
+                  current.style.setProperty('display',hidden?'none':'','important');
+                  el.setAttribute('aria-expanded',hidden?'false':'true');
+                },true);
+              });
+            }
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+            new MutationObserver(setup).observe(document.documentElement,{childList:true,subtree:true});
           })();
           </script>
           '''
@@ -71,5 +87,5 @@ jobs:
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add index.html
-          git diff --cached --quiet || git commit -m 'Remover códigos inativos dos ativos e mostrar em expirados'
+          git diff --cached --quiet || git commit -m 'Corrigir botão de códigos expirados no PC e telemóvel'
           git push
