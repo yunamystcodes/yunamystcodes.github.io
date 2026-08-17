@@ -1,0 +1,118 @@
+name: Fix expired codes toggle
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fix PC and mobile expired codes toggle
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          fix = r'''<!-- FIX: CÓDIGOS EXPIRADOS - PC + TELEMÓVEL -->
+          <style>
+          .yuna-expired-hidden{display:none!important}
+          .yuna-expired-toggle{cursor:pointer!important;user-select:none}
+          </style>
+          <script>
+          (function(){
+            var closed=false;
+            var header=null;
+            function txt(el){return (el&&el.textContent||'').replace(/\s+/g,' ').trim()}
+            function isHeader(el){
+              var t=txt(el);
+              return t.length<=120 && /CÓDIGOS EXPIRADOS(?:\s*\(\d+\))?/i.test(t);
+            }
+            function isExpiredCard(el){
+              if(!el || el===header) return false;
+              return /CÓDIGO EXPIRADO/i.test(txt(el));
+            }
+            function findHeader(){
+              var nodes=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a,p,strong');
+              for(var i=0;i<nodes.length;i++) if(isHeader(nodes[i])) return nodes[i];
+              return null;
+            }
+            function getCards(){
+              var found=[], seen=new Set();
+              var selectors=['.code','article.code','[class*="code"]'];
+              for(var s=0;s<selectors.length;s++){
+                var nodes=document.querySelectorAll(selectors[s]);
+                for(var i=0;i<nodes.length;i++){
+                  var el=nodes[i];
+                  if(!seen.has(el) && isExpiredCard(el)){seen.add(el);found.push(el);}
+                }
+              }
+              return found;
+            }
+            function apply(){
+              var cards=getCards();
+              for(var i=0;i<cards.length;i++){
+                cards[i].classList.toggle('yuna-expired-hidden',closed);
+                cards[i].style.setProperty('display',closed?'none':'','important');
+              }
+              if(header){
+                header.classList.add('yuna-expired-toggle');
+                header.setAttribute('role','button');
+                header.setAttribute('aria-expanded',closed?'false':'true');
+                header.setAttribute('title',closed?'Mostrar códigos expirados':'Ocultar códigos expirados');
+              }
+            }
+            function install(){
+              var h=findHeader();
+              if(!h) return false;
+              if(header!==h){
+                header=h;
+                header.classList.add('yuna-expired-toggle');
+                header.addEventListener('click',function(e){
+                  if(e.target.closest && e.target.closest('a,button') && e.target!==header) return;
+                  closed=!closed;
+                  apply();
+                },true);
+              }
+              apply();
+              return true;
+            }
+            function start(){
+              install();
+              var obs=new MutationObserver(function(){install();});
+              obs.observe(document.documentElement,{childList:true,subtree:true});
+            }
+            if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start);
+            else start();
+          })();
+          </script>
+          '''
+
+          s = re.sub(r'<!-- FIX FINAL: secção de expirados colapsável no PC e no telemóvel -->.*?(?=</body>)', fix, s, flags=re.S)
+          if '<!-- FIX: CÓDIGOS EXPIRADOS - PC + TELEMÓVEL -->' not in s:
+              s = s.replace('</body>', fix + '</body>')
+          s = s.replace('2026-08-17-expired-fix', '2026-08-17-expired-fix-v2')
+          p.write_text(s, encoding='utf-8')
+
+      - name: Commit fix and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/fix-expired-codes.yml
+          git add index.html .github/workflows/fix-expired-codes.yml
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Fix expired codes toggle on PC and mobile"
+          git push
