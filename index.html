@@ -237,5 +237,60 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
-\n<!-- YUNA_EXPIRED_TOGGLE_FIX_2026_08_17 -->\n<script>\n(function(){\n  function installExpiredToggle(){\n    var nodes=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');\n    nodes.forEach(function(title){\n      if(title.dataset.yunaExpiredToggle==='1') return;\n      var text=(title.textContent||'').replace(/\\s+/g,' ').trim().toUpperCase();\n      if(text.indexOf('CÓDIGOS EXPIRADOS')===-1) return;\n\n      var panel=title.closest('.panel') || title.parentElement;\n      if(!panel) return;\n      var list=panel.querySelector('.codes');\n      if(!list) list=panel.querySelector('[class*="expired"], [id*="expired"]');\n      if(!list) return;\n\n      title.dataset.yunaExpiredToggle='1';\n      title.style.cursor='pointer';\n      title.setAttribute('role','button');\n      title.setAttribute('aria-expanded','true');\n\n      title.addEventListener('click',function(e){\n        if(e.target.closest('a,button') && e.target!==title) return;\n        var closed=list.dataset.yunaClosed==='1';\n        list.dataset.yunaClosed=closed?'0':'1';\n        list.style.setProperty('display',closed?'flex':'none','important');\n        title.setAttribute('aria-expanded',closed?'true':'false');\n        var arrow=title.querySelector('.yuna-expired-arrow');\n        if(arrow) arrow.textContent=closed?'⌃':'⌄';\n      });\n\n      var arrow=document.createElement('span');\n      arrow.className='yuna-expired-arrow';\n      arrow.textContent='⌃';\n      arrow.style.marginLeft='8px';\n      arrow.style.fontWeight='900';\n      title.appendChild(arrow);\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',installExpiredToggle);\n  else installExpiredToggle();\n  new MutationObserver(installExpiredToggle).observe(document.body,{childList:true,subtree:true});\n})();\n</script>\n\n<!-- YUNA_EXPIRED_TOGGLE_FINAL_2026_08_17 -->\n<style>\n.yuna-expired-collapsed{display:none!important}\n</style>\n<script>\n(function(){\n  function headerFor(node){\n    var el=node.closest('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');\n    while(el && el!==document.body){\n      var t=(el.textContent||'').replace(/\\s+/g,' ').trim();\n      if(t.length<=120 && /CÓDIGOS EXPIRADOS(?:\\s*\\(\\d+\\))?/i.test(t)) return el;\n      el=el.parentElement;\n    }\n    return null;\n  }\n  function findList(header){\n    var parent=header.parentElement;\n    if(!parent) return null;\n    var children=[].slice.call(parent.children).filter(function(x){return x!==header;});\n    var list=children.find(function(x){\n      return x.matches && (x.matches('.codes,.yuna-expired-list,[class*="expired"],[id*="expired"]') || x.querySelector('.yuna-expired-list,.code,[class*="expired"]'));\n    });\n    if(list) return list;\n    var next=header.nextElementSibling;\n    if(next && (next.querySelector('.code,.yuna-expired-item,[class*="expired"]') || next.className && String(next.className).toLowerCase().indexOf('expired')>=0)) return next;\n    return null;\n  }\n  function setup(){\n    document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a').forEach(function(el){\n      var t=(el.textContent||'').replace(/\\s+/g,' ').trim();\n      if(t.length>120 || !/CÓDIGOS EXPIRADOS(?:\\s*\\(\\d+\\))?/i.test(t) || el.dataset.yunaFinalToggle==='1') return;\n      var list=findList(el);\n      if(!list) return;\n      el.dataset.yunaFinalToggle='1';\n      el.style.cursor='pointer';\n      el.setAttribute('role','button');\n      el.setAttribute('aria-expanded','true');\n      el.addEventListener('click',function(e){\n        if(e.target.closest('a,button') && e.target!==el) return;\n        var closed=list.classList.toggle('yuna-expired-collapsed');\n        list.style.setProperty('display',closed?'none':'','important');\n        el.setAttribute('aria-expanded',closed?'false':'true');\n      });\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();\n  new MutationObserver(setup).observe(document.body,{childList:true,subtree:true});\n})();\n</script>\n</body>
+\n<!-- YUNA_EXPIRED_TOGGLE_FIX_2026_08_17 -->\n<script>\n(function(){\n  function installExpiredToggle(){\n    var nodes=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');\n    nodes.forEach(function(title){\n      if(title.dataset.yunaExpiredToggle==='1') return;\n      var text=(title.textContent||'').replace(/\\s+/g,' ').trim().toUpperCase();\n      if(text.indexOf('CÓDIGOS EXPIRADOS')===-1) return;\n\n      var panel=title.closest('.panel') || title.parentElement;\n      if(!panel) return;\n      var list=panel.querySelector('.codes');\n      if(!list) list=panel.querySelector('[class*="expired"], [id*="expired"]');\n      if(!list) return;\n\n      title.dataset.yunaExpiredToggle='1';\n      title.style.cursor='pointer';\n      title.setAttribute('role','button');\n      title.setAttribute('aria-expanded','true');\n\n      title.addEventListener('click',function(e){\n        if(e.target.closest('a,button') && e.target!==title) return;\n        var closed=list.dataset.yunaClosed==='1';\n        list.dataset.yunaClosed=closed?'0':'1';\n        list.style.setProperty('display',closed?'flex':'none','important');\n        title.setAttribute('aria-expanded',closed?'true':'false');\n        var arrow=title.querySelector('.yuna-expired-arrow');\n        if(arrow) arrow.textContent=closed?'⌃':'⌄';\n      });\n\n      var arrow=document.createElement('span');\n      arrow.className='yuna-expired-arrow';\n      arrow.textContent='⌃';\n      arrow.style.marginLeft='8px';\n      arrow.style.fontWeight='900';\n      title.appendChild(arrow);\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',installExpiredToggle);\n  else installExpiredToggle();\n  new MutationObserver(installExpiredToggle).observe(document.body,{childList:true,subtree:true});\n})();\n</script>\n\n<!-- YUNA_EXPIRED_TOGGLE_FINAL_2026_08_17 -->\n<style>\n.yuna-expired-collapsed{display:none!important}\n</style>\n<script>\n(function(){\n  function headerFor(node){\n    var el=node.closest('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');\n    while(el && el!==document.body){\n      var t=(el.textContent||'').replace(/\\s+/g,' ').trim();\n      if(t.length<=120 && /CÓDIGOS EXPIRADOS(?:\\s*\\(\\d+\\))?/i.test(t)) return el;\n      el=el.parentElement;\n    }\n    return null;\n  }\n  function findList(header){\n    var parent=header.parentElement;\n    if(!parent) return null;\n    var children=[].slice.call(parent.children).filter(function(x){return x!==header;});\n    var list=children.find(function(x){\n      return x.matches && (x.matches('.codes,.yuna-expired-list,[class*="expired"],[id*="expired"]') || x.querySelector('.yuna-expired-list,.code,[class*="expired"]'));\n    });\n    if(list) return list;\n    var next=header.nextElementSibling;\n    if(next && (next.querySelector('.code,.yuna-expired-item,[class*="expired"]') || next.className && String(next.className).toLowerCase().indexOf('expired')>=0)) return next;\n    return null;\n  }\n  function setup(){\n    document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a').forEach(function(el){\n      var t=(el.textContent||'').replace(/\\s+/g,' ').trim();\n      if(t.length>120 || !/CÓDIGOS EXPIRADOS(?:\\s*\\(\\d+\\))?/i.test(t) || el.dataset.yunaFinalToggle==='1') return;\n      var list=findList(el);\n      if(!list) return;\n      el.dataset.yunaFinalToggle='1';\n      el.style.cursor='pointer';\n      el.setAttribute('role','button');\n      el.setAttribute('aria-expanded','true');\n      el.addEventListener('click',function(e){\n        if(e.target.closest('a,button') && e.target!==el) return;\n        var closed=list.classList.toggle('yuna-expired-collapsed');\n        list.style.setProperty('display',closed?'none':'','important');\n        el.setAttribute('aria-expanded',closed?'false':'true');\n      });\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();\n  new MutationObserver(setup).observe(document.body,{childList:true,subtree:true});\n})();\n</script>\n<!-- YUNA-EXPIRED-REAL-TOGGLE-2026-08-17 -->
+<style>
+.yuna-expired-hidden{display:none!important}
+</style>
+<script>
+(function(){
+  function txt(el){return (el&&el.textContent||'').replace(/\s+/g,' ').trim();}
+  function isHeader(el){
+    var t=txt(el);
+    return t.length<=100 && /CÓDIGOS EXPIRADOS(?:\s*\(\d+\))?/i.test(t);
+  }
+  function findList(header){
+    if(!header) return null;
+    var parent=header.parentElement;
+    if(!parent) return null;
+    var kids=[].slice.call(parent.children);
+    var idx=kids.indexOf(header);
+    for(var i=idx+1;i<kids.length;i++){
+      var x=kids[i], t=txt(x);
+      if(x.querySelector && (x.querySelector('.code,[class*="expired"]') || /CÓDIGO EXPIRADO/i.test(t))) return x;
+    }
+    var direct=parent.querySelector('.yuna-expired-list');
+    if(direct) return direct;
+    var codes=[].slice.call(parent.querySelectorAll('.code'));
+    if(codes.length){
+      var holder=codes[0].parentElement;
+      if(holder && holder!==header) return holder;
+    }
+    return null;
+  }
+  function setup(){
+    document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a').forEach(function(el){
+      if(el.dataset.yunaRealToggle==='1') return;
+      if(!isHeader(el)) return;
+      var list=findList(el);
+      if(!list) return;
+      el.dataset.yunaRealToggle='1';
+      el.style.cursor='pointer';
+      el.setAttribute('role','button');
+      el.setAttribute('aria-expanded','true');
+      el.addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var current=findList(el)||list;
+        var hidden=current.classList.toggle('yuna-expired-hidden');
+        current.style.setProperty('display',hidden?'none':'','important');
+        el.setAttribute('aria-expanded',hidden?'false':'true');
+      },true);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+  new MutationObserver(setup).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
+</body>
 </html>
