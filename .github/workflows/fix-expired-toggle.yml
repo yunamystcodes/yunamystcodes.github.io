@@ -23,101 +23,50 @@ jobs:
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = 'YUNA_EXPIRED_TOGGLE_ROBUST_2026_08_17'
+          marker = 'YUNA_EXPIRED_TOGGLE_FINAL_2026_08_18'
           if marker in s:
-              print('Robust patch already present')
+              print('Final expired toggle already present')
               raise SystemExit(0)
 
-          patch = r'''<!-- YUNA_EXPIRED_TOGGLE_ROBUST_2026_08_17 -->
+          patch = r'''<!-- YUNA_EXPIRED_TOGGLE_FINAL_2026_08_18 -->
 <style>
-.yuna-expired-hidden{display:none!important}
+.yuna-expired-collapsed > *:not(.yuna-expired-header){display:none!important}
 </style>
 <script>
 (function(){
-  function norm(s){return (s||'').replace(/\s+/g,' ').trim().toUpperCase();}
-  function findHeading(){
-    var all=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');
-    for(var i=0;i<all.length;i++){
-      var t=norm(all[i].textContent);
-      if(t.indexOf('CÓDIGOS EXPIRADOS')!==-1) return all[i];
+  function norm(s){return (s||'').replace(/\s+/g,' ').trim();}
+  function isExpiredHeading(el){
+    if(!el || el===document.body) return false;
+    return /^CÓDIGOS EXPIRADOS(?:\s*\(\d+\))?$/i.test(norm(el.textContent));
+  }
+  function headingFromTarget(target){
+    var el=target;
+    while(el && el!==document.body){
+      if(isExpiredHeading(el)) return el;
+      el=el.parentElement;
     }
     return null;
   }
-  function findContainer(heading){
-    var el=heading;
-    for(var level=0;el && el!==document.body && level<10;level++,el=el.parentElement){
-      var hits=[].filter.call(el.querySelectorAll('*'),function(x){
-        var t=norm(x.textContent);
-        return t.indexOf('CÓDIGO EXPIRADO')!==-1 && x.children.length<6;
-      });
-      if(hits.length>=2) return el;
-    }
-    return heading.parentElement;
-  }
-  function collectCards(container,heading){
-    var result=[];
-    if(!container) return result;
-    var all=container.querySelectorAll('*');
-    for(var i=0;i<all.length;i++){
-      var el=all[i];
-      if(el===heading || heading.contains(el)) continue;
-      var text=norm(el.textContent);
-      if(text.indexOf('CÓDIGO EXPIRADO')===-1) continue;
-      var hasChildMatch=false;
-      for(var j=0;j<el.children.length;j++){
-        if(norm(el.children[j].textContent).indexOf('CÓDIGO EXPIRADO')!==-1){hasChildMatch=true;break;}
-      }
-      if(hasChildMatch) continue;
-      var card=el;
-      for(var k=0;k<8 && card.parentElement && card.parentElement!==container;k++){
-        var cls=norm(card.className);
-        if(/CODE|CARD|ITEM|ROW|EXPIRED|COUPON/.test(cls)) break;
-        card=card.parentElement;
-      }
-      if(card!==container && result.indexOf(card)<0) result.push(card);
-    }
-    return result;
-  }
   function install(){
-    var heading=findHeading();
-    if(!heading) return false;
-    var container=findContainer(heading);
-    var cards=collectCards(container,heading);
-    if(!container || !cards.length) return false;
-    if(heading.dataset.yunaRobustToggle==='1') return true;
-
-    heading.dataset.yunaRobustToggle='1';
-    heading.style.cursor='pointer';
-    heading.setAttribute('role','button');
-    heading.setAttribute('aria-expanded','true');
-
-    heading.addEventListener('click',function(e){
-      if(e.target.closest('a,button') && e.target!==heading) return;
-      var closed=heading.dataset.yunaClosed==='1';
-      var fresh=collectCards(container,heading);
-      fresh.forEach(function(card){
-        card.classList.toggle('yuna-expired-hidden',!closed);
-      });
-      heading.dataset.yunaClosed=closed?'0':'1';
-      heading.setAttribute('aria-expanded',closed?'true':'false');
-    });
-    return true;
+    if(document.documentElement.dataset.yunaExpiredFinal==='1') return;
+    document.documentElement.dataset.yunaExpiredFinal='1';
+    document.addEventListener('click',function(ev){
+      var heading=headingFromTarget(ev.target);
+      if(!heading) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      var box=heading.parentElement;
+      if(!box) return;
+      heading.classList.add('yuna-expired-header');
+      var collapsed=box.classList.toggle('yuna-expired-collapsed');
+      heading.setAttribute('role','button');
+      heading.setAttribute('aria-expanded',collapsed?'false':'true');
+    },true);
   }
-
-  function start(){
-    if(install()) return;
-    var observer=new MutationObserver(function(){
-      if(install()) observer.disconnect();
-    });
-    observer.observe(document.documentElement,{childList:true,subtree:true});
-    setTimeout(function(){try{observer.disconnect()}catch(e){} install();},20000);
-  }
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',install); else install();
 })();
 </script>
 '''
-
           if '</body>' in s:
               s=s.replace('</body>', patch + '\n</body>')
           else:
@@ -134,5 +83,5 @@ jobs:
             echo 'No index changes needed'
             exit 0
           fi
-          git commit -m 'Fix expired codes toggle [expired-toggle-fix]'
+          git commit -m 'Fix expired codes toggle on PC and mobile'
           git push
