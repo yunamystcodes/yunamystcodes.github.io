@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="Códigos ativos de Summoners War atualizados pela YunaMyst.">
-<meta name="build-version" content="2026-08-17-expired-fix">
+<meta name="build-version" content="2026-08-18-expired-fix-2">
 <title>YunaMyst — Códigos Summoners War</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -50,23 +50,31 @@ button,.link{height:45px;width:100%;min-width:0;padding:0 10px;border-radius:9px
 <script>
 function copiar(c,b){const done=()=>{const t=b.textContent;b.textContent='✓ COPIADO!';setTimeout(()=>b.textContent=t,1500)};if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(c).then(done).catch(()=>alert('Código: '+c));}else{const ta=document.createElement('textarea');ta.value=c;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();done();}}
 document.querySelectorAll('.faq-q').forEach(q=>q.onclick=()=>q.parentElement.classList.toggle('active'));
-function normalizarCartoes(){const lista=document.querySelector('#codigos .codes');if(!lista)return;lista.style.setProperty('display','flex','important');lista.style.setProperty('flex-direction','column','important');lista.style.setProperty('gap','12px','important');lista.style.setProperty('position','relative','important');[...lista.querySelectorAll('.code')].forEach(card=>{if(card.parentElement!==lista)lista.appendChild(card);['position','top','right','bottom','left','float','clear','transform','order','margin','width','height'].forEach(p=>card.style.removeProperty(p));card.style.setProperty('position','relative','important');card.style.setProperty('inset','auto','important');card.style.setProperty('float','none','important');card.style.setProperty('clear','both','important');card.style.setProperty('transform','none','important');card.style.setProperty('order','initial','important');card.style.setProperty('width','100%','important');card.style.setProperty('margin','0','important');card.style.setProperty('z-index','0','important');});}
+/* FIX: nunca mover cartões expirados para a lista de ativos. */
+function isExpiredCard(card){return !!(card&&((card.closest&&card.closest('.yuna-expired-list,[class*="expired"],[id*="expired"]'))||/CÓDIGO\s+EXPIRADO|CÓDIGOS\s+EXPIRADOS/i.test(card.textContent||'')))}
+function normalizarCartoes(){const lista=document.querySelector('#codigos .codes');if(!lista)return;lista.style.setProperty('display','flex','important');lista.style.setProperty('flex-direction','column','important');lista.style.setProperty('gap','12px','important');lista.style.setProperty('position','relative','important');[...lista.children].filter(card=>card.classList&&card.classList.contains('code')).forEach(card=>{if(isExpiredCard(card)){card.classList.add('yuna-expired-hidden');return;}card.classList.remove('yuna-expired-hidden');['position','top','right','bottom','left','float','clear','transform','order','margin','width','height'].forEach(p=>card.style.removeProperty(p));card.style.setProperty('position','relative','important');card.style.setProperty('inset','auto','important');card.style.setProperty('float','none','important');card.style.setProperty('clear','both','important');card.style.setProperty('transform','none','important');card.style.setProperty('order','initial','important');card.style.setProperty('width','100%','important');card.style.setProperty('margin','0','important');card.style.setProperty('z-index','0','important');});}
 function iniciarCorrecao(){normalizarCartoes();const lista=document.querySelector('#codigos .codes');if(lista&&!window.__layoutObserver){window.__layoutObserver=new MutationObserver(()=>normalizarCartoes());window.__layoutObserver.observe(lista,{childList:true,subtree:true});}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciarCorrecao);else iniciarCorrecao();
 </script>
 <!-- FIX FINAL: secção de expirados colapsável no PC e no telemóvel -->
-<style>
-.yuna-expired-hidden{display:none!important}
-</style>
+<style>.yuna-expired-hidden{display:none!important}</style>
 <script>
 (function(){
   function text(el){return (el&&el.textContent||'').replace(/\s+/g,' ').trim()}
   function isExpiredHeader(el){return text(el).length<=120&&/CÓDIGOS EXPIRADOS(?:\s*\(\d+\))?/i.test(text(el))}
   function getHeader(){var a=document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,summary,div,span,a');for(var i=0;i<a.length;i++)if(isExpiredHeader(a[i]))return a[i];return null}
+  function collectExpiredTargets(h){
+    var targets=[];
+    var root=h&&h.parentElement;
+    if(!root)return targets;
+    var all=root.querySelectorAll('.code,[class*="expired"],[id*="expired"]');
+    for(var i=0;i<all.length;i++)if(all[i]!==h&&(/CÓDIGO\s+EXPIRADO|CÓDIGOS\s+EXPIRADOS/i.test(text(all[i]))||all[i].className&&String(all[i].className).toLowerCase().includes('expired')))targets.push(all[i]);
+    return targets;
+  }
   function getList(h){
     if(!h)return null;
     var p=h.parentElement;if(!p)return null;
-    var children=[].slice.call(p.children), idx=children.indexOf(h);
+    var children=[].slice.call(p.children),idx=children.indexOf(h);
     for(var i=idx+1;i<children.length;i++){
       var x=children[i];
       if(x.querySelector&&x.querySelector('.code,[class*="expired"],[class*="card"],a'))return x;
@@ -75,16 +83,23 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var q=p.querySelector('.yuna-expired-list,[class*="expired"],[id*="expired"]');if(q)return q;
     return null;
   }
+  function setHidden(h,hidden){
+    var list=getList(h);
+    if(list){list.classList.toggle('yuna-expired-hidden',hidden);list.style.setProperty('display',hidden?'none':'','important');}
+    var targets=collectExpiredTargets(h);
+    for(var i=0;i<targets.length;i++){targets[i].classList.toggle('yuna-expired-hidden',hidden);targets[i].style.setProperty('display',hidden?'none':'','important');}
+    var nearby=document.querySelectorAll('.code');
+    for(var j=0;j<nearby.length;j++)if(isExpiredCard(nearby[j])){nearby[j].classList.toggle('yuna-expired-hidden',hidden);nearby[j].style.setProperty('display',hidden?'none':'','important');}
+    h.setAttribute('aria-expanded',hidden?'false':'true');
+  }
   function install(){
-    var h=getHeader();if(!h)return false;var list=getList(h);if(!list)return false;
+    var h=getHeader();if(!h)return false;
     if(h.dataset.yunaExpiredFinal==='1')return true;
     h.dataset.yunaExpiredFinal='1';h.style.cursor='pointer';h.setAttribute('role','button');h.setAttribute('aria-expanded','true');
     h.addEventListener('click',function(e){
       if(e.target.closest&&e.target.closest('a,button')&&e.target!==h)return;
-      var current=getList(h)||list;
-      var hidden=current.classList.toggle('yuna-expired-hidden');
-      current.style.setProperty('display',hidden?'none':'','important');
-      h.setAttribute('aria-expanded',hidden?'false':'true');
+      var hidden=h.getAttribute('aria-expanded')!=='false';
+      setHidden(h,hidden);
     },true);
     return true;
   }
