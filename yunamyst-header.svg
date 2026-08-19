@@ -1,3 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="681" viewBox="0 0 2048 681" preserveAspectRatio="none">
-<image x="0" y="0" width="2048" height="681" href="yunamyst-header.webp" xlink:href="yunamyst-header.webp" preserveAspectRatio="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 801" preserveAspectRatio="xMidYMid meet">
+<image x="0" y="0" width="2048" height="681" href="yunamyst-header.webp" preserveAspectRatio="none"/>
+<rect x="0" y="681" width="2048" height="120" fill="#050308"/>
+<rect x="0" y="681" width="2048" height="3" fill="#9c4cff"/>
+<g font-family="Arial,sans-serif" font-size="30" font-weight="800" fill="#fff" text-anchor="middle">
+<a href="#inicio"><text x="650" y="755">⌂  INÍCIO</text></a>
+<a href="#codigos"><text x="910" y="755">🎁  CÓDIGOS</text></a>
+<a href="#como"><text x="1210" y="755">❓  COMO USAR</text></a>
+<a href="#faq"><text x="1510" y="755">❓  FAQ</text></a>
+</g>
 </svg>
