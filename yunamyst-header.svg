@@ -1,8 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="120" viewBox="0 0 2048 120" preserveAspectRatio="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="120" viewBox="0 0 2048 120" preserveAspectRatio="xMidYMid meet">
+<defs>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2b0"/><stop offset=".45" stop-color="#f4d15f"/><stop offset="1" stop-color="#b76a12"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
 <rect width="2048" height="120" fill="#030206"/>
 <rect width="2048" height="3" fill="#5f4c68"/>
 <rect y="119" width="2048" height="1" fill="#2b2431"/>
-<text x="48" y="78" font-family="Georgia,serif" font-size="54" font-weight="900" fill="#ffffff">YunaMyst</text>
+<text x="42" y="78" font-family="Georgia,Times New Roman,serif" font-size="54" font-style="italic" font-weight="900" fill="#f8f4ff" filter="url(#glow)">Yuna</text>
+<text x="220" y="78" font-family="Georgia,Times New Roman,serif" font-size="54" font-style="italic" font-weight="900" fill="url(#gold)" filter="url(#glow)">Myst</text>
+<text x="220" y="30" font-family="Georgia,serif" font-size="18" font-weight="900" text-anchor="middle" fill="#f0c75a">♛</text>
 <g font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#fff" text-anchor="middle">
 <a href="#inicio"><text x="930" y="72">⌂  INÍCIO</text></a>
 <a href="#codigos"><text x="1140" y="72">🎁  CÓDIGOS</text></a>
