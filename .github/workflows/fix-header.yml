@@ -1,0 +1,42 @@
+name: Fix header brand
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-header.yml'
+permissions:
+  contents: write
+jobs:
+  fix-header:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update header
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = '<header class="top"><div class="header-wrap"><img class="header-art" src="yunamyst-header.webp" alt="YunaMyst Summoners War"><nav class="header-nav" aria-label="Navegação principal">'
+          new = '<header class="top"><div class="header-wrap"><div class="header-brand" aria-label="YunaMyst">YunaMyst</div><nav class="header-nav" aria-label="Navegação principal">'
+          if old not in s:
+              raise SystemExit('header markup not found')
+          s = s.replace(old, new, 1)
+          marker = '.header-nav{position:absolute;'
+          css = '.header-brand{position:absolute;left:32px;top:0;height:71px;display:flex;align-items:center;z-index:11;font-family:Georgia,serif;font-size:42px;font-weight:900;letter-spacing:-2px;background:linear-gradient(180deg,#fff 0%,#eadbff 45%,#f0b94d 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(170,70,255,.45)}'
+          if marker not in s:
+              raise SystemExit('header CSS marker not found')
+          s = s.replace(marker, css + marker, 1)
+          s = s.replace('.header-art{position:absolute;left:28px;top:-37px;width:430px;height:auto;max-width:none;display:block;object-fit:initial;object-position:left center;pointer-events:none}', '.header-art{display:none}', 1)
+          s = s.replace('.header-art{left:18px;top:-29px;width:350px}', '.header-brand{left:18px;font-size:32px;height:62px}', 1)
+          s = s.replace('<meta name="build-version" content="2026-08-19-header-fixed2">', '<meta name="build-version" content="2026-08-19-yunamyst-only">', 1)
+          p.write_text(s, encoding='utf-8')
+      - name: Commit fix and remove one-shot workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/fix-header.yml
+          git add index.html
+          git commit -m "fix: show only YunaMyst in header" || exit 0
+          git push
