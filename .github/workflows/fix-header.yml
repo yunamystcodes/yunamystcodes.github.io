@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Replace header styling only
+      - name: Replace header with YunaMyst logo only
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -24,25 +24,43 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
+          # Replace the entire published header so no old artwork can survive.
+          header = r'''<header class="top" id="site-header">
+          <div class="header-wrap">
+            <a class="header-brand" href="#inicio" aria-label="YunaMyst">
+              <span class="crown">♛</span><span class="yuna">Yuna</span><span class="myst">Myst</span>
+            </a>
+            <nav class="header-nav" aria-label="Navegação principal">
+              <a href="#inicio"><span>⌂</span>INÍCIO</a>
+              <a href="#codigos"><span>🎁</span>CÓDIGOS</a>
+              <a href="#como"><span>?</span> COMO USAR</a>
+              <a href="#faq"><span>?</span> FAQ</a>
+            </nav>
+          </div>
+          </header>'''
+
+          s = re.sub(r'<header\b[^>]*>.*?</header>', header, s, count=1, flags=re.S | re.I)
+
           override = r'''<style id="yunamyst-header-final">
-          /* FINAL YUNAMYST HEADER: logo only, no fox/image */
-          .top{height:72px!important;border-top:3px solid #5f4c68!important;border-bottom:1px solid rgba(160,75,255,.35)!important;background:#030206!important;overflow:hidden!important}
-          .header-wrap{height:69px!important;background:#030206!important;overflow:hidden!important}
-          .header-art{display:none!important;visibility:hidden!important;width:0!important;height:0!important}
-          .header-brand{left:28px!important;top:0!important;height:69px!important;font-family:Georgia,'Times New Roman',serif!important;font-size:45px!important;font-style:italic!important;font-weight:900!important;letter-spacing:-3px!important;white-space:nowrap!important;display:flex!important;align-items:center!important;text-shadow:0 0 7px rgba(177,77,255,.85),0 0 18px rgba(105,34,190,.5)!important}
-          .header-brand .yuna{color:#f8f4ff!important}
-          .header-brand .myst{margin-left:2px!important;background:linear-gradient(180deg,#fff2b0 0%,#f4d15f 42%,#b76a12 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
-          .header-brand .crown{position:absolute!important;left:51%!important;top:4px!important;transform:translateX(-50%)!important;font-family:Georgia,serif!important;font-size:17px!important;font-style:normal!important;letter-spacing:0!important;color:#f0c75a!important;text-shadow:0 0 8px rgba(195,93,255,.9),0 0 13px rgba(255,201,70,.55)!important}
-          .header-nav{position:absolute!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;padding:0 34px!important;gap:26px!important;background:transparent!important;z-index:10002!important}
-          .header-nav a{font-size:14px!important;color:#fff!important}
-          @media(max-width:850px){.top{height:64px!important}.header-wrap{height:61px!important}.header-brand{left:16px!important;height:61px!important;font-size:32px!important;letter-spacing:-2px!important}.header-brand .crown{top:3px!important;font-size:12px!important}.header-nav{padding:0 10px!important;gap:12px!important}.header-nav a{font-size:10px!important}}
+          /* FINAL HEADER — YunaMyst only. No fox, no artwork, no image. */
+          #site-header.top{height:72px!important;min-height:72px!important;max-height:72px!important;background:#030206!important;border-top:3px solid #5f4c68!important;border-bottom:1px solid rgba(160,75,255,.35)!important;overflow:hidden!important;position:relative!important;z-index:99999!important}
+          #site-header .header-wrap{height:69px!important;width:100%!important;background:#030206!important;overflow:hidden!important;position:relative!important;display:block!important}
+          #site-header .header-brand{position:absolute!important;left:28px!important;top:0!important;height:69px!important;width:auto!important;display:flex!important;align-items:center!important;text-decoration:none!important;font-family:Georgia,'Times New Roman',serif!important;font-size:45px!important;font-style:italic!important;font-weight:900!important;letter-spacing:-3px!important;line-height:1!important;white-space:nowrap!important;background:none!important;text-shadow:0 0 7px rgba(177,77,255,.85),0 0 18px rgba(105,34,190,.5)!important;z-index:100001!important}
+          #site-header .header-brand .yuna{color:#f8f4ff!important}
+          #site-header .header-brand .myst{margin-left:2px!important;background:linear-gradient(180deg,#fff2b0 0%,#f4d15f 42%,#b76a12 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+          #site-header .header-brand .crown{position:absolute!important;left:51%!important;top:2px!important;transform:translateX(-50%)!important;font-family:Georgia,serif!important;font-size:17px!important;font-style:normal!important;letter-spacing:0!important;color:#f0c75a!important;text-shadow:0 0 8px rgba(195,93,255,.9),0 0 13px rgba(255,201,70,.55)!important}
+          #site-header .header-nav{position:absolute!important;inset:0!important;height:69px!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;padding:0 34px!important;gap:26px!important;background:transparent!important;z-index:100002!important}
+          #site-header .header-nav a{color:#fff!important;text-decoration:none!important;font-weight:900!important;font-size:14px!important;line-height:1!important;white-space:nowrap!important;text-shadow:0 1px 6px #000!important}
+          #site-header img,#site-header picture,#site-header svg:not(.icon){display:none!important;width:0!important;height:0!important}
+          @media(max-width:850px){#site-header.top{height:64px!important;min-height:64px!important;max-height:64px!important}#site-header .header-wrap{height:61px!important}#site-header .header-brand{left:16px!important;height:61px!important;font-size:32px!important;letter-spacing:-2px!important}#site-header .header-brand .crown{top:2px!important;font-size:12px!important}#site-header .header-nav{height:61px!important;padding:0 10px!important;gap:12px!important}#site-header .header-nav a{font-size:10px!important}}
           </style>'''
 
           s = re.sub(r'\s*<style id="yunamyst-header-final">.*?</style>', '', s, flags=re.S)
           s = s.replace('</head>', override + '\n</head>', 1)
 
-          # Ensure the header contains no image element at all.
+          # Remove any remaining old header-art image element if an older template had one.
           s = re.sub(r'<img[^>]*class=["\']header-art["\'][^>]*>', '', s, flags=re.I)
+          s = s.replace('2026-08-19-header-logo-only', '2026-08-19-YUNAMYST-HEADER-FINAL')
 
           p.write_text(s, encoding='utf-8')
           PY
@@ -53,5 +71,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "fix: make header YunaMyst-only"
+          git commit -m "fix: force YunaMyst-only published header"
           git push
