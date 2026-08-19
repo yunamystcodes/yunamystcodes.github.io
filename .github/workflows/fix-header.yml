@@ -1,8 +1,5 @@
 name: Fix header brand
-on:
-  push:
-    paths:
-      - '.github/workflows/fix-header.yml'
+on: push
 permissions:
   contents: write
 jobs:
