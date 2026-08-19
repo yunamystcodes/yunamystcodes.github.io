@@ -1,0 +1,46 @@
+name: Fix YunaMyst header
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix-header:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Replace only the header
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          header = '''<header class="top"><div class="header-wrap"><img class="header-art" src="yunamyst-header.svg" alt="YunaMyst Summoners War"><a class="header-hotspot inicio" href="#inicio" aria-label="Início"></a><a class="header-hotspot codigos" href="#codigos" aria-label="Códigos"></a><a class="header-hotspot como" href="#como" aria-label="Como usar"></a><a class="header-hotspot faq" href="#faq" aria-label="FAQ"></a></div></header>'''
+          s = re.sub(r'<header class="top">.*?</header>', header, s, count=1, flags=re.S)
+          css = '''
+          .top{height:auto!important;border:0!important;background:transparent!important;backdrop-filter:none!important;position:relative;z-index:20;padding:14px 16px 0!important}
+          .header-wrap{position:relative;width:100%;max-width:785px;margin:0 auto;line-height:0}
+          .header-art{display:block;width:100%;height:auto;border-radius:28px 28px 0 0}
+          .header-hotspot{position:absolute;top:0;height:100%;display:block}
+          .header-hotspot.inicio{left:38%;width:12%}.header-hotspot.codigos{left:50%;width:12%}.header-hotspot.como{left:62%;width:14%}.header-hotspot.faq{left:76%;width:9%}
+          @media(max-width:850px){.top{padding:8px 9px 0!important}.header-wrap{max-width:785px}.header-hotspot{display:block}}
+          '''
+          s = s.replace('</style>', css + '\n</style>', 1)
+          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="2026-08-19-header-final">', s, count=1)
+          p.write_text(s, encoding='utf-8')
+      - name: Commit header update
+        shell: bash
+        run: |
+          git config user.name "YunaMyst Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Corrige cabeçalho YunaMyst" || exit 0
+          git push
+      - name: Remove temporary workflow
+        shell: bash
+        run: |
+          git rm .github/workflows/fix-yunamyst-header.yml
+          git commit -m "Remove workflow temporário do cabeçalho"
+          git push
