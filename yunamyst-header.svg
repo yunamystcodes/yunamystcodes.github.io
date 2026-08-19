@@ -1,11 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="801" viewBox="0 0 2048 801" preserveAspectRatio="xMidYMid meet">
-<image x="0" y="0" width="2048" height="681" href="yunamyst-header.webp" xlink:href="yunamyst-header.webp" preserveAspectRatio="none"/>
-<rect x="0" y="681" width="2048" height="120" fill="#050308"/>
-<rect x="0" y="681" width="2048" height="3" fill="#9c4cff"/>
-<g font-family="Arial,sans-serif" font-size="30" font-weight="800" fill="#fff" text-anchor="middle">
-<a href="#inicio"><text x="650" y="755">⌂  INÍCIO</text></a>
-<a href="#codigos"><text x="910" y="755">🎁  CÓDIGOS</text></a>
-<a href="#como"><text x="1210" y="755">❓  COMO USAR</text></a>
-<a href="#faq"><text x="1510" y="755">❓  FAQ</text></a>
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="120" viewBox="0 0 2048 120" preserveAspectRatio="none">
+<rect width="2048" height="120" fill="#030206"/>
+<rect width="2048" height="3" fill="#5f4c68"/>
+<rect y="119" width="2048" height="1" fill="#2b2431"/>
+<text x="48" y="78" font-family="Georgia,serif" font-size="54" font-weight="900" fill="#ffffff">YunaMyst</text>
+<g font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#fff" text-anchor="middle">
+<a href="#inicio"><text x="930" y="72">⌂  INÍCIO</text></a>
+<a href="#codigos"><text x="1140" y="72">🎁  CÓDIGOS</text></a>
+<a href="#como"><text x="1390" y="72">❓  COMO USAR</text></a>
+<a href="#faq"><text x="1630" y="72">❓  FAQ</text></a>
 </g>
 </svg>
