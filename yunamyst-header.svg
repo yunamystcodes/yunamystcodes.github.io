@@ -1,12 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2048 900" preserveAspectRatio="xMidYMid meet">
-<rect width="2048" height="900" fill="#050308"/>
-<image x="0" y="0" width="2048" height="681" preserveAspectRatio="xMidYMid meet" href="yunamyst-header.webp" xlink:href="yunamyst-header.webp"/>
-<rect x="0" y="681" width="2048" height="219" fill="#050308"/>
-<rect x="0" y="681" width="2048" height="3" fill="#9c4cff"/>
-<g font-family="Arial,sans-serif" font-size="34" font-weight="800" fill="#fff" text-anchor="middle">
-<a href="#inicio"><text x="650" y="790">⌂  INÍCIO</text></a>
-<a href="#codigos"><text x="910" y="790">🎁  CÓDIGOS</text></a>
-<a href="#como"><text x="1210" y="790">❓  COMO USAR</text></a>
-<a href="#faq"><text x="1510" y="790">❓  FAQ</text></a>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2048 681" preserveAspectRatio="xMidYMid meet">
+<image x="0" y="0" width="2048" height="681" preserveAspectRatio="none" href="yunamyst-header.webp" xlink:href="yunamyst-header.webp"/>
 </svg>
