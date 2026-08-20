@@ -46,4 +46,38 @@ function copiar(c,b){const ok=()=>{const t=b.textContent;b.textContent='✓ COPI
 document.querySelectorAll('.faq-q').forEach(q=>q.onclick=()=>q.parentElement.classList.toggle('active'));
 if(location.hash==='#expirados')mostrar('expirados');
 </script>
+<!-- YUNA-LAYOUT-TABS-V2 -->
+<style>
+.tabs.yuna-fixed-tabs{margin-top:12px;border-top:1px solid rgba(255,255,255,.08);border-bottom:0}
+.tabs.yuna-fixed-tabs .tab{min-width:0}
+</style>
+<script>
+(function(){
+  function fixLayout(){
+    const active=document.getElementById('ativos');
+    const expired=document.getElementById('expirados');
+    const tabs=document.querySelector('.tabs');
+    if(!active || !tabs) return;
+
+    tabs.classList.add('yuna-fixed-tabs');
+
+    document.querySelectorAll('#countAtivos,#countExpirados,.tab-count').forEach(function(el){el.remove();});
+
+    // Coloca as abas imediatamente depois de TODOS os códigos ativos.
+    active.parentNode.insertBefore(tabs, active.nextSibling);
+
+    // Os expirados ficam depois das abas.
+    if(expired) tabs.parentNode.insertBefore(expired, tabs.nextSibling);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',fixLayout,{once:true});
+  }else{
+    fixLayout();
+  }
+  setTimeout(fixLayout,100);
+  setTimeout(fixLayout,500);
+})();
+</script>
+
 </body></html>
