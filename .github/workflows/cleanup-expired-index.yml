@@ -1,4 +1,4 @@
-name: Atualizar layout dos códigos
+name: Corrigir abas dos códigos
 
 on:
   push:
@@ -15,23 +15,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Aplicar layout estável
+      - name: Aplicar layout vertical das abas
         run: |
           python3 - <<'PY'
           from pathlib import Path
-
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<!-- YUNA-LAYOUT-TABS-V2 -->'
-
+          marker = '<!-- YUNA-LAYOUT-TABS-V3 -->'
           if marker in s:
-              print('Layout já aplicado; nada para alterar.')
+              print('Layout V3 já aplicado; nada para alterar.')
               raise SystemExit(0)
-
-          snippet = r'''<!-- YUNA-LAYOUT-TABS-V2 -->
+          snippet = r'''<!-- YUNA-LAYOUT-TABS-V3 -->
           <style>
-          .tabs.yuna-fixed-tabs{margin-top:12px;border-top:1px solid rgba(255,255,255,.08);border-bottom:0}
-          .tabs.yuna-fixed-tabs .tab{min-width:0}
+          .tabs.yuna-tabs-v3{display:flex!important;flex-direction:column!important;gap:8px!important;width:100%!important;padding:12px!important;margin:0!important;border-top:1px solid rgba(255,255,255,.08)!important;border-bottom:0!important}
+          .tabs.yuna-tabs-v3 .tab{width:100%!important;flex:none!important;min-height:45px!important}
           </style>
           <script>
           (function(){
@@ -39,37 +36,37 @@ jobs:
               const active=document.getElementById('ativos');
               const expired=document.getElementById('expirados');
               const tabs=document.querySelector('.tabs');
+              const ta=document.getElementById('tabAtivos');
+              const te=document.getElementById('tabExpirados');
               if(!active || !tabs) return;
-
-              tabs.classList.add('yuna-fixed-tabs');
-
+              tabs.classList.add('yuna-tabs-v3');
               document.querySelectorAll('#countAtivos,#countExpirados,.tab-count').forEach(function(el){el.remove();});
-
-              // Coloca as abas imediatamente depois de TODOS os códigos ativos.
-              active.parentNode.insertBefore(tabs, active.nextSibling);
-
-              // Os expirados ficam depois das abas.
-              if(expired) tabs.parentNode.insertBefore(expired, tabs.nextSibling);
+              active.parentNode.insertBefore(tabs,active.nextSibling);
+              if(expired) tabs.parentNode.insertBefore(expired,tabs.nextSibling);
+              active.style.display='flex';
+              if(expired && !expired.dataset.yunaShown) expired.style.display='none';
+              window.mostrar=function(tipo){
+                active.style.display='flex';
+                if(expired){
+                  expired.style.display=(tipo==='expirados')?'flex':'none';
+                  expired.dataset.yunaShown='1';
+                }
+                if(ta) ta.classList.toggle('active',tipo==='ativos');
+                if(te) te.classList.toggle('active',tipo==='expirados');
+              };
             }
-
-            if(document.readyState==='loading'){
-              document.addEventListener('DOMContentLoaded',fixLayout,{once:true});
-            }else{
-              fixLayout();
-            }
+            if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fixLayout,{once:true});
+            else fixLayout();
             setTimeout(fixLayout,100);
             setTimeout(fixLayout,500);
           })();
           </script>
           '''
-
-          if '</body>' not in s.lower():
-              raise SystemExit('index.html não contém </body>.')
-
+          if '</body>' not in s.lower(): raise SystemExit('index.html não contém </body>.')
           pos=s.lower().rfind('</body>')
           s=s[:pos]+snippet+'\n'+s[pos:]
           p.write_text(s,encoding='utf-8')
-          print('Layout aplicado: abas abaixo dos códigos ativos e sem contadores.')
+          print('Layout V3 aplicado: abas verticais abaixo dos códigos ativos.')
           PY
 
       - name: Publicar alteração
@@ -81,5 +78,5 @@ jobs:
             echo 'Nenhuma alteração necessária.'
             exit 0
           fi
-          git commit -m 'Fixar abas abaixo dos códigos ativos'
+          git commit -m 'Colocar abas verticalmente abaixo dos códigos ativos'
           git push
