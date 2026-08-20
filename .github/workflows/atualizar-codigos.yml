@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Atualizar lista de códigos ativos
+      - name: Atualizar somente a aba de códigos ativos
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -38,19 +38,34 @@ jobs:
           ]
 
           def card(code):
-              return f'''<article class="code"><div class="gift">🎁</div><div class="cinfo"><strong>{code}</strong><small>🔄 Atualizado automaticamente</small></div><div class="reward"><div class="ico"><span class="scroll"></span></div><b>3</b><small>MS</small></div><div class="reward"><div class="ico"><span class="energy">⚡</span></div><b>100</b><small>Energia</small></div><div class="reward"><div class="ico"><span class="mana"></span></div><b>—</b><small>Mana</small></div><button class="copy" onclick="copiar('{code}',this)">▣ COPIAR</button><a class="link" href="https://withhive.me/313/000000000" target="_blank" rel="noopener">🔗 LINK</a></article>'''
+              return f'''<article class="code"><div class="gift">🎁</div><div class="cinfo"><strong>{code}</strong><small>🔄 Código ativo</small></div><div class="reward"><span class="scroll"></span><b>3</b><small>MS</small></div><div class="reward"><span class="energy">⚡</span><b>100</b><small>Energia</small></div><div class="reward"><span class="mana"></span><b>—</b><small>Mana</small></div><button class="copy" onclick="copiar('{code}',this)">▣ COPIAR</button><a class="link" href="https://withhive.me/313/000000000" target="_blank" rel="noopener">🔗 LINK</a></article>'''
 
           new_cards = '\n'.join(card(c) for c in codes)
-          pattern = r'<div class="codes">.*?</div><div class="more">'
-          replacement = '<div class="codes">\n' + new_cards + '\n</div><div class="more">'
+
+          # O index novo possui abas: ativos e expirados.
+          # Atualizamos apenas o conteúdo da aba ativos, preservando os expirados.
+          pattern = r'(<div id="ativos" class="code-list">).*?(</div>\s*<div id="expirados" class="code-list")'
+          replacement = r'\1\n' + new_cards + r'\n\2'
           html2, n = re.subn(pattern, replacement, html, count=1, flags=re.S)
 
           if n != 1:
-              raise SystemExit('Não foi possível localizar a lista de códigos no index.html')
+              raise SystemExit('Não foi possível localizar a aba de códigos ativos no index.html')
 
-          html2 = html2.replace('2026-08-16-layout-hotfix-2', '2026-08-20-codigos-ativos')
+          html2 = re.sub(r'id="countAtivos">\d+</span>', f'id="countAtivos">{len(codes)}</span>', html2, count=1)
+          html2 = html2.replace('2026-08-20-tabs-ativos-expirados', '2026-08-20-tabs-ativos-expirados-auto')
           path.write_text(html2, encoding='utf-8')
-          print('Códigos ativos gravados:', ', '.join(codes))
+          print('Aba ativos atualizada:', ', '.join(codes))
+          PY
+
+      - name: Validar HTML antes de publicar
+        run: python - <<'PY'
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          checks = ['id="ativos"', 'id="expirados"', 'id="tabAtivos"', 'id="tabExpirados"']
+          missing = [x for x in checks if x not in html]
+          if missing:
+              raise SystemExit('Estrutura das abas incompleta: ' + ', '.join(missing))
+          print('HTML validado: abas ativos e expirados presentes.')
           PY
 
       - name: Publicar index atualizado
@@ -61,6 +76,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "O index já está atualizado."
           else
-            git commit -m "Atualizar todos os códigos ativos no index"
+            git commit -m "Atualizar aba de códigos ativos sem remover expirados"
             git push
           fi
