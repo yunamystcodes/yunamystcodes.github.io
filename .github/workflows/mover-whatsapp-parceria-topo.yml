@@ -25,29 +25,30 @@ jobs:
           s = p.read_text(encoding='utf-8')
 
           # Remove a frase abaixo do título.
-          s = re.sub(r'<p>Códigos novos, ativos e expirados organizados num só lugar!</p>', '', s)
+          s = s.replace('<p>Códigos novos, ativos e expirados organizados num só lugar!</p>', '')
 
-          # O bloco WhatsApp/Parceria fica logo depois do cabeçalho e antes do título.
+          # Move o bloco WhatsApp/Parceria para imediatamente depois do cabeçalho.
           if '<!-- YUNA-TOP-COMUNIDADE-V1 -->' not in s:
               marker = '<!-- YUNA-COMUNIDADE-V1 -->'
               start = s.find(marker)
               if start != -1:
-                  end = s.find('</div>', s.find('id="parceriaPanel"', start))
+                  end_marker = '</div>\n<script>'
+                  end = s.find(end_marker, start)
                   if end != -1:
                       end += len('</div>')
                       block = s[start:end]
-                      s = s[:start] + '<div id="yuna-community-placeholder"></div>' + s[end:]
-                      s = s.replace('</header>', '</header>\n' + block.replace(marker, '<!-- YUNA-TOP-COMUNIDADE-V1 -->'), 1)
+                      s = s[:start] + s[end:]
+                      block = block.replace(marker, '<!-- YUNA-TOP-COMUNIDADE-V1 -->', 1)
+                      s = s.replace('</header>', '</header>\n' + block, 1)
 
-          # Garante que o estilo não ocupa a largura inteira da página.
           css = '''\n<style id="yuna-top-community-style">\n.top-community{width:min(1260px,calc(100% - 28px));margin:12px auto 0;display:flex;flex-direction:column;gap:8px}.top-community .community-links{padding:0;border:0}.top-community .community-tab{min-height:52px}@media(max-width:850px){.top-community{width:calc(100% - 18px);margin-top:10px}}\n</style>\n'''
           if 'id="yuna-top-community-style"' not in s:
               s = s.replace('</head>', css + '</head>', 1)
 
-          # Transforma o bloco inserido no header num bloco visual próprio.
+          # Envolve as duas abas no container superior.
           s = s.replace('<!-- YUNA-TOP-COMUNIDADE-V1 -->\n<div id="comunidade"', '<!-- YUNA-TOP-COMUNIDADE-V1 -->\n<div class="top-community"><div id="comunidade"', 1)
           if '<div class="top-community"><div id="comunidade"' in s:
-              # fecha o wrapper imediatamente antes da seção hero
+              # O bloco inserido vem antes do hero; fecha o wrapper nesse ponto.
               s = s.replace('</div>\n<section class="hero container"', '</div></div>\n<section class="hero container"', 1)
 
           p.write_text(s, encoding='utf-8')
