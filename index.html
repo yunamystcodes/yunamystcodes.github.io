@@ -11,11 +11,27 @@
 @media(max-width:1050px) and (min-width:851px){.layout{grid-template-columns:200px minmax(0,1fr) 220px}.code{grid-template-columns:52px minmax(100px,1fr) 48px 48px 48px 105px 105px;gap:7px}}
 @media(max-width:850px){.container{width:calc(100% - 18px)}.top{height:72px}.logo{font-size:29px}.navlinks{display:none}.hero{padding:24px 0 12px}.hero h1{font-size:43px}.hero p{font-size:15px;line-height:1.4}.layout{display:block}.left,.right{display:none}.section-head{font-size:19px;padding:16px 14px}.tabs{padding:10px}.tab{height:42px;font-size:12px}.code-list{padding:10px}.code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;min-height:174px!important}.code>.gift{grid-area:gift;width:44px;height:44px}.code>.cinfo{grid-area:info;min-width:0}.cinfo strong{font-size:15px}.cinfo small{font-size:9px}.code>.reward:nth-child(3){grid-area:r1}.code>.reward:nth-child(4){grid-area:r2}.code>.reward:nth-child(5){grid-area:r3}.reward .scroll{width:28px;height:20px}.reward .energy{font-size:23px}.reward .mana{width:20px;height:25px}.copy{grid-area:copy}.link{grid-area:link}.expired-code{grid-template-columns:44px minmax(0,1fr)!important;grid-template-rows:48px 42px!important;grid-template-areas:'gift info' 'badge badge'!important;min-height:100px!important}.expired-code .gift{grid-area:gift;width:40px;height:40px}.expired-code .cinfo{grid-area:info}.expired-code .badge-expired{grid-area:badge;width:100%;padding:8px}.more{font-size:13px}}
 </style>
+
+<style id="yuna-top-community-style">
+.top-community{width:min(1260px,calc(100% - 28px));margin:12px auto 0;display:flex;flex-direction:column;gap:8px}.top-community .community-links{padding:0;border:0}.top-community .community-tab{min-height:52px}@media(max-width:850px){.top-community{width:calc(100% - 18px);margin-top:10px}}
+</style>
 </head>
 <body>
 <div class="bg"></div>
 <header class="top"><div class="container nav"><div class="logo">YunaMyst<small>SUMMONERS WAR</small></div><nav class="navlinks"><a href="#inicio">⌂ INÍCIO</a><a href="#codigos">⚔ SUMMONERS WAR</a><a href="#como">❔ COMO USAR</a></nav><div style="border:1px solid #9c4cff;border-radius:12px;padding:10px 13px;background:#10091c;font-weight:800;font-size:12px">🇧🇷 PT/BR</div></div></header>
-<section class="hero container" id="inicio"><h1>SUMMONERS WAR</h1><p>Códigos novos, ativos e expirados organizados num só lugar!</p></section>
+<!-- YUNA-TOP-COMUNIDADE-V1 -->
+<div class="community-links" id="comunidade">
+  <a class="community-tab whatsapp" href="https://chat.whatsapp.com/KWg53GNpXDA3G5lDT8VwOg?s=cl&amp;p=a&amp;ilr=0" target="_blank" rel="noopener noreferrer">
+    <strong>💬 WHATSAPP</strong><span>Entrar diretamente no grupo</span>
+  </a>
+  <button class="community-tab partnership" type="button" onclick="toggleParceria()">
+    <strong>🤝 PARCERIA</strong><span>Ver informações de parceria</span>
+  </button>
+  <div class="partnership-panel" id="parceriaPanel">
+    <strong style="color:#e5b45c">🤝 PARCERIA YUNAMYST</strong><br>
+    Queres fazer parceria com o YunaMyst? Este espaço fica reservado para futuras divulgações e colaborações.
+  </div>
+<section class="hero container" id="inicio"><h1>SUMMONERS WAR</h1></section>
 <main class="container layout">
 <aside class="left"><div class="panel profile"><div class="avatar">YM</div><h3>♛ YUNAMYST ♛</h3><p>Conteúdo diário de<br>Summoners War!</p></div><div class="panel about"><b>✦ SOBRE O SITE</b><br><br>Aqui encontras os <b>códigos ativos e expirados</b> de Summoners War: Sky Arena.<br><br>💜 Guarda o site e volta sempre!</div></aside>
 <section class="panel" id="codigos"><div class="section-head">⚔ SUMMONERS WAR <span>⟳ Sempre atualizados!</span></div><div class="tabs"><button class="tab active" id="tabAtivos" onclick="mostrar('ativos')">🟢 CÓDIGOS ATIVOS <span class="tab-count" id="countAtivos">8</span></button><button class="tab expired" id="tabExpirados" onclick="mostrar('expirados')">🔴 CÓDIGOS EXPIRADOS <span class="tab-count" id="countExpirados">6</span></button></div>
@@ -38,18 +54,7 @@
 <article class="code expired-code"><div class="gift">🎁</div><div class="cinfo"><strong>LENGEDARY</strong><small>Não disponível para resgate</small></div><div class="badge-expired">⛔ EXPIRADO</div></article>
 <div class="more">🔴 6 códigos expirados • Esta aba guarda o histórico.</div></div>
 
-<!-- YUNA-COMUNIDADE-V1 -->
-<div class="community-links" id="comunidade">
-  <a class="community-tab whatsapp" href="https://chat.whatsapp.com/KWg53GNpXDA3G5lDT8VwOg?s=cl&amp;p=a&amp;ilr=0" target="_blank" rel="noopener noreferrer">
-    <strong>💬 WHATSAPP</strong><span>Entrar diretamente no grupo</span>
-  </a>
-  <button class="community-tab partnership" type="button" onclick="toggleParceria()">
-    <strong>🤝 PARCERIA</strong><span>Ver informações de parceria</span>
-  </button>
-  <div class="partnership-panel" id="parceriaPanel">
-    <strong style="color:#e5b45c">🤝 PARCERIA YUNAMYST</strong><br>
-    Queres fazer parceria com o YunaMyst? Este espaço fica reservado para futuras divulgações e colaborações.
-  </div>
+<div id="yuna-community-placeholder"></div>
 </div>
 <script>
 function toggleParceria(){
