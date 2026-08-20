@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Atualizar somente a aba de códigos ativos
+      - name: Atualizar códigos ativos e posição das abas
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -42,18 +42,31 @@ jobs:
 
           new_cards = '\n'.join(card(c) for c in codes)
 
-          # Substitui somente a aba ATIVOS e preserva integralmente a aba EXPIRADOS.
+          # Atualiza somente o conteúdo da lista ATIVOS.
           pattern = r'(<div id="ativos" class="code-list">).*?(</div>\s*<div id="expirados" class="code-list")'
           replacement = r'\1\n' + new_cards + r'\n\2'
-          html2, n = re.subn(pattern, replacement, html, count=1, flags=re.S)
-
+          html, n = re.subn(pattern, replacement, html, count=1, flags=re.S)
           if n != 1:
-              raise SystemExit('Não foi possível localizar a aba de códigos ativos no index.html')
+              raise SystemExit('Não foi possível localizar a lista de códigos ativos.')
 
-          html2 = re.sub(r'id="countAtivos">\d+</span>', f'id="countAtivos">{len(codes)}</span>', html2, count=1)
-          html2 = html2.replace('2026-08-20-tabs-ativos-expirados', '2026-08-20-tabs-ativos-expirados-auto')
-          path.write_text(html2, encoding='utf-8')
-          print('Aba ativos atualizada:', ', '.join(codes))
+          # Remove os números das abas: "8" e "6".
+          html = re.sub(r'\s*<span class="tab-count" id="countAtivos">\d+</span>', '', html)
+          html = re.sub(r'\s*<span class="tab-count" id="countExpirados">\d+</span>', '', html)
+
+          # Move as duas abas para DEPOIS do último código ativo e antes dos expirados.
+          tabs_pattern = r'(<div class="tabs">.*?</div>)\s*(<div id="ativos" class="code-list">.*?)(\s*<div id="expirados" class="code-list">)'
+          match = re.search(tabs_pattern, html, flags=re.S)
+          if not match:
+              raise SystemExit('Não foi possível localizar as abas e as listas de códigos.')
+
+          tabs = match.group(1)
+          ativos = match.group(2)
+          expirados = match.group(3)
+          html = html[:match.start()] + ativos + '\n' + tabs + '\n' + expirados + html[match.end():]
+
+          html = html.replace('2026-08-20-tabs-ativos-expirados', '2026-08-20-tabs-ativos-expirados-auto')
+          path.write_text(html, encoding='utf-8')
+          print('Códigos ativos atualizados e abas reposicionadas abaixo do último código ativo.')
           PY
 
       - name: Validar HTML antes de publicar
@@ -65,7 +78,11 @@ jobs:
           missing = [x for x in checks if x not in html]
           if missing:
               raise SystemExit('Estrutura das abas incompleta: ' + ', '.join(missing))
-          print('HTML validado: abas ativos e expirados presentes.')
+          if 'id="countAtivos"' in html:
+              raise SystemExit('O contador de códigos ativos ainda está presente.')
+          if 'id="countExpirados"' in html:
+              raise SystemExit('O contador de códigos expirados ainda está presente.')
+          print('HTML validado: abas abaixo dos ativos e sem contadores.')
           PY
 
       - name: Publicar index atualizado
@@ -76,6 +93,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "O index já está atualizado."
           else
-            git commit -m "Atualizar aba de códigos ativos sem remover expirados"
+            git commit -m "Colocar abas abaixo dos códigos ativos"
             git push
           fi
