@@ -42,8 +42,7 @@ jobs:
 
           new_cards = '\n'.join(card(c) for c in codes)
 
-          # O index novo possui abas: ativos e expirados.
-          # Atualizamos apenas o conteúdo da aba ativos, preservando os expirados.
+          # Substitui somente a aba ATIVOS e preserva integralmente a aba EXPIRADOS.
           pattern = r'(<div id="ativos" class="code-list">).*?(</div>\s*<div id="expirados" class="code-list")'
           replacement = r'\1\n' + new_cards + r'\n\2'
           html2, n = re.subn(pattern, replacement, html, count=1, flags=re.S)
@@ -58,7 +57,8 @@ jobs:
           PY
 
       - name: Validar HTML antes de publicar
-        run: python - <<'PY'
+        run: |
+          python - <<'PY'
           from pathlib import Path
           html = Path('index.html').read_text(encoding='utf-8')
           checks = ['id="ativos"', 'id="expirados"', 'id="tabAtivos"', 'id="tabExpirados"']
