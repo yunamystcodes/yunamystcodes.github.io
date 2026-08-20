@@ -117,4 +117,43 @@ if(location.hash==='#expirados')mostrar('expirados');
 })();
 </script>
 
+<!-- YUNA-TABS-TOGGLE-V4 -->
+<script>
+(function(){
+  function instalarToggle(){
+    const active=document.getElementById('ativos');
+    const expired=document.getElementById('expirados');
+    const ta=document.getElementById('tabAtivos');
+    const te=document.getElementById('tabExpirados');
+    if(!active || !expired || !ta || !te) return;
+    window.mostrar=function(tipo){
+      if(tipo==='expirados'){
+        const aberto=expired.style.display==='flex' || getComputedStyle(expired).display==='flex';
+        if(aberto){
+          expired.style.display='none';
+          te.classList.remove('active');
+          ta.classList.add('active');
+          if(location.hash==='#expirados') history.replaceState(null,'','#codigos');
+          return;
+        }
+        active.style.display='flex';
+        expired.style.display='flex';
+        ta.classList.remove('active');
+        te.classList.add('active');
+        history.replaceState(null,'','#expirados');
+        return;
+      }
+      active.style.display='flex';
+      expired.style.display='none';
+      ta.classList.add('active');
+      te.classList.remove('active');
+      history.replaceState(null,'','#codigos');
+    };
+  }
+  instalarToggle();
+  setTimeout(instalarToggle,100);
+  setTimeout(instalarToggle,500);
+})();
+</script>
+
 </body></html>
