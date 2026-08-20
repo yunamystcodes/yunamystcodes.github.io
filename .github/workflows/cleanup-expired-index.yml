@@ -15,17 +15,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Corrigir clique da aba de expirados
+      - name: Corrigir clique abrir e fechar expirados
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<!-- YUNA-TABS-TOGGLE-V4 -->'
+          marker = '<!-- YUNA-TABS-TOGGLE-V5 -->'
           if marker in s:
-              print('Toggle V4 já aplicado.')
+              print('Toggle V5 já aplicado.')
               raise SystemExit(0)
-          snippet = r'''<!-- YUNA-TABS-TOGGLE-V4 -->
+          snippet = r'''<!-- YUNA-TABS-TOGGLE-V5 -->
           <script>
           (function(){
             function instalarToggle(){
@@ -34,23 +34,25 @@ jobs:
               const ta=document.getElementById('tabAtivos');
               const te=document.getElementById('tabExpirados');
               if(!active || !expired || !ta || !te) return;
+
               window.mostrar=function(tipo){
                 if(tipo==='expirados'){
-                  const aberto=expired.style.display==='flex' || getComputedStyle(expired).display==='flex';
+                  const aberto=getComputedStyle(expired).display !== 'none';
                   if(aberto){
                     expired.style.display='none';
                     te.classList.remove('active');
                     ta.classList.add('active');
                     if(location.hash==='#expirados') history.replaceState(null,'','#codigos');
-                    return;
+                  }else{
+                    active.style.display='flex';
+                    expired.style.display='flex';
+                    ta.classList.remove('active');
+                    te.classList.add('active');
+                    history.replaceState(null,'','#expirados');
                   }
-                  active.style.display='flex';
-                  expired.style.display='flex';
-                  ta.classList.remove('active');
-                  te.classList.add('active');
-                  history.replaceState(null,'','#expirados');
                   return;
                 }
+
                 active.style.display='flex';
                 expired.style.display='none';
                 ta.classList.add('active');
@@ -79,5 +81,5 @@ jobs:
             echo 'Nenhuma alteração necessária.'
             exit 0
           fi
-          git commit -m 'Permitir abrir e fechar aba de códigos expirados'
+          git commit -m 'Corrigir toggle da aba de códigos expirados'
           git push
