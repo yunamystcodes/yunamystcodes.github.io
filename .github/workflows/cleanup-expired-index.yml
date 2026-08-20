@@ -15,58 +15,59 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Aplicar layout vertical das abas
+      - name: Corrigir clique da aba de expirados
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<!-- YUNA-LAYOUT-TABS-V3 -->'
+          marker = '<!-- YUNA-TABS-TOGGLE-V4 -->'
           if marker in s:
-              print('Layout V3 já aplicado; nada para alterar.')
+              print('Toggle V4 já aplicado.')
               raise SystemExit(0)
-          snippet = r'''<!-- YUNA-LAYOUT-TABS-V3 -->
-          <style>
-          .tabs.yuna-tabs-v3{display:flex!important;flex-direction:column!important;gap:8px!important;width:100%!important;padding:12px!important;margin:0!important;border-top:1px solid rgba(255,255,255,.08)!important;border-bottom:0!important}
-          .tabs.yuna-tabs-v3 .tab{width:100%!important;flex:none!important;min-height:45px!important}
-          </style>
+          snippet = r'''<!-- YUNA-TABS-TOGGLE-V4 -->
           <script>
           (function(){
-            function fixLayout(){
+            function instalarToggle(){
               const active=document.getElementById('ativos');
               const expired=document.getElementById('expirados');
-              const tabs=document.querySelector('.tabs');
               const ta=document.getElementById('tabAtivos');
               const te=document.getElementById('tabExpirados');
-              if(!active || !tabs) return;
-              tabs.classList.add('yuna-tabs-v3');
-              document.querySelectorAll('#countAtivos,#countExpirados,.tab-count').forEach(function(el){el.remove();});
-              active.parentNode.insertBefore(tabs,active.nextSibling);
-              if(expired) tabs.parentNode.insertBefore(expired,tabs.nextSibling);
-              active.style.display='flex';
-              if(expired && !expired.dataset.yunaShown) expired.style.display='none';
+              if(!active || !expired || !ta || !te) return;
               window.mostrar=function(tipo){
-                active.style.display='flex';
-                if(expired){
-                  expired.style.display=(tipo==='expirados')?'flex':'none';
-                  expired.dataset.yunaShown='1';
+                if(tipo==='expirados'){
+                  const aberto=expired.style.display==='flex' || getComputedStyle(expired).display==='flex';
+                  if(aberto){
+                    expired.style.display='none';
+                    te.classList.remove('active');
+                    ta.classList.add('active');
+                    if(location.hash==='#expirados') history.replaceState(null,'','#codigos');
+                    return;
+                  }
+                  active.style.display='flex';
+                  expired.style.display='flex';
+                  ta.classList.remove('active');
+                  te.classList.add('active');
+                  history.replaceState(null,'','#expirados');
+                  return;
                 }
-                if(ta) ta.classList.toggle('active',tipo==='ativos');
-                if(te) te.classList.toggle('active',tipo==='expirados');
+                active.style.display='flex';
+                expired.style.display='none';
+                ta.classList.add('active');
+                te.classList.remove('active');
+                history.replaceState(null,'','#codigos');
               };
             }
-            if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fixLayout,{once:true});
-            else fixLayout();
-            setTimeout(fixLayout,100);
-            setTimeout(fixLayout,500);
+            instalarToggle();
+            setTimeout(instalarToggle,100);
+            setTimeout(instalarToggle,500);
           })();
           </script>
           '''
-          if '</body>' not in s.lower(): raise SystemExit('index.html não contém </body>.')
           pos=s.lower().rfind('</body>')
+          if pos < 0: raise SystemExit('index.html não contém </body>.')
           s=s[:pos]+snippet+'\n'+s[pos:]
           p.write_text(s,encoding='utf-8')
-          print('Layout V3 aplicado: abas verticais abaixo dos códigos ativos.')
           PY
 
       - name: Publicar alteração
@@ -78,5 +79,5 @@ jobs:
             echo 'Nenhuma alteração necessária.'
             exit 0
           fi
-          git commit -m 'Colocar abas verticalmente abaixo dos códigos ativos'
+          git commit -m 'Permitir abrir e fechar aba de códigos expirados'
           git push
