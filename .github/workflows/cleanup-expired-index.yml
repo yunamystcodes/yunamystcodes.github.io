@@ -1,75 +1,85 @@
-name: Corrigir códigos expirados no index
+name: Atualizar layout dos códigos
 
 on:
   push:
-    paths:
-      - '.github/workflows/cleanup-expired-index.yml'
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  cleanup:
+  layout:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Atualizar index.html
+      - name: Aplicar layout estável
         run: |
           python3 - <<'PY'
           from pathlib import Path
+
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<!-- YUNA-EXPIRED-FIX -->'
-          if marker not in s:
-              snippet = r'''<!-- YUNA-EXPIRED-FIX -->
+          marker = '<!-- YUNA-LAYOUT-TABS-V2 -->'
+
+          if marker in s:
+              print('Layout já aplicado; nada para alterar.')
+              raise SystemExit(0)
+
+          snippet = r'''<!-- YUNA-LAYOUT-TABS-V2 -->
           <style>
-          .yuna-expired-panel{margin-top:18px;padding:18px;border:1px solid rgba(190,102,255,.4);border-radius:18px;background:linear-gradient(180deg,rgba(12,7,29,.96),rgba(5,4,17,.96));color:#fff}
-          .yuna-expired-panel h3{margin:0 0 12px;color:#d99cff;font-size:20px}
-          .yuna-expired-list{display:flex;flex-direction:column;gap:8px}
-          .yuna-expired-item{padding:10px 12px;border:1px solid rgba(180,80,255,.25);border-radius:10px;color:#aaa;background:rgba(20,10,30,.65);font-weight:700}
+          .tabs.yuna-fixed-tabs{margin-top:12px;border-top:1px solid rgba(255,255,255,.08);border-bottom:0}
+          .tabs.yuna-fixed-tabs .tab{min-width:0}
           </style>
           <script>
           (function(){
-            const BLOCKED=new Set(['MYSTICAL','QUANTITY','CRYSTAL','PURCHASES','SUMMONING','LENGEDARY']);
-            function clean(){
-              const lists=[...document.querySelectorAll('.codes')];
-              if(!lists.length)return;
-              const active=lists[0];
-              let panel=document.querySelector('.yuna-expired-panel');
-              if(!panel){
-                panel=document.createElement('section');panel.className='yuna-expired-panel';
-                panel.innerHTML='<h3>⛔ Códigos Expirados</h3><div class="yuna-expired-list"></div>';
-                active.parentElement.appendChild(panel);
-              }
-              const out=panel.querySelector('.yuna-expired-list');
-              const already=new Set([...out.children].map(x=>x.dataset.code));
-              [...active.querySelectorAll('.code')].forEach(card=>{
-                const raw=card.dataset.code || card.querySelector('.cinfo strong')?.textContent || '';
-                const code=raw.trim().toUpperCase();
-                if(BLOCKED.has(code)){
-                  if(!already.has(code)){
-                    const item=document.createElement('div');item.className='yuna-expired-item';item.dataset.code=code;item.textContent=code+' — expirado';out.appendChild(item);
-                  }
-                  card.remove();
-                }
-              });
-              if(!out.children.length)panel.style.display='none';
+            function fixLayout(){
+              const active=document.getElementById('ativos');
+              const expired=document.getElementById('expirados');
+              const tabs=document.querySelector('.tabs');
+              if(!active || !tabs) return;
+
+              tabs.classList.add('yuna-fixed-tabs');
+
+              document.querySelectorAll('#countAtivos,#countExpirados,.tab-count').forEach(function(el){el.remove();});
+
+              // Coloca as abas imediatamente depois de TODOS os códigos ativos.
+              active.parentNode.insertBefore(tabs, active.nextSibling);
+
+              // Os expirados ficam depois das abas.
+              if(expired) tabs.parentNode.insertBefore(expired, tabs.nextSibling);
             }
-            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',clean,{once:true});else clean();
-            setTimeout(clean,500);setTimeout(clean,1500);
+
+            if(document.readyState==='loading'){
+              document.addEventListener('DOMContentLoaded',fixLayout,{once:true});
+            }else{
+              fixLayout();
+            }
+            setTimeout(fixLayout,100);
+            setTimeout(fixLayout,500);
           })();
           </script>
           '''
-              s=s.replace('</body>', snippet+'\n</body>',1)
-              p.write_text(s,encoding='utf-8')
+
+          if '</body>' not in s.lower():
+              raise SystemExit('index.html não contém </body>.')
+
+          pos=s.lower().rfind('</body>')
+          s=s[:pos]+snippet+'\n'+s[pos:]
+          p.write_text(s,encoding='utf-8')
+          print('Layout aplicado: abas abaixo dos códigos ativos e sem contadores.')
           PY
 
-      - name: Commitar alteração do index
+      - name: Publicar alteração
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add index.html
-          git diff --cached --quiet || git commit -m 'Remover códigos inativos dos ativos e mostrar em expirados'
+          if git diff --cached --quiet; then
+            echo 'Nenhuma alteração necessária.'
+            exit 0
+          fi
+          git commit -m 'Fixar abas abaixo dos códigos ativos'
           git push
