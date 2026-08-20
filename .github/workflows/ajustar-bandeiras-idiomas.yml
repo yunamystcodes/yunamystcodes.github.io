@@ -14,13 +14,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Corrigir bandeiras
+      - name: Atualizar layout final
         run: |
           python - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = s.replace('🇺🇸 ENG', '🇬🇧 ENG')
+          s = s.replace('🇺🇸 ENG', '🇺🇸 ENG')
+          css = r'''\n/* YunaMyst UI FINAL — PC + telemóvel */\n.community-links{width:min(560px,calc(100% - 28px));margin:0 auto 18px;gap:10px}\n.community-tab{min-height:44px;padding:9px 16px;justify-content:center;border-radius:11px}\n.community-tab strong{font-size:13px}\n.community-tab span{display:none}\n.lang-switch{position:relative}\n.lang-btn{min-width:120px;display:flex;align-items:center;justify-content:center;gap:3px}\n.lang-menu{min-width:120px}\n.hero{padding:30px 0 12px}\n.partnership-card{width:min(560px,calc(100% - 24px));padding:28px 26px 24px}\n@media(max-width:850px){\n  .community-links{width:min(330px,calc(100% - 24px));flex-direction:column;gap:8px;margin:0 auto 14px}\n  .community-tab{width:100%;min-height:42px;padding:8px 12px}\n  .community-tab strong{font-size:12px}\n  .lang-btn{min-width:108px}\n  .lang-menu{min-width:108px}\n  .hero{padding:22px 0 10px}\n}\n'''
+          if 'YunaMyst UI FINAL' not in s:
+              s = s.replace('</style>', css + '</style>', 1)
+          s = s.replace('2026-08-20-language-dropdown', '2026-08-20-ui-final')
           p.write_text(s, encoding='utf-8')
           PY
       - name: Commit alteração
@@ -29,5 +33,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Corrigir bandeira do idioma inglês'
+          git commit -m 'Atualizar layout final PC e telemóvel'
           git push
