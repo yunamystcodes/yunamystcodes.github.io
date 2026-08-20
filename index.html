@@ -21,7 +21,7 @@
 <header class="top"><div class="container nav"><div class="logo">YunaMyst<small>SUMMONERS WAR</small></div><nav class="navlinks"><a href="#inicio">⌂ INÍCIO</a><a href="#codigos">⚔ SUMMONERS WAR</a><a href="#como">❔ COMO USAR</a></nav><div style="border:1px solid #9c4cff;border-radius:12px;padding:10px 13px;background:#10091c;font-weight:800;font-size:12px">🇧🇷 PT/BR</div></div></header>
 <!-- YUNA-TOP-COMUNIDADE-V1 -->
 <div class="community-links" id="comunidade">
-  <a class="community-tab whatsapp" href="https://chat.whatsapp.com/KWg53GNpXDA3G5lDT8VwOg?s=cl&amp;p=a&amp;ilr=0" target="_blank" rel="noopener noreferrer">
+  <a class="community-tab whatsapp" href="" target="_blank" rel="noopener noreferrer">
     <strong>💬 WHATSAPP</strong><span>Entrar diretamente no grupo</span>
   </a>
   <button class="community-tab partnership" type="button" onclick="toggleParceria()">
@@ -55,6 +55,26 @@
 <div class="more">🔴 6 códigos expirados • Esta aba guarda o histórico.</div></div>
 
 <div id="yuna-community-placeholder"></div>
+</div>
+<script>
+function toggleParceria(){
+  const p=document.getElementById('parceriaPanel');
+  if(p) p.classList.toggle('open');
+}
+</script>
+
+<!-- YUNA-COMUNIDADE-V1 -->
+<div class="community-links" id="comunidade">
+  <a class="community-tab whatsapp" href="https://chat.whatsapp.com/KWg53GNpXDA3G5lDT8VwOg?s=cl&amp;p=a&amp;ilr=0" target="_blank" rel="noopener noreferrer">
+    <strong>💬 WHATSAPP</strong><span>Entrar diretamente no grupo</span>
+  </a>
+  <button class="community-tab partnership" type="button" onclick="toggleParceria()">
+    <strong>🤝 PARCERIA</strong><span>Ver informações de parceria</span>
+  </button>
+  <div class="partnership-panel" id="parceriaPanel">
+    <strong style="color:#e5b45c">🤝 PARCERIA YUNAMYST</strong><br>
+    Queres fazer parceria com o YunaMyst? Este espaço fica reservado para futuras divulgações e colaborações.
+  </div>
 </div>
 <script>
 function toggleParceria(){
@@ -122,6 +142,19 @@ if(location.hash==='#expirados')mostrar('expirados');
 .partnership-panel.open{display:block}
 @media(max-width:850px){.community-tab{font-size:12px;min-height:54px}.community-tab span{font-size:9px}}
 </style>
+<style id="yuna-comunidade-style">
+.community-links{padding:12px;display:flex;flex-direction:column;gap:10px;border-top:1px solid rgba(255,255,255,.08)}
+.community-tab{width:100%;min-height:58px;border-radius:12px;border:1px solid #633487;background:linear-gradient(100deg,rgba(25,9,42,.98),rgba(10,5,20,.98));color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-weight:900;cursor:pointer;font-size:14px}
+.community-tab span{font-size:11px;color:#bfaecb;font-weight:600;margin-left:12px;text-align:right}
+.community-tab.whatsapp{border-color:#5aaf73}
+.community-tab.whatsapp:hover{border-color:#7ee29a;box-shadow:0 0 16px rgba(72,190,105,.18)}
+.community-tab.partnership{border-color:#b07a38}
+.community-tab.partnership:hover{border-color:#e5b45c;box-shadow:0 0 16px rgba(229,180,92,.18)}
+.partnership-panel{display:none;padding:14px 16px;margin-top:-3px;border:1px solid rgba(229,180,92,.35);border-radius:12px;background:rgba(30,15,28,.9);color:#cfc3d5;font-size:13px;line-height:1.5}
+.partnership-panel.open{display:block}
+@media(max-width:850px){.community-tab{font-size:12px;min-height:54px}.community-tab span{font-size:9px}}
+</style>
+
 
 <script>
 (function(){
