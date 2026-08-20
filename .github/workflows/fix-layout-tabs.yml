@@ -1,0 +1,52 @@
+name: Corrigir layout das abas
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remover contadores e mover abas
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = re.sub(r'\s*<span class="tab-count" id="countAtivos">.*?</span>', '', s, count=1, flags=re.S)
+          s = re.sub(r'\s*<span class="tab-count" id="countExpirados">.*?</span>', '', s, count=1, flags=re.S)
+          # Reorganiza: cabeçalho -> ativos -> abas -> expirados.
+          pat = r'(<div class="tabs">.*?</div>)\s*(<div id="ativos" class="code-list">.*?)(\s*<div id="expirados" class="code-list">)'
+          m = re.search(pat, s, re.S)
+          if not m:
+              raise SystemExit('Não encontrei as abas/listas no index.html')
+          tabs, ativos, expirados = m.group(1), m.group(2), m.group(3)
+          s = s[:m.start()] + ativos + '\n' + tabs + '\n' + expirados + s[m.end():]
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Validar
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          for x in ['id="ativos"','id="expirados"','id="tabAtivos"','id="tabExpirados"']:
+              assert x in s, x
+          assert 'id="countAtivos"' not in s
+          assert 'id="countExpirados"' not in s
+          print('Layout OK')
+          PY
+      - name: Publicar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Remover contadores e colocar abas abaixo dos ativos"
+          git push
