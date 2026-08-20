@@ -1,0 +1,40 @@
+name: Ajustar botoes comunidade final
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  ajustar:
+    if: github.event.head_commit.message != 'Ajustar botoes comunidade final'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ajustar CSS do WhatsApp e Parceria
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = '.community-links{width:min(1260px,calc(100% - 28px));margin:0 auto 18px;display:flex;flex-direction:column;gap:8px}'
+          new = '.community-links{width:min(760px,calc(100% - 28px));margin:0 auto 20px;display:flex;flex-direction:row;gap:12px;align-items:stretch}'
+          s = s.replace(old, new)
+          old = '.community-tab{width:100%;min-height:48px;padding:10px 16px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;cursor:pointer;font-family:Arial,Helvetica,sans-serif;background:rgba(11,5,25,.92);box-shadow:0 7px 18px rgba(0,0,0,.25)}'
+          new = '.community-tab{flex:1;min-width:0;min-height:44px;padding:9px 14px;border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;cursor:pointer;font-family:Arial,Helvetica,sans-serif;background:rgba(11,5,25,.92);box-shadow:0 7px 18px rgba(0,0,0,.25)}'
+          s = s.replace(old, new)
+          old = '.community-links{width:calc(100% - 18px);margin:0 auto 12px;gap:7px}.community-tab{min-height:46px;padding:9px 12px;border-radius:10px}'
+          new = '.community-links{width:calc(100% - 18px);margin:0 auto 12px;gap:7px;flex-direction:row}.community-tab{flex:1;min-width:0;min-height:42px;padding:8px 10px;border-radius:10px}'
+          s = s.replace(old, new)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commitar ajuste e remover workflow temporario
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/ajustar-botoes-comunidade-final.yml
+          git add index.html
+          git commit -m 'Ajustar botoes comunidade final'
+          git push
