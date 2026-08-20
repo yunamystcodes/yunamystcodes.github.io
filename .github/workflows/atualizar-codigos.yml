@@ -1,0 +1,66 @@
+name: Atualizar códigos ativos no index
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '20 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Atualizar lista de códigos ativos
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+
+          codes = [
+              '912XUXIECHUANQI',
+              'SWC2026JUELEBA',
+              'H4MBURGISWAITING',
+              'HURRASWC2026',
+              '4MINGYIDAOXIAN',
+              'YYDSSWC26ZAN',
+              'AUGSW2026V7N',
+              'SWXFRIEREN2026',
+          ]
+
+          def card(code):
+              return f'''<article class="code"><div class="gift">🎁</div><div class="cinfo"><strong>{code}</strong><small>🔄 Atualizado automaticamente</small></div><div class="reward"><div class="ico"><span class="scroll"></span></div><b>3</b><small>MS</small></div><div class="reward"><div class="ico"><span class="energy">⚡</span></div><b>100</b><small>Energia</small></div><div class="reward"><div class="ico"><span class="mana"></span></div><b>—</b><small>Mana</small></div><button class="copy" onclick="copiar('{code}',this)">▣ COPIAR</button><a class="link" href="https://withhive.me/313/000000000" target="_blank" rel="noopener">🔗 LINK</a></article>'''
+
+          new_cards = '\n'.join(card(c) for c in codes)
+          pattern = r'<div class="codes">.*?</div><div class="more">'
+          replacement = '<div class="codes">\n' + new_cards + '\n</div><div class="more">'
+          html2, n = re.subn(pattern, replacement, html, count=1, flags=re.S)
+
+          if n != 1:
+              raise SystemExit('Não foi possível localizar a lista de códigos no index.html')
+
+          html2 = html2.replace('2026-08-16-layout-hotfix-2', '2026-08-20-codigos-ativos')
+          path.write_text(html2, encoding='utf-8')
+          print('Códigos ativos gravados:', ', '.join(codes))
+          PY
+
+      - name: Publicar index atualizado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "O index já está atualizado."
+          else
+            git commit -m "Atualizar todos os códigos ativos no index"
+            git push
+          fi
