@@ -18,13 +18,11 @@ def fetch_source():
     )
     with urllib.request.urlopen(req, timeout=30) as response:
         raw = response.read().decode("utf-8", "ignore")
-    # Remove scripts/styles so unrelated uppercase strings cannot be detected as codes.
     raw = re.sub(r"<script\b[^>]*>.*?</script>", " ", raw, flags=re.I | re.S)
     raw = re.sub(r"<style\b[^>]*>.*?</style>", " ", raw, flags=re.I | re.S)
     text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
     text = re.sub(r"\s+", " ", text)
 
-    # The source renders each coupon immediately before the word Active.
     codes = re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)
     clean = []
     seen = set()
@@ -54,7 +52,7 @@ def unique(items):
 
 def active_card(code):
     safe = html.escape(code, quote=True)
-    js = json.dumps(code, ensure_ascii=False)
+    js_code = code.replace("\\", "\\\\").replace("'", "\\'")
     return (
         '<article class="code auto-code">'
         '<div class="gift">🎁</div>'
@@ -62,7 +60,7 @@ def active_card(code):
         '<div class="reward"><span class="scroll"></span><b>—</b><small>Recompensa</small></div>'
         '<div class="reward"><span class="energy">⚡</span><b>—</b><small>Info</small></div>'
         '<div class="reward"><span class="mana"></span><b>—</b><small>Info</small></div>'
-        f'<button class="copy" onclick="copiar({js},this)">▣ COPIAR</button>'
+        f'<button class="copy" onclick="copiar(\'{js_code}\',this)">▣ COPIAR</button>'
         '<a class="link" href="https://withhive.me/313/000000000" target="_blank" rel="noopener">🔗 LINK</a>'
         '</article>'
     )
@@ -95,10 +93,8 @@ def main():
 
     history = json.loads(HISTORY.read_text(encoding="utf-8"))
     previous_active = history.get("active", [])
-    previous_keys = {c.upper() for c in previous_active}
     expired = list(history.get("expired", []))
 
-    # Safety guard: never turn the whole active list into expired codes because a source failed.
     if previous_active and len(current) < max(2, len(previous_active) // 2):
         raise RuntimeError(
             f"Fonte retornou poucos códigos ({len(current)}; antes eram {len(previous_active)}). "
@@ -109,7 +105,6 @@ def main():
     expired = newly_expired + expired
     expired = [c for c in unique(expired) if c.upper() not in current_keys]
 
-    # New active codes always come first exactly as supplied by the source.
     active = unique(current)
     history = {
         "active": active,
@@ -130,7 +125,6 @@ def main():
     expired_html += f'<div class="more">🔴 {len(expired)} códigos expirados • Esta aba guarda o histórico.</div>\n'
     index = replace_between(index, expired_start, expired_end, expired_html)
 
-    # Keep the language switcher count synchronized with the generated archive.
     index = re.sub(r"🔴\s*\d+\s+códigos expirados", f"🔴 {len(expired)} códigos expirados", index)
     index = re.sub(r"🔴\s*\d+\s+expired codes", f"🔴 {len(expired)} expired codes", index)
     index = re.sub(r'(<meta name="build-version" content=")[^"]*(")',
