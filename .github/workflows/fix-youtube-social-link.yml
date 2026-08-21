@@ -1,0 +1,25 @@
+name: Fix YouTube social link
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Corrigir link
+        run: |
+          python3 - <<'PY'
+          p='index.html'
+          s=open(p,encoding='utf-8').read()
+          s=s.replace('href="https://cdn.simpleicons.org/youtube/FF0000" target="_blank" rel="noopener noreferrer" aria-label="YouTube"', 'href="https://www.youtube.com/@YunaMyst" target="_blank" rel="noopener noreferrer" aria-label="YouTube"')
+          open(p,'w',encoding='utf-8').write(s)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/fix-youtube-social-link.yml
+          git commit -m "Corrigir link do YouTube"
+          git push
