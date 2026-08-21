@@ -3,8 +3,6 @@ name: Ajustar estrela do feedback
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - '.github/workflows/ajustar-feedback-estrela.yml'
 
 permissions:
   contents: write
@@ -25,9 +23,10 @@ jobs:
           s = p.read_text(encoding='utf-8')
           old = '<button class="feedback-open" type="button" onclick="toggleFeedback()" aria-label="Abrir formulario de feedback"><span>✉</span><strong>Dê o seu feedback</strong><b>⌄</b></button>'
           new = '<button class="feedback-open" type="button" onclick="toggleFeedback()" aria-label="Abrir formulario de feedback"><span>✉</span><span class="feedback-star-icon">★</span><strong>Dê o seu feedback</strong><b>⌄</b></button>'
-          if old not in s:
-              raise SystemExit('Botão de feedback não encontrado; nenhuma alteração feita.')
-          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          if old in s:
+              p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          else:
+              print('O botão já contém a estrela ou não foi encontrado; nenhuma alteração necessária.')
           PY
 
       - name: Publicar alteração no index
