@@ -20,11 +20,11 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '/* YUNAMYST FOOTER FIX 20260821 */'
+          marker = 'YUNAMYST FOOTER FINAL 20260821'
           if marker not in s:
-              css = '''\n/* YUNAMYST FOOTER FIX 20260821 */\n.footer#rodape{display:block!important;width:100%!important;max-width:760px!important;margin:14px auto 0!important;padding:7px 10px 12px!important;text-align:center!important;font-size:10px!important;line-height:1.35!important;color:#9f96ae!important;clear:both!important}\n@media(max-width:850px){.footer#rodape{max-width:330px!important;margin:10px auto 0!important;padding:6px 8px 10px!important;font-size:9px!important;text-align:center!important}}\n'''
-              s = s.replace('</style>', css + '</style>', 1)
-              js = '''\n<script>\ndocument.addEventListener('DOMContentLoaded',function(){\n  const f=document.getElementById('rodape');\n  const expired=document.querySelector('.expired-list');\n  if(f && expired && expired.parentNode){ expired.parentNode.insertBefore(f, expired.nextSibling); }\n});\n</script>\n'''
+              css = '''\n<style id="yunamyst-footer-final">\n/* YUNAMYST FOOTER FINAL 20260821 */\n#rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}\n@media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}\n</style>\n'''
+              s = s.replace('</head>', css + '</head>', 1)
+              js = '''\n<script id="yunamyst-footer-final-js">\n/* YUNAMYST FOOTER FINAL 20260821 */\ndocument.addEventListener('DOMContentLoaded',function(){\n  var f=document.getElementById('rodape');\n  var layout=document.querySelector('.layout');\n  if(f && layout){ layout.insertAdjacentElement('afterend',f); }\n});\n</script>\n'''
               s = s.replace('</body>', js + '</body>', 1)
               p.write_text(s,encoding='utf-8')
           PY
@@ -34,5 +34,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Corrigir rodape centralizado abaixo dos codigos expirados"
+          git diff --cached --quiet || git commit -m "Centralizar rodape abaixo dos codigos"
           git push
