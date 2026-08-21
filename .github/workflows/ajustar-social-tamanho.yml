@@ -1,0 +1,29 @@
+name: Ajustar tamanho dos simbolos sociais
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ajustar simbolos no PC e telemovel
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = 'YUNAMYST SOCIAL ICONS SMALL FINAL 20260821'
+          if marker not in s:
+              css = '''\n<style id="yunamyst-social-small-final">\n/* YUNAMYST SOCIAL ICONS SMALL FINAL 20260821 */\n.social-links{gap:6px!important;margin:8px auto 0!important}\n.social-btn{width:30px!important;height:30px!important;border-radius:8px!important}\n.social-btn img{width:16px!important;height:16px!important}\n@media(max-width:850px){.social-links{gap:6px!important;margin:8px auto 10px!important}.social-btn{width:30px!important;height:30px!important;border-radius:8px!important}.social-btn img{width:16px!important;height:16px!important}.mobile-social{gap:6px!important;margin:8px auto 10px!important}}\n</style>\n'''
+              s = s.replace('</head>', css + '</head>', 1)
+              p.write_text(s, encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/ajustar-social-tamanho.yml
+          git commit -m "Reduzir simbolos das redes sociais no PC e telemovel"
+          git push
