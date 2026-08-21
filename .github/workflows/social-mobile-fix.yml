@@ -1,0 +1,28 @@
+name: Social mobile fix
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ajustar layout mobile
+        run: |
+          python3 - <<'PY'
+          p='index.html'
+          s=open(p,encoding='utf-8').read()
+          old='.left{display:none}'
+          new='.left{display:block;margin:0}.left .profile{background:transparent;border:0;box-shadow:none;padding:0;overflow:visible}.left .profile> *:not(.social-links){display:none}.left .social-links{margin:10px auto 14px}.left .about{display:none}'
+          if old in s and 'left .profile> *:not(.social-links)' not in s:
+              s=s.replace(old,new,1)
+          open(p,'w',encoding='utf-8').write(s)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/social-mobile-fix.yml
+          git commit -m "Mostrar redes sociais no telemóvel"
+          git push
