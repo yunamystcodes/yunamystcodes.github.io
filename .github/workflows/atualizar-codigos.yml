@@ -3,7 +3,7 @@ name: Atualizar códigos automaticamente
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '*/15 * * * *'
   push:
     paths:
       - 'scripts/update_codes.py'
