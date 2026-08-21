@@ -15,27 +15,6 @@
 .footer#rodape{display:block!important;width:100%!important;max-width:760px!important;margin:14px auto 0!important;padding:7px 10px 12px!important;text-align:center!important;font-size:10px!important;line-height:1.35!important;color:#9f96ae!important;clear:both!important}
 @media(max-width:850px){.footer#rodape{max-width:330px!important;margin:10px auto 0!important;padding:6px 8px 10px!important;font-size:9px!important;text-align:center!important}}
 
-<style id="yunamyst-feedback-styles">
-/* YUNAMYST FEEDBACK STARS 20260821 */
-.feedback-panel{margin-top:12px;background:linear-gradient(180deg,rgba(12,7,29,.97),rgba(5,4,17,.97));border:1px solid rgba(190,102,255,.4);border-radius:18px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.35)}
-.feedback-button{width:100%;border:0;background:transparent;color:#fff;padding:16px 15px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font:800 14px Arial,Helvetica,sans-serif;text-align:left}
-.feedback-button:hover{background:rgba(126,54,181,.12)}
-.feedback-title{display:flex;align-items:center;gap:9px}
-.feedback-title .feedback-icon{font-size:19px}
-.feedback-arrow{color:#d99cff;font-size:16px;transition:transform .2s ease}
-.feedback-panel.open .feedback-arrow{transform:rotate(180deg)}
-.feedback-content{display:none;border-top:1px solid rgba(255,255,255,.1);padding:16px 14px 17px;text-align:center}
-.feedback-panel.open .feedback-content{display:block}
-.feedback-content p{color:#c9c0d0;font-size:12px;line-height:1.5;margin-bottom:11px}
-.feedback-stars{display:flex;justify-content:center;gap:7px}
-.feedback-star{border:0;background:transparent;color:#6f647c;font-size:27px;line-height:1;padding:2px;cursor:pointer;transition:transform .15s ease,color .15s ease}
-.feedback-star:hover,.feedback-star.selected{color:#f0c45c;transform:scale(1.12)}
-.feedback-result{min-height:18px;margin-top:9px;color:#d99cff;font-size:11px;font-weight:800}
-@media(max-width:850px){.feedback-panel{margin-top:12px}.feedback-button{padding:14px 13px;font-size:13px}.feedback-content{padding:14px 12px 15px}.feedback-star{font-size:25px}}
-</style>
-
-</style>
-
 <style id="yunamyst-footer-final">
 /* YUNAMYST FOOTER FINAL 20260821 */
 #rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}
@@ -88,6 +67,20 @@
 .feedback-open:hover{border-color:#b65cff;box-shadow:0 0 15px rgba(156,76,255,.18)}
 @media(max-width:850px){.feedback-open{margin-top:10px;padding:13px 12px;font-size:13px;border-radius:13px}.feedback-open span{font-size:19px}}
 </style>
+
+<style id="yunamyst-feedback-modal-css">
+.feedback-open{width:100%;font-family:Arial,Helvetica,sans-serif;cursor:pointer}
+.feedback-modal{display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:18px;background:rgba(2,1,8,.78);backdrop-filter:blur(6px)}
+.feedback-modal.open{display:flex}
+.feedback-card{position:relative;width:min(560px,calc(100% - 24px));max-height:min(88vh,720px);overflow:auto;padding:28px 26px 24px;border:1px solid #9c4cff;border-radius:18px;background:linear-gradient(180deg,rgba(22,10,40,.99),rgba(7,4,18,.99));box-shadow:0 25px 80px rgba(0,0,0,.75)}
+.feedback-card h3{color:#f0c45c;font-size:20px;margin-bottom:7px}.feedback-card>p{color:#c9c0d0;font-size:12px;line-height:1.5;margin-bottom:18px}
+.feedback-close{position:absolute;top:10px;right:12px;width:30px;height:30px;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:#160b25;color:#fff;font-size:18px;cursor:pointer}
+.feedback-label{display:block;color:#fff;font-size:12px;font-weight:800;margin:12px 0 7px}.feedback-stars-form{display:flex;justify-content:center;gap:8px;margin:6px 0 2px}.feedback-star-form{border:0;background:transparent;color:#6f647c;font-size:36px;line-height:1;padding:2px;cursor:pointer}.feedback-star-form.selected{color:#f0c45c;transform:scale(1.08)}
+.feedback-help{text-align:center;color:#bdb5c8;font-size:11px;margin:7px 0 14px}.feedback-input,.feedback-textarea{width:100%;border:1px solid #6d4a91;border-radius:10px;background:#0b0716;color:#fff;padding:12px;font:13px Arial,Helvetica,sans-serif;outline:none}.feedback-textarea{min-height:125px;resize:vertical}.feedback-input:focus,.feedback-textarea:focus{border-color:#b65cff;box-shadow:0 0 12px rgba(182,92,255,.15)}
+.feedback-send{width:100%;height:46px;margin-top:14px;border:1px solid #edbd4e;border-radius:10px;background:linear-gradient(#f6cd70,#bd7d1d);color:#251400;font-weight:900;cursor:pointer}.feedback-note{text-align:center;color:#9f96ae;font-size:10px;line-height:1.4;margin-top:9px}
+@media(max-width:850px){.feedback-modal{padding:10px}.feedback-card{width:100%;padding:24px 16px 18px}.feedback-card h3{font-size:18px}.feedback-star-form{font-size:31px}.feedback-textarea{min-height:115px}}
+</style>
+
 </head>
 <body>
 <div class="bg"></div>
@@ -118,7 +111,33 @@
 <article class="code expired-code auto-expired"><div class="gift">🎁</div><div class="cinfo"><strong>SUMMONING</strong><small>Não disponível para resgate</small></div><div class="badge-expired">⛔ EXPIRADO</div></article>
 <article class="code expired-code auto-expired"><div class="gift">🎁</div><div class="cinfo"><strong>LENGEDARY</strong><small>Não disponível para resgate</small></div><div class="badge-expired">⛔ EXPIRADO</div></article><div class="more">🔴 10 códigos expirados • Esta aba guarda o histórico.</div>
 </div>
-</section><aside class="right" id="como"><div class="panel"><h2>❓ COMO USAR</h2><div class="step"><div class="num">1</div><div><b>Copie o código</b>Clica em COPIAR no código desejado.</div></div><div class="step"><div class="num">2</div><div><b>Abra o jogo</b>Entra no Summoners War: Sky Arena.</div></div><div class="step"><div class="num">3</div><div><b>Resgata o código</b>Usa o link de resgate.</div></div><div class="step"><div class="num">4</div><div><b>Aproveita!</b>Recebe a recompensa no jogo.</div></div></div><div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q">Os códigos expiram?<span>＋</span></div><div class="faq-a">Sim. Quando expiram, passam para a aba de códigos expirados.</div></div></div><a class="feedback-open" href="feedback.html" target="_blank" rel="noopener noreferrer"><span>⭐</span><strong> Dê o seu feedback</strong><b>⌄</b></a></aside></main><footer id="rodape">YunaMyst • Summoners War: Sky Arena • Site de comunidade</footer>
+</section><aside class="right" id="como"><div class="panel"><h2>❓ COMO USAR</h2><div class="step"><div class="num">1</div><div><b>Copie o código</b>Clica em COPIAR no código desejado.</div></div><div class="step"><div class="num">2</div><div><b>Abra o jogo</b>Entra no Summoners War: Sky Arena.</div></div><div class="step"><div class="num">3</div><div><b>Resgata o código</b>Usa o link de resgate.</div></div><div class="step"><div class="num">4</div><div><b>Aproveita!</b>Recebe a recompensa no jogo.</div></div></div><div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q">Os códigos expiram?<span>＋</span></div><div class="faq-a">Sim. Quando expiram, passam para a aba de códigos expirados.</div></div></div><button class="feedback-open" type="button" onclick="toggleFeedback()" aria-label="Abrir formulario de feedback"><span>✉</span><strong>Dê o seu feedback</strong><b>⌄</b></button></aside>
+<div class="feedback-modal" id="feedbackModal" onclick="fecharFeedbackFora(event)">
+  <div class="feedback-card" role="dialog" aria-modal="true" aria-labelledby="feedbackTitulo">
+    <button class="feedback-close" type="button" onclick="fecharFeedback()" aria-label="Fechar">×</button>
+    <h3 id="feedbackTitulo">✉ DEIXE SEU FEEDBACK</h3>
+    <p>A tua opinião ajuda a melhorar a YunaMyst para todos os players.</p>
+    <form id="feedbackForm" onsubmit="enviarFeedback(event)">
+      <label class="feedback-label">⭐ Avalie o site</label>
+      <div class="feedback-stars-form" role="radiogroup" aria-label="Escolha de 1 a 5 estrelas">
+        <button class="feedback-star-form" type="button" data-star="1" onclick="selecionarEstrela(1)" aria-label="1 estrela">★</button>
+        <button class="feedback-star-form" type="button" data-star="2" onclick="selecionarEstrela(2)" aria-label="2 estrelas">★</button>
+        <button class="feedback-star-form" type="button" data-star="3" onclick="selecionarEstrela(3)" aria-label="3 estrelas">★</button>
+        <button class="feedback-star-form" type="button" data-star="4" onclick="selecionarEstrela(4)" aria-label="4 estrelas">★</button>
+        <button class="feedback-star-form" type="button" data-star="5" onclick="selecionarEstrela(5)" aria-label="5 estrelas">★</button>
+      </div>
+      <div class="feedback-help" id="feedbackStarsHelp">Escolhe de 1 a 5 estrelas</div>
+      <label class="feedback-label" for="feedbackNome">Seu nome (opcional)</label>
+      <input class="feedback-input" id="feedbackNome" type="text" maxlength="80" placeholder="Como queres ser identificado?">
+      <label class="feedback-label" for="feedbackMensagem">Seu feedback</label>
+      <textarea class="feedback-textarea" id="feedbackMensagem" maxlength="2000" required placeholder="Conta-nos o que achaste do site..."></textarea>
+      <button class="feedback-send" type="submit">✉ ENVIAR FEEDBACK</button>
+      <div class="feedback-note">Ao enviar, será aberta a tua aplicação de email com a mensagem já preparada.</div>
+    </form>
+  </div>
+</div>
+
+</main><footer id="rodape">YunaMyst • Summoners War: Sky Arena • Site de comunidade</footer>
 <audio id="bgMusic" src="./One%20More%20Scroll.mp3" loop preload="auto" autoplay playsinline></audio>
 <script>
 function toggleParceria(){const m=document.getElementById('parceriaModal');if(m)m.classList.toggle('open')}function fecharParceria(){const m=document.getElementById('parceriaModal');if(m)m.classList.remove('open')}function fecharParceriaFora(e){if(e.target.id==='parceriaModal')fecharParceria()}document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharParceria()});
@@ -150,47 +169,24 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
-<script id="yunamyst-feedback-script">
-/* YUNAMYST FEEDBACK STARS 20260821 */
-document.addEventListener('DOMContentLoaded',function(){
-  const faq=document.querySelector('.right .faq')||document.querySelector('.faq');
-  if(!faq || document.querySelector('.feedback-panel')) return;
-  const panel=document.createElement('div');
-  panel.className='feedback-panel';
-  panel.innerHTML=`
-    <button class="feedback-button" type="button" aria-expanded="false">
-      <span class="feedback-title"><span class="feedback-icon">⭐</span><span>Dê o seu feedback</span></span>
-      <span class="feedback-arrow">⌄</span>
-    </button>
-    <div class="feedback-content">
-      <p>Como você avalia o site YunaMyst?</p>
-      <div class="feedback-stars" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
-        <button class="feedback-star" type="button" data-rating="1" aria-label="1 estrela">★</button>
-        <button class="feedback-star" type="button" data-rating="2" aria-label="2 estrelas">★</button>
-        <button class="feedback-star" type="button" data-rating="3" aria-label="3 estrelas">★</button>
-        <button class="feedback-star" type="button" data-rating="4" aria-label="4 estrelas">★</button>
-        <button class="feedback-star" type="button" data-rating="5" aria-label="5 estrelas">★</button>
-      </div>
-      <div class="feedback-result" aria-live="polite"></div>
-    </div>`;
-  faq.insertAdjacentElement('afterend',panel);
 
-  const toggle=panel.querySelector('.feedback-button');
-  const result=panel.querySelector('.feedback-result');
-  toggle.addEventListener('click',function(){
-    const open=panel.classList.toggle('open');
-    toggle.setAttribute('aria-expanded',String(open));
-  });
-  panel.querySelectorAll('.feedback-star').forEach(function(star){
-    star.addEventListener('click',function(){
-      const rating=Number(star.dataset.rating);
-      panel.querySelectorAll('.feedback-star').forEach(function(s){
-        s.classList.toggle('selected',Number(s.dataset.rating)<=rating);
-      });
-      result.textContent='Obrigado pelo seu feedback! '+rating+'/5 estrelas.';
-    });
-  });
-});
+<script id="yunamyst-feedback-modal-js">
+let feedbackEstrelas=0;
+function toggleFeedback(){const m=document.getElementById('feedbackModal');if(m)m.classList.toggle('open')}
+function fecharFeedback(){const m=document.getElementById('feedbackModal');if(m)m.classList.remove('open')}
+function fecharFeedbackFora(e){if(e.target.id==='feedbackModal')fecharFeedback()}
+function selecionarEstrela(n){feedbackEstrelas=n;document.querySelectorAll('.feedback-star-form').forEach((b,i)=>b.classList.toggle('selected',i<n));const h=document.getElementById('feedbackStarsHelp');if(h)h.textContent=n+' de 5 estrelas'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharFeedback()});
+function enviarFeedback(e){
+  e.preventDefault();
+  if(!feedbackEstrelas){alert('Escolhe de 1 a 5 estrelas antes de enviar.');return}
+  const nome=(document.getElementById('feedbackNome').value||'Anónimo').trim();
+  const mensagem=document.getElementById('feedbackMensagem').value.trim();
+  const recipient=String.fromCharCode(115,111,108,97,110,103,101,46,104,97,110,110,97,104,57,48,64,103,109,97,105,108,46,99,111,109);
+  const subject=encodeURIComponent('Feedback YunaMyst - '+feedbackEstrelas+'/5 estrelas');
+  const body=encodeURIComponent('Avaliação: '+feedbackEstrelas+'/5 estrelas\nNome: '+nome+'\n\nFeedback:\n'+mensagem);
+  window.location.href='mailto:'+recipient+'?subject='+subject+'&body='+body;
+}
 </script>
 
 </body>
