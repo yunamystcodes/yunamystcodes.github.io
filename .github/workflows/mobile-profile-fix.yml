@@ -1,0 +1,49 @@
+name: Ajustar perfil YunaMyst no telemóvel
+on:
+  push:
+    paths:
+      - .github/workflows/mobile-profile-fix.yml
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Atualizar index apenas no mobile
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<style id="yunamyst-mobile-profile-final">'
+          if marker not in s:
+              css = r'''<style id="yunamyst-mobile-profile-final">
+          /* YUNAMYST MOBILE PROFILE FINAL 20260821 */
+          @media(max-width:850px){
+            .layout{display:flex!important;flex-direction:column!important;gap:12px!important}
+            .layout>.panel#codigos{order:1!important;width:100%!important}
+            .layout>.left{order:2!important;width:100%!important;margin:0!important}
+            .layout>.right{order:3!important;width:100%!important;margin:0!important}
+            .left .profile{display:block!important;width:100%!important;padding:18px 12px 14px!important;text-align:center!important;background:linear-gradient(180deg,rgba(12,7,29,.98),rgba(5,4,17,.98))!important;border:1px solid rgba(190,102,255,.45)!important;border-radius:18px!important;box-shadow:0 18px 45px rgba(0,0,0,.4)!important;overflow:hidden!important}
+            .left .profile>.avatar{display:grid!important;width:100px!important;height:100px!important;margin:0 auto 10px!important;font-size:34px!important}
+            .left .profile>h3{display:block!important;margin:10px 0 6px!important;color:#f0ce70!important;font:900 21px Georgia,serif!important}
+            .left .profile>p{display:block!important;color:#bdb4ca!important;font-size:13px!important;line-height:1.5!important}
+            .left .profile>.social-links{display:flex!important;justify-content:center!important;align-items:center!important;gap:6px!important;margin:10px auto 0!important}
+            .left .profile>.social-links .social-btn{display:flex!important;width:30px!important;height:30px!important;border-radius:8px!important}
+            .left .profile>.social-links .social-btn img{width:16px!important;height:16px!important}
+            .left .about{display:none!important}
+            .mobile-social{display:none!important}
+          }
+          </style>
+          '''
+              s = s.replace('</head>', css + '\n</head>', 1)
+              p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit e publicar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Ajustar perfil e redes sociais no telemovel"
+          git push
