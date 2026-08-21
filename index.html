@@ -15,6 +15,12 @@
 .footer#rodape{display:block!important;width:100%!important;max-width:760px!important;margin:14px auto 0!important;padding:7px 10px 12px!important;text-align:center!important;font-size:10px!important;line-height:1.35!important;color:#9f96ae!important;clear:both!important}
 @media(max-width:850px){.footer#rodape{max-width:330px!important;margin:10px auto 0!important;padding:6px 8px 10px!important;font-size:9px!important;text-align:center!important}}
 </style>
+
+<style id="yunamyst-footer-final">
+/* YUNAMYST FOOTER FINAL 20260821 */
+#rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}
+@media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}
+</style>
 </head>
 <body>
 <div class="bg"></div>
@@ -61,6 +67,15 @@ document.addEventListener('DOMContentLoaded',function(){
   const f=document.getElementById('rodape');
   const expired=document.querySelector('.expired-list');
   if(f && expired && expired.parentNode){ expired.parentNode.insertBefore(f, expired.nextSibling); }
+});
+</script>
+
+<script id="yunamyst-footer-final-js">
+/* YUNAMYST FOOTER FINAL 20260821 */
+document.addEventListener('DOMContentLoaded',function(){
+  var f=document.getElementById('rodape');
+  var layout=document.querySelector('.layout');
+  if(f && layout){ layout.insertAdjacentElement('afterend',f); }
 });
 </script>
 </body>
