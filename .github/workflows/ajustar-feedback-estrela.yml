@@ -1,0 +1,40 @@
+name: Ajustar estrela do feedback
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/workflows/ajustar-feedback-estrela.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  ajustar:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Adicionar estrela ao botão de feedback
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = '<button class="feedback-open" type="button" onclick="toggleFeedback()" aria-label="Abrir formulario de feedback"><span>✉</span><strong>Dê o seu feedback</strong><b>⌄</b></button>'
+          new = '<button class="feedback-open" type="button" onclick="toggleFeedback()" aria-label="Abrir formulario de feedback"><span>✉</span><span class="feedback-star-icon">★</span><strong>Dê o seu feedback</strong><b>⌄</b></button>'
+          if old not in s:
+              raise SystemExit('Botão de feedback não encontrado; nenhuma alteração feita.')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Publicar alteração no index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Adicionar estrela amarela ao feedback [skip ci]"
+          git push
