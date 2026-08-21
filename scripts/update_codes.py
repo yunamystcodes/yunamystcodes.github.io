@@ -5,49 +5,77 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-SOURCE_URL = "https://sw-teams.ovh/codes"
+PRIMARY_URL = "https://sw-teams.ovh/codes"
+FALLBACK_URL = "https://nerdschalk.com/summoners-war-codes/"
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
 HISTORY = ROOT / "codes-history.json"
 
 
-def fetch_source():
-    req = urllib.request.Request(
-        SOURCE_URL,
-        headers={"User-Agent": "YunaMyst-Code-Updater/1.0"},
-    )
+def fetch_html(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "YunaMyst-Code-Updater/1.1"})
     with urllib.request.urlopen(req, timeout=30) as response:
-        raw = response.read().decode("utf-8", "ignore")
+        return response.read().decode("utf-8", "ignore")
+
+
+def clean_text(raw):
     raw = re.sub(r"<script\b[^>]*>.*?</script>", " ", raw, flags=re.I | re.S)
     raw = re.sub(r"<style\b[^>]*>.*?</style>", " ", raw, flags=re.I | re.S)
     text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
-    text = re.sub(r"\s+", " ", text)
+    return re.sub(r"\s+", " ", text)
 
+
+def parse_primary(raw):
+    text = clean_text(raw)
     codes = re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)
-    clean = []
+    return unique_codes(codes)
+
+
+def parse_fallback(raw):
+    text = clean_text(raw)
+    start = text.find("Working Summoners War codes")
+    end = text.find("How to redeem codes in Summoners War", start + 1)
+    if start == -1 or end == -1:
+        return []
+    block = text[start:end]
+    # NerdsChalk places every working coupon inside backticks.
+    codes = re.findall(r"`\s*([A-Za-z0-9]{6,32})\s*`", block)
+    return unique_codes(codes)
+
+
+def unique_codes(items):
+    out = []
     seen = set()
-    for code in codes:
-        code = code.strip()
-        if code.lower() in {"available", "codes", "promotional"}:
+    for item in items:
+        code = item.strip()
+        if len(code) < 6 or len(code) > 32:
             continue
         key = code.upper()
         if key not in seen:
             seen.add(key)
-            clean.append(code)
-    if not clean:
-        raise RuntimeError("Não foi possível encontrar códigos ativos na fonte.")
-    return clean
-
-
-def unique(items):
-    out = []
-    seen = set()
-    for item in items:
-        key = item.upper()
-        if key not in seen:
-            seen.add(key)
-            out.append(item)
+            out.append(code)
     return out
+
+
+def fetch_source():
+    primary_error = None
+    try:
+        codes = parse_primary(fetch_html(PRIMARY_URL))
+        if len(codes) >= 6:
+            return codes, "primary"
+    except Exception as exc:
+        primary_error = exc
+
+    try:
+        codes = parse_fallback(fetch_html(FALLBACK_URL))
+        if len(codes) >= 6:
+            return codes, "fallback"
+    except Exception as exc:
+        if primary_error:
+            raise RuntimeError(f"As duas fontes falharam: {primary_error}; {exc}")
+        raise
+
+    raise RuntimeError("As fontes não devolveram uma quantidade segura de códigos ativos.")
 
 
 def active_card(code):
@@ -88,24 +116,25 @@ def replace_between(text, start_marker, end_marker, replacement):
 
 
 def main():
-    current = fetch_source()
+    current, source = fetch_source()
     current_keys = {c.upper() for c in current}
 
     history = json.loads(HISTORY.read_text(encoding="utf-8"))
     previous_active = history.get("active", [])
     expired = list(history.get("expired", []))
 
-    if previous_active and len(current) < max(2, len(previous_active) // 2):
+    # Safety guard: do not mark codes as expired after a partial/stale source response.
+    if previous_active and len(current) <= max(3, len(previous_active) // 2):
         raise RuntimeError(
-            f"Fonte retornou poucos códigos ({len(current)}; antes eram {len(previous_active)}). "
+            f"Fonte {source} retornou poucos códigos ({len(current)}; antes eram {len(previous_active)}). "
             "Atualização abortada por segurança."
         )
 
     newly_expired = [c for c in previous_active if c.upper() not in current_keys]
     expired = newly_expired + expired
-    expired = [c for c in unique(expired) if c.upper() not in current_keys]
+    expired = [c for c in unique_codes(expired) if c.upper() not in current_keys]
 
-    active = unique(current)
+    active = unique_codes(current)
     history = {
         "active": active,
         "expired": expired,
@@ -127,12 +156,16 @@ def main():
 
     index = re.sub(r"🔴\s*\d+\s+códigos expirados", f"🔴 {len(expired)} códigos expirados", index)
     index = re.sub(r"🔴\s*\d+\s+expired codes", f"🔴 {len(expired)} expired codes", index)
-    index = re.sub(r'(<meta name="build-version" content=")[^"]*(")',
-                   rf"\g<1>auto-codes-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M')}\g<2>", index)
+    index = re.sub(
+        r'(<meta name="build-version" content=")[^"]*(")',
+        rf"\g<1>auto-codes-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M')}\g<2>",
+        index,
+    )
 
     INDEX.write_text(index, encoding="utf-8")
     HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    print(f"Fonte usada: {source}")
     print(f"Códigos ativos: {len(active)}")
     print(f"Códigos expirados no histórico: {len(expired)}")
     print("Novos expirados nesta execução:", ", ".join(newly_expired) if newly_expired else "nenhum")
