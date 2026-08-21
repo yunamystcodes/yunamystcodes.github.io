@@ -13,7 +13,7 @@ HISTORY = ROOT / "codes-history.json"
 
 
 def fetch_html(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "YunaMyst-Code-Updater/1.1"})
+    req = urllib.request.Request(url, headers={"User-Agent": "YunaMyst-Code-Updater/1.2"})
     with urllib.request.urlopen(req, timeout=30) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -38,8 +38,15 @@ def parse_fallback(raw):
     if start == -1 or end == -1:
         return []
     block = text[start:end]
-    # NerdsChalk places every working coupon inside backticks.
-    codes = re.findall(r"`\s*([A-Za-z0-9]{6,32})\s*`", block)
+    tokens = block.split()
+    codes = []
+    for i, token in enumerate(tokens[:-1]):
+        token = token.strip("`.,:;()[]")
+        if not re.fullmatch(r"[A-Za-z0-9]{6,32}", token):
+            continue
+        nxt = tokens[i + 1].strip("`.,:;()[]").lower()
+        if re.match(r"^\d", nxt) or nxt == "one":
+            codes.append(token)
     return unique_codes(codes)
 
 
@@ -123,7 +130,6 @@ def main():
     previous_active = history.get("active", [])
     expired = list(history.get("expired", []))
 
-    # Safety guard: do not mark codes as expired after a partial/stale source response.
     if previous_active and len(current) <= max(3, len(previous_active) // 2):
         raise RuntimeError(
             f"Fonte {source} retornou poucos códigos ({len(current)}; antes eram {len(previous_active)}). "
