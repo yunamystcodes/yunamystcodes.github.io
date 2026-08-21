@@ -1,0 +1,38 @@
+name: Ajustar rodape no index
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-footer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ajustar index.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '/* YUNAMYST FOOTER FIX 20260821 */'
+          if marker not in s:
+              css = '''\n/* YUNAMYST FOOTER FIX 20260821 */\n.footer#rodape{display:block!important;width:100%!important;max-width:760px!important;margin:14px auto 0!important;padding:7px 10px 12px!important;text-align:center!important;font-size:10px!important;line-height:1.35!important;color:#9f96ae!important;clear:both!important}\n@media(max-width:850px){.footer#rodape{max-width:330px!important;margin:10px auto 0!important;padding:6px 8px 10px!important;font-size:9px!important;text-align:center!important}}\n'''
+              s = s.replace('</style>', css + '</style>', 1)
+              js = '''\n<script>\ndocument.addEventListener('DOMContentLoaded',function(){\n  const f=document.getElementById('rodape');\n  const expired=document.querySelector('.expired-list');\n  if(f && expired && expired.parentNode){ expired.parentNode.insertBefore(f, expired.nextSibling); }\n});\n</script>\n'''
+              s = s.replace('</body>', js + '</body>', 1)
+              p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Commit alteracao
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Corrigir rodape centralizado abaixo dos codigos expirados"
+          git push
