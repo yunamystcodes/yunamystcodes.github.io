@@ -1,0 +1,41 @@
+name: Adicionar FAQ iPhone
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Adicionar pergunta sobre iPhone
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          if 'Posso usar no iPhone?' not in s:
+              alvo = '<div class="faq-item"><div class="faq-q">Os códigos expiram?<span>＋</span></div><div class="faq-a">Sim. Quando expiram, passam para a aba de códigos expirados.</div></div>'
+              novo = alvo + '<div class="faq-item"><div class="faq-q">Posso usar no iPhone?<span>＋</span></div><div class="faq-a">Sim. O site funciona normalmente no iPhone e podes usar os códigos diretamente pelo telemóvel.</div></div>'
+              if alvo not in s:
+                  raise SystemExit('FAQ alvo não encontrado')
+              s = s.replace(alvo, novo, 1)
+              p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Adicionar FAQ sobre uso no iPhone"
+          git push
