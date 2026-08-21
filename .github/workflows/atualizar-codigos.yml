@@ -1,0 +1,36 @@
+name: Atualizar códigos automaticamente
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    paths:
+      - 'scripts/update_codes.py'
+      - 'codes-history.json'
+      - '.github/workflows/atualizar-codigos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o site
+        uses: actions/checkout@v4
+
+      - name: Atualizar códigos ativos e expirados
+        run: python3 scripts/update_codes.py
+
+      - name: Publicar alterações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Nenhuma alteração nos códigos."
+            exit 0
+          fi
+          git add index.html codes-history.json
+          git commit -m "Atualizar códigos ativos e expirados automaticamente"
+          git push
