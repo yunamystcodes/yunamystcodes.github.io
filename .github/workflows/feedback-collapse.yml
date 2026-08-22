@@ -1,0 +1,51 @@
+name: Ajustar recolher do feedback
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  feedback-collapse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Adicionar comportamento de recolher ao feedback
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<!-- YUNAMYST FEEDBACK COLLAPSE 20260822 -->'
+          if marker in s:
+              print('Feedback collapse já instalado.')
+              raise SystemExit(0)
+
+          css = r'''\n<style id="yuna-feedback-collapse-style">\n.yuna-feedback-accordion{transition:max-height .28s ease,opacity .2s ease;overflow:hidden}\n.yuna-feedback-accordion.yuna-feedback-collapsed{max-height:70px!important;min-height:0!important}\n.yuna-feedback-accordion.yuna-feedback-collapsed .yuna-feedback-content{display:none!important}\n.yuna-feedback-toggle{cursor:pointer;user-select:none}\n.yuna-feedback-toggle .yuna-feedback-arrow{display:inline-block;transition:transform .25s ease}\n.yuna-feedback-toggle.yuna-feedback-open .yuna-feedback-arrow{transform:rotate(180deg)}\n</style>\n'''
+
+          js = r'''\n<script id="yuna-feedback-collapse-script">\n(function(){\n  function initFeedbackCollapse(){\n    const nodes=[...document.querySelectorAll('button,a,[role="button"],div')];\n    const toggles=nodes.filter(el=>{\n      const t=(el.textContent||'').replace(/\\s+/g,' ').trim();\n      return /Dê o seu feedback/i.test(t) && t.length<80 && el.children.length<8;\n    });\n    toggles.forEach(toggle=>{\n      if(toggle.dataset.yunaFeedbackBound) return;\n      toggle.dataset.yunaFeedbackBound='1';\n      toggle.classList.add('yuna-feedback-toggle');\n\n      let section=toggle.closest('[id*="feedback" i],[class*="feedback" i]');\n      if(!section) section=toggle.parentElement;\n      if(!section) return;\n      section.classList.add('yuna-feedback-accordion');\n\n      let content=section.querySelector('.feedback-content,[data-feedback-content]');\n      if(content){ content.classList.add('yuna-feedback-content'); }\n      else {\n        const direct=[...section.children].filter(x=>x!==toggle && !x.contains(toggle));\n        if(direct.length){\n          content=document.createElement('div');\n          content.className='yuna-feedback-content';\n          direct.forEach(x=>content.appendChild(x));\n          section.appendChild(content);\n        }\n      }\n\n      toggle.addEventListener('click',function(){\n        section.classList.toggle('yuna-feedback-collapsed');\n        toggle.classList.toggle('yuna-feedback-open');\n      });\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initFeedbackCollapse);\n  else initFeedbackCollapse();\n})();\n</script>\n'''
+
+          s=s.replace('</head>', marker+css+'</head>',1)
+          if '</body>' in s:
+              s=s.replace('</body>',js+'</body>',1)
+          else:
+              s += js
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Publicar alteração
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Nenhuma alteração necessária."
+            exit 0
+          fi
+          git add index.html
+          git commit -m "Permitir recolher e expandir feedback"
+          git push
