@@ -1,1 +1,0 @@
-Trigger da correção da aba de feedback — pode ser removido automaticamente após a execução.
