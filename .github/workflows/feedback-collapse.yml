@@ -1,4 +1,4 @@
-name: Ajustar recolher do feedback
+name: Corrigir aba de feedback
 
 on:
   push:
@@ -9,36 +9,82 @@ permissions:
   contents: write
 
 jobs:
-  feedback-collapse:
+  fix-feedback:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Adicionar comportamento de recolher ao feedback
+      - name: Corrigir recolher/expandir do feedback
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
+
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<!-- YUNAMYST FEEDBACK COLLAPSE 20260822 -->'
-          if marker in s:
-              print('Feedback collapse já instalado.')
-              raise SystemExit(0)
 
-          css = r'''\n<style id="yuna-feedback-collapse-style">\n.yuna-feedback-accordion{transition:max-height .28s ease,opacity .2s ease;overflow:hidden}\n.yuna-feedback-accordion.yuna-feedback-collapsed{max-height:70px!important;min-height:0!important}\n.yuna-feedback-accordion.yuna-feedback-collapsed .yuna-feedback-content{display:none!important}\n.yuna-feedback-toggle{cursor:pointer;user-select:none}\n.yuna-feedback-toggle .yuna-feedback-arrow{display:inline-block;transition:transform .25s ease}\n.yuna-feedback-toggle.yuna-feedback-open .yuna-feedback-arrow{transform:rotate(180deg)}\n</style>\n'''
+          # Remove as versões anteriores do código de recolher, inclusive as
+          # que foram gravadas com barras invertidas literais.
+          s = re.sub(r'<!-- YUNAMYST FEEDBACK COLLAPSE 20260822 -->.*?</style>\\?', '', s, flags=re.S)
+          s = re.sub(r'<style id="yuna-feedback-collapse-style">.*?</style>\\?', '', s, flags=re.S)
+          s = re.sub(r'<script id="yuna-feedback-collapse-script">.*?</script>\\?', '', s, flags=re.S)
 
-          js = r'''\n<script id="yuna-feedback-collapse-script">\n(function(){\n  function initFeedbackCollapse(){\n    const nodes=[...document.querySelectorAll('button,a,[role="button"],div')];\n    const toggles=nodes.filter(el=>{\n      const t=(el.textContent||'').replace(/\\s+/g,' ').trim();\n      return /Dê o seu feedback/i.test(t) && t.length<80 && el.children.length<8;\n    });\n    toggles.forEach(toggle=>{\n      if(toggle.dataset.yunaFeedbackBound) return;\n      toggle.dataset.yunaFeedbackBound='1';\n      toggle.classList.add('yuna-feedback-toggle');\n\n      let section=toggle.closest('[id*="feedback" i],[class*="feedback" i]');\n      if(!section) section=toggle.parentElement;\n      if(!section) return;\n      section.classList.add('yuna-feedback-accordion');\n\n      let content=section.querySelector('.feedback-content,[data-feedback-content]');\n      if(content){ content.classList.add('yuna-feedback-content'); }\n      else {\n        const direct=[...section.children].filter(x=>x!==toggle && !x.contains(toggle));\n        if(direct.length){\n          content=document.createElement('div');\n          content.className='yuna-feedback-content';\n          direct.forEach(x=>content.appendChild(x));\n          section.appendChild(content);\n        }\n      }\n\n      toggle.addEventListener('click',function(){\n        section.classList.toggle('yuna-feedback-collapsed');\n        toggle.classList.toggle('yuna-feedback-open');\n      });\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initFeedbackCollapse);\n  else initFeedbackCollapse();\n})();\n</script>\n'''
+          css = '''
+<style id="yuna-feedback-collapse-fixed">
+#ym-feedback-system{transition:max-height .3s ease,opacity .25s ease;overflow:hidden}
+#ym-feedback-system.ym-collapsed{max-height:0!important;opacity:0!important;margin-top:0!important;border-width:0!important}
+.feedback-open{cursor:pointer}
+.feedback-open .feedback-arrow{display:inline-block;transition:transform .25s ease}
+.feedback-open.is-collapsed .feedback-arrow{transform:rotate(-90deg)}
+</style>
+'''
 
-          s=s.replace('</head>', marker+css+'</head>',1)
+          js = '''
+<script id="yuna-feedback-collapse-fixed-js">
+(function(){
+  function setup(){
+    const button=document.querySelector('.feedback-open');
+    const panel=document.getElementById('ym-feedback-system');
+    if(!button || !panel || button.dataset.collapseFixed) return;
+    button.dataset.collapseFixed='1';
+
+    // O botão passa a controlar apenas a área de avaliações/feedbacks.
+    // O formulário continua disponível pelo próprio conteúdo do feedback.
+    const oldOnclick=button.getAttribute('onclick');
+    if(oldOnclick) button.removeAttribute('onclick');
+
+    const arrow=button.querySelector('b');
+    if(arrow){
+      arrow.classList.add('feedback-arrow');
+      arrow.textContent='⌄';
+    }
+
+    button.addEventListener('click',function(){
+      const collapsed=panel.classList.toggle('ym-collapsed');
+      button.classList.toggle('is-collapsed',collapsed);
+      button.setAttribute('aria-expanded',String(!collapsed));
+    });
+
+    button.setAttribute('aria-expanded','true');
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
+  else setup();
+})();
+</script>
+'''
+
+          if '</head>' in s:
+              s=s.replace('</head>',css+'</head>',1)
           if '</body>' in s:
               s=s.replace('</body>',js+'</body>',1)
           else:
               s += js
+
           p.write_text(s,encoding='utf-8')
           PY
 
-      - name: Publicar alteração
+      - name: Publicar no index
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -47,5 +93,5 @@ jobs:
             exit 0
           fi
           git add index.html
-          git commit -m "Permitir recolher e expandir feedback"
+          git commit -m "Corrigir recolher e expandir feedback"
           git push
