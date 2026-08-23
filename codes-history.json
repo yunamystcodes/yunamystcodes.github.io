@@ -3,6 +3,7 @@
     "APAC26LEGASEA",
     "AUGSW2026V7N",
     "GLHF2026AMERICAS",
+    "LEGENDSWC2026HSL",
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
     "SWXFRIEREN2026",
@@ -69,7 +70,7 @@
     "swc25seaultyeet",
     "w3lcome2swc25apac"
   ],
-  "updated_at": "2026-08-23T09:59:18Z",
+  "updated_at": "2026-08-23T10:55:58Z",
   "sources": {
     "APAC26LEGASEA": [
       "sw-teams",
@@ -80,6 +81,10 @@
       "summonerswarcodes"
     ],
     "GLHF2026AMERICAS": [
+      "sw-teams",
+      "summonerswarcodes"
+    ],
+    "LEGENDSWC2026HSL": [
       "sw-teams",
       "summonerswarcodes"
     ],
