@@ -81,7 +81,15 @@
 @media(max-width:850px){.feedback-modal{padding:10px}.feedback-card{width:100%;padding:24px 16px 18px}.feedback-card h3{font-size:18px}.feedback-star-form{font-size:31px}.feedback-textarea{min-height:115px}}
 </style>
 
-<!-- YUNAMYST FEEDBACK COLLAPSE 20260822 -->\n<style id="yuna-feedback-collapse-style">\n.yuna-feedback-accordion{transition:max-height .28s ease,opacity .2s ease;overflow:hidden}\n.yuna-feedback-accordion.yuna-feedback-collapsed{max-height:70px!important;min-height:0!important}\n.yuna-feedback-accordion.yuna-feedback-collapsed .yuna-feedback-content{display:none!important}\n.yuna-feedback-toggle{cursor:pointer;user-select:none}\n.yuna-feedback-toggle .yuna-feedback-arrow{display:inline-block;transition:transform .25s ease}\n.yuna-feedback-toggle.yuna-feedback-open .yuna-feedback-arrow{transform:rotate(180deg)}\n</style>\n</head>
+<style id="yuna-feedback-collapse-style">
+.yuna-feedback-accordion{transition:max-height .28s ease,opacity .2s ease;overflow:hidden}
+.yuna-feedback-accordion.yuna-feedback-collapsed{max-height:70px!important;min-height:0!important}
+.yuna-feedback-accordion.yuna-feedback-collapsed .yuna-feedback-content{display:none!important}
+.yuna-feedback-toggle{cursor:pointer;user-select:none}
+.yuna-feedback-toggle .yuna-feedback-arrow{display:inline-block;transition:transform .25s ease}
+.yuna-feedback-toggle.yuna-feedback-open .yuna-feedback-arrow{transform:rotate(180deg)}
+</style>
+</head>
 <body>
 <div class="bg"></div>
 <header class="top"><div class="container nav"><div class="logo">YunaMyst<small>SUMMONERS WAR</small></div><nav class="navlinks"><a href="#inicio">⌂ INÍCIO</a><a href="#codigos">⚔ SUMMONERS WAR</a><a href="#como">❔ COMO USAR</a></nav><div class="sound-control"><button class="sound-btn" id="soundToggle" type="button" aria-label="Silenciar música" title="Silenciar música">🔊</button></div><div class="lang-switch" id="langSwitch"><button class="lang-btn active" id="langToggle" type="button" onclick="toggleLangMenu()">🇧🇷 PT/BR</button><div class="lang-menu" id="langMenu"><button class="lang-option selected" id="langPTOption" type="button" onclick="chooseLanguage('pt')">🇧🇷 PT/BR</button><button class="lang-option" id="langENOption" type="button" onclick="chooseLanguage('en')">🇬🇧 ENG</button></div></div></div></header>
@@ -161,7 +169,7 @@
 <article class="code expired-code auto-expired"><div class="gift">🎁</div><div class="cinfo"><strong>w3lcome2swc25apac</strong><small>Não disponível para resgate</small></div><div class="badge-expired">⛔ EXPIRADO</div></article>
 <div class="more">🔴 59 códigos expirados • Esta aba guarda o histórico.</div>
 </div>
-</section><aside class="right" id="como"><div class="panel"><h2>❓ COMO USAR</h2><div class="step"><div class="num">1</div><div><b>Copie o código</b>Clica em COPIAR no código desejado.</div></div><div class="step"><div class="num">2</div><div><b>Abra o jogo</b>Entra no Summoners War: Sky Arena.</div></div><div class="step"><div class="num">3</div><div><b>Resgata o código</b>Usa o link de resgate.</div></div><div class="step"><div class="num">4</div><div><b>Aproveita!</b>Recebe a recompensa no jogo.</div></div></div><div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q">Os códigos expiram?<span>＋</span></div><div class="faq-a">Sim. Quando expiram, passam para a aba de códigos expirados.</div></div><div class="faq-item"><div class="faq-q">Posso usar no iPhone?<span>＋</span></div><div class="faq-a">Sim. O site funciona normalmente no iPhone e podes usar os códigos diretamente pelo telemóvel.</div></div></div><button class="feedback-open" type="button" onclick="toggleFeedback()" aria-label="Abrir formulario de feedback"><span>✉</span><span class="feedback-star-icon">★</span><strong>Dê o seu feedback</strong><b>⌄</b></button></aside>
+</section><aside class="right" id="como"><div class="panel"><h2>❓ COMO USAR</h2><div class="step"><div class="num">1</div><div><b>Copie o código</b>Clica em COPIAR no código desejado.</div></div><div class="step"><div class="num">2</div><div><b>Abra o jogo</b>Entra no Summoners War: Sky Arena.</div></div><div class="step"><div class="num">3</div><div><b>Resgata o código</b>Usa o link de resgate.</div></div><div class="step"><div class="num">4</div><div><b>Aproveita!</b>Recebe a recompensa no jogo.</div></div></div><div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q">Os códigos expiram?<span>＋</span></div><div class="faq-a">Sim. Quando expiram, passam para a aba de códigos expirados.</div></div><div class="faq-item"><div class="faq-q">Posso usar no iPhone?<span>＋</span></div><div class="faq-a">Sim. O site funciona normalmente no iPhone e podes usar os códigos diretamente pelo telemóvel.</div></div></div><button class="feedback-open" type="button" onclick="toggleFeedbackAccordion()" aria-label="Abrir formulario de feedback"><span>✉</span><span class="feedback-star-icon">★</span><strong>Dê o seu feedback</strong><b>⌄</b></button></aside>
 <div class="feedback-modal" id="feedbackModal" onclick="fecharFeedbackFora(event)">
   <div class="feedback-card" role="dialog" aria-modal="true" aria-labelledby="feedbackTitulo">
     <button class="feedback-close" type="button" onclick="fecharFeedback()" aria-label="Fechar">×</button>
@@ -300,5 +308,18 @@ function enviarFeedback(e){
 })();
 </script>
 <!-- YUNAMYST-FEEDBACK-SYSTEM-END -->
-\n<script id="yuna-feedback-collapse-script">\n(function(){\n  function initFeedbackCollapse(){\n    const nodes=[...document.querySelectorAll('button,a,[role="button"],div')];\n    const toggles=nodes.filter(el=>{\n      const t=(el.textContent||'').replace(/\\s+/g,' ').trim();\n      return /Dê o seu feedback/i.test(t) && t.length<80 && el.children.length<8;\n    });\n    toggles.forEach(toggle=>{\n      if(toggle.dataset.yunaFeedbackBound) return;\n      toggle.dataset.yunaFeedbackBound='1';\n      toggle.classList.add('yuna-feedback-toggle');\n\n      let section=toggle.closest('[id*="feedback" i],[class*="feedback" i]');\n      if(!section) section=toggle.parentElement;\n      if(!section) return;\n      section.classList.add('yuna-feedback-accordion');\n\n      let content=section.querySelector('.feedback-content,[data-feedback-content]');\n      if(content){ content.classList.add('yuna-feedback-content'); }\n      else {\n        const direct=[...section.children].filter(x=>x!==toggle && !x.contains(toggle));\n        if(direct.length){\n          content=document.createElement('div');\n          content.className='yuna-feedback-content';\n          direct.forEach(x=>content.appendChild(x));\n          section.appendChild(content);\n        }\n      }\n\n      toggle.addEventListener('click',function(){\n        section.classList.toggle('yuna-feedback-collapsed');\n        toggle.classList.toggle('yuna-feedback-open');\n      });\n    });\n  }\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initFeedbackCollapse);\n  else initFeedbackCollapse();\n})();\n</script>\n</body>
+<script id="yuna-feedback-collapse-script">
+function toggleFeedbackAccordion(){
+  const box=document.getElementById('ym-feedback-system');
+  const button=document.querySelector('.feedback-open');
+  if(!box) return;
+  const collapsed=box.classList.toggle('yuna-feedback-collapsed');
+  if(button){
+    button.classList.toggle('yuna-feedback-open',!collapsed);
+    const arrow=button.querySelector('b');
+    if(arrow) arrow.textContent=collapsed?'⌄':'⌃';
+  }
+}
+</script>
+</body>
 </html>
