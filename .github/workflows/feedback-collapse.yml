@@ -24,17 +24,17 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Remove as versões anteriores do código de recolher, inclusive as
-          # que foram gravadas com barras invertidas literais.
-          s = re.sub(r'<!-- YUNAMYST FEEDBACK COLLAPSE 20260822 -->.*?</style>\\?', '', s, flags=re.S)
-          s = re.sub(r'<style id="yuna-feedback-collapse-style">.*?</style>\\?', '', s, flags=re.S)
-          s = re.sub(r'<script id="yuna-feedback-collapse-script">.*?</script>\\?', '', s, flags=re.S)
+          # Remove todas as versões anteriores do comportamento de recolher.
+          s = re.sub(r'<style id="yuna-feedback-collapse-style">.*?</style>', '', s, flags=re.S)
+          s = re.sub(r'<style id="yuna-feedback-collapse-fixed">.*?</style>', '', s, flags=re.S)
+          s = re.sub(r'<script id="yuna-feedback-collapse-script">.*?</script>', '', s, flags=re.S)
+          s = re.sub(r'<script id="yuna-feedback-collapse-fixed-js">.*?</script>', '', s, flags=re.S)
 
           css = '''
 <style id="yuna-feedback-collapse-fixed">
 #ym-feedback-system{transition:max-height .3s ease,opacity .25s ease;overflow:hidden}
-#ym-feedback-system.ym-collapsed{max-height:0!important;opacity:0!important;margin-top:0!important;border-width:0!important}
-.feedback-open{cursor:pointer}
+#ym-feedback-system.ym-collapsed{display:none!important;max-height:0!important;opacity:0!important;margin-top:0!important;border-width:0!important}
+.feedback-open{cursor:pointer;user-select:none}
 .feedback-open .feedback-arrow{display:inline-block;transition:transform .25s ease}
 .feedback-open.is-collapsed .feedback-arrow{transform:rotate(-90deg)}
 </style>
@@ -49,11 +49,7 @@ jobs:
     if(!button || !panel || button.dataset.collapseFixed) return;
     button.dataset.collapseFixed='1';
 
-    // O botão passa a controlar apenas a área de avaliações/feedbacks.
-    // O formulário continua disponível pelo próprio conteúdo do feedback.
-    const oldOnclick=button.getAttribute('onclick');
-    if(oldOnclick) button.removeAttribute('onclick');
-
+    button.removeAttribute('onclick');
     const arrow=button.querySelector('b');
     if(arrow){
       arrow.classList.add('feedback-arrow');
@@ -64,6 +60,7 @@ jobs:
       const collapsed=panel.classList.toggle('ym-collapsed');
       button.classList.toggle('is-collapsed',collapsed);
       button.setAttribute('aria-expanded',String(!collapsed));
+      if(arrow) arrow.textContent=collapsed?'⌄':'⌃';
     });
 
     button.setAttribute('aria-expanded','true');
@@ -74,13 +71,8 @@ jobs:
 </script>
 '''
 
-          if '</head>' in s:
-              s=s.replace('</head>',css+'</head>',1)
-          if '</body>' in s:
-              s=s.replace('</body>',js+'</body>',1)
-          else:
-              s += js
-
+          s=s.replace('</head>',css+'</head>',1)
+          s=s.replace('</body>',js+'</body>',1)
           p.write_text(s,encoding='utf-8')
           PY
 
@@ -93,5 +85,5 @@ jobs:
             exit 0
           fi
           git add index.html
-          git commit -m "Corrigir recolher e expandir feedback"
+          git commit -m "Corrigir recolher completo do feedback"
           git push
