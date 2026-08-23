@@ -1,0 +1,87 @@
+name: Corrigir botão de feedback
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-feedback-collapse.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Corrigir index.html
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          html = p.read_text(encoding='utf-8')
+
+          # Remove o bloco de collapse quebrado que foi gravado com \\n          # literais e impedia o JavaScript de funcionar.
+          html = re.sub(
+              r'<!-- YUNAMYST FEEDBACK COLLAPSE 20260822 -->.*?</head>',
+              '''<style id="yuna-feedback-collapse-style">
+          .yuna-feedback-accordion{transition:max-height .28s ease,opacity .2s ease;overflow:hidden}
+          .yuna-feedback-accordion.yuna-feedback-collapsed{max-height:70px!important;min-height:0!important}
+          .yuna-feedback-accordion.yuna-feedback-collapsed .yuna-feedback-content{display:none!important}
+          .yuna-feedback-toggle{cursor:pointer;user-select:none}
+          .yuna-feedback-toggle .yuna-feedback-arrow{display:inline-block;transition:transform .25s ease}
+          .yuna-feedback-toggle.yuna-feedback-open .yuna-feedback-arrow{transform:rotate(180deg)}
+          </style>
+          </head>''',
+              html,
+              flags=re.S,
+          )
+
+          # Remove o script de collapse inválido gravado com \\n          # literais antes de </body>.
+          html = re.sub(
+              r'\\n<script id="yuna-feedback-collapse-script">.*?</script>\\n',
+              '',
+              html,
+              flags=re.S,
+          )
+
+          # Garante que o botão tenha o comportamento correto.
+          html = html.replace(
+              'onclick="toggleFeedback()" aria-label="Abrir formulario de feedback"',
+              'onclick="toggleFeedbackAccordion()" aria-label="Abrir formulario de feedback"'
+          )
+
+          script = r'''<script id="yuna-feedback-collapse-script">
+          function toggleFeedbackAccordion(){
+            const box=document.getElementById('ym-feedback-system');
+            const button=document.querySelector('.feedback-open');
+            if(!box) return;
+            const collapsed=box.classList.toggle('yuna-feedback-collapsed');
+            if(button){
+              button.classList.toggle('yuna-feedback-open',!collapsed);
+              const arrow=button.querySelector('b');
+              if(arrow) arrow.textContent=collapsed?'⌄':'⌃';
+            }
+          }
+          </script>
+          '''
+
+          if 'id="yuna-feedback-collapse-script"' not in html:
+              html = html.replace('</body>', script + '</body>')
+
+          p.write_text(html, encoding='utf-8')
+      - name: Commit e publicar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração necessária"
+            exit 0
+          fi
+          git commit -m "Corrigir botão de feedback recolhível"
+          git push
