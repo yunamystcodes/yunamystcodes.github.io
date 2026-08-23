@@ -2,7 +2,9 @@
   "active": [
     "APAC26LEGASEA",
     "AUGSW2026V7N",
+    "GLHF2026AMERICAS",
     "PAI2026BANGKOK",
+    "SWC26X10LEGACYBND",
     "SWXFRIEREN2026"
   ],
   "expired": [
@@ -66,7 +68,7 @@
     "swc25seaultyeet",
     "w3lcome2swc25apac"
   ],
-  "updated_at": "2026-08-22T23:44:00Z",
+  "updated_at": "2026-08-23T03:29:34Z",
   "sources": {
     "APAC26LEGASEA": [
       "sw-teams",
@@ -76,7 +78,15 @@
       "sw-teams",
       "summonerswarcodes"
     ],
+    "GLHF2026AMERICAS": [
+      "sw-teams",
+      "summonerswarcodes"
+    ],
     "PAI2026BANGKOK": [
+      "sw-teams",
+      "summonerswarcodes"
+    ],
+    "SWC26X10LEGACYBND": [
       "sw-teams",
       "summonerswarcodes"
     ],
