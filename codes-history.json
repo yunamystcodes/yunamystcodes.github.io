@@ -5,7 +5,8 @@
     "GLHF2026AMERICAS",
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
-    "SWXFRIEREN2026"
+    "SWXFRIEREN2026",
+    "YIQIZOUGUO10SWC"
   ],
   "expired": [
     "912XUXIECHUANQI",
@@ -68,7 +69,7 @@
     "swc25seaultyeet",
     "w3lcome2swc25apac"
   ],
-  "updated_at": "2026-08-23T06:03:30Z",
+  "updated_at": "2026-08-23T07:52:07Z",
   "sources": {
     "APAC26LEGASEA": [
       "sw-teams",
@@ -91,6 +92,10 @@
       "summonerswarcodes"
     ],
     "SWXFRIEREN2026": [
+      "sw-teams",
+      "summonerswarcodes"
+    ],
+    "YIQIZOUGUO10SWC": [
       "sw-teams",
       "summonerswarcodes"
     ]
