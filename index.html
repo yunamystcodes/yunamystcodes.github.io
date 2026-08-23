@@ -19,6 +19,26 @@
 /* YUNAMYST FOOTER FINAL 20260821 */
 #rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}
 @media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}
+
+<style id="yunamyst-feedback-styles">
+/* YUNAMYST FEEDBACK STARS 20260821 */
+.feedback-panel{margin-top:12px;background:linear-gradient(180deg,rgba(12,7,29,.97),rgba(5,4,17,.97));border:1px solid rgba(190,102,255,.4);border-radius:18px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.35)}
+.feedback-button{width:100%;border:0;background:transparent;color:#fff;padding:16px 15px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font:800 14px Arial,Helvetica,sans-serif;text-align:left}
+.feedback-button:hover{background:rgba(126,54,181,.12)}
+.feedback-title{display:flex;align-items:center;gap:9px}
+.feedback-title .feedback-icon{font-size:19px}
+.feedback-arrow{color:#d99cff;font-size:16px;transition:transform .2s ease}
+.feedback-panel.open .feedback-arrow{transform:rotate(180deg)}
+.feedback-content{display:none;border-top:1px solid rgba(255,255,255,.1);padding:16px 14px 17px;text-align:center}
+.feedback-panel.open .feedback-content{display:block}
+.feedback-content p{color:#c9c0d0;font-size:12px;line-height:1.5;margin-bottom:11px}
+.feedback-stars{display:flex;justify-content:center;gap:7px}
+.feedback-star{border:0;background:transparent;color:#6f647c;font-size:27px;line-height:1;padding:2px;cursor:pointer;transition:transform .15s ease,color .15s ease}
+.feedback-star:hover,.feedback-star.selected{color:#f0c45c;transform:scale(1.12)}
+.feedback-result{min-height:18px;margin-top:9px;color:#d99cff;font-size:11px;font-weight:800}
+@media(max-width:850px){.feedback-panel{margin-top:12px}.feedback-button{padding:14px 13px;font-size:13px}.feedback-content{padding:14px 12px 15px}.feedback-star{font-size:25px}}
+</style>
+
 </style>
 <style id="yunamyst-social-final">
 .social-links{display:flex;justify-content:center;gap:8px;margin:12px auto 0}
@@ -376,5 +396,49 @@ function toggleFeedbackAccordion(){
   }
 }
 </script>
+
+<script id="yunamyst-feedback-script">
+/* YUNAMYST FEEDBACK STARS 20260821 */
+document.addEventListener('DOMContentLoaded',function(){
+  const faq=document.querySelector('.right .faq')||document.querySelector('.faq');
+  if(!faq || document.querySelector('.feedback-panel')) return;
+  const panel=document.createElement('div');
+  panel.className='feedback-panel';
+  panel.innerHTML=`
+    <button class="feedback-button" type="button" aria-expanded="false">
+      <span class="feedback-title"><span class="feedback-icon">⭐</span><span>Dê o seu feedback</span></span>
+      <span class="feedback-arrow">⌄</span>
+    </button>
+    <div class="feedback-content">
+      <p>Como você avalia o site YunaMyst?</p>
+      <div class="feedback-stars" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
+        <button class="feedback-star" type="button" data-rating="1" aria-label="1 estrela">★</button>
+        <button class="feedback-star" type="button" data-rating="2" aria-label="2 estrelas">★</button>
+        <button class="feedback-star" type="button" data-rating="3" aria-label="3 estrelas">★</button>
+        <button class="feedback-star" type="button" data-rating="4" aria-label="4 estrelas">★</button>
+        <button class="feedback-star" type="button" data-rating="5" aria-label="5 estrelas">★</button>
+      </div>
+      <div class="feedback-result" aria-live="polite"></div>
+    </div>`;
+  faq.insertAdjacentElement('afterend',panel);
+
+  const toggle=panel.querySelector('.feedback-button');
+  const result=panel.querySelector('.feedback-result');
+  toggle.addEventListener('click',function(){
+    const open=panel.classList.toggle('open');
+    toggle.setAttribute('aria-expanded',String(open));
+  });
+  panel.querySelectorAll('.feedback-star').forEach(function(star){
+    star.addEventListener('click',function(){
+      const rating=Number(star.dataset.rating);
+      panel.querySelectorAll('.feedback-star').forEach(function(s){
+        s.classList.toggle('selected',Number(s.dataset.rating)<=rating);
+      });
+      result.textContent='Obrigado pelo seu feedback! '+rating+'/5 estrelas.';
+    });
+  });
+});
+</script>
+
 </body>
 </html>
