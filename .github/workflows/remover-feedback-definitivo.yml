@@ -1,0 +1,73 @@
+name: Remover feedback definitivamente
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  remover:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remover todos os blocos de feedback do index
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          def remove_balanced(html, tag, start_pos):
+              tag_re = re.compile(r'<(/?)' + tag + r'\b[^>]*>', re.I | re.S)
+              depth = 0
+              for m in tag_re.finditer(html, start_pos):
+                  if m.group(1):
+                      depth -= 1
+                      if depth == 0:
+                          return html[:start_pos] + html[m.end():]
+                  else:
+                      depth += 1
+              return html
+
+          patterns = [
+              r'<div\b[^>]*\bclass=["\'][^"\']*\bfeedback-section\b[^"\']*["\'][^>]*>',
+              r'<section\b[^>]*\bid=["\']feedback["\'][^>]*>',
+              r'<div\b[^>]*\bid=["\']feedbackModal(?:New)?["\'][^>]*>',
+              r'<div\b[^>]*\bclass=["\'][^"\']*\bfeedback-modal(?:-new)?\b[^"\']*["\'][^>]*>',
+          ]
+
+          changed = True
+          while changed:
+              changed = False
+              for pattern in patterns:
+                  m = re.search(pattern, s, re.I | re.S)
+                  if m:
+                      tag = 'section' if m.group(0).lower().startswith('<section') else 'div'
+                      new_s = remove_balanced(s, tag, m.start())
+                      if new_s != s:
+                          s = new_s
+                          changed = True
+
+          # Remove any standalone feedback button that may remain.
+          s = re.sub(r'\s*<button\b[^>]*(?:class=["\'][^"\']*feedback[^"\']*["\']|id=["\'][^"\']*feedback[^"\']*["\'])[^>]*>[\s\S]*?</button>\s*', '\n', s, flags=re.I)
+
+          # Remove feedback-only CSS and JS blocks, including duplicated old versions.
+          s = re.sub(r'\s*<style\b[^>]*\bid=["\'][^"\']*feedback[^"\']*["\'][^>]*>[\s\S]*?</style>\s*', '\n', s, flags=re.I)
+          s = re.sub(r'\s*<script\b[^>]*\bid=["\'][^"\']*feedback[^"\']*["\'][^>]*>[\s\S]*?</script>\s*', '\n', s, flags=re.I)
+
+          p.write_text(s, encoding='utf-8')
+
+      - name: Publicar alteração
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Remover botão e secção de feedback [skip ci]'
+          git push
