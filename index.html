@@ -219,49 +219,6 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 
-<script id="yunamyst-feedback-script">
-/* YUNAMYST FEEDBACK STARS 20260821 */
-document.addEventListener('DOMContentLoaded',function(){
-  const faq=document.querySelector('.right .faq')||document.querySelector('.faq');
-  if(!faq || document.querySelector('.feedback-panel')) return;
-  const panel=document.createElement('div');
-  panel.className='feedback-panel';
-  panel.innerHTML=`
-    <button class="feedback-button" type="button" aria-expanded="false">
-      <span class="feedback-title"><span class="feedback-icon">⭐</span><span>Dê o seu feedback</span></span>
-      <span class="feedback-arrow">⌄</span>
-    </button>
-    <div class="feedback-content">
-      <p>Como você avalia o site YunaMyst?</p>
-      <div class="feedback-stars" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
-        <button class="feedback-star" type="button" data-rating="1" aria-label="1 estrela">★</button>
-        <button class="feedback-star" type="button" data-rating="2" aria-label="2 estrelas">★</button>
-        <button class="feedback-star" type="button" data-rating="3" aria-label="3 estrelas">★</button>
-        <button class="feedback-star" type="button" data-rating="4" aria-label="4 estrelas">★</button>
-        <button class="feedback-star" type="button" data-rating="5" aria-label="5 estrelas">★</button>
-      </div>
-      <div class="feedback-result" aria-live="polite"></div>
-    </div>`;
-  faq.insertAdjacentElement('afterend',panel);
-
-  const toggle=panel.querySelector('.feedback-button');
-  const result=panel.querySelector('.feedback-result');
-  toggle.addEventListener('click',function(){
-    const open=panel.classList.toggle('open');
-    toggle.setAttribute('aria-expanded',String(open));
-  });
-  panel.querySelectorAll('.feedback-star').forEach(function(star){
-    star.addEventListener('click',function(){
-      const rating=Number(star.dataset.rating);
-      panel.querySelectorAll('.feedback-star').forEach(function(s){
-        s.classList.toggle('selected',Number(s.dataset.rating)<=rating);
-      });
-      result.textContent='Obrigado pelo seu feedback! '+rating+'/5 estrelas.';
-    });
-  });
-});
-</script>
-
 <script src="./auto-codes.js"></script>
 <script id="yunamyst-feedback-final-js">let feedbackEstrelas=0;function toggleFeedback(){document.getElementById('feedbackModal')?.classList.add('open')}function fecharFeedback(){document.getElementById('feedbackModal')?.classList.remove('open')}function fecharFeedbackFora(e){if(e.target.id==='feedbackModal')fecharFeedback()}function selecionarEstrela(n){feedbackEstrelas=n;document.querySelectorAll('.feedback-star-form').forEach((b,i)=>b.classList.toggle('selected',i<n));document.getElementById('feedbackStarsHelp').textContent=n+' de 5 estrelas'}function escFb(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}function carregarAvaliacoes(){const l=document.getElementById('feedbackList'),sum=document.getElementById('feedbackSummary');fetch('https://formspree.io/api/0/forms/mdenpbql/submissions?limit=100&order=desc').then(r=>r.ok?r.json():Promise.reject()).then(j=>{const rows=(j.submissions||[]).filter(x=>String(x._date||'')>='2026-08-24T00:00:00').filter(x=>!x._status||!x._status.spam);let total=0,n=0;l.innerHTML='';rows.forEach(x=>{const r=Number(x.rating||x.estrelas||x['rating (1-5)']||x['Estrelas']),name=(x.name||x.nome||x['Nome']||'Anónimo').trim(),msg=(x.message||x.mensagem||x['Feedback']||x['Message']||'').trim();if(!(r>=1&&r<=5)||!msg)return;total+=r;n++;const d=document.createElement('article');d.className='feedback-review';d.innerHTML='<div class="feedback-review-top"><span class="feedback-review-name">'+escFb(name)+'</span><span class="feedback-review-stars">'+('★'.repeat(r))+('☆'.repeat(5-r))+'</span></div><div class="feedback-review-message">'+escFb(msg)+'</div>';l.appendChild(d)});sum.textContent=(n?(total/n).toFixed(1):'0.0')+' / 5 • '+n+' '+(n===1?'avaliação':'avaliações');if(!n)l.innerHTML='<div class="feedback-empty">Ainda não há avaliações de players.</div>'}).catch(()=>{sum.textContent='0.0 / 5 • 0 avaliações';l.innerHTML='<div class="feedback-empty">Ainda não foi possível carregar as avaliações.</div>'})}function enviarFeedback(e){e.preventDefault();if(!feedbackEstrelas){alert('Escolhe de 1 a 5 estrelas antes de enviar.');return}const nome=(document.getElementById('feedbackNome').value||'Anónimo').trim(),msg=document.getElementById('feedbackMensagem').value.trim(),b=document.querySelector('#feedbackForm .feedback-send');if(b){b.disabled=true;b.textContent='A ENVIAR...'}fetch('https://formspree.io/f/mdenpbql',{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json'},body:JSON.stringify({name:nome,rating:feedbackEstrelas,message:msg})}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(()=>{alert('Obrigado pelo teu feedback!');document.getElementById('feedbackForm').reset();feedbackEstrelas=0;document.querySelectorAll('.feedback-star-form').forEach(x=>x.classList.remove('selected'));fecharFeedback();carregarAvaliacoes()}).catch(()=>alert('Não foi possível enviar agora. Tenta novamente.')).finally(()=>{if(b){b.disabled=false;b.textContent='✉ ENVIAR FEEDBACK'}})}document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharFeedback()});carregarAvaliacoes();</script></body>
 </html>
