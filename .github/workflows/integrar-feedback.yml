@@ -1,3 +1,0 @@
-name: Integrar feedback antigo desativado
-on:
-  workflow_dispatch:
