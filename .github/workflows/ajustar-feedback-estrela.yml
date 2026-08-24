@@ -1,3 +1,0 @@
-name: Feedback estrela antigo desativado
-on:
-  workflow_dispatch:
