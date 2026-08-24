@@ -1,0 +1,39 @@
+name: Remove player feedback section
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  remove-feedback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove feedback UI from index
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          original = s
+          s = re.sub(r'<div class="feedback-section-new" id="feedbackNew">.*?</div>\s*<div class="feedback-modal-new" id="feedbackModalNew".*?</div>\s*</div>', '', s, flags=re.S)
+          s = re.sub(r'<div class="feedback-section-new" id="feedbackNew">.*?</div>\s*</div>', '', s, flags=re.S)
+          s = re.sub(r'<div class="feedback-modal-new" id="feedbackModalNew".*?</div>\s*</div>', '', s, flags=re.S)
+          marker = '/* YUNAMYST FEEDBACK REMOVED 20260824 */'
+          if marker not in s:
+              s = s.replace('</head>', '<style>/* YUNAMYST FEEDBACK REMOVED 20260824 */\n.feedback-section-new,.feedback-modal-new,.feedback-old,.old-feedback,.feedback-button-old{display:none!important}</style>\n</head>', 1)
+          if s == original:
+              print('No change needed')
+              raise SystemExit(0)
+          p.write_text(s, encoding='utf-8')
+          print('Feedback UI removed')
+          PY
+      - name: Remove this temporary workflow and commit
+        run: |
+          rm -f .github/workflows/remove-feedback.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/remove-feedback.yml
+          git commit -m "Remove player feedback section from site" || exit 0
+          git push
