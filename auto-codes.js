@@ -196,5 +196,5 @@
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',buildFeedback,{once:true});
     else buildFeedback();
   }
-  initFeedback();
+  // Feedback removido definitivamente.
 })();
