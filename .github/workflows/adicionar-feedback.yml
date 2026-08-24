@@ -1,3 +1,0 @@
-name: Feedback antigo desativado
-on:
-  workflow_dispatch:
