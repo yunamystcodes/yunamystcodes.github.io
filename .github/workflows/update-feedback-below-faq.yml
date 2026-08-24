@@ -1,0 +1,92 @@
+name: Place feedback below FAQ
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix-feedback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move feedback below FAQ
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          # Hide every previous feedback block/button so there is only one visible feedback button.
+          css=r'''
+          <style id="yunamyst-feedback-position-fix">
+          .feedback-section:not(.feedback-section-new),#feedback:not(.feedback-section-new){display:none!important}
+          .feedback-old,.old-feedback,.feedback-button-old{display:none!important}
+          .feedback-section-new{display:block!important;margin-top:12px!important;padding:0!important;background:linear-gradient(180deg,rgba(12,7,29,.97),rgba(5,4,17,.97));border:1px solid rgba(190,102,255,.4);border-radius:18px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.4)}
+          .feedback-section-new .feedback-title{padding:16px 18px 10px;border-bottom:1px solid rgba(255,255,255,.08);font-size:16px;font-weight:900;color:#fff}
+          .feedback-section-new .feedback-summary{padding:7px 18px 0;color:#a99db7;font-size:10px}
+          .feedback-section-new .feedback-open{display:block;width:calc(100% - 24px);height:44px;margin:12px;border:1px solid #edbd4e;border-radius:10px;background:linear-gradient(#f6cd70,#bd7d1d);color:#251400;font-weight:900;font-size:11px;cursor:pointer}
+          .feedback-section-new .feedback-list{padding:0 12px 12px}
+          .feedback-section-new .feedback-item{padding:12px 4px;border-top:1px solid rgba(255,255,255,.08)}
+          .feedback-section-new .feedback-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+          .feedback-section-new .feedback-name{color:#f0ce70;font-size:13px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+          .feedback-section-new .feedback-stars{color:#f0c45c;font-size:13px;letter-spacing:1px;white-space:nowrap}
+          .feedback-section-new .feedback-message{margin-top:7px;color:#c9c0d0;font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+          .feedback-modal-new{display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:18px;background:rgba(2,1,8,.78)}
+          .feedback-modal-new.open{display:flex}.feedback-card-new{position:relative;width:min(500px,calc(100% - 24px));padding:22px;border:1px solid #b65cff;border-radius:16px;background:#0c071d;box-shadow:0 25px 80px #000}
+          .feedback-card-new h3{color:#f0ce70;margin-bottom:14px}.feedback-card-new input,.feedback-card-new textarea{width:100%;margin:6px 0 10px;padding:11px;border:1px solid #633487;border-radius:9px;background:#12091f;color:#fff}.feedback-card-new textarea{min-height:110px;resize:vertical}.feedback-stars-form{display:flex;gap:4px;margin:5px 0 12px}.feedback-stars-form button{border:0;background:transparent;color:#635b68;font-size:25px;cursor:pointer;padding:0}.feedback-stars-form button.selected{color:#f0c45c}.feedback-submit-new{width:100%;height:42px;border:1px solid #edbd4e;border-radius:9px;background:linear-gradient(#f6cd70,#bd7d1d);font-weight:900;cursor:pointer}.feedback-close-new{position:absolute;top:8px;right:10px;border:0;background:transparent;color:#fff;font-size:22px;cursor:pointer}
+          </style>
+          '''
+          s=s.replace('</head>',css+'</head>',1)
+          # Insert exactly before the contact block, which is immediately after the FAQ in the right column.
+          marker='<div class="contact-mail">'
+          if marker not in s:
+              raise SystemExit('contact-mail marker not found; FAQ/contact structure changed')
+          feedback=r'''
+          <div class="feedback-section-new" id="feedbackNew">
+            <div class="feedback-title">⭐ AVALIAÇÕES DOS PLAYERS</div>
+            <div class="feedback-summary" id="feedbackSummaryNew">0.0 / 5 • 0 avaliações</div>
+            <button class="feedback-open" type="button" onclick="openPlayerFeedback()">✉ DÊ O SEU FEEDBACK</button>
+            <div class="feedback-list" id="feedbackListNew"><div class="feedback-message" style="text-align:center">Ainda não há avaliações de players.</div></div>
+          </div>
+          <div class="feedback-modal-new" id="feedbackModalNew" onclick="if(event.target===this)closePlayerFeedback()">
+            <div class="feedback-card-new">
+              <button class="feedback-close-new" type="button" onclick="closePlayerFeedback()">×</button>
+              <h3>⭐ Avaliar player</h3>
+              <input id="playerFeedbackName" maxlength="80" placeholder="Nome do player">
+              <div class="feedback-stars-form" id="playerFeedbackStars">
+                <button type="button" data-star="1">★</button><button type="button" data-star="2">★</button><button type="button" data-star="3">★</button><button type="button" data-star="4">★</button><button type="button" data-star="5">★</button>
+              </div>
+              <textarea id="playerFeedbackMessage" maxlength="2000" placeholder="Escreve o teu feedback..."></textarea>
+              <button class="feedback-submit-new" type="button" onclick="savePlayerFeedback()">ENVIAR FEEDBACK</button>
+            </div>
+          </div>
+          '''
+          s=s.replace(marker,feedback+marker,1)
+          js=r'''
+          <script id="yunamyst-feedback-position-js">
+          (function(){
+            const KEY='yunamyst-player-feedback-final-v3';let selected=0;
+            const $=id=>document.getElementById(id);
+            window.openPlayerFeedback=()=>{$('feedbackModalNew').classList.add('open');selected=0;document.querySelectorAll('#playerFeedbackStars button').forEach(b=>b.classList.remove('selected'))};
+            window.closePlayerFeedback=()=>{$('feedbackModalNew').classList.remove('open')};
+            document.querySelectorAll('#playerFeedbackStars button').forEach(b=>b.addEventListener('click',()=>{selected=+b.dataset.star;document.querySelectorAll('#playerFeedbackStars button').forEach(x=>x.classList.toggle('selected',+x.dataset.star<=selected))}));
+            function get(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
+            function esc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+            function render(){let a=get(),list=$('feedbackListNew'),sum=$('feedbackSummaryNew');if(!a.length){list.innerHTML='<div class="feedback-message" style="text-align:center">Ainda não há avaliações de players.</div>';sum.textContent='0.0 / 5 • 0 avaliações';return}let avg=a.reduce((n,x)=>n+x.stars,0)/a.length;sum.textContent=avg.toFixed(1)+' / 5 • '+a.length+' '+(a.length===1?'avaliação':'avaliações');list.innerHTML=a.slice().reverse().map(x=>'<div class="feedback-item"><div class="feedback-meta"><span class="feedback-name">'+esc(x.name)+'</span><span class="feedback-stars">'+('★'.repeat(x.stars)+'☆'.repeat(5-x.stars))+'</span></div><div class="feedback-message">'+esc(x.message)+'</div></div>').join('')}
+            window.savePlayerFeedback=()=>{let name=($('playerFeedbackName').value||'').trim()||'Player',message=($('playerFeedbackMessage').value||'').trim();if(!selected)return alert('Escolhe de 1 a 5 estrelas.');if(!message)return alert('Escreve a tua mensagem.');let a=get();a.push({name,message,stars:selected,date:Date.now()});localStorage.setItem(KEY,JSON.stringify(a.slice(-100)));$('playerFeedbackName').value='';$('playerFeedbackMessage').value='';closePlayerFeedback();render()};
+            document.addEventListener('DOMContentLoaded',render);document.addEventListener('keydown',e=>{if(e.key==='Escape')closePlayerFeedback()});
+          })();
+          </script>
+          '''
+          s=s.replace('</body>',js+'</body>',1)
+          s=s.replace('auto-codes-20260824-0950-feedback-faq','auto-codes-20260824-1005-feedback-below-faq')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "YunaMyst Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Put single feedback button directly below FAQ"
+          git push
