@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Remover exatamente o bloco grande de feedback
+      - name: Remover blocos de feedback
         shell: python
         run: |
           from pathlib import Path
@@ -18,49 +18,57 @@ jobs:
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = 'Dê o seu feedback'
-          pos = s.find(marker)
 
-          if pos == -1:
-              print('Bloco de feedback não encontrado.')
-          else:
-              # O feedback é um bloco SECTION. Encontra a section que contém o título
-              # e remove a section inteira, sem mexer nos códigos, FAQ ou rodapé.
-              start = s.rfind('<section', 0, pos)
-              end = s.find('</section>', pos)
+          def remove_balanced(html, pattern):
+              m = re.search(pattern, html, re.I | re.S)
+              if not m:
+                  return html, False
+              start = m.start()
+              tag = m.group(1).lower()
+              tag_re = re.compile(r'<(/?)' + tag + r'\b[^>]*>', re.I | re.S)
+              depth = 0
+              end = None
+              for t in tag_re.finditer(html, start):
+                  if t.group(1):
+                      depth -= 1
+                      if depth == 0:
+                          end = t.end()
+                          break
+                  else:
+                      depth += 1
+              if end is None:
+                  return html, False
+              return html[:start] + html[end:], True
 
-              if start != -1 and end != -1:
-                  end += len('</section>')
-                  s = s[:start] + s[end:]
-                  print('Bloco grande de feedback removido.')
-              else:
-                  # Fallback para versões em que o bloco foi criado como DIV.
-                  start = s.rfind('<div', 0, pos)
-                  if start != -1:
-                      # Localiza a div balanceada que contém o marcador.
-                      tag_re = re.compile(r'<(/?)div\b[^>]*>', re.I)
-                      depth = 0
-                      close_end = -1
-                      for m in tag_re.finditer(s, start):
-                          if m.start() > pos and depth == 0:
-                              break
-                          if m.group(1):
-                              depth -= 1
-                              if depth == 0 and m.end() > pos:
-                                  close_end = m.end()
-                                  break
-                          else:
-                              depth += 1
-                      if close_end != -1:
-                          s = s[:start] + s[close_end:]
-                          print('Bloco grande de feedback (DIV) removido.')
+          # Remove the exact large feedback form shown in the screenshot.
+          # It contains the player feedback controls and/or the feedback title.
+          patterns = [
+              r'<(section)\b[^>]*\bid=["\']feedback["\'][^>]*>',
+              r'<(div)\b[^>]*\bclass=["\'][^"\']*feedback-section-new[^"\']*["\'][^>]*>',
+              r'<(div)\b[^>]*\bid=["\']feedbackModalNew["\'][^>]*>',
+              r'<(div)\b[^>]*\bclass=["\'][^"\']*feedback-modal-new[^"\']*["\'][^>]*>'
+          ]
+
+          total = 0
+          changed = True
+          while changed:
+              changed = False
+              for pattern in patterns:
+                  s, removed = remove_balanced(s, pattern)
+                  if removed:
+                      total += 1
+                      changed = True
+
+          # Remove leftover feedback-position CSS so the deleted block cannot be recreated visually.
+          s = re.sub(r'\s*<style id=["\']yunamyst-feedback-position-fix["\'][\s\S]*?</style>\s*', '\n', s, flags=re.I)
 
           p.write_text(s, encoding='utf-8')
+          print('Blocos de feedback removidos:', total)
       - name: Publicar alteração
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Remover bloco grande de feedback [skip ci]'
+          git commit -m 'Remover completamente o feedback do site [skip ci]'
           git push
