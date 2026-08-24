@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Remover blocos de feedback
+      - name: Remover todos os blocos de feedback
         shell: python
         run: |
           from pathlib import Path
@@ -19,34 +19,23 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          def remove_balanced(html, pattern):
-              m = re.search(pattern, html, re.I | re.S)
-              if not m:
-                  return html, False
-              start = m.start()
-              tag = m.group(1).lower()
+          def remove_balanced(html, tag, start):
               tag_re = re.compile(r'<(/?)' + tag + r'\b[^>]*>', re.I | re.S)
               depth = 0
-              end = None
-              for t in tag_re.finditer(html, start):
-                  if t.group(1):
+              for m in tag_re.finditer(html, start):
+                  if m.group(1):
                       depth -= 1
                       if depth == 0:
-                          end = t.end()
-                          break
+                          return html[:start] + html[m.end():], True
                   else:
                       depth += 1
-              if end is None:
-                  return html, False
-              return html[:start] + html[end:], True
+              return html, False
 
-          # Remove the exact large feedback form shown in the screenshot.
-          # It contains the player feedback controls and/or the feedback title.
           patterns = [
               r'<(section)\b[^>]*\bid=["\']feedback["\'][^>]*>',
-              r'<(div)\b[^>]*\bclass=["\'][^"\']*feedback-section-new[^"\']*["\'][^>]*>',
-              r'<(div)\b[^>]*\bid=["\']feedbackModalNew["\'][^>]*>',
-              r'<(div)\b[^>]*\bclass=["\'][^"\']*feedback-modal-new[^"\']*["\'][^>]*>'
+              r'<(div)\b[^>]*\bclass=["\'][^"\']*\bfeedback-section\b[^"\']*["\'][^>]*>',
+              r'<(div)\b[^>]*\bid=["\']feedbackModal(?:New)?["\'][^>]*>',
+              r'<(div)\b[^>]*\bclass=["\'][^"\']*\bfeedback-modal(?:-new)?\b[^"\']*["\'][^>]*>'
           ]
 
           total = 0
@@ -54,16 +43,25 @@ jobs:
           while changed:
               changed = False
               for pattern in patterns:
-                  s, removed = remove_balanced(s, pattern)
+                  m = re.search(pattern, s, re.I | re.S)
+                  if not m:
+                      continue
+                  tag = m.group(1).lower()
+                  s2, removed = remove_balanced(s, tag, m.start())
                   if removed:
+                      s = s2
                       total += 1
                       changed = True
 
-          # Remove leftover feedback-position CSS so the deleted block cannot be recreated visually.
-          s = re.sub(r'\s*<style id=["\']yunamyst-feedback-position-fix["\'][\s\S]*?</style>\s*', '\n', s, flags=re.I)
+          # Remove any leftover standalone feedback button.
+          s = re.sub(r'\s*<button\b[^>]*(?:class=["\'][^"\']*feedback[^"\']*["\']|id=["\'][^"\']*feedback[^"\']*["\'])[^>]*>[\s\S]*?</button>\s*', '\n', s, flags=re.I)
+
+          # Remove feedback-only CSS and JS blocks.
+          s = re.sub(r'\s*<style\b[^>]*\bid=["\'][^"\']*feedback[^"\']*["\'][^>]*>[\s\S]*?</style>\s*', '\n', s, flags=re.I)
+          s = re.sub(r'\s*<script\b[^>]*\bid=["\'][^"\']*feedback[^"\']*["\'][^>]*>[\s\S]*?</script>\s*', '\n', s, flags=re.I)
 
           p.write_text(s, encoding='utf-8')
-          print('Blocos de feedback removidos:', total)
+          print('Blocos removidos:', total)
       - name: Publicar alteração
         run: |
           git config user.name 'github-actions[bot]'
