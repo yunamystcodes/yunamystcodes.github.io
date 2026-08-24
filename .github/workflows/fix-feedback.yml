@@ -1,0 +1,86 @@
+name: Fix feedback layout
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update-feedback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update feedback section
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='/* YUNAMYST FEEDBACK FINAL 20260824 */'
+          if marker in s:
+              print('Feedback fix already applied')
+              raise SystemExit(0)
+          s=re.sub(r'\n<section class="feedback-section" id="feedback">.*?</section><footer id="rodape">', '\n<footer id="rodape">', s, count=1, flags=re.S)
+          feedback_html='''
+<div class="feedback-section" id="feedback">
+  <div class="feedback-head">
+    <h2>⭐ AVALIAÇÕES DOS PLAYERS</h2>
+    <div class="feedback-summary" id="feedbackSummary">0.0 / 5 • 0 avaliações</div>
+  </div>
+  <button class="feedback-action" type="button" onclick="toggleFeedback()">✉ DÊ O SEU FEEDBACK</button>
+  <div class="feedback-list" id="feedbackList"><div class="feedback-empty">Ainda não há avaliações de players.</div></div>
+</div>'''
+          anchor='</div></aside>\n'
+          if anchor not in s:
+              raise SystemExit('FAQ anchor not found')
+          s=s.replace(anchor, '</div>'+feedback_html+'</aside>\n', 1)
+          css='''
+<style id="yunamyst-feedback-final">
+/* YUNAMYST FEEDBACK FINAL 20260824 */
+.feedback-section{margin-top:12px;padding:0;background:linear-gradient(180deg,rgba(12,7,29,.97),rgba(5,4,17,.97));border:1px solid rgba(190,102,255,.4);border-radius:18px;box-shadow:0 18px 45px rgba(0,0,0,.4);overflow:hidden}
+.feedback-head{padding:16px 18px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.feedback-head h2{padding:0!important;border:0!important;font-size:16px!important;color:#fff}
+.feedback-summary{margin-top:5px;color:#a99db7;font-size:10px}
+.feedback-action{display:block;width:calc(100% - 24px);height:44px;margin:12px;border:1px solid #edbd4e;border-radius:10px;background:linear-gradient(#f6cd70,#bd7d1d);color:#251400;font-weight:900;font-size:11px;cursor:pointer}
+.feedback-list{padding:0 12px 12px}
+.feedback-item{padding:12px 4px;border-top:1px solid rgba(255,255,255,.08)}
+.feedback-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.feedback-meta strong{color:#f0ce70;font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feedback-stars{color:#f0c45c;font-size:13px;letter-spacing:1px;white-space:nowrap}
+.feedback-message{margin-top:7px;color:#c9c0d0;font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.feedback-empty{padding:4px 2px 10px;color:#9f96ae;font-size:11px;text-align:center}
+@media(max-width:850px){.feedback-section{margin-top:12px}.feedback-head{padding:14px}.feedback-action{width:calc(100% - 20px);margin:10px;height:43px}.feedback-list{padding:0 10px 10px}.feedback-meta strong{font-size:12px}.feedback-stars{font-size:12px}.feedback-message{font-size:11px}}
+</style>
+'''
+          s=s.replace('</head>', css+'\n</head>', 1)
+          js='''
+<script id="yunamyst-feedback-final-js">
+/* YUNAMYST FEEDBACK FINAL JS 20260824 */
+(function(){
+  const KEY='yunamyst-player-feedback-v2';
+  let selectedStar=0;
+  window.toggleFeedback=function(){const m=document.getElementById('feedbackModal');if(m){m.classList.add('open');selectedStar=0;document.querySelectorAll('.feedback-star-form').forEach(x=>x.classList.remove('selected'));const h=document.getElementById('feedbackStarsHelp');if(h)h.textContent='Escolhe de 1 a 5 estrelas'}};
+  window.fecharFeedback=function(){const m=document.getElementById('feedbackModal');if(m)m.classList.remove('open')};
+  window.fecharFeedbackFora=function(e){if(e.target&&e.target.id==='feedbackModal')window.fecharFeedback()};
+  window.selecionarEstrela=function(n){selectedStar=n;document.querySelectorAll('.feedback-star-form').forEach(x=>x.classList.toggle('selected',Number(x.dataset.star)<=n));const h=document.getElementById('feedbackStarsHelp');if(h)h.textContent=n+' '+(n===1?'estrela':'estrelas')};
+  function esc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function get(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
+  function render(){const list=document.getElementById('feedbackList'),sum=document.getElementById('feedbackSummary');if(!list)return;const a=get();if(!a.length){list.innerHTML='<div class="feedback-empty">Ainda não há avaliações de players.</div>';if(sum)sum.textContent='0.0 / 5 • 0 avaliações';return}const avg=a.reduce((x,y)=>x+y.stars,0)/a.length;if(sum)sum.textContent=avg.toFixed(1)+' / 5 • '+a.length+' '+(a.length===1?'avaliação':'avaliações');list.innerHTML=a.slice().reverse().map(x=>'<div class="feedback-item"><div class="feedback-meta"><strong>'+esc(x.name||'Player')+'</strong><span class="feedback-stars">'+('★'.repeat(x.stars)+'☆'.repeat(5-x.stars))+'</span></div><div class="feedback-message">'+esc(x.message)+'</div></div>').join('')}
+  window.enviarFeedback=function(e){e.preventDefault();const name=(document.getElementById('feedbackNome')?.value||'').trim()||'Player';const message=(document.getElementById('feedbackMensagem')?.value||'').trim();if(!selectedStar){alert('Escolhe uma avaliação de 1 a 5 estrelas.');return}if(!message){alert('Escreve a tua mensagem.');return}const item={name:name.slice(0,80),message:message.slice(0,2000),stars:selectedStar,date:Date.now()};const a=get();a.push(item);localStorage.setItem(KEY,JSON.stringify(a.slice(-100)));render();const subject=encodeURIComponent('Feedback YunaMyst — '+item.stars+'/5 estrelas');const body=encodeURIComponent('Player: '+item.name+'\nAvaliação: '+item.stars+'/5 estrelas\n\n'+item.message);window.location.href='mailto:?subject='+subject+'&body='+body;setTimeout(()=>window.fecharFeedback(),250)};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')window.fecharFeedback()});
+  document.addEventListener('DOMContentLoaded',render);
+})();
+</script>
+'''
+          s=s.replace('</body>', js+'\n</body>', 1)
+          s=s.replace('<meta name="build-version" content="auto-codes-20260824-0829">','<meta name="build-version" content="auto-codes-20260824-0931-feedback">',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit feedback fix
+        run: |
+          git config user.name "YunaMyst Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix feedback button below FAQ"
+          git push
