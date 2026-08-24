@@ -1,0 +1,39 @@
+name: Remover bloco de feedback do site
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  remove-feedback:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remover secao de feedback
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          patterns = [
+              r'\s*<section class="feedback-section" id="feedback">.*?</section>',
+              r'\s*<div class="feedback-section" id="feedback">.*?</div>'
+          ]
+          for pattern in patterns:
+              s, n = re.subn(pattern, '', s, count=1, flags=re.S)
+              if n:
+                  print('Secao de feedback removida')
+                  break
+          else:
+              print('Secao de feedback ja nao existe')
+          p.write_text(s, encoding='utf-8')
+      - name: Publicar alteracao
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Remover bloco enorme de feedback [skip ci]'
+          git push
