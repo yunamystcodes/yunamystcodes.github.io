@@ -10,14 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Remover legado
+      - name: Remover todo o bloco de feedback
         shell: python
         run: |
           from pathlib import Path
           import re
-          p=Path('index.html'); s=p.read_text(encoding='utf-8')
-          s=re.sub(r'<script id="yunamyst-feedback-script">[\s\S]*?</script>\s*','',s,1)
-          s=re.sub(r'<button class="feedback-open"[\s\S]*?</button>\s*','',s)
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          patterns = [
+              r'\s*<section class="feedback-section" id="feedback">[\s\S]*?</section>',
+              r'\s*<div class="feedback-section-new" id="feedbackNew">[\s\S]*?</div>\s*',
+              r'\s*<div class="feedback-section" id="feedback">[\s\S]*?</div>\s*',
+              r'<script id="yunamyst-feedback-script">[\s\S]*?</script>\s*',
+              r'<button class="feedback-open"[\s\S]*?</button>\s*'
+          ]
+          for pattern in patterns:
+              s, n = re.subn(pattern, '', s, count=1)
+              if n:
+                  print('Removido:', pattern)
           p.write_text(s,encoding='utf-8')
       - name: Publicar
         run: |
@@ -25,5 +35,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Remover feedback antigo [skip ci]'
+          git commit -m 'Remover bloco de feedback do site [skip ci]'
           git push
