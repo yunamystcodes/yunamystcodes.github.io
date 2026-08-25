@@ -65,6 +65,17 @@
 
 <style>/* YUNAMYST FEEDBACK REMOVED 20260824 */
 .feedback-section-new,.feedback-modal-new,.feedback-old,.old-feedback,.feedback-button-old{display:none!important}</style>
+<style id="yunamyst-mobile-codes-width-fix">
+/* YUNAMYST MOBILE CODES WIDTH FIX 20260825 */
+@media(max-width:850px){
+  .layout>.panel#codigos{width:100%!important;max-width:100%!important;min-width:0!important}
+  #ativos.code-list{display:flex!important;width:100%!important;max-width:none!important;align-items:stretch!important;padding:10px!important}
+  #ativos.code-list>.code{display:grid!important;width:100%!important;max-width:none!important;min-width:0!important;align-self:stretch!important;margin:0!important}
+  #ativos.code-list>.code>*{min-width:0}
+  #ativos.code-list>.code .cinfo{overflow:hidden!important}
+}
+</style>
+
 </head>
 <body>
 <div class="bg"></div>
