@@ -33,18 +33,48 @@
   function fixPartnership(){
     const modal=document.getElementById('parceriaModal');
     if(!modal)return;
-
-    // Remove the old feedback elements accidentally placed inside the partnership popup.
-    modal.querySelectorAll('.feedback-summary,.feedback-list').forEach(el=>el.remove());
-
     const card=modal.querySelector('.partnership-card');
-    if(card){
-      card.style.width='min(560px, calc(100vw - 32px))';
-      card.style.maxWidth='560px';
-      card.style.boxSizing='border-box';
-      card.style.maxHeight='calc(100vh - 32px)';
-      card.style.overflowY='auto';
-      card.style.padding='28px 26px 24px';
+    if(!card)return;
+
+    /* Remove feedback/rating blocks accidentally duplicated inside the partnership popup. */
+    card.querySelectorAll('.feedback-summary,.feedback-list,.rating,.ratings,.reviews,.review-list,.player-feedback,.feedback,.avaliacoes,.avaliacoes-players').forEach(el=>el.remove());
+    Array.from(card.children).forEach(el=>{
+      const text=(el.textContent||'').trim();
+      if(/avaliaç(?:ão|ões)|avaliações de players|\b\d+(?:[.,]\d+)?\s*\/\s*5\b/i.test(text) && !el.matches('h1,h2,h3,h4,h5,h6,p')) el.remove();
+    });
+
+    card.style.width='min(560px, calc(100vw - 32px))';
+    card.style.maxWidth='560px';
+    card.style.boxSizing='border-box';
+    card.style.maxHeight='calc(100vh - 32px)';
+    card.style.overflowY='auto';
+    card.style.padding='28px 26px 24px';
+
+    const style=document.createElement('style');
+    style.id='yunamyst-partnership-fix';
+    style.textContent=`
+      #parceriaModal{padding:16px!important;overflow:auto!important;align-items:center!important;justify-content:center!important}
+      #parceriaModal .partnership-card{width:min(560px,calc(100vw - 32px))!important;max-width:560px!important;max-height:calc(100vh - 32px)!important;margin:auto!important;border-radius:16px!important;overflow-y:auto!important}
+      #parceriaModal .modal-close{z-index:5;touch-action:manipulation}
+      @media(max-width:600px){
+        #parceriaModal{padding:12px!important}
+        #parceriaModal .partnership-card{width:calc(100vw - 24px)!important;max-height:calc(100vh - 24px)!important;padding:22px 18px 20px!important;border-radius:14px!important}
+        #parceriaModal .partnership-card h3{font-size:16px!important;line-height:1.25!important;padding-right:34px!important}
+        #parceriaModal .partnership-card p{font-size:13px!important;line-height:1.55!important;padding-right:4px!important}
+      }
+    `;
+    document.getElementById('yunamyst-partnership-fix')?.remove();
+    document.head.appendChild(style);
+
+    const close=modal.querySelector('.modal-close');
+    if(close&&!close.dataset.yunaPartnershipClose){
+      close.dataset.yunaPartnershipClose='1';
+      close.addEventListener('click',()=>modal.classList.remove('open'));
+    }
+    if(!modal.dataset.yunaPartnershipEvents){
+      modal.dataset.yunaPartnershipEvents='1';
+      modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});
     }
   }
 
