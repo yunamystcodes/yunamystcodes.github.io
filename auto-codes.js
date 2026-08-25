@@ -30,6 +30,28 @@
     }
   }
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
-  else load();
+  function fixPartnership(){
+    const modal=document.getElementById('parceriaModal');
+    if(!modal)return;
+
+    // Remove the old feedback elements accidentally placed inside the partnership popup.
+    modal.querySelectorAll('.feedback-summary,.feedback-list').forEach(el=>el.remove());
+
+    const card=modal.querySelector('.partnership-card');
+    if(card){
+      card.style.width='min(560px, calc(100vw - 32px))';
+      card.style.maxWidth='560px';
+      card.style.boxSizing='border-box';
+      card.style.maxHeight='calc(100vh - 32px)';
+      card.style.overflowY='auto';
+      card.style.padding='28px 26px 24px';
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',()=>{load();fixPartnership();},{once:true});
+  }else{
+    load();
+    fixPartnership();
+  }
 })();
