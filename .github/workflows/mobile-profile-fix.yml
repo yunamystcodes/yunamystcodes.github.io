@@ -16,6 +16,7 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
+
           marker = '<style id="yunamyst-mobile-profile-final">'
           if marker not in s:
               css = r'''<style id="yunamyst-mobile-profile-final">
@@ -38,12 +39,28 @@ jobs:
           </style>
           '''
               s = s.replace('</head>', css + '\n</head>', 1)
-              p.write_text(s, encoding='utf-8')
+
+          width_marker = '<style id="yunamyst-mobile-codes-width-fix">'
+          if width_marker not in s:
+              css2 = r'''<style id="yunamyst-mobile-codes-width-fix">
+          /* YUNAMYST MOBILE CODES WIDTH FIX 20260825 */
+          @media(max-width:850px){
+            .layout>.panel#codigos{width:100%!important;max-width:100%!important;min-width:0!important}
+            #ativos.code-list{display:flex!important;width:100%!important;max-width:none!important;align-items:stretch!important;padding:10px!important}
+            #ativos.code-list>.code{display:grid!important;width:100%!important;max-width:none!important;min-width:0!important;align-self:stretch!important;margin:0!important}
+            #ativos.code-list>.code>*{min-width:0}
+            #ativos.code-list>.code .cinfo{overflow:hidden!important}
+          }
+          </style>
+          '''
+              s = s.replace('</head>', css2 + '\n</head>', 1)
+
+          p.write_text(s, encoding='utf-8')
           PY
       - name: Commit e publicar
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Ajustar perfil e redes sociais no telemovel"
+          git diff --cached --quiet || git commit -m "Corrigir largura dos cartões de códigos no telemóvel"
           git push
