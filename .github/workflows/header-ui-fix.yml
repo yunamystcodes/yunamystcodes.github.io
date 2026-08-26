@@ -1,38 +1,48 @@
-name: Update YunaMyst header on PC and mobile
+name: Fix YunaMyst header on PC and mobile
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   fix-header:
-    if: ${{ !contains(github.event.head_commit.message, 'Update YunaMyst header on PC and mobile') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip header]') }}
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Remove stray header text and fix YunaMyst
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Remove stray text and fix YunaMyst
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
 
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
+          p = Path("index.html")
+          s = p.read_text(encoding="utf-8")
 
-          # Remove the stray fragment that appeared in the upper-left corner.
-          s = re.sub(r'yst\.?["\']?>', '', s)
+          # Remove the exact stray fragment reported in the upper-left corner.
+          for bad in ('yst.\">', 'yst.">', 'yst.\">', 'yst.\'>'):
+              s = s.replace(bad, '')
 
-          # Remove any accidental standalone loose fragment at the beginning of body.
-          s = re.sub(r'(<body[^>]*>\s*)yst\.?["\']?>\s*', r'\1', s, flags=re.I)
+          # Remove malformed standalone text if it occurs immediately after <body>.
+          s = re.sub(r'(<body[^>]*>\s*)yst\.?["\'>]+\s*', r'\1', s, flags=re.I)
 
-          # Ensure the brand is exactly YunaMyst when the split logo markup exists.
+          # Correct the brand wherever the wrong capitalization was introduced.
           s = s.replace('YunaMYst', 'YunaMyst')
           s = s.replace('YunaMYST', 'YunaMyst')
+          s = s.replace('YunaMyst.</span>', 'YunaMyst</span>')
 
-          marker = '/* YUNAMYST HEADER CLEAN WORKFLOW 20260826 */'
-          css = f'''\n<style id="yunamyst-header-clean-workflow">\n{marker}\n/* Only the lowercase y in Myst is reduced so the logo never overlaps the w. */\n.logo .myst-y {{ font-size: .76em !important; display: inline-block !important; line-height: 1 !important; transform: translateY(.02em) !important; }}\n@media (max-width: 850px) {{\n  .logo .myst-y {{ font-size: .76em !important; }}\n}}\n</style>\n'''
+          # Keep only the lowercase y in Myst smaller, on desktop and mobile.
+          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260826 V2'
+          css = f'''\n<style id="yunamyst-header-clean-workflow">\n/* {marker} */\n.logo .myst-y {{\n  font-size: .76em !important;\n  display: inline-block !important;\n  line-height: 1 !important;\n  transform: translateY(.02em) !important;\n}}\n@media (max-width: 850px) {{\n  .logo .myst-y {{ font-size: .76em !important; }}\n}}\n</style>\n'''
 
           if marker not in s:
               s = s.replace('</head>', css + '</head>', 1)
@@ -40,12 +50,17 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verify requested changes
+      - name: Verify header cleanup
+        shell: bash
         run: |
-          ! grep -nE 'yst\.?["'"']?>' index.html
-          grep -n 'YunaMyst' index.html || true
+          if grep -nF 'yst.">' index.html; then
+            echo 'Stray yst. fragment still exists.'
+            exit 1
+          fi
+          echo 'Header cleanup verified.'
 
-      - name: Commit changes back to main
+      - name: Commit and push
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -54,5 +69,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Update YunaMyst header on PC and mobile"
+          git commit -m "Fix YunaMyst header [skip header]"
           git push
