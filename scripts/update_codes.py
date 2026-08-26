@@ -127,7 +127,7 @@ def main():
             for code in codes: found.setdefault(code,{"code":code,"sources":set()})["sources"].add(name)
         except Exception as exc: errors.append(f"{name}: {exc}"); print(f"Fonte {name}: ERRO - {exc}")
 
-    confirmed=sorted([v for v in found.values() if len(v["sources"]&TRUSTED)>=2 and v["code"] not in USER_REPORTED_INACTIVE and (re.search(r"\d",v["code"]) or "sw-teams" in v["sources"])],key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
+    confirmed=sorted([v for v in found.values() if len(v["sources"]&TRUSTED)>=2 and (re.search(r"\d",v["code"]) or "sw-teams" in v["sources"])],key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
     active=[v["code"] for v in confirmed]
     if not active: raise RuntimeError("Nenhum código confirmado por 2 fontes confiáveis; atualização abortada.")
 
