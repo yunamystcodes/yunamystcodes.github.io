@@ -8,8 +8,7 @@
     "LEGENDSWC2026HSL",
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
-    "YIQIZOUGUO10SWC",
-    "IDTOP8GO"
+    "YIQIZOUGUO10SWC"
   ],
   "expired": [
     "912XUXIECHUANQI",
@@ -250,9 +249,10 @@
     "LEAGUEWEEK4": 1,
     "SW2024MARW1M": 1,
     "SW2023JLJ9E": 1,
-    "JUNSW2026W6C": 1
+    "JUNSW2026W6C": 1,
+    "IDTOP8GO": 1
   },
-  "updated_at": "2026-08-26T13:30:19Z",
+  "updated_at": "2026-08-26T13:31:16Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -396,20 +396,6 @@
       "all": [
         "summonerswarcodes",
         "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
-    "IDTOP8GO": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
         "swcoupon",
         "swgt",
         "swquery"

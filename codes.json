@@ -1,8 +1,8 @@
 {
-  "updated": "2026-08-26T13:30:19Z",
+  "updated": "2026-08-26T13:31:16Z",
   "source_count": 20,
   "successful_sources": 13,
-  "trusted_confirmation": 2,
+  "trusted_confirmation": "SW-Teams + 1",
   "codes": [
     "4READY4TDOT",
     "AUGSW2026V7N",
@@ -12,8 +12,7 @@
     "LEGENDSWC2026HSL",
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
-    "YIQIZOUGUO10SWC",
-    "IDTOP8GO"
+    "YIQIZOUGUO10SWC"
   ],
   "sources": {
     "4READY4TDOT": {
@@ -158,20 +157,6 @@
       "all": [
         "summonerswarcodes",
         "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
-    "IDTOP8GO": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
         "swcoupon",
         "swgt",
         "swquery"
