@@ -39,6 +39,8 @@ jobs:
           }
           for src, dst in replacements.items():
               s = s.replace(src, dst)
+          # Apenas o Y de "Myst" fica ligeiramente menor para não tocar no "w" visualmente.
+          s = s.replace('<div class="logo">YunaMyst<small>', '<div class="logo">YunaM<span class="myst-y">Y</span>st<small>', 1)
           if './assets/header-final.css' not in s:
               s = s.replace('</head>', '<link rel="stylesheet" href="./assets/header-final.css?v=20260826"><meta name="build-version" content="header-nav-language-final-20260826"></head>', 1)
           else:
@@ -66,7 +68,7 @@ jobs:
           git config user.email 'actions@github.com'
           git add codes.json codes-history.json index.html .github/workflows/update-codes.yml assets/header-final.css assets/i18n.js
           if ! git diff --cached --quiet; then
-            git commit -m 'Atualizar cabeçalho navegação e idioma'
+            git commit -m 'Ajustar apenas o Y de Myst no logo'
             git push
           else
             echo 'Nenhuma alteração necessária.'
