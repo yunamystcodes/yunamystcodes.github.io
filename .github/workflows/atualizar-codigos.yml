@@ -27,6 +27,22 @@ jobs:
       - name: Atualizar códigos ativos e expirados
         run: python3 scripts/update_codes.py
 
+      - name: Garantir botão WhatsApp
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          url = 'https://chat.whatsapp.com/KWg53GNpXDA3G5lDT8VwOg?s=cl&p=a&ilr=0'
+          if 'class="community-tab whatsapp"' not in s:
+              button = f'<a class="community-tab whatsapp" href="{url}" target="_blank" rel="noopener" aria-label="WhatsApp"><span>WhatsApp</span><strong>💬 WHATSAPP</strong></a>'
+              s, n = re.subn(r'(<div class="community-links">)', r'\1' + button, s, count=1)
+              if n != 1:
+                  raise SystemExit('Área community-links não encontrada no index.html')
+              p.write_text(s, encoding='utf-8')
+          PY
+
       - name: Publicar alterações
         run: |
           git config user.name "github-actions[bot]"
@@ -36,5 +52,5 @@ jobs:
             exit 0
           fi
           git add index.html codes-history.json
-          git commit -m "Atualizar códigos ativos e expirados automaticamente"
+          git commit -m "Restaurar botão WhatsApp no index"
           git push
