@@ -16,12 +16,30 @@ jobs:
           node-version: 22
       - name: Buscar códigos e atualizar site
         run: node scripts/update-codes.mjs
+      - name: Garantir botão WhatsApp
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          url = 'https://chat.whatsapp.com/KWg53GNpXDA3G5lDT8VwOg?s=cl&p=a&ilr=0'
+          button = f'<a class="community-tab whatsapp" href="{url}" target="_blank" rel="noopener" aria-label="WhatsApp"><strong>💬 WHATSAPP</strong></a>'
+          if 'class="community-tab whatsapp"' not in s:
+              s, n = re.subn(r'(<div class="community-links">)', r'\1' + button, s, count=1)
+              if n != 1:
+                  raise SystemExit('Não foi encontrada a área community-links no index.html')
+              p.write_text(s, encoding='utf-8')
+              print('Botão WhatsApp inserido no index.html')
+          else:
+              print('Botão WhatsApp já existe no index.html')
+          PY
       - name: Guardar alterações
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
           git add codes.json index.html
           if ! git diff --cached --quiet; then
-            git commit -m 'Atualizar códigos automaticamente'
+            git commit -m 'Restaurar botão WhatsApp e atualizar códigos'
             git push
           fi
