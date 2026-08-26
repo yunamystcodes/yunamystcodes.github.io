@@ -36,7 +36,7 @@ BANNED = {"ACTIVE","EXPIRED","WORKING","AVAILABLE","CODES","CODE","SUMMONERS","W
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/10.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
+    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/11.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -53,8 +53,6 @@ def normalize_codes(tokens):
         code = token.strip().strip("`.,:;()[]{}<>\"").upper()
         if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or not re.search(r"[A-Z]", code):
             continue
-        # Codes may be letters-only (for example AMPRELIMSLEGACYDRP), but short
-        # ordinary words are rejected. Numeric codes are accepted at 6+ chars.
         if not re.search(r"\d", code) and len(code) < 10:
             continue
         if code not in seen:
@@ -63,9 +61,7 @@ def normalize_codes(tokens):
 
 
 def active_blocks(text):
-    lower = text.lower()
-    starts = ("working summoners war codes","working codes","available codes","active summoners war codes","new & active summoners war codes","new and active summoners war codes","currently working summoners war codes","working summoners war codes","new summoners war codes","all summoners war codes 2026")
-    stops = ("expired summoners war codes","expired codes","expired","how to redeem","how do i redeem","how to use")
+    lower = text.lower(); starts=("working summoners war codes","working codes","available codes","active summoners war codes","new & active summoners war codes","new and active summoners war codes","currently working summoners war codes","working summoners war codes","new summoners war codes","all summoners war codes 2026"); stops=("expired summoners war codes","expired codes","expired","how to redeem","how do i redeem","how to use")
     blocks=[]
     for marker in starts:
         start=lower.find(marker)
@@ -76,13 +72,15 @@ def active_blocks(text):
 
 
 def parse_source(name, raw):
-    text=clean_text(raw); blocks=active_blocks(text)
-    candidates=set(normalize_codes(CODE_RE.findall(" ".join(blocks)))) if blocks else set()
+    text=clean_text(raw)
+    if name == "sw-teams":
+        # SW-Teams has explicit "Active" labels; use those rows only.
+        return sorted(normalize_codes(re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)))
+    blocks=active_blocks(text); candidates=set(normalize_codes(CODE_RE.findall(" ".join(blocks)))) if blocks else set()
     if name in TRUSTED: candidates.update(normalize_codes(CODE_RE.findall(text[:12000])))
     for match in CODE_RE.finditer(text):
         window=text[max(0,match.start()-90):match.end()+90].lower()
         if "active" in window and "expired" not in window: candidates.update(normalize_codes([match.group(0)]))
-    if name=="sw-teams": candidates.update(normalize_codes(re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)))
     return sorted(candidates)
 
 
@@ -118,8 +116,7 @@ def main():
             for code in codes: found.setdefault(code,{"code":code,"sources":set()})["sources"].add(name)
         except Exception as exc: errors.append(f"{name}: {exc}"); print(f"Fonte {name}: ERRO - {exc}")
 
-    # All 20 sources discover. Two trusted live trackers must confirm a code.
-    confirmed=sorted([v for v in found.values() if len(v["sources"]&TRUSTED)>=2],key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
+    confirmed=sorted([v for v in found.values() if len(v["sources"]&TRUSTED)>=2 and (re.search(r"\d",v["code"]) or "sw-teams" in v["sources"])],key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
     active=[v["code"] for v in confirmed]
     if not active: raise RuntimeError("Nenhum código confirmado por 2 fontes confiáveis; atualização abortada.")
 
