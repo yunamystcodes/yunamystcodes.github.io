@@ -16,6 +16,18 @@ jobs:
           node-version: 22
       - name: Buscar códigos e atualizar site
         run: node scripts/update-codes.mjs
+      - name: Corrigir texto da parceria no index
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('parceria com o YunaMyst', 'parceria com a YunaMyst')
+          s = s.replace('Parceria com o YunaMyst', 'Parceria com a YunaMyst')
+          s = s.replace('PARCERIA COM O YUNAMYST', 'PARCERIA COM A YUNAMYST')
+          p.write_text(s, encoding='utf-8')
+          print('Texto da parceria corrigido no index.html')
+          PY
       - name: Garantir botão WhatsApp
         run: |
           python3 - <<'PY'
@@ -40,6 +52,6 @@ jobs:
           git config user.email 'actions@github.com'
           git add codes.json index.html
           if ! git diff --cached --quiet; then
-            git commit -m 'Restaurar botão WhatsApp e atualizar códigos'
+            git commit -m 'Corrigir parceria com a YunaMyst e atualizar códigos'
             git push
           fi
