@@ -63,60 +63,122 @@ jobs:
               p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Mostrar PT/BR e ENG no PC e telemóvel
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          marker = '/* YUNAMYST LANGUAGE SWITCH VISIBLE */'
-          css = '''<style id="yunamyst-language-visible">
-          /* YUNAMYST LANGUAGE SWITCH VISIBLE */
-          .yunamyst-lang-visible{display:flex!important;align-items:center;gap:6px;margin-left:6px}
-          .yunamyst-lang-visible .lang-option{display:inline-flex!important;align-items:center;justify-content:center;width:auto!important;border:1px solid #633487!important;border-radius:10px;background:#10091c!important;color:#fff!important;padding:9px 10px!important;text-align:center!important;font-size:11px!important;font-weight:800!important;text-decoration:none!important;cursor:pointer!important;touch-action:manipulation!important}
-          .yunamyst-lang-visible .lang-option.selected{background:#2b1242!important;border-color:#9a5ad0!important}
-          @media(max-width:850px){.yunamyst-lang-visible{gap:5px;margin-left:4px}.yunamyst-lang-visible .lang-option{padding:8px 8px!important;font-size:10px!important}}
-          </style>'''
-          if marker not in s:
-              s = s.replace('</head>', css + '\n</head>', 1)
-          if '🇬🇧 ENG' not in s or '🇧🇷 PT/BR' not in s:
-              switch = '<div class="yunamyst-lang-visible" aria-label="Idioma"><button type="button" class="lang-option selected" data-lang="pt-BR">🇧🇷 PT/BR</button><button type="button" class="lang-option" data-lang="en">🇬🇧 ENG</button></div>'
-              anchor = '</div></header>'
-              if anchor in s:
-                  s = s.replace(anchor, switch + anchor, 1)
-              else:
-                  s = s.replace('</header>', switch + '\n</header>', 1)
-          p.write_text(s, encoding='utf-8')
-          PY
-
-      - name: Reduzir logo do cabeçalho no PC e telemóvel
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          s = s.replace('.logo{font:900 38px Georgia,serif;', '.logo{font:900 34px Georgia,serif;', 1)
-          s = s.replace('.logo{font-size:29px}', '.logo{font-size:25px}', 1)
-          p.write_text(s, encoding='utf-8')
-          PY
-
-      - name: Forcar publicacao da correção no index
+      - name: Aplicar cabeçalho, idioma e traduções
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="lang-ptbr-eng-logo-20260826-1600">', s, count=1)
-          if '🇬🇧 ENG' not in s:
-              raise SystemExit('ERRO: opção ENG não está no index.html')
-          if '🇧🇷 PT/BR' not in s:
-              raise SystemExit('ERRO: opção PT/BR não está no index.html')
-          if '.logo{font:900 34px Georgia,serif;' not in s:
-              raise SystemExit('ERRO: tamanho do logo no PC não foi aplicado')
-          if '.logo{font-size:25px}' not in s:
-              raise SystemExit('ERRO: tamanho do logo no telemóvel não foi aplicado')
+
+          # PT/BR e ENG sempre visíveis no PC e no telemóvel.
+          s = re.sub(
+              r'<div class="lang-switch" id="langSwitch">.*?</div></div></header>',
+              '<div class="lang-switch" id="langSwitch" aria-label="Idioma"><button class="lang-btn" id="langToggle" type="button" style="display:none">Idioma</button><div class="lang-menu"><button class="lang-option selected" id="langPTOption" type="button" data-lang="pt-BR">🇧🇷 PT/BR</button><button class="lang-option" id="langENOption" type="button" data-lang="en">🇬🇧 ENG</button></div></div></div></header>',
+              s,
+              count=1,
+              flags=re.S
+          )
+
+          # CSS final: logo ligeiramente menor, navegação centralizada e idiomas visíveis.
+          css = '''
+<style id="yunamyst-header-final">
+.top .nav{position:relative}
+@media(min-width:851px){
+  .top .navlinks{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:30px;white-space:nowrap}
+  .logo{font-size:32px!important}
+}
+.lang-switch{display:flex!important;align-items:center!important;gap:6px!important;margin-left:auto!important;position:relative!important}
+.lang-switch .lang-btn{display:none!important}
+.lang-switch .lang-menu{display:flex!important;position:static!important;min-width:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;gap:6px!important}
+.lang-switch .lang-option{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;border:1px solid #633487!important;border-radius:10px!important;background:#10091c!important;color:#fff!important;padding:9px 10px!important;text-align:center!important;font-size:11px!important;font-weight:800!important;cursor:pointer!important;touch-action:manipulation!important}
+.lang-switch .lang-option.selected{background:#2b1242!important;border-color:#9a5ad0!important}
+@media(max-width:850px){
+  .logo{font-size:24px!important}
+  .lang-switch{gap:5px!important;margin-left:4px!important}
+  .lang-switch .lang-menu{gap:5px!important}
+  .lang-switch .lang-option{padding:8px 8px!important;font-size:10px!important}
+}
+</style>
+'''
+          s = s.replace('</head>', css + '</head>', 1)
+
+          # Substitui o bloco de idioma antigo por um controlador que também traduz a página.
+          start = s.find("const ls=$('langSwitch');")
+          end = s.find("const music=$('bgMusic'),sound=$('soundToggle');", start)
+          if start == -1 or end == -1:
+              raise SystemExit('ERRO: bloco de idioma não encontrado no index.html')
+
+          lang_js = r'''const ls=$('langSwitch');
+const langPT=$('langPTOption'),langEN=$('langENOption');
+const translations={
+  pt:{
+    nav:['⌂ INÍCIO','⚔ SUMMONERS WAR','❔ COMO USAR'], hero:'SUMMONERS WAR', whatsapp:'WHATSAPP', partnership:'🤝 PARCERIA',
+    profile:'Conteúdo diário de<br>Summoners War!', about:'<b>✦ SOBRE O SITE</b><br><br>Aqui encontras os <b>códigos ativos</b> de Summoners War: Sky Arena.<br><br>💜 Guarda o site e volta sempre!',
+    updated:'⟳ Sempre atualizados!', active:'🟢 CÓDIGOS ATIVOS', how:'❓ COMO USAR',
+    steps:[['Copie o código','Clica em COPIAR no código desejado.'],['Abra o jogo','Entra no Summoners War: Sky Arena.'],['Resgata o código','Usa o link de resgate.'],['Aproveita!','Recebe a recompensa no jogo.']],
+    faq:[['Onde coloco os códigos?','Copia o código e usa o link de resgate.'],['Os códigos expiram?','Sim. Quando expiram, passam para a aba de códigos expirados.'],['Posso usar no iPhone?','Sim. O site funciona normalmente no telemóvel.']],
+    partnershipTitle:'🤝 PARCERIA YUNAMYST', partnershipText:'Queres fazer uma parceria com a YunaMyst Codes? Este espaço é para criadores, marcas e projetos relacionados com Summoners War.',
+    contact:'ENTRAR EM CONTATO', email:'Email', phone:'WhatsApp', status:'🔄 Código ativo', copy:'▣ COPIAR', link:'🔗 LINK OFICIAL', footer:'YunaMyst • Summoners War: Sky Arena • Site de comunidade'
+  },
+  en:{
+    nav:['⌂ HOME','⚔ SUMMONERS WAR','❔ HOW TO USE'], hero:'SUMMONERS WAR', whatsapp:'WHATSAPP', partnership:'🤝 PARTNERSHIP',
+    profile:'Daily content from<br>Summoners War!', about:'<b>✦ ABOUT THE SITE</b><br><br>Here you can find the <b>active codes</b> for Summoners War: Sky Arena.<br><br>💜 Save the site and come back often!',
+    updated:'⟳ Always updated!', active:'🟢 ACTIVE CODES', how:'❓ HOW TO USE',
+    steps:[['Copy the code','Click COPY on the code you want.'],['Open the game','Enter Summoners War: Sky Arena.'],['Redeem the code','Use the redemption link.'],['Enjoy!','Receive your reward in the game.']],
+    faq:[['Where do I enter the codes?','Copy the code and use the redemption link.'],['Do codes expire?','Yes. Expired codes move to the expired codes section.'],['Can I use it on iPhone?','Yes. The site works normally on mobile.']],
+    partnershipTitle:'🤝 YUNAMYST PARTNERSHIP', partnershipText:'Want to partner with YunaMyst Codes? This space is for creators, brands and projects related to Summoners War.',
+    contact:'CONTACT US', email:'Email', phone:'WhatsApp', status:'🔄 Active code', copy:'▣ COPY', link:'🔗 OFFICIAL LINK', footer:'YunaMyst • Summoners War: Sky Arena • Community website'
+  }
+};
+function applyLanguage(lang){
+  const t=translations[lang]||translations.pt;
+  document.documentElement.lang=lang==='en'?'en':'pt-BR';
+  document.querySelectorAll('.navlinks a').forEach((a,i)=>{if(t.nav[i])a.textContent=t.nav[i]});
+  document.querySelector('.hero h1').textContent=t.hero;
+  const wa=document.querySelector('.community-tab.whatsapp strong');if(wa)wa.textContent=t.whatsapp;
+  const pa=document.querySelector('.community-tab.partnership strong');if(pa)pa.textContent=t.partnership;
+  const profile=$('perfilTexto');if(profile)profile.innerHTML=t.profile;
+  const about=document.querySelector('.about');if(about)about.innerHTML=t.about;
+  const updated=document.querySelector('.section-head span');if(updated)updated.textContent=t.updated;
+  document.querySelectorAll('.cinfo small').forEach(x=>x.textContent=t.status);
+  document.querySelectorAll('.copy').forEach(x=>x.textContent=t.copy);
+  document.querySelectorAll('.link').forEach(x=>x.textContent=t.link);
+  const active=$('tabAtivos');if(active)active.textContent=t.active;
+  const how=document.querySelector('#como> .panel>h2');if(how)how.textContent=t.how;
+  document.querySelectorAll('#como> .panel .step').forEach((step,i)=>{if(t.steps[i]){const b=step.querySelector('b');if(b)b.textContent=t.steps[i][0];const text=[...step.childNodes].find(n=>n.nodeType===3&&n.textContent.trim());if(text)text.textContent=t.steps[i][1]}});
+  const faq=document.querySelectorAll('.faq-item');faq.forEach((item,i)=>{if(t.faq[i]){const q=item.querySelector('.faq-q');const a=item.querySelector('.faq-a');if(q)q.firstChild.textContent=t.faq[i][0];if(a)a.textContent=t.faq[i][1]}});
+  const ph=$('parceriaModal');if(ph){const h=ph.querySelector('h3');const p=ph.querySelector('p');if(h)h.textContent=t.partnershipTitle;if(p)p.textContent=t.partnershipText;ph.querySelectorAll('.contact-link strong').forEach(x=>x.textContent=t.contact);const sm=ph.querySelectorAll('.contact-link small');if(sm[0])sm[0].textContent=t.email;if(sm[1])sm[1].textContent=t.phone}
+  const footer=$('rodape');if(footer)footer.textContent=t.footer;
+  langPT?.classList.toggle('selected',lang!=='en');langEN?.classList.toggle('selected',lang==='en');
+  localStorage.setItem('yunamyst-lang',lang);
+}
+langPT?.addEventListener('click',()=>applyLanguage('pt'));
+langEN?.addEventListener('click',()=>applyLanguage('en'));
+applyLanguage(localStorage.getItem('yunamyst-lang')==='en'?'en':'pt');
+'''
+          s = s[:start] + lang_js + s[end:]
+
+          # Atualiza a versão para facilitar a confirmação de publicação.
+          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="header-nav-language-20260826-1510">', s, count=1)
           p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Verificar index
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          checks = [
+              '🇧🇷 PT/BR', '🇬🇧 ENG',
+              'header-nav-language-20260826-1510',
+              '.top .navlinks{position:absolute;left:50%;transform:translateX(-50%)',
+              'translations=', 'applyLanguage('
+          ]
+          for item in checks:
+              if item not in s:
+                  raise SystemExit(f'ERRO: não encontrado: {item}')
+          print('index.html verificado: cabeçalho, navegação e idiomas OK.')
           PY
 
       - name: Guardar alterações
@@ -125,7 +187,7 @@ jobs:
           git config user.email 'actions@github.com'
           git add codes.json codes-history.json index.html .github/workflows/update-codes.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Adicionar ENG visível no site'
+            git commit -m 'Corrigir cabeçalho, navegação e idioma PT/BR ENG'
             git push
           else
             echo 'Nenhuma alteração necessária.'
