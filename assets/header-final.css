@@ -3,6 +3,8 @@
   .top .navlinks{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:30px;white-space:nowrap}
   .logo{font-size:32px!important}
 }
+/* Apenas o Y de Myst fica ligeiramente menor para não sobrepor visualmente o w. */
+.logo .myst-y{font-size:.84em!important;display:inline-block!important;line-height:1!important;transform:translateY(.02em)}
 /* Som e idioma ficam juntos no lado direito. */
 .sound-control{display:flex!important;align-items:center!important;margin-left:auto!important;margin-right:6px!important;flex:none!important}
 .lang-switch{display:flex!important;align-items:center!important;gap:6px!important;margin-left:0!important;position:relative!important;flex:none!important}
