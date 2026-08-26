@@ -22,12 +22,26 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = s.replace('parceria com o YunaMyst', 'parceria com a YunaMyst')
-          s = s.replace('parceria com o YunaMyst Codes', 'parceria com a YunaMyst Codes')
-          s = s.replace('Parceria com o YunaMyst', 'Parceria com a YunaMyst')
-          s = s.replace('PARCERIA COM O YUNAMYST', 'PARCERIA COM A YUNAMYST')
-          p.write_text(s, encoding='utf-8')
-          print('Texto da parceria corrigido no index.html: com a YunaMyst')
+          replacements = {
+              'Queres fazer uma parceria com o YunaMyst Codes?': 'Queres fazer uma parceria com a YunaMyst Codes?',
+              'Queres fazer uma parceria com o YunaMyst?': 'Queres fazer uma parceria com a YunaMyst?',
+              'parceria com o YunaMyst Codes': 'parceria com a YunaMyst Codes',
+              'parceria com o YunaMyst': 'parceria com a YunaMyst',
+              'Parceria com o YunaMyst Codes': 'Parceria com a YunaMyst Codes',
+              'Parceria com o YunaMyst': 'Parceria com a YunaMyst',
+              'PARCERIA COM O YUNAMYST CODES': 'PARCERIA COM A YUNAMYST CODES',
+              'PARCERIA COM O YUNAMYST': 'PARCERIA COM A YUNAMYST',
+          }
+          old = s
+          for src, dst in replacements.items():
+              s = s.replace(src, dst)
+          if s == old:
+              print('O texto já está correto ou não foi encontrado.')
+          else:
+              p.write_text(s, encoding='utf-8')
+              print('CORRIGIDO: parceria com a YunaMyst Codes')
+          if 'Queres fazer uma parceria com o YunaMyst' in s or 'parceria com o YunaMyst' in s:
+              raise SystemExit('ERRO: ainda existe "parceria com o YunaMyst" no index.html')
           PY
       - name: Garantir botão WhatsApp
         run: |
@@ -53,6 +67,6 @@ jobs:
           git config user.email 'actions@github.com'
           git add codes.json index.html
           if ! git diff --cached --quiet; then
-            git commit -m 'Corrigir parceria com a YunaMyst e atualizar códigos'
+            git commit -m 'Corrigir parceria para com a YunaMyst'
             git push
           fi
