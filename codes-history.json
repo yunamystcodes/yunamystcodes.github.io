@@ -1,10 +1,10 @@
 {
   "active": [
-    "SWXFRIEREN2026",
     "4READY4TDOT",
     "AMPRELIMSLEGACYDRP",
-    "APAC26LEGASEA",
     "AUGSW2026V7N",
+    "SWXFRIEREN2026",
+    "APAC26LEGASEA",
     "GLHF2026AMERICAS",
     "LEGENDSWC2026HSL",
     "PAI2026BANGKOK",
@@ -284,8 +284,59 @@
     "SUMMONHENGE": 1,
     "PROGRESSION": 1
   },
-  "updated_at": "2026-08-26T14:18:48Z",
+  "updated_at": "2026-08-26T14:23:27Z",
   "sources": {
+    "4READY4TDOT": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swgt",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swgt",
+        "swquery"
+      ]
+    },
+    "AMPRELIMSLEGACYDRP": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swgt",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swgt",
+        "swquery"
+      ]
+    },
+    "AUGSW2026V7N": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swgt",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swgt",
+        "swquery"
+      ]
+    },
     "SWXFRIEREN2026": {
       "trusted": [
         "summonerswarcodes",
@@ -303,55 +354,7 @@
         "swquery"
       ]
     },
-    "4READY4TDOT": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
-    "AMPRELIMSLEGACYDRP": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
     "APAC26LEGASEA": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
-    "AUGSW2026V7N": {
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
