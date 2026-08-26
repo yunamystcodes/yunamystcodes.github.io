@@ -46,5 +46,6 @@ async function loadAutoCodes(){try{const r=await fetch('./codes.json?ts='+Date.n
 function initMusic(){const audio=document.getElementById('bgMusic'),btn=document.getElementById('soundToggle');if(!audio||!btn)return;audio.volume=.05;audio.muted=localStorage.getItem('yunamyst-mute-v2')==='1';const sync=()=>{btn.textContent=audio.muted?'🔇':'🔊'};sync();btn.onclick=()=>{audio.muted=!audio.muted;localStorage.setItem('yunamyst-mute-v2',audio.muted?'1':'0');audio.play().catch(()=>{});sync()};document.addEventListener('pointerdown',()=>{if(!audio.muted)audio.play().catch(()=>{})},{once:true})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 </script>
+<script src="./auto-codes.js"></script>
 </body>
 </html>
