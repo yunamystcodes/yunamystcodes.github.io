@@ -28,6 +28,7 @@ SOURCES = (
     ("tryhardguides", "https://tryhardguides.com/summoners-war-codes/"),
     ("progameguides", "https://progameguides.com/summoners-war/summoners-war-codes/"),
 )
+TRUSTED = {"sw-teams", "swcoupon", "summonerswarcodes", "swquery", "swgt"}
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
@@ -45,7 +46,7 @@ BANNED = {
 
 def fetch(url):
     req = urllib.request.Request(url, headers={
-        "User-Agent": "Mozilla/5.0 (compatible; YunaMyst-Code-Updater/5.0)",
+        "User-Agent": "Mozilla/5.0 (compatible; YunaMyst-Code-Updater/6.0)",
         "Accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7",
     })
     with urllib.request.urlopen(req, timeout=25) as response:
@@ -75,24 +76,15 @@ def normalize_codes(tokens):
 def active_blocks(text):
     lower = text.lower()
     starts = (
-        "working summoners war codes",
-        "working codes",
-        "available codes",
-        "active summoners war codes",
-        "new & active summoners war codes",
-        "new and active summoners war codes",
-        "currently working summoners war codes",
-        "working summoners war codes",
-        "new summoners war codes",
+        "working summoners war codes", "working codes", "available codes",
+        "active summoners war codes", "new & active summoners war codes",
+        "new and active summoners war codes", "currently working summoners war codes",
+        "working summoners war codes", "new summoners war codes",
         "all summoners war codes 2026",
     )
     stops = (
-        "expired summoners war codes",
-        "expired codes",
-        "expired",
-        "how to redeem",
-        "how do i redeem",
-        "how to use",
+        "expired summoners war codes", "expired codes", "expired",
+        "how to redeem", "how do i redeem", "how to use",
     )
     blocks = []
     for marker in starts:
@@ -111,18 +103,19 @@ def active_blocks(text):
 def parse_source(name, raw):
     text = clean_text(raw)
     blocks = active_blocks(text)
-    # Never scrape the whole page as a fallback: that was causing old/expired
-    # codes to leak into the active list. Sources without an identifiable active
-    # section simply contribute zero candidates for this run.
-    if not blocks:
-        return []
-    candidate_text = " ".join(blocks)
-    codes = normalize_codes(CODE_RE.findall(candidate_text))
+    candidates = set(normalize_codes(CODE_RE.findall(" ".join(blocks)))) if blocks else set()
+
+    # Also recognize table-style pages where each code is explicitly marked Active.
+    # The local window prevents codes from an expired section being accepted.
+    for match in CODE_RE.finditer(text):
+        window = text[max(0, match.start() - 90): match.end() + 90].lower()
+        if "active" in window and "expired" not in window:
+            candidates.update(normalize_codes([match.group(0)]))
+
     if name == "sw-teams":
         explicit = re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)
-        if explicit:
-            codes = normalize_codes(explicit)
-    return codes
+        candidates.update(normalize_codes(explicit))
+    return sorted(candidates)
 
 
 def replace_div_by_id(text, element_id, replacement):
@@ -183,15 +176,16 @@ def main():
             errors.append(f"{name}: {exc}")
             print(f"Fonte {name}: ERRO - {exc}")
 
-    # No duplicate codes: one normalized code is one entry, even if 20 sources list it.
-    # To avoid false positives, publish only when at least two independent sources agree.
+    # Discovery uses all 20 sources, but publication requires confirmation from
+    # at least two trusted live trackers. This prevents stale guide pages from
+    # reviving old codes while still allowing the 20-source network to discover them.
     confirmed = sorted(
-        [v for v in found.values() if len(v["sources"]) >= 2],
-        key=lambda v: (-len(v["sources"]), v["code"]),
+        [v for v in found.values() if len(v["sources"] & TRUSTED) >= 2],
+        key=lambda v: (-len(v["sources"] & TRUSTED), -len(v["sources"]), v["code"]),
     )
     active = [v["code"] for v in confirmed]
     if not active:
-        raise RuntimeError("Nenhum código confirmado por 2 fontes; atualização abortada por segurança.")
+        raise RuntimeError("Nenhum código confirmado por 2 fontes confiáveis; atualização abortada por segurança.")
 
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     history = {"active": [], "expired": [], "missing": {}, "updated_at": now, "sources": {}, "source_errors": []}
@@ -206,8 +200,8 @@ def main():
     current = set(active)
     missing = {str(k).upper(): int(v) for k, v in history.get("missing", {}).items()}
 
-    # A code absent from all readable active lists for two consecutive hourly checks
-    # is moved to expired history. Expired codes are never displayed on the website.
+    # If a code disappears from all trusted active sources for two consecutive
+    # hourly checks, mark it expired in history. It is never displayed on the site.
     for code in previous_active - current:
         missing[code] = missing.get(code, 0) + 1
     for code in current:
@@ -221,11 +215,15 @@ def main():
     index = replace_div_by_id(index, "ativos", '<div id="ativos" class="code-list">\n' + "\n".join(card(c) for c in active) + '\n</div>')
     INDEX.write_text(remove_expired_ui(index), encoding="utf-8")
 
-    details = {v["code"]: sorted(v["sources"]) for v in confirmed}
+    details = {v["code"]: {
+        "trusted": sorted(v["sources"] & TRUSTED),
+        "all": sorted(v["sources"]),
+    } for v in confirmed}
     CODES_JSON.write_text(json.dumps({
         "updated": now,
         "source_count": len(SOURCES),
         "successful_sources": successful,
+        "trusted_confirmation": 2,
         "codes": active,
         "sources": details,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
