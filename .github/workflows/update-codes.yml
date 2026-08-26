@@ -24,7 +24,7 @@ jobs:
       - name: Buscar 20 fontes e atualizar códigos
         run: python3 scripts/update_codes.py
 
-      - name: Garantir texto da parceria
+      - name: Corrigir textos fixos
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -42,143 +42,39 @@ jobs:
           }
           for src, dst in replacements.items():
               s = s.replace(src, dst)
-          if 'parceria com o YunaMyst' in s or 'PARCERIA COM O YUNAMYST' in s:
-              raise SystemExit('ERRO: ainda existe "com o YunaMyst" no index.html')
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Garantir botão WhatsApp
-        run: |
-          python3 - <<'PY'
+      - name: Aplicar cabeçalho, idioma PT/BR e ENG
+        env:
+          HEADER_CSS_B64: PHN0eWxlIGlkPSJ5dW5hbXlzdC1oZWFkZXItZmluYWwiPgoudG9wIC5uYXZ7cG9zaXRpb246cmVsYXRpdmV9CkBtZWRpYShtaW4td2lkdGg6ODUxcHgpey50b3AgLm5hdmxpbmtze3Bvc2l0aW9uOmFic29sdXRlO2xlZnQ6NTAlO3RyYW5zZm9ybTp0cmFuc2xhdGVYKC01MCUpO2Rpc3BsYXk6ZmxleDtnYXA6MzBweDt3aGl0ZS1zcGFjZTpub3dyYXB9LmxvZ297Zm9udC1zaXplOjMycHghaW1wb3J0YW50fX0KLmxhbmctc3dpdGNoe2Rpc3BsYXk6ZmxleCFpbXBvcnRhbnQ7YWxpZ24taXRlbXM6Y2VudGVyIWltcG9ydGFudDtnYXA6NnB4IWltcG9ydGFudDttYXJnaW4tbGVmdDphdXRvIWltcG9ydGFudDtwb3NpdGlvbjpyZWxhdGl2ZSFpbXBvcnRhbnR9Ci5sYW5nLXN3aXRjaCAubGFuZy1idG57ZGlzcGxheTpub25lIWltcG9ydGFudH0KLmxhbmctc3dpdGNoIC5sYW5nLW1lbnV7ZGlzcGxheTpmbGV4IWltcG9ydGFudDtwb3NpdGlvbjpzdGF0aWMIaW1wb3J0YW50O21pbi13aWR0aDowIWltcG9ydGFudDtwYWRkaW5nOjAhaW1wb3J0YW50O2JhY2tncm91bmQ6dHJhbnNwYXJlbnQhaW1wb3J0YW50O2JvcmRlcjowIWltcG9ydGFudDtib3gtc2hhZG93Om5vbmUhaW1wb3J0YW50O2dhcDo2cHghaW1wb3J0YW50fQoubGFuZy1zd2l0Y2ggLmxhbmctb3B0aW9ue2Rpc3BsYXk6aW5saW5lLWZsZXghaW1wb3J0YW50O2FsaWduLWl0ZW1zOmNlbnRlciFpbXBvcnRhbnQ7anVzdGlmeS1jb250ZW50OmNlbnRlciFpbXBvcnRhbnQ7d2lkdGg6YXV0byFpbXBvcnRhbnQ7Ym9yZGVyOjFweCBzb2xpZCAjNjMzNDg3IWltcG9ydGFudDtib3JkZXItcmFkaXVzOjEwcHghaW1wb3J0YW50O2JhY2tncm91bmQ6IzEwMDkxYyFpbXBvcnRhbnQ7Y29sb3I6I2ZmZiFpbXBvcnRhbnQ7cGFkZGluZzo5cHggMTBweCFpbXBvcnRhbnQ7dGV4dC1hbGlnbjpjZW50ZXIhaW1wb3J0YW50O2ZvbnQtc2l6ZToxMXB4IWltcG9ydGFudDtmb250LXdlaWdodDo4MDAhaW1wb3J0YW50O2N1cnNvcjpwb2ludGVyIWltcG9ydGFudDt0b3VjaC1hY3Rpb246bWFuaXB1bGF0aW9uIWltcG9ydGFudH0KLmxhbmctc3dpdGNoIC5sYW5nLW9wdGlvbi5zZWxlY3RlZHtiYWNrZ3JvdW5kOiMyYjEyNDIhaW1wb3J0YW50O2JvcmRlci1jb2xvcjojOWE1YWQwIWltcG9ydGFudH0KQG1lZGlhKG1heC13aWR0aDo4NTBweCl7LmxvZ297Zm9udC1zaXplOjI0cHghaW1wb3J0YW50fS5sYW5nLXN3aXRjaHt nYXA6NXB4IWltcG9ydGFudDttYXJnaW4tbGVmdDo0cHghaW1wb3J0YW50fS5sYW5nLXN3aXRjaCAubGFuZy1tZW51e2dhcDo1cHghaW1wb3J0YW50fS5sYW5nLXN3aXRjaCAubGFuZy1vcHRpb257cGFkZGluZzo4cHggOHB4IWltcG9ydGFudDtmb250LXNpemU6MTBweCFpbXBvcnRhbnR9fQo8L3N0eWxlPg==
+          I18N_JS_B64: PHNjcmlwdCBpZD0ieXVuYW15c3QtaTE4bi1maW5hbCI+KCgpPT57Y29uc3QgJD1pZD0+ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoaWQpLHB0PSQoJ2xhbmdQVE9wdGlvbicpLGVuPSQoJ2xhbmdFTk9wdGlvbicpLFQ9e3B0OntuYXY6WyfijIIgSU7DjUNJTycsJ+KalCBTVU1NT05FUlMgV0FSJywn4p2UIENPTU8gVVNBUiddLHByb2ZpbGU6J0NvbnRlw7pkbyBkacOhcmlvIGRlPGJyPlN1bW1vbmVycyBXYXIhJyxhYm91dDonPGI+4pymIFNPQlJFIE8gU0lURTwvYj48YnI+PGJyPkFxdWkgZW5jb250cmFzIG9zIDxiPmPDs2RpZ29zIGF0aXZvczwvYj4gZGUgU3VtbW9uZXJzIFdhcjogU2t5IEFyZW5hLjxicj48YnI+8J+SnCBHdWFyZGEgbyBzaXRlIGUgdm9sdGEgc2VtcHJlIScsdXBkYXRlZDon4p+zIFNlbXByZSBhdHVhbGl6YWRvcyEnLGFjdGl2ZTon8J+foiBDw5NESUdPUyBBVElWT1MnLGhvdzon4p2TIENPTU8gVVNBUicsc3RlcHM6W1snQ29waWUgbyBjw7NkaWdvJywnQ2xpY2EgZW0gQ09QSUFSIG5vIGPDs2RpZ28gZGVzZWphZG8uJ10sWydBYnJhIG8gam9nbycsJ0VudHJhIG5vIFN1bW1vbmVycyBXYXI6IFNreSBBcmVuYS4nXSxbJ1Jlc2dhdGEgbyBjw7NkaWdvJywnVXNhIG8gbGluayBkZSByZXNnYXRlLiddLFsnQXByb3ZlaXRhIScsJ1JlY2ViZSBhIHJlY29tcGVuc2Egbm8gam9nby4nXV0sZmFxOltbJ09uZGUgY29sb2NvIG9zIGPDs2RpZ29zPycsJ0NvcGlhIG8gY8OzZGlnbyBlIHVzYSBvIGxpbmsgZGUgcmVzZ2F0ZS4nXSxbJ09zIGPDs2RpZ29zIGV4cGlyYW0/JywnU2ltLiBRdWFuZG8gZXhwaXJhbSwgcGFzc2FtIHBhcmEgYSBhYmEgZGUgY8OzZGlnb3MgZXhwaXJhZG9zLiddLFsnUG9zc28gdXNhciBubyBpUGhvbmU/JywnU2ltLiBPIHNpdGUgZnVuY2lvbmEgbm9ybWFsbWVudGUgbm8gdGVsZW3Ds3ZlbC4nXV0scGFydG5lcjon8J+knSBQQVJDRVJJQScscGFydG5lclRpdGxlOifwn6SdIFBBUkNFUklBIFlVTkFNWVNUJyxwYXJ0bmVyVGV4dDonUXVlcmVzIGZhemVyIHVtYSBwYXJjZXJpYSBjb20gYSBZdW5hTXlzdCBDb2Rlcz8gRXN0ZSBlc3Bhw6dvIMOpIHBhcmEgY3JpYWRvcmVzLCBtYXJjYXMgZSBwcm9qZXRvcyByZWxhY2lvbmFkb3MgY29tIFN1bW1vbmVycyBXYXIuJyxjb250YWN0OidFTlRSQVIgRU0gQ09OVEFUTycsc3RhdHVzOifwn5SEIEPDs2RpZ28gYXRpdm8nLGNvcHk6J+KWoyBDT1BJQVInLGxpbms6J/CflJcgTElOSyBPRklDSUFMJyxmb290ZXI6J1l1bmFNeXN0IOKAoiBTdW1tb25lcnMgV2FyOiBTa3kgQXJlbmEg4oCiIFNpdGUgZGUgY29tdW5pZGFkZSd9LGVuOntuYXY6WyfijIIgSE9NRScsJ+KalCBTVU1NT05FUlMgV0FSJywn4p2UIEhPVyBUTyBVU0UnXSxwcm9maWxlOidEYWlseSBjb250ZW50IGZyb208YnI+U3VtbW9uZXJzIFdhciEnLGFib3V0Oic8Yj7inKYgQUJPVVQgVEhFIFNJVEU8L2I+PGJyPjxicj5IZXJlIHlvdSBjYW4gZmluZCB0aGUgPGI+YWN0aXZlIGNvZGVzPC9iPiBmb3IgU3VtbW9uZXJzIFdhcjogU2t5IEFyZW5hLjxicj48YnI+8J+SnCBTYXZlIHRoZSBzaXRlIGFuZCBjb21lIGJhY2sgb2Z0ZW4hJyx1cGRhdGVkOifin7MgQWx3YXlzIHVwZGF0ZWQhJyxhY3RpdmU6J/Cfn6IgQUNUSVZFIENPREVTJyxob3c6J+KdkyBIT1cgVE8gVVNFJyxzdGVwc1pbWydDb3B5IHRoZSBjb2RlJywnQ2xpY2sgQ09QWSBvbiB0aGUgY29kZSB5b3Ugd2FudC4nXSxbJ09wZW4gdGhlIGdhbWUnLCdFbnRlciBTdW1tb25lcnMgV2FyOiBTa3kgQXJlbmEuJ10sWydSZWRlZW0gdGhlIGNvZGUnLCdVc2UgdGhlIHJlZGVtcHRpb24gbGluay4nXSxbJ0Vuam95IScsJ1JlY2VpdmUgeW91ciByZXdhcmQgaW4gdGhlIGdhbWUuJ11dLGZhcTpbWydXaGVyZSBkbyBJIGVudGVyIHRoZSBjb2Rlcz8nLCdDb3B5IHRoZSBjb2RlIGFuZCB1c2UgdGhlIHJlZGVtcHRpb24gbGluay4nXSxbJ0RvIGNvZGVzIGV4cGlyZT8nLCdZZXMuIEV4cGlyZWQgY29kZXMgbW92ZSB0byB0aGUgZXhwaXJlZCBjb2RlcyBzZWN0aW9uLiddLFsnQ2FuIEkgdXNlIGl0IG9uIGlQaG9uZT8nLCdZZXMuIFRoZSBzaXRlIHdvcmtzIG5vcm1hbGx5IG9uIG1vYmlsZS4nXV0scGFydG5lcjon8J+knSBQQVJUTkVSU0hJUCcscGFydG5lclRpdGxlOifwn6SdIFlVTkFNWVNUIFBBUlRORVJTSElQJyxwYXJ0bmVyVGV4dDonV2FudCB0byBwYXJ0bmVyIHdpdGggWXVuYU15c3QgQ29kZXM/IFRoaXMgc3BhY2UgaXMgZm9yIGNyZWF0b3JzLCBicmFuZHMgYW5kIHByb2plY3RzIHJlbGF0ZWQgdG8gU3VtbW9uZXJzIFdhci4nLGNvbnRhY3Q6J0NPTlRBQ1QgVVMnLHN0YXR1czon8J+UhCBBY3RpdmUgY29kZScsY29weTon4pajIENPUFknLGxpbms6J/CflJcgT0ZGSUNJQUwgTElOSycsZm9vdGVyOidZdW5hTXlzdCDigKIgU3VtbW9uZXJzIFdhcjogU2t5IEFyZW5hIOKAoiBDb21tdW5pdHkgd2Vic2l0ZSd9fTtmdW5jdGlvbiBhcHBseShsKXtjb25zdCB0PVRbbF18fFQucHQ7ZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50Lmxhbmc9bD09PSdlbic/J2VuJzoncHQtQlInO2RvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy5uYXZsaW5rcyBhJykuZm9yRWFjaCgoeCxpKT0+eC50ZXh0Q29udGVudD10Lm5hdltpXSk7Y29uc3QgcD0kKCdwZXJmaWxUZXh0bycpO2lmKHApcC5pbm5lckhUTUw9dC5wcm9maWxlO2NvbnN0IGE9ZG9jdW1lbnQucXVlcnlTZWxlY3RvcignLmFib3V0Jyk7aWYoYSlhLmlubmVySFRNTD10LmFib3V0O2NvbnN0IHU9ZG9jdW1lbnQucXVlcnlTZWxlY3RvcignLnNlY3Rpb24taGVhZCBzcGFuJyk7aWYodSl1LnRleHRDb250ZW50PXQudXBkYXRlZDtkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCcuY2luZm8gc21hbGwnKS5mb3JFYWNoKHg9PngudGV4dENvbnRlbnQ9dC5zdGF0dXMpO2RvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy5jb3B5JykuZm9yRWFjaCh4PT54LnRleHRDb250ZW50PXQuY29weSk7ZG9jdW1lbnQucXVlcnlTZWxlY3RvcgkAllcnLmxpbmsnKS5mb3JFYWNoKHg9PngudGV4dENvbnRlbnQ9dC5saW5rKTtjb25zdCBhYz0kKCd0YWJBdGl2b3MnKTtpZihhYylhYy50ZXh0Q29udGVudD10LmFjdGl2ZTtjb25zdCBoPWRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoJyNjb21vPi5wYW5lbD5oMicpO2lmKGgpaC50ZXh0Q29udGVudD10Lmhvdztkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCcjY29tbz4ucGFuZWwgLnN0ZXAnKS5mb3JFYWNoKCh4LGkpPT57Y29uc3QgcT14LnF1ZXJ5U2VsZWN0b3IoJ2InKTtpZihxKXEudGV4dENvbnRlbnQ9dC5zdGVwc1tpXVswXTtjb25zdCBuPVsuLi54LmNoaWxkTm9kZXNdLmZpbmQobj0+bi5ub2RlVHlwZT09PTMmJm4uY29udGVudFRyaW0oKT09dHJ1ZSk7aWYobikobi50ZXh0Q29udGVudD10LnN0ZXBzW2ldWzFdKTpudWxsfSk7ZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgnLmZhcS1pdGVtJykuZm9yRWFjaCgoeCxpKT0+e2NvbnN0IHE9eC5xdWVyeVNlbGVjdG9yKCcuZmFxLXEnKSxhPXgucXVlcnlTZWxlY3RvcignLmZhcS1hJyk7aWYocSlxLmZpcnN0Q2hpbGQudGV4dENvbnRlbnQ9dC5mYXEvaV1bMF07aWYoYSlhLnRleHRDb250ZW50PXQuZmFxW2ldWzFdfSk7Y29uc3QgbT0kKCdwYXJjZXJpYU1vZGFsJyk7aWYobSl7Y29uc3QgcT1tLnF1ZXJ5U2VsZWN0b3IoJ2gzJykscDI9bS5xdWVyeVNlbGVjdG9yKCdwJyk7aWYocSlxLnRleHRDb250ZW50PXQucGFydG5lclRpdGxlO2lmKHAyKXAyLnRleHRDb250ZW50PXQucGFydG5lclRleHQ7bS5xdWVyeVNlbGVjdG9yQWxsKCcuY29udGFjdC1saW5rIHN0cm9uZycpLmZvckVhY2goeD0+eC50ZXh0Q29udGVudD10LmNvbnRhY3QpfWNvbnN0IHBhPWRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoJy5jb21tdW5pdHktdGFiLnBhcnRuZXJzaGlwIHN0cm9uZycpO2lmKHBhKXBhLnRleHRDb250ZW50PXQucGFydG5lcjtjb25zdCBmPSQoJ3JvZGFwZScpO2lmKGYpZi50ZXh0Q29udGVudD10LmZvb3RlcjtwdD8uY2xhc3NMaXN0LnRvZ2dsZSgnc2VsZWN0ZWQnLGwhPT0nZW4nKTtlbj8uY2xhc3NMaXN0LnRvZ2dsZSgnc2VsZWN0ZWQnLGw9PT0nZW4nKTtsb2NhbFN0b3JhZ2Uuc2V0SXRlbSgneXVuYW15c3QtbGFuZycsbCl9cHQ/LmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywKCkM9PmFwcGx5KCdwdCcpKTtlbj8uYWRkRXZlbnRMaXN0ZW5lcignY2xpY2snLCgpPT5hcHBseSgnZW4nKSk7YXBwbHkobG9jYWxTdG9yYWdlLmdldEl0ZW0oJ3l1bmFteXN0LWxhbmcgKQ==
+          run: |
+            python3 - <<'PY'
+          import base64, os, re
           from pathlib import Path
-          import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          url = 'https://chat.whatsapp.com/KWg53GNpXDA3G5lDT8VwOg?s=cl&p=a&ilr=0'
-          button = f'<a class="community-tab whatsapp" href="{url}" target="_blank" rel="noopener" aria-label="WhatsApp"><strong>💬 WHATSAPP</strong></a>'
-          if 'class="community-tab whatsapp"' not in s:
-              s, n = re.subn(r'(<div class="community-links">)', r'\1' + button, s, count=1)
-              if n != 1:
-                  raise SystemExit('Não foi encontrada a área community-links no index.html')
-              p.write_text(s, encoding='utf-8')
-          PY
-
-      - name: Aplicar cabeçalho, idioma e traduções
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-
-          # PT/BR e ENG sempre visíveis no PC e no telemóvel.
-          s = re.sub(
-              r'<div class="lang-switch" id="langSwitch">.*?</div></div></header>',
-              '<div class="lang-switch" id="langSwitch" aria-label="Idioma"><button class="lang-btn" id="langToggle" type="button" style="display:none">Idioma</button><div class="lang-menu"><button class="lang-option selected" id="langPTOption" type="button" data-lang="pt-BR">🇧🇷 PT/BR</button><button class="lang-option" id="langENOption" type="button" data-lang="en">🇬🇧 ENG</button></div></div></div></header>',
-              s,
-              count=1,
-              flags=re.S
-          )
-
-          # CSS final: logo ligeiramente menor, navegação centralizada e idiomas visíveis.
-          css = '''
-<style id="yunamyst-header-final">
-.top .nav{position:relative}
-@media(min-width:851px){
-  .top .navlinks{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:30px;white-space:nowrap}
-  .logo{font-size:32px!important}
-}
-.lang-switch{display:flex!important;align-items:center!important;gap:6px!important;margin-left:auto!important;position:relative!important}
-.lang-switch .lang-btn{display:none!important}
-.lang-switch .lang-menu{display:flex!important;position:static!important;min-width:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;gap:6px!important}
-.lang-switch .lang-option{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;border:1px solid #633487!important;border-radius:10px!important;background:#10091c!important;color:#fff!important;padding:9px 10px!important;text-align:center!important;font-size:11px!important;font-weight:800!important;cursor:pointer!important;touch-action:manipulation!important}
-.lang-switch .lang-option.selected{background:#2b1242!important;border-color:#9a5ad0!important}
-@media(max-width:850px){
-  .logo{font-size:24px!important}
-  .lang-switch{gap:5px!important;margin-left:4px!important}
-  .lang-switch .lang-menu{gap:5px!important}
-  .lang-switch .lang-option{padding:8px 8px!important;font-size:10px!important}
-}
-</style>
-'''
-          s = s.replace('</head>', css + '</head>', 1)
-
-          # Substitui o bloco de idioma antigo por um controlador que também traduz a página.
-          start = s.find("const ls=$('langSwitch');")
-          end = s.find("const music=$('bgMusic'),sound=$('soundToggle');", start)
-          if start == -1 or end == -1:
-              raise SystemExit('ERRO: bloco de idioma não encontrado no index.html')
-
-          lang_js = r'''const ls=$('langSwitch');
-const langPT=$('langPTOption'),langEN=$('langENOption');
-const translations={
-  pt:{
-    nav:['⌂ INÍCIO','⚔ SUMMONERS WAR','❔ COMO USAR'], hero:'SUMMONERS WAR', whatsapp:'WHATSAPP', partnership:'🤝 PARCERIA',
-    profile:'Conteúdo diário de<br>Summoners War!', about:'<b>✦ SOBRE O SITE</b><br><br>Aqui encontras os <b>códigos ativos</b> de Summoners War: Sky Arena.<br><br>💜 Guarda o site e volta sempre!',
-    updated:'⟳ Sempre atualizados!', active:'🟢 CÓDIGOS ATIVOS', how:'❓ COMO USAR',
-    steps:[['Copie o código','Clica em COPIAR no código desejado.'],['Abra o jogo','Entra no Summoners War: Sky Arena.'],['Resgata o código','Usa o link de resgate.'],['Aproveita!','Recebe a recompensa no jogo.']],
-    faq:[['Onde coloco os códigos?','Copia o código e usa o link de resgate.'],['Os códigos expiram?','Sim. Quando expiram, passam para a aba de códigos expirados.'],['Posso usar no iPhone?','Sim. O site funciona normalmente no telemóvel.']],
-    partnershipTitle:'🤝 PARCERIA YUNAMYST', partnershipText:'Queres fazer uma parceria com a YunaMyst Codes? Este espaço é para criadores, marcas e projetos relacionados com Summoners War.',
-    contact:'ENTRAR EM CONTATO', email:'Email', phone:'WhatsApp', status:'🔄 Código ativo', copy:'▣ COPIAR', link:'🔗 LINK OFICIAL', footer:'YunaMyst • Summoners War: Sky Arena • Site de comunidade'
-  },
-  en:{
-    nav:['⌂ HOME','⚔ SUMMONERS WAR','❔ HOW TO USE'], hero:'SUMMONERS WAR', whatsapp:'WHATSAPP', partnership:'🤝 PARTNERSHIP',
-    profile:'Daily content from<br>Summoners War!', about:'<b>✦ ABOUT THE SITE</b><br><br>Here you can find the <b>active codes</b> for Summoners War: Sky Arena.<br><br>💜 Save the site and come back often!',
-    updated:'⟳ Always updated!', active:'🟢 ACTIVE CODES', how:'❓ HOW TO USE',
-    steps:[['Copy the code','Click COPY on the code you want.'],['Open the game','Enter Summoners War: Sky Arena.'],['Redeem the code','Use the redemption link.'],['Enjoy!','Receive your reward in the game.']],
-    faq:[['Where do I enter the codes?','Copy the code and use the redemption link.'],['Do codes expire?','Yes. Expired codes move to the expired codes section.'],['Can I use it on iPhone?','Yes. The site works normally on mobile.']],
-    partnershipTitle:'🤝 YUNAMYST PARTNERSHIP', partnershipText:'Want to partner with YunaMyst Codes? This space is for creators, brands and projects related to Summoners War.',
-    contact:'CONTACT US', email:'Email', phone:'WhatsApp', status:'🔄 Active code', copy:'▣ COPY', link:'🔗 OFFICIAL LINK', footer:'YunaMyst • Summoners War: Sky Arena • Community website'
-  }
-};
-function applyLanguage(lang){
-  const t=translations[lang]||translations.pt;
-  document.documentElement.lang=lang==='en'?'en':'pt-BR';
-  document.querySelectorAll('.navlinks a').forEach((a,i)=>{if(t.nav[i])a.textContent=t.nav[i]});
-  document.querySelector('.hero h1').textContent=t.hero;
-  const wa=document.querySelector('.community-tab.whatsapp strong');if(wa)wa.textContent=t.whatsapp;
-  const pa=document.querySelector('.community-tab.partnership strong');if(pa)pa.textContent=t.partnership;
-  const profile=$('perfilTexto');if(profile)profile.innerHTML=t.profile;
-  const about=document.querySelector('.about');if(about)about.innerHTML=t.about;
-  const updated=document.querySelector('.section-head span');if(updated)updated.textContent=t.updated;
-  document.querySelectorAll('.cinfo small').forEach(x=>x.textContent=t.status);
-  document.querySelectorAll('.copy').forEach(x=>x.textContent=t.copy);
-  document.querySelectorAll('.link').forEach(x=>x.textContent=t.link);
-  const active=$('tabAtivos');if(active)active.textContent=t.active;
-  const how=document.querySelector('#como> .panel>h2');if(how)how.textContent=t.how;
-  document.querySelectorAll('#como> .panel .step').forEach((step,i)=>{if(t.steps[i]){const b=step.querySelector('b');if(b)b.textContent=t.steps[i][0];const text=[...step.childNodes].find(n=>n.nodeType===3&&n.textContent.trim());if(text)text.textContent=t.steps[i][1]}});
-  const faq=document.querySelectorAll('.faq-item');faq.forEach((item,i)=>{if(t.faq[i]){const q=item.querySelector('.faq-q');const a=item.querySelector('.faq-a');if(q)q.firstChild.textContent=t.faq[i][0];if(a)a.textContent=t.faq[i][1]}});
-  const ph=$('parceriaModal');if(ph){const h=ph.querySelector('h3');const p=ph.querySelector('p');if(h)h.textContent=t.partnershipTitle;if(p)p.textContent=t.partnershipText;ph.querySelectorAll('.contact-link strong').forEach(x=>x.textContent=t.contact);const sm=ph.querySelectorAll('.contact-link small');if(sm[0])sm[0].textContent=t.email;if(sm[1])sm[1].textContent=t.phone}
-  const footer=$('rodape');if(footer)footer.textContent=t.footer;
-  langPT?.classList.toggle('selected',lang!=='en');langEN?.classList.toggle('selected',lang==='en');
-  localStorage.setItem('yunamyst-lang',lang);
-}
-langPT?.addEventListener('click',()=>applyLanguage('pt'));
-langEN?.addEventListener('click',()=>applyLanguage('en'));
-applyLanguage(localStorage.getItem('yunamyst-lang')==='en'?'en':'pt');
-'''
-          s = s[:start] + lang_js + s[end:]
-
-          # Atualiza a versão para facilitar a confirmação de publicação.
-          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="header-nav-language-20260826-1510">', s, count=1)
+          css = base64.b64decode(os.environ['HEADER_CSS_B64']).decode('utf-8')
+          js = base64.b64decode(os.environ['I18N_JS_B64']).decode('utf-8')
+          if 'id="yunamyst-header-final"' not in s:
+              s = s.replace('</head>', css + '\n</head>', 1)
+          if 'id="yunamyst-i18n-final"' not in s:
+              s = s.replace('</body>', js + '\n</body>', 1)
+          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="header-nav-language-final-20260826">', s, count=1)
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verificar index
+      - name: Verificar publicação
         run: |
           python3 - <<'PY'
           from pathlib import Path
           s = Path('index.html').read_text(encoding='utf-8')
-          checks = [
-              '🇧🇷 PT/BR', '🇬🇧 ENG',
-              'header-nav-language-20260826-1510',
-              '.top .navlinks{position:absolute;left:50%;transform:translateX(-50%)',
-              'translations=', 'applyLanguage('
-          ]
-          for item in checks:
-              if item not in s:
-                  raise SystemExit(f'ERRO: não encontrado: {item}')
-          print('index.html verificado: cabeçalho, navegação e idiomas OK.')
+          required = ['🇧🇷 PT/BR','🇬🇧 ENG','yunamyst-header-final','yunamyst-i18n-final','header-nav-language-final-20260826']
+          missing = [x for x in required if x not in s]
+          if missing:
+              raise SystemExit('ERRO no index.html: ' + ', '.join(missing))
+          print('index.html OK: PT/BR + ENG, navegação centralizada, logo reduzido e tradução.')
           PY
 
       - name: Guardar alterações
@@ -187,7 +83,7 @@ applyLanguage(localStorage.getItem('yunamyst-lang')==='en'?'en':'pt');
           git config user.email 'actions@github.com'
           git add codes.json codes-history.json index.html .github/workflows/update-codes.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Corrigir cabeçalho, navegação e idioma PT/BR ENG'
+            git commit -m 'Atualizar cabeçalho navegação e idioma'
             git push
           else
             echo 'Nenhuma alteração necessária.'
