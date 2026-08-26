@@ -63,6 +63,27 @@ jobs:
               p.write_text(s, encoding='utf-8')
           PY
 
+      - name: Mostrar PT/BR e ENG no PC e telemóvel
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '/* YUNAMYST LANGUAGE SWITCH VISIBLE */'
+          css = '''<style id="yunamyst-language-visible">
+          /* YUNAMYST LANGUAGE SWITCH VISIBLE */
+          .lang-switch{display:flex!important;align-items:center;gap:6px}
+          .lang-switch .lang-btn{display:none!important}
+          .lang-switch .lang-menu{display:flex!important;position:static!important;right:auto!important;top:auto!important;min-width:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;gap:6px!important}
+          .lang-switch .lang-option{width:auto!important;border:1px solid #633487!important;background:#10091c!important;color:#fff!important;padding:9px 10px!important;text-align:center!important}
+          .lang-switch .lang-option.selected{background:#2b1242!important;border-color:#9a5ad0!important}
+          @media(max-width:850px){.lang-switch .lang-option{padding:8px 9px!important;font-size:10px!important}}
+          </style>'''
+          if marker not in s:
+              s = s.replace('</head>', css + '\n</head>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
       - name: Forcar publicacao da correção no index
         run: |
           python3 - <<'PY'
@@ -70,11 +91,11 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="official-withhive-link-20260826-1450">', s, count=1)
-          if 'Queres fazer uma parceria com a YunaMyst Codes?' not in s:
-              raise SystemExit('ERRO: a frase correta não está no index.html')
-          if 'Queres fazer uma parceria com o YunaMyst Codes?' in s:
-              raise SystemExit('ERRO: a frase antiga ainda está no index.html')
+          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="language-ptbr-eng-20260826-1500">', s, count=1)
+          if '🇬🇧 ENG' not in s:
+              raise SystemExit('ERRO: opção ENG não está no index.html')
+          if '🇧🇷 PT/BR' not in s:
+              raise SystemExit('ERRO: opção PT/BR não está no index.html')
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -84,7 +105,7 @@ jobs:
           git config user.email 'actions@github.com'
           git add codes.json codes-history.json index.html
           if ! git diff --cached --quiet; then
-            git commit -m 'Publicar correção parceria com a YunaMyst'
+            git commit -m 'Mostrar PT/BR e ENG no site'
             git push
           else
             echo 'Nenhuma alteração necessária.'
