@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-26T15:24:36Z",
+  "updated": "2026-08-26T16:59:30Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": 2,
@@ -13,7 +13,6 @@
     "LEGENDSWC2026HSL",
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
-    "THEB3STMAGE",
     "YIQIZOUGUO10SWC"
   ],
   "sources": {
@@ -150,22 +149,6 @@
       ]
     },
     "SWC26X10LEGACYBND": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
-    "THEB3STMAGE": {
       "trusted": [
         "summonerswarcodes",
         "sw-teams",

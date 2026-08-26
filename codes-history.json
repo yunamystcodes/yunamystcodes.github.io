@@ -9,7 +9,6 @@
     "LEGENDSWC2026HSL",
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
-    "THEB3STMAGE",
     "YIQIZOUGUO10SWC"
   ],
   "expired": [
@@ -283,9 +282,10 @@
     "IMMEDIATELY": 1,
     "REDEMPTIONS": 1,
     "SUMMONHENGE": 1,
-    "PROGRESSION": 1
+    "PROGRESSION": 1,
+    "THEB3STMAGE": 1
   },
-  "updated_at": "2026-08-26T15:24:36Z",
+  "updated_at": "2026-08-26T16:59:30Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -420,22 +420,6 @@
       ]
     },
     "SWC26X10LEGACYBND": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
-    "THEB3STMAGE": {
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
