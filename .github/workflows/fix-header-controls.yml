@@ -1,0 +1,112 @@
+name: Corrigir cabecalho YunaMyst
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-header:
+    if: github.event.head_commit.message != 'Corrigir cabecalho YunaMyst'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aplicar correcao do cabecalho
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<style id="yunamyst-header-controls-fix">'
+          if marker not in s:
+              css = r'''<style id="yunamyst-header-controls-fix">
+/* CABECALHO: mute ao lado do idioma; idiomas em menu de 1 clique; Y menor */
+.nav{position:relative}
+.header-controls-fixed{display:flex!important;align-items:center!important;gap:7px!important;margin-left:auto!important;flex:none!important}
+.header-controls-fixed .sound-control{display:flex!important;align-items:center!important;margin:0!important}
+.header-controls-fixed .lang-switch{position:relative!important;margin:0!important}
+.header-controls-fixed .lang-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:42px!important;white-space:nowrap!important}
+.header-controls-fixed .lang-menu{display:none!important;position:absolute!important;right:0!important;top:calc(100% + 7px)!important;z-index:10000!important;min-width:125px!important}
+.header-controls-fixed .lang-switch.open .lang-menu{display:block!important}
+.header-controls-fixed .lang-option{display:block!important;width:100%!important}
+.header-controls-fixed .yunamyst-lang-visible{display:block!important;margin:0!important}
+.header-controls-fixed .yunamyst-lang-visible .lang-option{display:block!important;width:100%!important}
+.logo::first-letter{font-size:.86em}
+@media(max-width:850px){
+  .header-controls-fixed{gap:5px!important}
+  .header-controls-fixed .lang-btn{height:38px!important;padding:8px 10px!important;font-size:10px!important}
+  .header-controls-fixed .sound-btn{width:38px!important;height:38px!important;font-size:17px!important}
+  .logo::first-letter{font-size:.84em}
+}
+</style>'''
+              s = s.replace('</head>', css + '\n</head>', 1)
+
+          marker2 = '<script id="yunamyst-header-controls-js">'
+          if marker2 not in s:
+              js = r'''<script id="yunamyst-header-controls-js">
+(function(){
+  function setupHeader(){
+    const nav=document.querySelector('.nav');
+    if(!nav) return;
+    const lang=document.querySelector('.lang-switch');
+    const soundBtn=document.querySelector('.sound-btn');
+    if(!lang || !soundBtn) return;
+    let sound=soundBtn.closest('.sound-control') || soundBtn.parentElement;
+    let box=document.querySelector('.header-controls-fixed');
+    if(!box){
+      box=document.createElement('div');
+      box.className='header-controls-fixed';
+      nav.appendChild(box);
+    }
+    if(lang.parentElement!==box) box.appendChild(lang);
+    if(sound.parentElement!==box) box.appendChild(sound);
+
+    const menu=lang.querySelector('.lang-menu');
+    if(!menu) return;
+    menu.classList.remove('yunamyst-lang-visible');
+    const visibleWrap=menu.querySelector('.yunamyst-lang-visible');
+    if(visibleWrap) visibleWrap.classList.remove('yunamyst-lang-visible');
+
+    const btn=lang.querySelector('.lang-btn');
+    if(btn && !btn.dataset.oneClick){
+      btn.dataset.oneClick='1';
+      btn.addEventListener('click',function(e){
+        e.preventDefault(); e.stopPropagation();
+        lang.classList.toggle('open');
+      });
+    }
+    menu.querySelectorAll('.lang-option').forEach(function(opt){
+      if(!opt.dataset.oneClick){
+        opt.dataset.oneClick='1';
+        opt.addEventListener('click',function(){
+          lang.classList.remove('open');
+        });
+      }
+    });
+    document.addEventListener('click',function(e){
+      if(!lang.contains(e.target)) lang.classList.remove('open');
+    },{once:false});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupHeader); else setupHeader();
+  setTimeout(setupHeader,300);
+  setTimeout(setupHeader,1000);
+})();
+</script>'''
+              s = s.replace('</body>', js + '\n</body>', 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Confirmar alteracao
+        run: |
+          git config user.name 'YunaMyst Header Bot'
+          git config user.email 'actions@github.com'
+          git add index.html .github/workflows/fix-header-controls.yml
+          if ! git diff --cached --quiet; then
+            git commit -m 'Corrigir cabecalho YunaMyst'
+            git push
+          else
+            echo 'Correcao ja aplicada.'
+          fi
