@@ -1,22 +1,30 @@
 name: Atualizar códigos automaticamente
+
 on:
   push:
     branches: [main]
   schedule:
     - cron: '17 * * * *'
+  workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 22
-      - name: Buscar códigos e atualizar site
-        run: node scripts/update-codes.mjs
-      - name: Corrigir texto da parceria no index
+          python-version: '3.12'
+
+      - name: Buscar 20 fontes e atualizar códigos
+        run: python3 scripts/update_codes.py
+
+      - name: Garantir texto da parceria
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -32,17 +40,13 @@ jobs:
               'PARCERIA COM O YUNAMYST CODES': 'PARCERIA COM A YUNAMYST CODES',
               'PARCERIA COM O YUNAMYST': 'PARCERIA COM A YUNAMYST',
           }
-          old = s
           for src, dst in replacements.items():
               s = s.replace(src, dst)
-          if s == old:
-              print('O texto já está correto ou não foi encontrado.')
-          else:
-              p.write_text(s, encoding='utf-8')
-              print('CORRIGIDO: parceria com a YunaMyst Codes')
-          if 'Queres fazer uma parceria com o YunaMyst' in s or 'parceria com o YunaMyst' in s:
-              raise SystemExit('ERRO: ainda existe "parceria com o YunaMyst" no index.html')
+          if 'parceria com o YunaMyst' in s or 'PARCERIA COM O YUNAMYST' in s:
+              raise SystemExit('ERRO: ainda existe "com o YunaMyst" no index.html')
+          p.write_text(s, encoding='utf-8')
           PY
+
       - name: Garantir botão WhatsApp
         run: |
           python3 - <<'PY'
@@ -57,16 +61,16 @@ jobs:
               if n != 1:
                   raise SystemExit('Não foi encontrada a área community-links no index.html')
               p.write_text(s, encoding='utf-8')
-              print('Botão WhatsApp inserido no index.html')
-          else:
-              print('Botão WhatsApp já existe no index.html')
           PY
+
       - name: Guardar alterações
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json index.html
+          git add codes.json codes-history.json index.html
           if ! git diff --cached --quiet; then
-            git commit -m 'Corrigir parceria para com a YunaMyst'
+            git commit -m 'Atualizar códigos a partir de 20 fontes'
             git push
+          else
+            echo 'Nenhuma alteração necessária.'
           fi
