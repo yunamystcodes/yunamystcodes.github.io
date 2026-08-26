@@ -23,10 +23,11 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           s = s.replace('parceria com o YunaMyst', 'parceria com a YunaMyst')
+          s = s.replace('parceria com o YunaMyst Codes', 'parceria com a YunaMyst Codes')
           s = s.replace('Parceria com o YunaMyst', 'Parceria com a YunaMyst')
           s = s.replace('PARCERIA COM O YUNAMYST', 'PARCERIA COM A YUNAMYST')
           p.write_text(s, encoding='utf-8')
-          print('Texto da parceria corrigido no index.html')
+          print('Texto da parceria corrigido no index.html: com a YunaMyst')
           PY
       - name: Garantir botão WhatsApp
         run: |
