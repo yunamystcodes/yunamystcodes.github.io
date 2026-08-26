@@ -1,7 +1,8 @@
 {
-  "updated": "2026-08-26T13:28:01Z",
+  "updated": "2026-08-26T13:29:11Z",
   "source_count": 20,
   "successful_sources": 13,
+  "trusted_confirmation": 2,
   "codes": [
     "4READY4TDOT",
     "AUGSW2026V7N",
@@ -12,65 +13,149 @@
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
     "YIQIZOUGUO10SWC",
-    "IDTOP8GO",
-    "JUNSW2026W6C"
+    "IDTOP8GO"
   ],
   "sources": {
-    "4READY4TDOT": [
-      "levelgeeks",
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "AUGSW2026V7N": [
-      "levelgeeks",
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "SWXFRIEREN2026": [
-      "pocketgamer",
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "APAC26LEGASEA": [
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "GLHF2026AMERICAS": [
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "LEGENDSWC2026HSL": [
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "PAI2026BANGKOK": [
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "SWC26X10LEGACYBND": [
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "YIQIZOUGUO10SWC": [
-      "summonerswarcodes",
-      "sw-teams",
-      "swcoupon"
-    ],
-    "IDTOP8GO": [
-      "summonerswarcodes",
-      "swcoupon"
-    ],
-    "JUNSW2026W6C": [
-      "levelgeeks",
-      "pocketgamer"
-    ]
+    "4READY4TDOT": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "AUGSW2026V7N": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "SWXFRIEREN2026": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "pocketgamer",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "APAC26LEGASEA": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "GLHF2026AMERICAS": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "LEGENDSWC2026HSL": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "PAI2026BANGKOK": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "SWC26X10LEGACYBND": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "YIQIZOUGUO10SWC": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "IDTOP8GO": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    }
   }
 }
