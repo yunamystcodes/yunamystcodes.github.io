@@ -5,8 +5,6 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-# We use several independent public code lists so a single stale/failed
-# source cannot stop the YunaMyst list from receiving new codes.
 SOURCES = (
     ("sw-teams", "https://sw-teams.ovh/codes"),
     ("allthings", "https://allthings.how/summoners-war-codes/"),
@@ -136,9 +134,6 @@ def fetch_sources():
 def active_card(code):
     safe = html.escape(code, quote=True)
     js_code = code.replace("\\", "\\\\").replace("'", "\\'")
-    # Summoners War's official coupon deeplink format is /313/<CODE> and
-    # works for iOS as well as Android. The previous 000000000 placeholder
-    # caused every mobile LINK button to open an invalid coupon.
     coupon_url = f"https://withhive.me/313/{safe}"
     return (
         '<article class="code auto-code">'
@@ -149,17 +144,6 @@ def active_card(code):
         '<div class="reward"><span class="mana"></span><b>—</b><small>Info</small></div>'
         f'<button class="copy" onclick="copiar(\'{js_code}\',this)">▣ COPIAR</button>'
         f'<a class="link" href="{coupon_url}" target="_blank" rel="noopener noreferrer">🔗 LINK</a>'
-        '</article>'
-    )
-
-
-def expired_card(code):
-    safe = html.escape(code, quote=True)
-    return (
-        '<article class="code expired-code auto-expired">'
-        '<div class="gift">🎁</div>'
-        f'<div class="cinfo"><strong>{safe}</strong><small>Não disponível para resgate</small></div>'
-        '<div class="badge-expired">⛔ EXPIRADO</div>'
         '</article>'
     )
 
@@ -191,9 +175,36 @@ def replace_div_by_id(text, element_id, replacement):
     return text[:match.start()] + replacement + text[end:]
 
 
-def update_expired_count(index, count):
-    index = re.sub(r"🔴\s*\d+\s+códigos expirados", f"🔴 {count} códigos expirados", index)
-    index = re.sub(r"🔴\s*\d+\s+expired codes", f"🔴 {count} expired codes", index)
+def remove_expired_ui(index):
+    # Remove the expired-code tab/button from both desktop and mobile.
+    index = re.sub(
+        r'<button\b(?=[^>]*\bclass=["\'][^"\']*\btab\b[^"\']*\bexpired\b[^"\']*["\'])[^>]*>.*?</button>',
+        '',
+        index,
+        flags=re.I | re.S,
+    )
+    # Remove any remaining visible expired heading/button by its label.
+    index = re.sub(
+        r'<button\b[^>]*>\s*[^<]*CÓDIGOS\s+EXPIRADOS[^<]*</button>',
+        '',
+        index,
+        flags=re.I | re.S,
+    )
+    # Keep the expired container empty and hidden if an older index still has it.
+    index = replace_div_by_id(
+        index,
+        "expirados",
+        '<div id="expirados" class="code-list expired-list" style="display:none!important"></div>',
+    )
+    # The site should advertise only active codes.
+    index = index.replace(
+        'Códigos ativos e expirados de Summoners War — YunaMyst.',
+        'Códigos ativos de Summoners War — YunaMyst.',
+    )
+    index = index.replace(
+        'códigos ativos e expirados',
+        'códigos ativos',
+    )
     return index
 
 
@@ -222,15 +233,7 @@ def main():
         + "\n</div>"
     )
     index = replace_div_by_id(index, "ativos", active_html)
-
-    expired_html = (
-        '<div id="expirados" class="code-list expired-list">\n'
-        + "\n".join(expired_card(c) for c in expired)
-        + f'\n<div class="more">🔴 {len(expired)} códigos expirados • Esta aba guarda o histórico.</div>\n'
-        + "</div>"
-    )
-    index = replace_div_by_id(index, "expirados", expired_html)
-    index = update_expired_count(index, len(expired))
+    index = remove_expired_ui(index)
     index = re.sub(
         r'(<meta name="build-version" content=")[^"]*(")',
         rf"\g<1>auto-codes-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M')}\g<2>",
@@ -255,7 +258,7 @@ def main():
     )
 
     print(f"Códigos ativos confirmados: {len(active)}")
-    print(f"Códigos expirados no histórico: {len(expired)}")
+    print(f"Códigos expirados guardados apenas no histórico: {len(expired)}")
     print("Novos expirados nesta execução:", ", ".join(newly_expired) if newly_expired else "nenhum")
     print("Novos/ativos:", ", ".join(active))
 
