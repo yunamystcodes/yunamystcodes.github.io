@@ -28,6 +28,18 @@ SOURCES = (
     ("progameguides", "https://progameguides.com/summoners-war/summoners-war-codes/"),
 )
 TRUSTED = {"sw-teams", "swcoupon", "summonerswarcodes", "swquery", "swgt"}
+# Códigos que o utilizador reportou como não funcionais: ficam suprimidos até
+# aparecerem novamente como um código novo confirmado após uma futura revisão.
+USER_REPORTED_INACTIVE = {
+    "AUGSW2026V7N",
+    "SWXFRIEREN2026",
+    "APAC26LEGASEA",
+    "GLHF2026AMERICAS",
+    "LEGENDSWC2026HSL",
+    "PAI2026BANGKOK",
+    "SWC26X10LEGACYBND",
+    "YIQIZOUGUO10SWC",
+}
 REJECTED = {"IDTOP8GO"}
 ROOT = Path(__file__).resolve().parents[1]
 INDEX, HISTORY, CODES_JSON = ROOT / "index.html", ROOT / "codes-history.json", ROOT / "codes.json"
@@ -36,7 +48,7 @@ BANNED = {"ACTIVE","EXPIRED","WORKING","AVAILABLE","CODES","CODE","SUMMONERS","W
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/11.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
+    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/12.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -51,7 +63,7 @@ def normalize_codes(tokens):
     out, seen = [], set()
     for token in tokens:
         code = token.strip().strip("`.,:;()[]{}<>\"").upper()
-        if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or not re.search(r"[A-Z]", code):
+        if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or code in USER_REPORTED_INACTIVE or not re.search(r"[A-Z]", code):
             continue
         if not re.search(r"\d", code) and len(code) < 10:
             continue
@@ -74,7 +86,6 @@ def active_blocks(text):
 def parse_source(name, raw):
     text=clean_text(raw)
     if name == "sw-teams":
-        # SW-Teams has explicit "Active" labels; use those rows only.
         return sorted(normalize_codes(re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)))
     blocks=active_blocks(text); candidates=set(normalize_codes(CODE_RE.findall(" ".join(blocks)))) if blocks else set()
     if name in TRUSTED: candidates.update(normalize_codes(CODE_RE.findall(text[:12000])))
@@ -116,7 +127,7 @@ def main():
             for code in codes: found.setdefault(code,{"code":code,"sources":set()})["sources"].add(name)
         except Exception as exc: errors.append(f"{name}: {exc}"); print(f"Fonte {name}: ERRO - {exc}")
 
-    confirmed=sorted([v for v in found.values() if len(v["sources"]&TRUSTED)>=2 and (re.search(r"\d",v["code"]) or "sw-teams" in v["sources"])],key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
+    confirmed=sorted([v for v in found.values() if len(v["sources"]&TRUSTED)>=2 and v["code"] not in USER_REPORTED_INACTIVE and (re.search(r"\d",v["code"]) or "sw-teams" in v["sources"])],key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
     active=[v["code"] for v in confirmed]
     if not active: raise RuntimeError("Nenhum código confirmado por 2 fontes confiáveis; atualização abortada.")
 
