@@ -11,6 +11,12 @@
 @media(max-width:1050px) and (min-width:851px){.layout{grid-template-columns:200px minmax(0,1fr) 220px}.code{grid-template-columns:52px minmax(100px,1fr) 48px 48px 48px 105px 105px;gap:7px}}
 @media(max-width:850px){.container{width:calc(100% - 18px)}.top{height:72px}.logo{font-size:29px}.navlinks{display:none}.hero{padding:22px 0 10px}.hero h1{font-size:43px}.community-links{width:min(330px,calc(100% - 24px));flex-direction:column;gap:8px;margin:0 auto 14px}.community-tab{width:100%;min-height:42px;padding:8px 12px}.layout{display:flex;flex-direction:column;gap:12px}.layout>.panel#codigos{order:1;width:100%;min-width:0}.layout>.left{order:2;width:100%;margin:0}.layout>.right{order:3;width:100%;margin:0}.left .profile{padding:18px 12px 14px}.left .about{display:none}.right .panel{width:100%}.section-head{font-size:19px;padding:16px 14px}.code-list{padding:10px}.code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;min-height:174px!important;width:100%!important}.code>.gift{grid-area:gift;width:44px;height:44px}.code>.cinfo{grid-area:info}.cinfo strong{font-size:15px}.cinfo small{font-size:9px}.code>.reward:nth-child(3){grid-area:r1}.code>.reward:nth-child(4){grid-area:r2}.code>.reward:nth-child(5){grid-area:r3}.copy{grid-area:copy}.link{grid-area:link}.expired-code{grid-template-columns:44px minmax(0,1fr)!important;grid-template-rows:48px 42px!important;grid-template-areas:'gift info' 'badge badge'!important;min-height:100px!important}.expired-code .gift{grid-area:gift;width:40px;height:40px}.expired-code .cinfo{grid-area:info}.expired-code .badge-expired{grid-area:badge;width:100%;padding:8px}.lang-btn{padding:8px 11px;font-size:10px}.sound-control{margin-right:4px}.sound-btn{width:38px;height:38px;font-size:17px}.footer{font-size:9px;padding:12px 8px 20px}}
 </style>
+
+<style id="yunamyst-footer-final">
+/* YUNAMYST FOOTER FINAL 20260821 */
+#rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}
+@media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}
+</style>
 </head>
 <body>
 <div class="bg"></div>
@@ -45,6 +51,15 @@ async function loadAutoCodes(){try{const r=await fetch('./codes.json?ts='+Date.n
 function initMusic(){const audio=document.getElementById('bgMusic'),btn=document.getElementById('soundToggle');if(!audio||!btn)return;audio.volume=.05;try{audio.muted=localStorage.getItem('yunamyst-mute-v2')==='1'}catch(e){}const sync=()=>{btn.textContent=audio.muted?'🔇':'🔊'};sync();btn.addEventListener('click',()=>{audio.muted=!audio.muted;try{localStorage.setItem('yunamyst-mute-v2',audio.muted?'1':'0')}catch(e){}if(!audio.muted)audio.play().catch(()=>{});sync()})}
 function init(){renderActive(fallbackActive);renderExpired();document.getElementById('tabAtivos').addEventListener('click',()=>mostrar('ativos'));document.getElementById('tabExpirados').addEventListener('click',()=>mostrar('expirados'));const ls=document.getElementById('langSwitch');document.getElementById('langToggle').addEventListener('click',e=>{e.stopPropagation();ls.classList.toggle('open')});document.getElementById('langPTOption').addEventListener('click',()=>{setLanguage('pt');ls.classList.remove('open')});document.getElementById('langENOption').addEventListener('click',()=>{setLanguage('en');ls.classList.remove('open')});document.addEventListener('click',e=>{if(!ls.contains(e.target))ls.classList.remove('open')});document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('active')));const modal=document.getElementById('parceriaModal');document.getElementById('partnershipBtn').addEventListener('click',()=>modal.classList.add('open'));document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('open'));modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});let saved='pt';try{saved=localStorage.getItem('yunamyst-lang')||'pt'}catch(e){}setLanguage(saved);if(location.hash==='#expirados')mostrar('expirados');initMusic();loadAutoCodes()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+</script>
+
+<script id="yunamyst-footer-final-js">
+/* YUNAMYST FOOTER FINAL 20260821 */
+document.addEventListener('DOMContentLoaded',function(){
+  var f=document.getElementById('rodape');
+  var layout=document.querySelector('.layout');
+  if(f && layout){ layout.insertAdjacentElement('afterend',f); }
+});
 </script>
 </body>
 </html>
