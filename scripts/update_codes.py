@@ -5,7 +5,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-# 20 independent code sources. A source can fail without stopping the update.
+# 20 independent sources. A source may fail without stopping the hourly update.
 SOURCES = (
     ("sw-teams", "https://sw-teams.ovh/codes"),
     ("swcoupon", "https://swcoupon.net/"),
@@ -39,17 +39,15 @@ BANNED = {
     "ACTIVE", "EXPIRED", "WORKING", "AVAILABLE", "CODES", "CODE", "SUMMONERS",
     "WAR", "SKY", "ARENA", "ENERGY", "MANA", "SCROLL", "REDEEM", "COUPON",
     "COPY", "REWARD", "REWARDS", "LATEST", "NEW", "GUIDE", "GAME", "GAMES",
+    "COM2US", "ANDROID", "IPHONE", "WINDOWS", "FACEBOOK", "DISCORD", "TWITTER",
 }
 
 
 def fetch(url):
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "Mozilla/5.0 (compatible; YunaMyst-Code-Updater/4.0)",
-            "Accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7",
-        },
-    )
+    req = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (compatible; YunaMyst-Code-Updater/5.0)",
+        "Accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7",
+    })
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -64,7 +62,9 @@ def normalize_codes(tokens):
     out, seen = [], set()
     for token in tokens:
         code = token.strip().strip("`.,:;()[]{}<>\"").upper()
-        if not 6 <= len(code) <= 32 or code in BANNED or not re.search(r"[A-Z]", code) or not re.search(r"\d", code):
+        if not 6 <= len(code) <= 32:
+            continue
+        if code in BANNED or not re.search(r"[A-Z]", code) or not re.search(r"\d", code):
             continue
         if code not in seen:
             seen.add(code)
@@ -72,17 +72,27 @@ def normalize_codes(tokens):
     return out
 
 
-def active_block(text):
+def active_blocks(text):
     lower = text.lower()
     starts = (
-        "working summoners war codes", "working codes", "available codes",
-        "active summoners war codes", "new & active summoners war codes",
-        "new and active summoners war codes", "currently working summoners war codes",
-        "all summoners war codes 2026", "new summoners war codes",
+        "working summoners war codes",
+        "working codes",
+        "available codes",
+        "active summoners war codes",
+        "new & active summoners war codes",
+        "new and active summoners war codes",
+        "currently working summoners war codes",
+        "working summoners war codes",
+        "new summoners war codes",
+        "all summoners war codes 2026",
     )
     stops = (
-        "expired summoners war codes", "expired codes", "expired",
-        "how to redeem", "how do i redeem", "how to use",
+        "expired summoners war codes",
+        "expired codes",
+        "expired",
+        "how to redeem",
+        "how do i redeem",
+        "how to use",
     )
     blocks = []
     for marker in starts:
@@ -100,10 +110,13 @@ def active_block(text):
 
 def parse_source(name, raw):
     text = clean_text(raw)
-    blocks = active_block(text)
-    # Prefer the explicitly active sections. If a page has no headings, use the first
-    # part of the page, but never use its expired section.
-    candidate_text = " ".join(blocks) if blocks else text[:120000]
+    blocks = active_blocks(text)
+    # Never scrape the whole page as a fallback: that was causing old/expired
+    # codes to leak into the active list. Sources without an identifiable active
+    # section simply contribute zero candidates for this run.
+    if not blocks:
+        return []
+    candidate_text = " ".join(blocks)
     codes = normalize_codes(CODE_RE.findall(candidate_text))
     if name == "sw-teams":
         explicit = re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)
@@ -157,28 +170,28 @@ def card(code):
 
 
 def main():
-    found = {}
-    errors = []
+    found, errors = {}, []
     successful = 0
     for name, url in SOURCES:
         try:
             codes = parse_source(name, fetch(url))
             successful += 1
-            print(f"Fonte {name}: {len(codes)} códigos candidatos")
+            print(f"Fonte {name}: {len(codes)} candidatos ativos")
             for code in codes:
                 found.setdefault(code, {"code": code, "sources": set()})["sources"].add(name)
         except Exception as exc:
             errors.append(f"{name}: {exc}")
             print(f"Fonte {name}: ERRO - {exc}")
 
-    # A code is published as active only after at least two independent sources agree.
+    # No duplicate codes: one normalized code is one entry, even if 20 sources list it.
+    # To avoid false positives, publish only when at least two independent sources agree.
     confirmed = sorted(
         [v for v in found.values() if len(v["sources"]) >= 2],
         key=lambda v: (-len(v["sources"]), v["code"]),
     )
     active = [v["code"] for v in confirmed]
     if not active:
-        raise RuntimeError("Nenhum código foi confirmado por pelo menos 2 fontes; atualização abortada.")
+        raise RuntimeError("Nenhum código confirmado por 2 fontes; atualização abortada por segurança.")
 
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     history = {"active": [], "expired": [], "missing": {}, "updated_at": now, "sources": {}, "source_errors": []}
@@ -193,45 +206,37 @@ def main():
     current = set(active)
     missing = {str(k).upper(): int(v) for k, v in history.get("missing", {}).items()}
 
-    # A code missing from all currently readable active lists for two consecutive
-    # hourly checks is moved to the expired history. It is never shown on the site.
-    for code in list(previous_active - current):
+    # A code absent from all readable active lists for two consecutive hourly checks
+    # is moved to expired history. Expired codes are never displayed on the website.
+    for code in previous_active - current:
         missing[code] = missing.get(code, 0) + 1
-    for code in list(current):
+    for code in current:
         missing.pop(code, None)
 
     newly_expired = [code for code in previous_active if code not in current and missing.get(code, 0) >= 2]
     expired = normalize_codes(previous_expired + newly_expired)
     expired = [code for code in expired if code not in current]
 
-    # New code = confirmed by 2+ sources. Existing active codes remain active while confirmed.
-    INDEX.write_text(
-        remove_expired_ui(
-            replace_div_by_id(
-                INDEX.read_text(encoding="utf-8"),
-                "ativos",
-                '<div id="ativos" class="code-list">\n' + "\n".join(card(c) for c in active) + '\n</div>',
-            )
-        ),
-        encoding="utf-8",
-    )
+    index = INDEX.read_text(encoding="utf-8")
+    index = replace_div_by_id(index, "ativos", '<div id="ativos" class="code-list">\n' + "\n".join(card(c) for c in active) + '\n</div>')
+    INDEX.write_text(remove_expired_ui(index), encoding="utf-8")
 
     details = {v["code"]: sorted(v["sources"]) for v in confirmed}
-    CODES_JSON.write_text(
-        json.dumps({"updated": now, "source_count": len(SOURCES), "successful_sources": successful, "codes": active, "sources": details}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    HISTORY.write_text(
-        json.dumps({
-            "active": active,
-            "expired": expired,
-            "missing": {k: v for k, v in missing.items() if k not in current and v < 2},
-            "updated_at": now,
-            "sources": details,
-            "source_errors": errors,
-        }, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    CODES_JSON.write_text(json.dumps({
+        "updated": now,
+        "source_count": len(SOURCES),
+        "successful_sources": successful,
+        "codes": active,
+        "sources": details,
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    HISTORY.write_text(json.dumps({
+        "active": active,
+        "expired": expired,
+        "missing": {k: v for k, v in missing.items() if k not in current and v < 2},
+        "updated_at": now,
+        "sources": details,
+        "source_errors": errors,
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(f"20 fontes configuradas: {len(SOURCES)}")
     print(f"Fontes que responderam: {successful}/{len(SOURCES)}")
