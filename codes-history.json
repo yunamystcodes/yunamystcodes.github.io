@@ -9,38 +9,7 @@
     "LEGENDSWC2026HSL",
     "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
-    "YIQIZOUGUO10SWC",
-    "EXPIRATION",
-    "FREQUENTLY",
-    "ANNIVERSARY",
-    "CHAMPIONSHIP",
-    "MILESTONES",
-    "PROGRESSION",
-    "REDEMPTION",
-    "SPECIFICALLY",
-    "COLLECTION",
-    "IMMEDIATELY",
-    "TROUBLESHOOTING",
-    "ANNOUNCEMENTS",
-    "AUTOMATICALLY",
-    "CATEGORIES",
-    "CELEBRATIONS",
-    "COLLABORATION",
-    "COLLABORATIONS",
-    "CONSISTENTLY",
-    "EQUIVALENT",
-    "EXCLUSIVELY",
-    "MAINTAINED",
-    "NECROPOLIS",
-    "OCCASIONALLY",
-    "PARTNERSHIP",
-    "PRIORITIZE",
-    "PROMOTIONAL",
-    "REDEMPTIONS",
-    "REGARDLESS",
-    "REGISTRATION",
-    "SUBJUGATION",
-    "SUMMONHENGE"
+    "YIQIZOUGUO10SWC"
   ],
   "expired": [
     "912XUXIECHUANQI",
@@ -282,9 +251,40 @@
     "SW2024MARW1M": 1,
     "SW2023JLJ9E": 1,
     "JUNSW2026W6C": 1,
-    "IDTOP8GO": 1
+    "IDTOP8GO": 1,
+    "EQUIVALENT": 1,
+    "MAINTAINED": 1,
+    "FREQUENTLY": 1,
+    "COLLECTION": 1,
+    "TROUBLESHOOTING": 1,
+    "EXPIRATION": 1,
+    "OCCASIONALLY": 1,
+    "SPECIFICALLY": 1,
+    "REDEMPTION": 1,
+    "COLLABORATION": 1,
+    "CATEGORIES": 1,
+    "CONSISTENTLY": 1,
+    "PRIORITIZE": 1,
+    "AUTOMATICALLY": 1,
+    "PROMOTIONAL": 1,
+    "CHAMPIONSHIP": 1,
+    "ANNIVERSARY": 1,
+    "ANNOUNCEMENTS": 1,
+    "CELEBRATIONS": 1,
+    "MILESTONES": 1,
+    "REGISTRATION": 1,
+    "PARTNERSHIP": 1,
+    "EXCLUSIVELY": 1,
+    "SUBJUGATION": 1,
+    "COLLABORATIONS": 1,
+    "NECROPOLIS": 1,
+    "REGARDLESS": 1,
+    "IMMEDIATELY": 1,
+    "REDEMPTIONS": 1,
+    "SUMMONHENGE": 1,
+    "PROGRESSION": 1
   },
-  "updated_at": "2026-08-26T13:33:31Z",
+  "updated_at": "2026-08-26T13:34:30Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -447,338 +447,6 @@
         "sw-teams",
         "swcoupon",
         "swgt",
-        "swquery"
-      ]
-    },
-    "EXPIRATION": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "levelgeeks",
-        "pocketgamer",
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "FREQUENTLY": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "pockettactics",
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "ANNIVERSARY": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "CHAMPIONSHIP": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "MILESTONES": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "PROGRESSION": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "REDEMPTION": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SPECIFICALLY": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "COLLECTION": {
-      "trusted": [
-        "summonerswarcodes",
-        "swgt"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swgt",
-        "tryhardguides"
-      ]
-    },
-    "IMMEDIATELY": {
-      "trusted": [
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "findingdulcinea",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "TROUBLESHOOTING": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon"
-      ],
-      "all": [
-        "findingdulcinea",
-        "summonerswarcodes",
-        "swcoupon"
-      ]
-    },
-    "ANNOUNCEMENTS": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon"
-      ]
-    },
-    "AUTOMATICALLY": {
-      "trusted": [
-        "sw-teams",
-        "swcoupon"
-      ],
-      "all": [
-        "sw-teams",
-        "swcoupon"
-      ]
-    },
-    "CATEGORIES": {
-      "trusted": [
-        "summonerswarcodes",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swquery"
-      ]
-    },
-    "CELEBRATIONS": {
-      "trusted": [
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "COLLABORATION": {
-      "trusted": [
-        "summonerswarcodes",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swquery"
-      ]
-    },
-    "COLLABORATIONS": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon"
-      ]
-    },
-    "CONSISTENTLY": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon"
-      ]
-    },
-    "EQUIVALENT": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon"
-      ]
-    },
-    "EXCLUSIVELY": {
-      "trusted": [
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "MAINTAINED": {
-      "trusted": [
-        "summonerswarcodes",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swquery"
-      ]
-    },
-    "NECROPOLIS": {
-      "trusted": [
-        "sw-teams",
-        "swquery"
-      ],
-      "all": [
-        "sw-teams",
-        "swquery"
-      ]
-    },
-    "OCCASIONALLY": {
-      "trusted": [
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "PARTNERSHIP": {
-      "trusted": [
-        "summonerswarcodes",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swquery"
-      ]
-    },
-    "PRIORITIZE": {
-      "trusted": [
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "PROMOTIONAL": {
-      "trusted": [
-        "sw-teams",
-        "swcoupon"
-      ],
-      "all": [
-        "sw-teams",
-        "swcoupon"
-      ]
-    },
-    "REDEMPTIONS": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon"
-      ]
-    },
-    "REGARDLESS": {
-      "trusted": [
-        "summonerswarcodes",
-        "swcoupon"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "swcoupon"
-      ]
-    },
-    "REGISTRATION": {
-      "trusted": [
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "swgt",
-        "swquery"
-      ]
-    },
-    "SUBJUGATION": {
-      "trusted": [
-        "sw-teams",
-        "swgt"
-      ],
-      "all": [
-        "sw-teams",
-        "swgt"
-      ]
-    },
-    "SUMMONHENGE": {
-      "trusted": [
-        "summonerswarcodes",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
         "swquery"
       ]
     }
