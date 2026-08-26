@@ -39,8 +39,8 @@ jobs:
           }
           for src, dst in replacements.items():
               s = s.replace(src, dst)
-          # Apenas o Y de "Myst" fica ligeiramente menor para não tocar no "w" visualmente.
-          s = s.replace('<div class="logo">YunaMyst<small>', '<div class="logo">YunaM<span class="myst-y">Y</span>st<small>', 1)
+          # YunaMyst: somente o Y de Myst fica ligeiramente menor, em PC e telemóvel.
+          s = s.replace('YunaMyst<small>', 'YunaM<span class="myst-y">Y</span>st<small>', 1)
           if './assets/header-final.css' not in s:
               s = s.replace('</head>', '<link rel="stylesheet" href="./assets/header-final.css?v=20260826"><meta name="build-version" content="header-nav-language-final-20260826"></head>', 1)
           else:
@@ -55,11 +55,11 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           s = Path('index.html').read_text(encoding='utf-8')
-          required = ['🇧🇷 PT/BR', '🇬🇧 ENG', './assets/header-final.css', './assets/i18n.js', 'header-nav-language-final-20260826']
+          required = ['YunaM<span class="myst-y">Y</span>st', '🇧🇷 PT/BR', '🇬🇧 ENG', './assets/header-final.css', './assets/i18n.js', 'header-nav-language-final-20260826']
           missing = [x for x in required if x not in s]
           if missing:
               raise SystemExit('ERRO: ' + ', '.join(missing))
-          print('OK: cabeçalho, navegação central, PT/BR + ENG e tradução presentes.')
+          print('OK: YunaMyst com Y de Myst reduzido + cabeçalho, idiomas e tradução presentes.')
           PY
 
       - name: Guardar alterações
@@ -68,7 +68,7 @@ jobs:
           git config user.email 'actions@github.com'
           git add codes.json codes-history.json index.html .github/workflows/update-codes.yml assets/header-final.css assets/i18n.js
           if ! git diff --cached --quiet; then
-            git commit -m 'Ajustar apenas o Y de Myst no logo'
+            git commit -m 'Corrigir Y de Myst no index para PC e telemóvel'
             git push
           else
             echo 'Nenhuma alteração necessária.'
