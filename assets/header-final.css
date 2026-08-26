@@ -4,11 +4,10 @@
   .logo{font-size:32px!important}
 }
 /* Apenas o Y de Myst fica ligeiramente menor para não sobrepor visualmente o w. */
-.logo .myst-y{font-size:.84em!important;display:inline-block!important;line-height:1!important;transform:translateY(.02em)}
+.logo .myst-y{font-size:.82em!important;display:inline-block!important;line-height:1!important;transform:translateY(.02em)}
 /* Som e idioma ficam juntos no lado direito. */
 .sound-control{display:flex!important;align-items:center!important;margin-left:auto!important;margin-right:6px!important;flex:none!important}
 .lang-switch{display:flex!important;align-items:center!important;gap:6px!important;margin-left:0!important;position:relative!important;flex:none!important}
-/* Apenas o idioma atual aparece; as opções surgem ao clicar. */
 .lang-switch .lang-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid #633487!important;border-radius:10px!important;background:#10091c!important;color:#fff!important;padding:9px 12px!important;font-weight:800!important;font-size:12px!important;cursor:pointer!important;touch-action:manipulation!important;white-space:nowrap!important}
 .lang-switch .lang-menu{display:none!important;position:absolute!important;right:0!important;top:calc(100% + 6px)!important;z-index:1000!important;min-width:118px!important;padding:5px!important;background:#10091c!important;border:1px solid #633487!important;border-radius:10px!important;box-shadow:0 12px 30px #0009!important;gap:0!important}
 .lang-switch.open .lang-menu{display:block!important}
@@ -16,6 +15,7 @@
 .lang-switch .lang-option.selected,.lang-switch .lang-option:hover{background:#2b1242!important}
 @media(max-width:850px){
   .logo{font-size:24px!important}
+  .logo .myst-y{font-size:.82em!important}
   .sound-control{margin-left:auto!important;margin-right:5px!important}
   .sound-btn{width:38px!important;height:38px!important;font-size:17px!important}
   .lang-switch{gap:5px!important;margin-left:0!important}
