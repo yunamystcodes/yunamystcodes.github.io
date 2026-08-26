@@ -36,7 +36,7 @@ BANNED = {"ACTIVE","EXPIRED","WORKING","AVAILABLE","CODES","CODE","SUMMONERS","W
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/9.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
+    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/10.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -51,7 +51,11 @@ def normalize_codes(tokens):
     out, seen = [], set()
     for token in tokens:
         code = token.strip().strip("`.,:;()[]{}<>\"").upper()
-        if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or not re.search(r"[A-Z]", code) or not re.search(r"\d", code):
+        if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or not re.search(r"[A-Z]", code):
+            continue
+        # Codes may be letters-only (for example AMPRELIMSLEGACYDRP), but short
+        # ordinary words are rejected. Numeric codes are accepted at 6+ chars.
+        if not re.search(r"\d", code) and len(code) < 10:
             continue
         if code not in seen:
             seen.add(code); out.append(code)
