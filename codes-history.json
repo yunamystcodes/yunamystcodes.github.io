@@ -252,13 +252,14 @@
     "SW2023JLJ9E": 1,
     "JUNSW2026W6C": 1
   },
-  "updated_at": "2026-08-26T13:29:11Z",
+  "updated_at": "2026-08-26T13:30:19Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
@@ -266,6 +267,7 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -274,6 +276,7 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
@@ -281,6 +284,7 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -289,6 +293,7 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
@@ -296,6 +301,7 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -304,12 +310,14 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -318,12 +326,14 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -332,12 +342,14 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -346,12 +358,14 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -360,12 +374,14 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -374,12 +390,14 @@
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     },
@@ -387,11 +405,13 @@
       "trusted": [
         "summonerswarcodes",
         "swcoupon",
+        "swgt",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "swcoupon",
+        "swgt",
         "swquery"
       ]
     }
