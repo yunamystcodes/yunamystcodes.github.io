@@ -1,0 +1,38 @@
+name: Fix YunaMyst header once
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, 'Fix YunaMyst header stray text') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix desktop and mobile header
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          # Remove the malformed stray fragment if present anywhere in the document.
+          for bad in ['yst.\">', 'yst.">', 'yst.\">\n', 'yst.">\n']:
+              s = s.replace(bad, '')
+          # Keep the branding exactly YunaMyst and shrink only the lowercase y in Myst.
+          s = s.replace('YunaM<span class="myst-y">y</span>st', 'YunaM<span class="myst-y">y</span>st')
+          fix = '''\n<style id="yunamyst-header-clean-final">\n/* YunaMyst: only the lowercase y in Myst is slightly smaller. */\n.logo .myst-y{font-size:.76em!important;display:inline-block!important;line-height:1!important;transform:translateY(.02em)!important}\n@media(max-width:850px){.logo .myst-y{font-size:.76em!important}}\n/* Prevent any accidental loose text fragment from appearing in the page corner. */\nbody>.stray-header-text{display:none!important}\n</style>\n'''
+          if 'yunamyst-header-clean-final' not in s:
+              s = s.replace('</head>', fix + '</head>', 1)
+          s = s.replace('header-nav-language-final-20260826', 'header-nav-language-final-20260826-clean')
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit fix and remove one-shot workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f .github/workflows/fix-yunamyst-header-once.yml
+          git add index.html .github/workflows/fix-yunamyst-header-once.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix YunaMyst header stray text"
+          git push
