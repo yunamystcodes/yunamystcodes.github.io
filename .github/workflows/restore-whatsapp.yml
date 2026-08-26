@@ -1,0 +1,41 @@
+name: Restaurar botão do WhatsApp
+
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-whatsapp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o site
+        uses: actions/checkout@v4
+
+      - name: Restaurar WhatsApp no index
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = '.community-tab.whatsapp{border:1px solid #24c86b;color:#35dc7b}'
+          new = '.community-tab.whatsapp{border:1px solid #24c86b;color:#35dc7b;display:flex!important;visibility:visible!important;opacity:1!important}'
+          if old in s:
+              s = s.replace(old, new, 1)
+          elif 'display:flex!important;visibility:visible!important;opacity:1!important' not in s:
+              raise SystemExit('Regra do WhatsApp não encontrada no index.html')
+          s = s.replace('auto-codes-20260826-0803', 'whatsapp-restore-20260826-1100', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Publicar e remover workflow temporário
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/restore-whatsapp.yml
+          git commit -m "Restaurar botão do WhatsApp no index"
+          git push
