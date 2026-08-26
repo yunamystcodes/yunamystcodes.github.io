@@ -72,15 +72,20 @@ jobs:
           marker = '/* YUNAMYST LANGUAGE SWITCH VISIBLE */'
           css = '''<style id="yunamyst-language-visible">
           /* YUNAMYST LANGUAGE SWITCH VISIBLE */
-          .lang-switch{display:flex!important;align-items:center;gap:6px}
-          .lang-switch .lang-btn{display:none!important}
-          .lang-switch .lang-menu{display:flex!important;position:static!important;right:auto!important;top:auto!important;min-width:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;gap:6px!important}
-          .lang-switch .lang-option{width:auto!important;border:1px solid #633487!important;background:#10091c!important;color:#fff!important;padding:9px 10px!important;text-align:center!important}
-          .lang-switch .lang-option.selected{background:#2b1242!important;border-color:#9a5ad0!important}
-          @media(max-width:850px){.lang-switch .lang-option{padding:8px 9px!important;font-size:10px!important}}
+          .yunamyst-lang-visible{display:flex!important;align-items:center;gap:6px;margin-left:6px}
+          .yunamyst-lang-visible .lang-option{display:inline-flex!important;align-items:center;justify-content:center;width:auto!important;border:1px solid #633487!important;border-radius:10px;background:#10091c!important;color:#fff!important;padding:9px 10px!important;text-align:center!important;font-size:11px!important;font-weight:800!important;text-decoration:none!important;cursor:pointer!important;touch-action:manipulation!important}
+          .yunamyst-lang-visible .lang-option.selected{background:#2b1242!important;border-color:#9a5ad0!important}
+          @media(max-width:850px){.yunamyst-lang-visible{gap:5px;margin-left:4px}.yunamyst-lang-visible .lang-option{padding:8px 8px!important;font-size:10px!important}}
           </style>'''
           if marker not in s:
               s = s.replace('</head>', css + '\n</head>', 1)
+          if '🇬🇧 ENG' not in s or '🇧🇷 PT/BR' not in s:
+              switch = '<div class="yunamyst-lang-visible" aria-label="Idioma"><button type="button" class="lang-option selected" data-lang="pt-BR">🇧🇷 PT/BR</button><button type="button" class="lang-option" data-lang="en">🇬🇧 ENG</button></div>'
+              anchor = '</div></header>'
+              if anchor in s:
+                  s = s.replace(anchor, switch + anchor, 1)
+              else:
+                  s = s.replace('</header>', switch + '\n</header>', 1)
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -102,7 +107,7 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="logo-reduzido-20260826-1520">', s, count=1)
+          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="lang-ptbr-eng-logo-20260826-1600">', s, count=1)
           if '🇬🇧 ENG' not in s:
               raise SystemExit('ERRO: opção ENG não está no index.html')
           if '🇧🇷 PT/BR' not in s:
@@ -120,7 +125,7 @@ jobs:
           git config user.email 'actions@github.com'
           git add codes.json codes-history.json index.html .github/workflows/update-codes.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Reduzir logo do cabeçalho no PC e telemóvel'
+            git commit -m 'Adicionar ENG visível no site'
             git push
           else
             echo 'Nenhuma alteração necessária.'
