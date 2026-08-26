@@ -70,7 +70,7 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="partnership-fix-20260826-1445">', s, count=1)
+          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="official-withhive-link-20260826-1450">', s, count=1)
           if 'Queres fazer uma parceria com a YunaMyst Codes?' not in s:
               raise SystemExit('ERRO: a frase correta não está no index.html')
           if 'Queres fazer uma parceria com o YunaMyst Codes?' in s:
