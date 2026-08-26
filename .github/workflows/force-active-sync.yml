@@ -1,0 +1,38 @@
+name: Forcar sincronizacao dos codigos ativos
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.event.head_commit.message != 'Forcar sincronizacao dos codigos ativos'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remover bloqueio antigo e sincronizar
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/update_codes.py')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(' and v["code"] not in USER_REPORTED_INACTIVE', '')
+          p.write_text(s, encoding='utf-8')
+          PY
+          python3 scripts/update_codes.py
+
+      - name: Guardar sincronizacao
+        run: |
+          git config user.name 'YunaMyst Codes Bot'
+          git config user.email 'actions@github.com'
+          git add scripts/update_codes.py index.html codes.json codes-history.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Forcar sincronizacao dos codigos ativos'
+            git push
+          else
+            echo 'Nenhuma alteracao necessaria.'
+          fi
