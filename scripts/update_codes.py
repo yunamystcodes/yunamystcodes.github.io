@@ -5,262 +5,239 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+# 20 independent code sources. A source can fail without stopping the update.
 SOURCES = (
     ("sw-teams", "https://sw-teams.ovh/codes"),
-    ("allthings", "https://allthings.how/summoners-war-codes/"),
-    ("nerdschalk", "https://nerdschalk.com/summoners-war-codes/"),
+    ("swcoupon", "https://swcoupon.net/"),
     ("summonerswarcodes", "https://summonerswarcodes.us/"),
+    ("swquery", "https://swquery.net/"),
+    ("swgt", "https://swgt.io/gamecodes/"),
+    ("pocketgamer", "https://www.pocketgamer.com/summoners-war/codes/"),
+    ("pockettactics", "https://www.pockettactics.com/summoners-war/codes"),
+    ("levelgeeks", "https://levelgeeks.net/summoners-war-codes/"),
+    ("findingdulcinea", "https://findingdulcinea.com/summoners-war-codes/"),
+    ("gameskinny", "https://www.gameskinny.com/tips/summoners-war-codes/"),
+    ("pcgamesn", "https://www.pcgamesn.com/summoners-war/codes"),
+    ("gamezebo", "https://www.gamezebo.com/walkthroughs/summoners-war-codes/"),
+    ("thenerdstash", "https://www.thenerdstash.com/summoners-war-codes/"),
+    ("touchtapplay", "https://www.touchtapplay.com/summoners-war-codes/"),
+    ("droidgamers", "https://www.droidgamers.com/guides/summoners-war-codes/"),
+    ("mejoress", "https://www.mejoress.com/en/summoners-war-codes/"),
+    ("supercheats", "https://www.supercheats.com/summoners-war-codes-cheats-tips"),
+    ("mrguider", "https://www.mrguider.org/codes/summoners-war-codes/"),
+    ("tryhardguides", "https://tryhardguides.com/summoners-war-codes/"),
+    ("progameguides", "https://progameguides.com/summoners-war/summoners-war-codes/"),
 )
+
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
 HISTORY = ROOT / "codes-history.json"
+CODES_JSON = ROOT / "codes.json"
 
 CODE_RE = re.compile(r"\b[A-Z0-9][A-Z0-9]{5,31}\b", re.I)
+BANNED = {
+    "ACTIVE", "EXPIRED", "WORKING", "AVAILABLE", "CODES", "CODE", "SUMMONERS",
+    "WAR", "SKY", "ARENA", "ENERGY", "MANA", "SCROLL", "REDEEM", "COUPON",
+    "COPY", "REWARD", "REWARDS", "LATEST", "NEW", "GUIDE", "GAME", "GAMES",
+}
 
 
-def fetch_html(url):
+def fetch(url):
     req = urllib.request.Request(
         url,
         headers={
-            "User-Agent": "Mozilla/5.0 (compatible; YunaMyst-Code-Updater/3.0)",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,text/plain;q=0.8,*/*;q=0.7",
+            "User-Agent": "Mozilla/5.0 (compatible; YunaMyst-Code-Updater/4.0)",
+            "Accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7",
         },
     )
-    with urllib.request.urlopen(req, timeout=30) as response:
+    with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
 
 def clean_text(raw):
     raw = re.sub(r"<script\b[^>]*>.*?</script>", " ", raw, flags=re.I | re.S)
     raw = re.sub(r"<style\b[^>]*>.*?</style>", " ", raw, flags=re.I | re.S)
-    text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
-    return re.sub(r"\s+", " ", text)
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", raw)))
 
 
-def unique_codes(items):
-    out = []
-    seen = set()
-    for item in items:
-        code = item.strip().strip("`.,:;()[]{}<>\"")
-        if not 6 <= len(code) <= 32:
+def normalize_codes(tokens):
+    out, seen = [], set()
+    for token in tokens:
+        code = token.strip().strip("`.,:;()[]{}<>\"").upper()
+        if not 6 <= len(code) <= 32 or code in BANNED or not re.search(r"[A-Z]", code) or not re.search(r"\d", code):
             continue
-        key = code.upper()
-        if key in {"ACTIVE", "EXPIRED", "WORKING", "CODES", "SUMMONERS", "REDEEM", "NEWCODE"}:
-            continue
-        if key not in seen:
-            seen.add(key)
+        if code not in seen:
+            seen.add(code)
             out.append(code)
     return out
 
 
-def parse_active_block(text):
+def active_block(text):
     lower = text.lower()
+    starts = (
+        "working summoners war codes", "working codes", "available codes",
+        "active summoners war codes", "new & active summoners war codes",
+        "new and active summoners war codes", "currently working summoners war codes",
+        "all summoners war codes 2026", "new summoners war codes",
+    )
+    stops = (
+        "expired summoners war codes", "expired codes", "expired",
+        "how to redeem", "how do i redeem", "how to use",
+    )
     blocks = []
-    markers = (
-        "working summoners war codes",
-        "working codes",
-        "available codes",
-        "active summoners war codes",
-        "new & active summoners war codes",
-        "new and active summoners war codes",
-    )
-    stop_markers = (
-        "how to redeem",
-        "how to use",
-        "expired summoners war codes",
-        "expired codes",
-        "expired",
-    )
-    for marker in markers:
+    for marker in starts:
         start = lower.find(marker)
         if start < 0:
             continue
         end = len(text)
-        for stop in stop_markers:
+        for stop in stops:
             pos = lower.find(stop, start + len(marker))
             if pos >= 0:
                 end = min(end, pos)
         blocks.append(text[start:end])
-
-    codes = []
-    for block in blocks:
-        for token in CODE_RE.findall(block):
-            if re.search(r"\d", token):
-                codes.append(token)
-    return unique_codes(codes)
+    return blocks
 
 
 def parse_source(name, raw):
     text = clean_text(raw)
-    codes = parse_active_block(text)
+    blocks = active_block(text)
+    # Prefer the explicitly active sections. If a page has no headings, use the first
+    # part of the page, but never use its expired section.
+    candidate_text = " ".join(blocks) if blocks else text[:120000]
+    codes = normalize_codes(CODE_RE.findall(candidate_text))
     if name == "sw-teams":
         explicit = re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)
-        codes = unique_codes(explicit)
+        if explicit:
+            codes = normalize_codes(explicit)
     return codes
 
 
-def fetch_sources():
-    found = {}
-    errors = []
-    for name, url in SOURCES:
-        try:
-            raw = fetch_html(url)
-            codes = parse_source(name, raw)
-            print(f"Fonte {name}: {len(codes)} códigos encontrados")
-            for code in codes:
-                found.setdefault(code.upper(), {"code": code, "sources": []})["sources"].append(name)
-        except Exception as exc:
-            errors.append(f"{name}: {exc}")
-            print(f"Fonte {name}: ERRO - {exc}")
-
-    if not found:
-        raise RuntimeError("Nenhuma fonte devolveu códigos ativos. " + " | ".join(errors))
-
-    source_count = sum(1 for _name, _url in SOURCES if _name not in {e.split(":", 1)[0] for e in errors})
-    if source_count >= 2:
-        active = [v["code"] for v in found.values() if len(set(v["sources"])) >= 2]
-    else:
-        active = []
-
-    if len(active) < 3:
-        raise RuntimeError(
-            f"A verificação encontrou apenas {len(active)} códigos confirmados por pelo menos 2 fontes. "
-            "Atualização abortada para não publicar códigos duvidosos."
-        )
-
-    return unique_codes(active), found, errors
-
-
-def active_card(code):
-    safe = html.escape(code, quote=True)
-    js_code = code.replace("\\", "\\\\").replace("'", "\\'")
-    coupon_url = f"https://withhive.me/313/{safe}"
-    return (
-        '<article class="code auto-code">'
-        '<div class="gift">🎁</div>'
-        f'<div class="cinfo"><strong>{safe}</strong><small>🔄 Código ativo</small></div>'
-        '<div class="reward"><span class="scroll"></span><b>—</b><small>Recompensa</small></div>'
-        '<div class="reward"><span class="energy">⚡</span><b>—</b><small>Info</small></div>'
-        '<div class="reward"><span class="mana"></span><b>—</b><small>Info</small></div>'
-        f'<button class="copy" onclick="copiar(\'{js_code}\',this)">▣ COPIAR</button>'
-        f'<a class="link" href="{coupon_url}" target="_blank" rel="noopener noreferrer">🔗 LINK</a>'
-        '</article>'
-    )
-
-
 def replace_div_by_id(text, element_id, replacement):
-    opening = re.compile(
-        rf'<div\b(?=[^>]*\bid=["\']{re.escape(element_id)}["\'])[^>]*>',
-        flags=re.I,
-    )
+    opening = re.compile(rf'<div\b(?=[^>]*\bid=["\']{re.escape(element_id)}["\'])[^>]*>', re.I)
     match = opening.search(text)
     if not match:
-        raise RuntimeError(f'Elemento <div id="{element_id}"> não encontrado no index.html')
-
-    tag_re = re.compile(r"<div\b[^>]*>|</div\s*>", flags=re.I)
+        raise RuntimeError(f'Elemento <div id="{element_id}"> não encontrado')
+    tags = re.compile(r"<div\b[^>]*>|</div\s*>", re.I)
     depth = 0
     end = None
-    for tag in tag_re.finditer(text, match.start()):
-        if tag.group(0).lower().startswith("<div"):
-            depth += 1
-        else:
-            depth -= 1
-            if depth == 0:
-                end = tag.end()
-                break
-
+    for tag in tags.finditer(text, match.start()):
+        depth += 1 if tag.group(0).lower().startswith("<div") else -1
+        if depth == 0:
+            end = tag.end()
+            break
     if end is None:
-        raise RuntimeError(f'Não foi possível localizar o fechamento de <div id="{element_id}">')
-
+        raise RuntimeError(f'Fecho de <div id="{element_id}"> não encontrado')
     return text[:match.start()] + replacement + text[end:]
 
 
 def remove_expired_ui(index):
-    # Remove the expired-code tab/button from both desktop and mobile.
-    index = re.sub(
-        r'<button\b(?=[^>]*\bclass=["\'][^"\']*\btab\b[^"\']*\bexpired\b[^"\']*["\'])[^>]*>.*?</button>',
-        '',
-        index,
-        flags=re.I | re.S,
-    )
-    # Remove any remaining visible expired heading/button by its label.
-    index = re.sub(
-        r'<button\b[^>]*>\s*[^<]*CÓDIGOS\s+EXPIRADOS[^<]*</button>',
-        '',
-        index,
-        flags=re.I | re.S,
-    )
-    # Keep the expired container empty and hidden if an older index still has it.
-    index = replace_div_by_id(
-        index,
-        "expirados",
-        '<div id="expirados" class="code-list expired-list" style="display:none!important"></div>',
-    )
-    # The site should advertise only active codes.
-    index = index.replace(
-        'Códigos ativos e expirados de Summoners War — YunaMyst.',
-        'Códigos ativos de Summoners War — YunaMyst.',
-    )
-    index = index.replace(
-        'códigos ativos e expirados',
-        'códigos ativos',
-    )
+    index = re.sub(r'<button\b(?=[^>]*\bexpired\b)[^>]*>.*?</button>', '', index, flags=re.I | re.S)
+    index = re.sub(r'<button\b[^>]*>\s*[^<]*CÓDIGOS\s+EXPIRADOS[^<]*</button>', '', index, flags=re.I | re.S)
+    try:
+        index = replace_div_by_id(index, "expirados", '<div id="expirados" class="code-list expired-list" style="display:none!important"></div>')
+    except RuntimeError:
+        pass
+    index = index.replace('Códigos ativos e expirados de Summoners War — YunaMyst.', 'Códigos ativos de Summoners War — YunaMyst.')
+    index = index.replace('códigos ativos e expirados', 'códigos ativos')
     return index
 
 
+def card(code):
+    safe = html.escape(code, quote=True)
+    js = code.replace("\\", "\\\\").replace("'", "\\'")
+    return (
+        '<article class="code auto-code"><div class="gift">🎁</div>'
+        f'<div class="cinfo"><strong>{safe}</strong><small>🔄 Código ativo</small></div>'
+        '<div class="reward"><span class="scroll"></span><b>—</b><small>Recompensa</small></div>'
+        '<div class="reward"><span class="energy">⚡</span><b>—</b><small>Energia</small></div>'
+        '<div class="reward"><span class="mana"></span><b>—</b><small>Mana</small></div>'
+        f'<button class="copy" type="button" data-code="{safe}" onclick="copiar(\'{js}\',this)">▣ COPIAR</button>'
+        f'<a class="link" href="https://withhive.me/313/{safe}" target="_blank" rel="noopener noreferrer">🔗 LINK</a></article>'
+    )
+
+
 def main():
-    active, details, errors = fetch_sources()
-    active_keys = {c.upper() for c in active}
+    found = {}
+    errors = []
+    successful = 0
+    for name, url in SOURCES:
+        try:
+            codes = parse_source(name, fetch(url))
+            successful += 1
+            print(f"Fonte {name}: {len(codes)} códigos candidatos")
+            for code in codes:
+                found.setdefault(code, {"code": code, "sources": set()})["sources"].add(name)
+        except Exception as exc:
+            errors.append(f"{name}: {exc}")
+            print(f"Fonte {name}: ERRO - {exc}")
 
-    history = json.loads(HISTORY.read_text(encoding="utf-8"))
-    previous_active = unique_codes(history.get("active", []))
-    previous_expired = unique_codes(history.get("expired", []))
-
-    if previous_active and len(active) < max(3, len(previous_active) // 2):
-        raise RuntimeError(
-            f"Foram confirmados apenas {len(active)} códigos; antes eram {len(previous_active)}. "
-            "Atualização abortada por segurança."
-        )
-
-    newly_expired = [c for c in previous_active if c.upper() not in active_keys]
-    expired = unique_codes(newly_expired + previous_expired)
-    expired = [c for c in expired if c.upper() not in active_keys]
-
-    index = INDEX.read_text(encoding="utf-8")
-    active_html = (
-        '<div id="ativos" class="code-list">\n'
-        + "\n".join(active_card(c) for c in active)
-        + "\n</div>"
+    # A code is published as active only after at least two independent sources agree.
+    confirmed = sorted(
+        [v for v in found.values() if len(v["sources"]) >= 2],
+        key=lambda v: (-len(v["sources"]), v["code"]),
     )
-    index = replace_div_by_id(index, "ativos", active_html)
-    index = remove_expired_ui(index)
-    index = re.sub(
-        r'(<meta name="build-version" content=")[^"]*(")',
-        rf"\g<1>auto-codes-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M')}\g<2>",
-        index,
-    )
+    active = [v["code"] for v in confirmed]
+    if not active:
+        raise RuntimeError("Nenhum código foi confirmado por pelo menos 2 fontes; atualização abortada.")
 
-    INDEX.write_text(index, encoding="utf-8")
-    HISTORY.write_text(
-        json.dumps(
-            {
-                "active": active,
-                "expired": expired,
-                "updated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
-                "sources": {k: v["sources"] for k, v in details.items() if k in active_keys},
-                "source_errors": errors,
-            },
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n",
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    history = {"active": [], "expired": [], "missing": {}, "updated_at": now, "sources": {}, "source_errors": []}
+    if HISTORY.exists():
+        try:
+            history.update(json.loads(HISTORY.read_text(encoding="utf-8")))
+        except Exception:
+            pass
+
+    previous_active = {str(c).upper() for c in history.get("active", [])}
+    previous_expired = normalize_codes(history.get("expired", []))
+    current = set(active)
+    missing = {str(k).upper(): int(v) for k, v in history.get("missing", {}).items()}
+
+    # A code missing from all currently readable active lists for two consecutive
+    # hourly checks is moved to the expired history. It is never shown on the site.
+    for code in list(previous_active - current):
+        missing[code] = missing.get(code, 0) + 1
+    for code in list(current):
+        missing.pop(code, None)
+
+    newly_expired = [code for code in previous_active if code not in current and missing.get(code, 0) >= 2]
+    expired = normalize_codes(previous_expired + newly_expired)
+    expired = [code for code in expired if code not in current]
+
+    # New code = confirmed by 2+ sources. Existing active codes remain active while confirmed.
+    INDEX.write_text(
+        remove_expired_ui(
+            replace_div_by_id(
+                INDEX.read_text(encoding="utf-8"),
+                "ativos",
+                '<div id="ativos" class="code-list">\n' + "\n".join(card(c) for c in active) + '\n</div>',
+            )
+        ),
         encoding="utf-8",
     )
 
-    print(f"Códigos ativos confirmados: {len(active)}")
-    print(f"Códigos expirados guardados apenas no histórico: {len(expired)}")
-    print("Novos expirados nesta execução:", ", ".join(newly_expired) if newly_expired else "nenhum")
-    print("Novos/ativos:", ", ".join(active))
+    details = {v["code"]: sorted(v["sources"]) for v in confirmed}
+    CODES_JSON.write_text(
+        json.dumps({"updated": now, "source_count": len(SOURCES), "successful_sources": successful, "codes": active, "sources": details}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    HISTORY.write_text(
+        json.dumps({
+            "active": active,
+            "expired": expired,
+            "missing": {k: v for k, v in missing.items() if k not in current and v < 2},
+            "updated_at": now,
+            "sources": details,
+            "source_errors": errors,
+        }, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    print(f"20 fontes configuradas: {len(SOURCES)}")
+    print(f"Fontes que responderam: {successful}/{len(SOURCES)}")
+    print(f"Códigos ativos publicados: {len(active)}")
+    print(f"Novos códigos confirmados: {', '.join(sorted(current - previous_active)) or 'nenhum'}")
+    print(f"Expirados nesta execução: {', '.join(newly_expired) or 'nenhum'}")
 
 
 if __name__ == "__main__":
