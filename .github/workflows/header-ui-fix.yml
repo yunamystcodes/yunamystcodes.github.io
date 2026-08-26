@@ -1,0 +1,70 @@
+name: Apply header UI fix once
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, 'Fix header mute/language/Y logo') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply requested header changes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='/* YUNAMYST HEADER UI FIX 20260826 */'
+          if marker in s:
+              raise SystemExit(0)
+          css='''
+<style id="yunamyst-header-ui-fix">
+/* YUNAMYST HEADER UI FIX 20260826 */
+/* Mute stays immediately beside the single language selector. */
+.sound-control{display:flex!important;align-items:center!important;gap:6px!important;margin-left:auto!important;margin-right:0!important}
+.sound-control .sound-btn{order:1!important}
+.sound-control .lang-switch{order:2!important;margin-left:0!important}
+/* Language selector: one click opens the two language choices. */
+.lang-switch .yunamyst-lang-visible{display:none!important}
+.lang-switch.open .yunamyst-lang-visible{display:block!important}
+.lang-switch .yunamyst-lang-visible .lang-option{display:block!important;width:100%!important}
+.lang-switch .lang-menu{display:none!important}
+.lang-switch.open .lang-menu{display:block!important}
+/* Make the Y in YunaMyst slightly smaller so it does not collide with the next letters. */
+.logo::first-letter{font-size:.88em!important}
+@media(max-width:850px){.logo::first-letter{font-size:.88em!important}}
+</style>
+<script id="yunamyst-header-ui-fix-js">
+(function(){
+  const switches=document.querySelectorAll('.lang-switch');
+  switches.forEach(function(sw){
+    const btn=sw.querySelector('.lang-btn');
+    if(!btn) return;
+    btn.addEventListener('click',function(e){
+      e.preventDefault(); e.stopPropagation();
+      switches.forEach(function(other){if(other!==sw) other.classList.remove('open')});
+      sw.classList.toggle('open');
+    });
+  });
+  document.addEventListener('click',function(e){
+    switches.forEach(function(sw){if(!sw.contains(e.target)) sw.classList.remove('open')});
+  });
+})();
+</script>
+'''
+          if '</head>' in s:
+              s=s.replace('</head>',css+'</head>',1)
+          else:
+              s += css
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix header mute/language/Y logo"
+          git push
