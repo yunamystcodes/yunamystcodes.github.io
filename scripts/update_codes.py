@@ -9,7 +9,7 @@ SOURCES = (
     ("sw-teams", "https://sw-teams.ovh/codes"),
     ("swcoupon", "https://swcoupon.net/"),
     ("summonerswarcodes", "https://summonerswarcodes.us/"),
-    (swquery, "https://swquery.net/"),
+    ("swquery", "https://swquery.net/"),
     ("swgt", "https://swgt.io/gamecodes/"),
     ("pocketgamer", "https://www.pocketgamer.com/summoners-war/codes/"),
     ("pockettactics", "https://www.pockettactics.com/summoners-war/codes"),
@@ -28,8 +28,6 @@ SOURCES = (
     ("progameguides", "https://progameguides.com/summoners-war/summoners-war-codes/"),
 )
 TRUSTED = {"sw-teams", "swcoupon", "summonerswarcodes", "swquery", "swgt"}
-# Não bloquear códigos com base em relatos antigos. O estado atual é decidido
-# pelas fontes atuais e pela confirmação cruzada abaixo.
 USER_REPORTED_INACTIVE = set()
 REJECTED = {"IDTOP8GO"}
 ROOT = Path(__file__).resolve().parents[1]
