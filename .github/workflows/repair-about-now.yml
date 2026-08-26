@@ -1,0 +1,54 @@
+name: Corrigir SOBRE O SITE agora
+
+on:
+  push:
+    paths:
+      - '.github/workflows/repair-about-now.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Corrigir index.html
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = s
+          replacements = {
+              'Aqui encontras os <b>códigos ativos e expirados</b> de Summoners War: Sky Arena.': 'Aqui encontras os <b>códigos ativos</b> de Summoners War: Sky Arena.',
+              'Aqui encontras os códigos ativos e expirados de Summoners War: Sky Arena.': 'Aqui encontras os códigos ativos de Summoners War: Sky Arena.',
+              'Aqui encontras os <strong>códigos ativos e expirados</strong> de Summoners War: Sky Arena.': 'Aqui encontras os <strong>códigos ativos</strong> de Summoners War: Sky Arena.',
+              'Aqui encontras os <strong>códigos ativos e expirados</strong> de Summoners War: Sky Arena': 'Aqui encontras os <strong>códigos ativos</strong> de Summoners War: Sky Arena',
+          }
+          for a, b in replacements.items():
+              s = s.replace(a, b)
+          if s == old:
+              print('Nenhuma alteração necessária no texto visível.')
+          else:
+              p.write_text(s, encoding='utf-8')
+              print('INDEX ALTERADO')
+          PY
+
+      - name: Publicar alteração
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet -- index.html; then
+            echo 'INDEX SEM ALTERAÇÃO'
+            exit 0
+          fi
+          git add index.html
+          git commit -m 'Corrigir texto SOBRE O SITE no site'
+          git push origin HEAD:main
