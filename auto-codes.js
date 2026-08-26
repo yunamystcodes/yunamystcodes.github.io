@@ -37,13 +37,27 @@
     const card=modal.querySelector('.partnership-card');
     if(!card)return;
 
-    /* Deixar somente o botão PARCERIA na barra: remove WhatsApp e qualquer outro botão comunitário. */
-    document.querySelectorAll('.community-links .community-tab:not(.partnership)').forEach(el=>el.remove());
+    /* Manter WhatsApp + PARCERIA na barra de comunidade. */
     const community=document.querySelector('.community-links');
+    const whatsapp=document.querySelector('.community-links .community-tab.whatsapp');
+    const partnership=document.querySelector('.community-links .community-tab.partnership');
     if(community){
-      community.style.width='min(330px,calc(100% - 24px))';
-      community.style.maxWidth='330px';
+      community.style.width='min(560px,calc(100% - 28px))';
+      community.style.maxWidth='560px';
       community.style.margin='0 auto 18px';
+      community.style.display='flex';
+      community.style.flexDirection='row';
+      community.style.gap='10px';
+    }
+    if(whatsapp){
+      whatsapp.style.display='flex';
+      whatsapp.style.visibility='visible';
+      whatsapp.style.opacity='1';
+    }
+    if(partnership){
+      partnership.style.display='flex';
+      partnership.style.visibility='visible';
+      partnership.style.opacity='1';
     }
 
     const removeFeedback=()=>{
@@ -80,14 +94,19 @@
     const style=document.createElement('style');
     style.id='yunamyst-partnership-fix';
     style.textContent=`
-      .community-links .community-tab:not(.partnership){display:none!important}
-      .community-links:has(.community-tab.partnership){width:min(330px,calc(100% - 24px))!important;max-width:330px!important}
+      .community-links .community-tab.whatsapp{display:flex!important;visibility:visible!important;opacity:1!important;}
+      .community-links .community-tab.partnership{display:flex!important;visibility:visible!important;opacity:1!important;}
+      .community-links{width:min(560px,calc(100% - 28px))!important;max-width:560px!important;}
       #parceriaModal{position:fixed!important;inset:0!important;z-index:99999!important;display:none;align-items:center!important;justify-content:center!important;padding:16px!important;overflow:auto!important;background:rgba(2,1,8,.78)!important;}
       #parceriaModal.open{display:flex!important;}
       #parceriaModal .partnership-card{position:relative!important;width:min(640px,calc(100vw - 32px))!important;max-width:640px!important;max-height:calc(100vh - 32px)!important;margin:auto!important;box-sizing:border-box!important;overflow-y:auto!important;border:1px solid #9b55ff!important;border-radius:28px!important;text-align:center!important;background:linear-gradient(180deg,rgba(22,10,40,.99),rgba(7,4,18,.99))!important;}
       #parceriaModal .partnership-card h3{color:#f0ce70!important;font-family:Georgia,serif!important;font-size:32px!important;line-height:1.12!important;margin:0 42px 24px!important;font-weight:900!important;}
       #parceriaModal .partnership-card p{color:#c9c0d0!important;font-size:18px!important;line-height:1.55!important;padding:0!important;margin:0!important;}
       #parceriaModal .modal-close{position:absolute!important;top:10px!important;right:12px!important;z-index:20!important;touch-action:manipulation!important;}
+      @media(max-width:850px){
+        .community-links{width:calc(100% - 24px)!important;max-width:330px!important;flex-direction:column!important;gap:8px!important;}
+        .community-links .community-tab{width:100%!important;}
+      }
       @media(max-width:600px){
         #parceriaModal{padding:12px!important;}
         #parceriaModal .partnership-card{width:calc(100vw - 24px)!important;max-width:none!important;max-height:calc(100vh - 24px)!important;padding:46px 34px 38px!important;border-radius:28px!important;}
@@ -99,7 +118,13 @@
 
     if(!modal.dataset.yunaPartnershipObserver){
       modal.dataset.yunaPartnershipObserver='1';
-      const observer=new MutationObserver(()=>{removeFeedback();document.querySelectorAll('.community-links .community-tab:not(.partnership)').forEach(el=>el.remove());});
+      const observer=new MutationObserver(()=>{
+        removeFeedback();
+        const wa=document.querySelector('.community-links .community-tab.whatsapp');
+        const pa=document.querySelector('.community-links .community-tab.partnership');
+        if(wa){wa.style.display='flex';wa.style.visibility='visible';wa.style.opacity='1';}
+        if(pa){pa.style.display='flex';pa.style.visibility='visible';pa.style.opacity='1';}
+      });
       observer.observe(card,{childList:true,subtree:true});
     }
 
