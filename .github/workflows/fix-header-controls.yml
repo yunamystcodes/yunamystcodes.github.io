@@ -20,6 +20,11 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
+
+          # Logo: YunaMyst (lowercase y in Myst), keeping the smaller-y styling.
+          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaM<span class="myst-y">y</span>st')
+          s = s.replace('Códigos ativos de Summoners War — YunaM<span class="myst-y">Y</span>st.', 'Códigos ativos de Summoners War — YunaM<span class="myst-y">y</span>st.')
+
           marker = '<style id="yunamyst-header-controls-fix">'
           if marker not in s:
               css = r'''<style id="yunamyst-header-controls-fix">
@@ -34,12 +39,12 @@ jobs:
 .header-controls-fixed .lang-option{display:block!important;width:100%!important}
 .header-controls-fixed .yunamyst-lang-visible{display:block!important;margin:0!important}
 .header-controls-fixed .yunamyst-lang-visible .lang-option{display:block!important;width:100%!important}
-.logo::first-letter{font-size:.86em}
+.logo .myst-y{font-size:.82em!important;display:inline-block!important;line-height:1!important;transform:translateY(.02em)!important}
 @media(max-width:850px){
   .header-controls-fixed{gap:5px!important}
   .header-controls-fixed .lang-btn{height:38px!important;padding:8px 10px!important;font-size:10px!important}
   .header-controls-fixed .sound-btn{width:38px!important;height:38px!important;font-size:17px!important}
-  .logo::first-letter{font-size:.84em}
+  .logo .myst-y{font-size:.82em!important}
 }
 </style>'''
               s = s.replace('</head>', css + '\n</head>', 1)
