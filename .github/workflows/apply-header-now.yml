@@ -1,0 +1,56 @@
+name: Aplicar cabeçalho agora
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aplicar alterações
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          replacements = {
+              'Queres fazer uma parceria com o YunaMyst Codes?': 'Queres fazer uma parceria com a YunaMyst Codes?',
+              'Queres fazer uma parceria com o YunaMyst?': 'Queres fazer uma parceria com a YunaMyst?',
+              'parceria com o YunaMyst Codes': 'parceria com a YunaMyst Codes',
+              'parceria com o YunaMyst': 'parceria com a YunaMyst',
+          }
+          for src, dst in replacements.items():
+              s = s.replace(src, dst)
+          if './assets/header-final.css' not in s:
+              s = s.replace('</head>', '<link rel="stylesheet" href="./assets/header-final.css?v=20260826"><meta name="build-version" content="header-nav-language-final-20260826"></head>', 1)
+          else:
+              s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="header-nav-language-final-20260826">', s, count=1)
+          if './assets/i18n.js' not in s:
+              s = s.replace('</body>', '<script src="./assets/i18n.js?v=20260826"></script>\n</body>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Verificar
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          for x in ['🇧🇷 PT/BR','🇬🇧 ENG','./assets/header-final.css','./assets/i18n.js']:
+              if x not in s: raise SystemExit('Falta: '+x)
+          print('Cabeçalho pronto.')
+          PY
+      - name: Publicar
+        run: |
+          git config user.name 'YunaMyst Codes Bot'
+          git config user.email 'actions@github.com'
+          git add index.html
+          if ! git diff --cached --quiet; then
+            git commit -m 'Aplicar cabeçalho navegação e idioma'
+            git push
+          fi
