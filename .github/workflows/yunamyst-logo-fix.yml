@@ -1,20 +1,23 @@
 name: YunaMyst logo fix
 
 on:
-  issues:
+  pull_request_target:
     types: [opened]
+    branches: [main]
 
 permissions:
   contents: write
-  issues: write
+  pull-requests: write
 
 jobs:
   fix-logo:
-    if: github.event.issue.title == 'YunaMyst logo fix'
+    if: github.event.pull_request.title == 'YunaMyst logo fix PR'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Fix logo in index.html
         run: |
@@ -22,12 +25,11 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaMyst')
-          s = s.replace('Códigos ativos de Summoners War — YunaM<span class="myst-y">Y</span>st.', 'Códigos ativos de Summoners War — YunaMyst.')
+          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaM<span class="myst-y">y</span>st')
+          s = s.replace('Códigos ativos de Summoners War — YunaM<span class="myst-y">Y</span>st.', 'Códigos ativos de Summoners War — YunaM<span class="myst-y">y</span>st.')
           css = '''<style id="yunamyst-logo-fix">
-          .logo{white-space:nowrap}
-          .logo{font-size:34px}
-          @media(max-width:850px){.logo{font-size:25px}}
+          .logo .myst-y{font-size:.82em!important;display:inline-block!important;line-height:1!important;transform:translateY(.02em)!important}
+          @media(max-width:850px){.logo .myst-y{font-size:.82em!important}}
           </style>
           '''
           if 'id="yunamyst-logo-fix"' not in s:
@@ -35,15 +37,17 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit index.html
+      - name: Commit index.html directly to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Fix YunaMyst logo on PC and mobile"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "Fix YunaMyst logo on PC and mobile"
+            git push origin HEAD:main
+          fi
 
-      - name: Close trigger issue
+      - name: Close trigger PR
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --comment "Logo atualizado no index.html para YunaMyst, com ajuste para PC e telemóvel."
+        run: gh pr close "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --comment "Logo atualizado diretamente no index.html para YunaMyst, com o y ligeiramente menor no PC e no telemóvel."
