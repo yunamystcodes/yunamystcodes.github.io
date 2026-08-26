@@ -84,6 +84,17 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
+      - name: Reduzir logo do cabeçalho no PC e telemóvel
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('.logo{font:900 38px Georgia,serif;', '.logo{font:900 34px Georgia,serif;', 1)
+          s = s.replace('.logo{font-size:29px}', '.logo{font-size:25px}', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
       - name: Forcar publicacao da correção no index
         run: |
           python3 - <<'PY'
@@ -91,11 +102,15 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="language-ptbr-eng-20260826-1500">', s, count=1)
+          s = re.sub(r'<meta name="build-version" content="[^"]*">', '<meta name="build-version" content="logo-reduzido-20260826-1520">', s, count=1)
           if '🇬🇧 ENG' not in s:
               raise SystemExit('ERRO: opção ENG não está no index.html')
           if '🇧🇷 PT/BR' not in s:
               raise SystemExit('ERRO: opção PT/BR não está no index.html')
+          if '.logo{font:900 34px Georgia,serif;' not in s:
+              raise SystemExit('ERRO: tamanho do logo no PC não foi aplicado')
+          if '.logo{font-size:25px}' not in s:
+              raise SystemExit('ERRO: tamanho do logo no telemóvel não foi aplicado')
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -103,9 +118,9 @@ jobs:
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json index.html
+          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml
           if ! git diff --cached --quiet; then
-            git commit -m 'Mostrar PT/BR e ENG no site'
+            git commit -m 'Reduzir logo do cabeçalho no PC e telemóvel'
             git push
           else
             echo 'Nenhuma alteração necessária.'
