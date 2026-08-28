@@ -35,8 +35,6 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          # O index não deve guardar uma segunda lista de códigos: a lista oficial
-          # vem de codes.json e auto-codes.js. Isto evita expirados e duplicados.
           m = re.search(r'<div\b(?=[^>]*\bid=["\']ativos["\'])[^>]*>', s, re.I)
           if m:
               tags = re.compile(r'<div\b[^>]*>|</div\s*>', re.I)
@@ -48,9 +46,10 @@ jobs:
                       end = tag.end(); break
               if end:
                   s = s[:m.start()] + '<div id="ativos" class="code-list"></div>' + s[end:]
-          # Garantir que o JavaScript que desenha os códigos está no index.
-          if 'src="./auto-codes.js"' not in s and "src='./auto-codes.js'" not in s:
+          if 'src="./auto-codes.js' not in s and "src='./auto-codes.js" not in s:
               s = s.replace('</body>', '<script src="./auto-codes.js?v=20260828"></script>\n</body>', 1)
+          if 'src="./reward-images.js' not in s and "src='./reward-images.js" not in s:
+              s = s.replace('</body>', '<script src="./reward-images.js?v=20260828"></script>\n</body>', 1)
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -75,20 +74,19 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           s = Path('index.html').read_text(encoding='utf-8')
-          if 'id="ativos"' not in s or 'auto-codes.js' not in s:
-              raise SystemExit('ERRO: index não está ligado ao sistema automático de códigos')
-          if 'YunaM<span class="myst-y">Y</span>st' not in s:
-              raise SystemExit('ERRO: YunaMyst não foi corrigido no index.html')
-          print('OK: index usa uma única lista automática, sem lista duplicada de códigos.')
+          for needle in ('id="ativos"','auto-codes.js','reward-images.js','YunaM<span class="myst-y">Y</span>st'):
+              if needle not in s:
+                  raise SystemExit(f'ERRO: falta {needle} no index.html')
+          print('OK: index ligado ao sistema automático e às imagens reais das recompensas.')
           PY
 
       - name: Guardar alterações
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml scripts/update_codes.py assets/header-final.css assets/i18n.js auto-codes.js
+          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml scripts/update_codes.py assets/header-final.css assets/i18n.js auto-codes.js reward-images.js assets/rewards-sprite.webp
           if ! git diff --cached --quiet; then
-            git commit -m 'Atualizar index com recompensas e botoes Copiar e Link iOS'
+            git commit -m 'Aplicar imagens reais das recompensas no index'
             git push
           else
             echo 'Nenhuma alteração necessária.'
