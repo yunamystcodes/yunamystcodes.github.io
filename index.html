@@ -55,6 +55,19 @@
   .logo .myst-y { font-size: .76em !important; }
 }
 </style>
+
+<style id="yunamyst-header-clean-workflow">
+/* YUNAMYST HEADER CLEAN WORKFLOW 20260828 V4 */
+.logo .myst-y {
+  font-size: .76em !important;
+  display: inline-block !important;
+  line-height: 1 !important;
+  transform: translateY(.02em) !important;
+}
+@media (max-width: 850px) {
+  .logo .myst-y { font-size: .76em !important; }
+}
+</style>
 </head>
 <body>
 <div class="bg"></div>
@@ -101,5 +114,23 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 <script src="./assets/i18n.js?v=20260826"></script>
+
+<script id="yunamyst-remove-stray-corner-text">
+/* YUNAMYST REMOVE STRAY CORNER TEXT 20260828 V1 */
+(function(){
+  function clean(){
+    var root=document.body;
+    if(!root) return;
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    var nodes=[];
+    while(w.nextNode()) nodes.push(w.currentNode);
+    nodes.forEach(function(n){
+      if(n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) return;
+      n.nodeValue=n.nodeValue.replace(/yst\.\">/g,'').replace(/yst\.">/g,'');
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',clean); else clean();
+})();
+</script>
 </body>
 </html>
