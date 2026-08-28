@@ -28,10 +28,10 @@ SOURCES = (
     ("progameguides", "https://progameguides.com/summoners-war/summoners-war-codes/"),
 )
 TRUSTED = {"sw-teams", "swcoupon", "summonerswarcodes", "swquery", "swgt"}
-# Códigos que fontes independentes atuais já marcam como expirados.
-# Mantemos esta lista como trava de segurança para que uma página antiga
-# nunca consiga colocar um código expirado novamente na lista ativa.
+# Códigos confirmados pelo utilizador como expirados, além dos já identificados
+# por fontes independentes. Esta lista impede que fontes antigas os publiquem de novo.
 REJECTED = {
+    "GLHF2026AMERICAS", "SWC26X10LEGACYBND",
     "IDTOP8GO", "1SURPR1SE", "1SURPR1SEG1FT", "JUNSW2026W6C",
     "MAYSW2026Z2Q", "APRSW2026M08", "LOTR4CO11ABON", "26SWXLOTRS2",
     "MARSW2026K61", "COL3KY8G1FT15", "FEBSW2026E82", "OSAKAK1T3YA314",
@@ -52,7 +52,7 @@ BANNED = {"ACTIVE","EXPIRED","WORKING","AVAILABLE","CODES","CODE","SUMMONERS","W
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/16.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
+    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/17.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
