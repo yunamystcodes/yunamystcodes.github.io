@@ -9,11 +9,7 @@
     "26SWXLOTRS2",
     "GLHF2026AMERICAS",
     "LOTR4CO11ABON",
-    "SW2025DEC",
-    "SW2025NOV",
-    "SW2025OCT",
-    "SWC26X10LEGACYBND",
-    "JUNSW2026W6C"
+    "SWC26X10LEGACYBND"
   ],
   "expired": [
     "912XUXIECHUANQI",
@@ -391,9 +387,13 @@
     "SHAPESHIFTING": 1,
     "PROGRESSION": 1,
     "SWC25HAMBOISO": 1,
-    "CHARACTERS": 1
+    "CHARACTERS": 1,
+    "SW2025OCT": 1,
+    "SW2025NOV": 1,
+    "SW2025DEC": 1,
+    "JUNSW2026W6C": 1
   },
-  "updated_at": "2026-08-28T08:57:56Z",
+  "updated_at": "2026-08-28T08:58:33Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -500,43 +500,12 @@
         "summonerswarcodes"
       ]
     },
-    "SW2025DEC": {
-      "trusted": [
-        "swquery"
-      ],
-      "all": [
-        "swquery"
-      ]
-    },
-    "SW2025NOV": {
-      "trusted": [
-        "swquery"
-      ],
-      "all": [
-        "swquery"
-      ]
-    },
-    "SW2025OCT": {
-      "trusted": [
-        "swquery"
-      ],
-      "all": [
-        "swquery"
-      ]
-    },
     "SWC26X10LEGACYBND": {
       "trusted": [
         "sw-teams"
       ],
       "all": [
         "sw-teams"
-      ]
-    },
-    "JUNSW2026W6C": {
-      "trusted": [],
-      "all": [
-        "levelgeeks",
-        "pocketgamer"
       ]
     }
   },

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-28T08:57:56Z",
+  "updated": "2026-08-28T08:58:33Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -13,11 +13,7 @@
     "26SWXLOTRS2",
     "GLHF2026AMERICAS",
     "LOTR4CO11ABON",
-    "SW2025DEC",
-    "SW2025NOV",
-    "SW2025OCT",
-    "SWC26X10LEGACYBND",
-    "JUNSW2026W6C"
+    "SWC26X10LEGACYBND"
   ],
   "sources": {
     "4READY4TDOT": {
@@ -125,43 +121,12 @@
         "summonerswarcodes"
       ]
     },
-    "SW2025DEC": {
-      "trusted": [
-        "swquery"
-      ],
-      "all": [
-        "swquery"
-      ]
-    },
-    "SW2025NOV": {
-      "trusted": [
-        "swquery"
-      ],
-      "all": [
-        "swquery"
-      ]
-    },
-    "SW2025OCT": {
-      "trusted": [
-        "swquery"
-      ],
-      "all": [
-        "swquery"
-      ]
-    },
     "SWC26X10LEGACYBND": {
       "trusted": [
         "sw-teams"
       ],
       "all": [
         "sw-teams"
-      ]
-    },
-    "JUNSW2026W6C": {
-      "trusted": [],
-      "all": [
-        "levelgeeks",
-        "pocketgamer"
       ]
     }
   }
