@@ -31,10 +31,12 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          # Mantém exatamente YunaMyst; somente o Y de Myst recebe a classe menor.
-          s = re.sub(r'YunaM(?:<span class="myst-y">Y</span>)?yst', 'YunaM<span class="myst-y">Y</span>st', s, count=1)
-          css = '''\n<style id="yunamyst-y-fix">\n.logo .myst-y{font-size:.82em!important;display:inline-block!important;line-height:1!important;transform:translateY(.02em)}\n@media(max-width:850px){.logo .myst-y{font-size:.82em!important}}\n</style>\n'''
-          if 'id="yunamyst-y-fix"' not in s:
+          # Mantém YunaMyst e reduz somente o segundo Y (o Y de Myst).
+          s = re.sub(r'YunaM(?:<span class="myst-y">[Yy]</span>)?[Yy]st', 'YunaM<span class="myst-y">Y</span>st', s, count=1)
+          css = '''\n<style id="yunamyst-y-fix">\n.logo .myst-y{font-size:.60em!important;display:inline-block!important;line-height:.78!important;vertical-align:baseline!important;transform:translateY(-.08em)!important}\n@media(max-width:850px){.logo .myst-y{font-size:.56em!important;line-height:.76!important;transform:translateY(-.07em)!important}}\n</style>\n'''
+          if 'id="yunamyst-y-fix"' in s:
+              s = re.sub(r'<style id="yunamyst-y-fix">.*?</style>', css.strip(), s, count=1, flags=re.S)
+          else:
               s = s.replace('</head>', css + '</head>', 1)
           p.write_text(s, encoding='utf-8')
           PY
@@ -55,9 +57,9 @@ jobs:
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml assets/header-final.css assets/i18n.js
+          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml scripts/update_codes.py assets/header-final.css assets/i18n.js
           if ! git diff --cached --quiet; then
-            git commit -m 'Corrigir YunaMyst no index para PC e telemóvel'
+            git commit -m 'Atualizar códigos e corrigir YunaMyst no cabeçalho'
             git push
           else
             echo 'Nenhuma alteração necessária.'
