@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Remove stray text and fix YunaMyst
+      - name: Normalize YunaMyst branding on PC and mobile
         shell: bash
         run: |
           python - <<'PY'
@@ -29,16 +29,28 @@ jobs:
           s = p.read_text(encoding="utf-8")
 
           # Remove the exact stray fragment reported in the upper-left corner.
-          for bad in ('yst.\">', 'yst.">', 'yst.\">', 'yst.\'>'):
+          for bad in ('yst.\">', 'yst.\">', 'yst.\">', 'yst.\'>'):
               s = s.replace(bad, '')
 
           # Remove malformed standalone text if it occurs immediately after <body>.
           s = re.sub(r'(<body[^>]*>\s*)yst\.?["\'>]+\s*', r'\1', s, flags=re.I)
 
-          # Correct the brand wherever the wrong capitalization was introduced.
-          s = s.replace('YunaMYst', 'YunaMyst')
-          s = s.replace('YunaMYST', 'YunaMyst')
-          s = s.replace('YunaMyst.</span>', 'YunaMyst</span>')
+          # Normalize every common wrong capitalization to exactly YunaMyst.
+          for bad in ('YunaMYst', 'YunaMYST', 'YunaMyST', 'YunaMySt', 'YunaMysT', 'YunaMYST'):
+              s = s.replace(bad, 'YunaMyst')
+
+          # Force the header logo itself to the exact spelling requested.
+          s = re.sub(
+              r'(<div class="logo">).*?(<small>SUMMONERS WAR</small></div>)',
+              r'\1YunaM<span class="myst-y">y</span>st\2',
+              s,
+              count=1,
+              flags=re.S,
+          )
+
+          # Fix any remaining uppercase y inside the Myst span.
+          s = s.replace('<span class="myst-y">Y</span>', '<span class="myst-y">y</span>')
+          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaM<span class="myst-y">y</span>st')
 
           # Remove any visible stray text node containing the reported fragment.
           marker_js = 'YUNAMYST REMOVE STRAY CORNER TEXT 20260828 V1'
@@ -46,8 +58,8 @@ jobs:
           if marker_js not in s:
               s = s.replace('</body>', js + '</body>', 1)
 
-          # Keep only the lowercase y in Myst smaller, on desktop and mobile.
-          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260828 V4'
+          # Keep only the lowercase y in Myst smaller so it never overlaps the following letters.
+          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260828 V5'
           css = f'''\n<style id="yunamyst-header-clean-workflow">\n/* {marker} */\n.logo .myst-y {{\n  font-size: .76em !important;\n  display: inline-block !important;\n  line-height: 1 !important;\n  transform: translateY(.02em) !important;\n}}\n@media (max-width: 850px) {{\n  .logo .myst-y {{ font-size: .76em !important; }}\n}}\n</style>\n'''
 
           if marker not in s:
@@ -56,14 +68,15 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verify header cleanup
+      - name: Verify YunaMyst branding
         shell: bash
         run: |
-          if grep -nF 'yst.\">' index.html; then
-            echo 'Stray yst. fragment still exists.'
+          grep -nF 'YunaM<span class="myst-y">y</span>st' index.html
+          if grep -nE 'YunaMYst|YunaMYST|YunaMyST|YunaMySt|YunaMysT|YunaMYST|<span class="myst-y">Y</span>' index.html; then
+            echo 'Wrong YunaMyst capitalization still exists.'
             exit 1
           fi
-          echo 'Header cleanup verified.'
+          echo 'YunaMyst branding verified.'
 
       - name: Commit and push
         shell: bash
@@ -75,5 +88,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Fix YunaMyst header [skip header]"
+          git commit -m "Normalize YunaMyst branding [skip header]"
           git push
