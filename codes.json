@@ -1,18 +1,106 @@
 {
-  "updated": "2026-08-28T09:10:00Z",
+  "updated": "2026-08-28T09:04:35Z",
   "source_count": 20,
   "successful_sources": 13,
-  "trusted_confirmation": "current trusted sources",
+  "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
-    "SWXFRIEREN2026",
+    "4READY4TDOT",
     "AUGSW2026V7N",
-    "APAC26LEGASEA",
-    "PAI2026BANGKOK",
-    "SWC26X10LEGACYBND",
-    "GLHF2026AMERICAS",
-    "YIQIZOUGUO10SWC",
+    "SWXFRIEREN2026",
     "LEGENDSWC2026HSL",
-    "AMPRELIMSLEGACYDRP",
-    "4READY4TDOT"
-  ]
+    "YIQIZOUGUO10SWC",
+    "GLHF2026AMERICAS",
+    "SWC26X10LEGACYBND"
+  ],
+  "sources": {
+    "4READY4TDOT": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "AUGSW2026V7N": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "SWXFRIEREN2026": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "pocketgamer",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "LEGENDSWC2026HSL": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "YIQIZOUGUO10SWC": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "GLHF2026AMERICAS": {
+      "trusted": [
+        "sw-teams"
+      ],
+      "all": [
+        "sw-teams"
+      ]
+    },
+    "SWC26X10LEGACYBND": {
+      "trusted": [
+        "sw-teams"
+      ],
+      "all": [
+        "sw-teams"
+      ]
+    }
+  }
 }
