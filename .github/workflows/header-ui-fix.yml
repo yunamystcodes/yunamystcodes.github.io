@@ -40,8 +40,14 @@ jobs:
           s = s.replace('YunaMYST', 'YunaMyst')
           s = s.replace('YunaMyst.</span>', 'YunaMyst</span>')
 
+          # Remove any visible stray text node containing the reported fragment.
+          marker_js = 'YUNAMYST REMOVE STRAY CORNER TEXT 20260828 V1'
+          js = f'''\n<script id="yunamyst-remove-stray-corner-text">\n/* {marker_js} */\n(function(){{\n  function clean(){{\n    var root=document.body;\n    if(!root) return;\n    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);\n    var nodes=[];\n    while(w.nextNode()) nodes.push(w.currentNode);\n    nodes.forEach(function(n){{\n      if(n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) return;\n      n.nodeValue=n.nodeValue.replace(/yst\\.\\\">/g,'').replace(/yst\\.\">/g,'');\n    }});\n  }}\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',clean); else clean();\n}})();\n</script>\n'''
+          if marker_js not in s:
+              s = s.replace('</body>', js + '</body>', 1)
+
           # Keep only the lowercase y in Myst smaller, on desktop and mobile.
-          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260828 V3'
+          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260828 V4'
           css = f'''\n<style id="yunamyst-header-clean-workflow">\n/* {marker} */\n.logo .myst-y {{\n  font-size: .76em !important;\n  display: inline-block !important;\n  line-height: 1 !important;\n  transform: translateY(.02em) !important;\n}}\n@media (max-width: 850px) {{\n  .logo .myst-y {{ font-size: .76em !important; }}\n}}\n</style>\n'''
 
           if marker not in s:
@@ -53,7 +59,7 @@ jobs:
       - name: Verify header cleanup
         shell: bash
         run: |
-          if grep -nF 'yst.">' index.html; then
+          if grep -nF 'yst.\">' index.html; then
             echo 'Stray yst. fragment still exists.'
             exit 1
           fi
