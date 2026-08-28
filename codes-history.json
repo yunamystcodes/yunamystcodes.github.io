@@ -4,9 +4,7 @@
     "AUGSW2026V7N",
     "SWXFRIEREN2026",
     "LEGENDSWC2026HSL",
-    "YIQIZOUGUO10SWC",
-    "GLHF2026AMERICAS",
-    "SWC26X10LEGACYBND"
+    "YIQIZOUGUO10SWC"
   ],
   "expired": [
     "11BALIDENGNILAI1",
@@ -34,6 +32,7 @@
     "FEBSW2026E82",
     "GEARING4PARIS",
     "GETUR5STAR",
+    "GLHF2026AMERICAS",
     "GO2WINBUSAN168",
     "GZS3ACHAMP10N",
     "H4MBURGISWAITING",
@@ -73,6 +72,7 @@
     "SWC2026ROADTOWF",
     "SWC25HAMBOISO",
     "SWC25SEAULTYEET",
+    "SWC26X10LEGACYBND",
     "SWCHZHU4NYINGNI25",
     "SWCPARISNOUSVOILA",
     "SWCTICKET2HAMBURG",
@@ -82,7 +82,7 @@
     "YYDSSWC26ZAN"
   ],
   "missing": {},
-  "updated_at": "2026-08-28T09:04:35Z",
+  "updated_at": "2026-08-28T09:09:10Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -155,22 +155,6 @@
         "sw-teams",
         "swcoupon",
         "swquery"
-      ]
-    },
-    "GLHF2026AMERICAS": {
-      "trusted": [
-        "sw-teams"
-      ],
-      "all": [
-        "sw-teams"
-      ]
-    },
-    "SWC26X10LEGACYBND": {
-      "trusted": [
-        "sw-teams"
-      ],
-      "all": [
-        "sw-teams"
       ]
     }
   },

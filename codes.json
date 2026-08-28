@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-28T09:20:00Z",
+  "updated": "2026-08-28T09:09:10Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -10,8 +10,79 @@
     "LEGENDSWC2026HSL",
     "YIQIZOUGUO10SWC"
   ],
-  "removed": [
-    "GLHF2026AMERICAS",
-    "SWC26X10LEGACYBND"
-  ]
+  "sources": {
+    "4READY4TDOT": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "AUGSW2026V7N": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "SWXFRIEREN2026": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "pocketgamer",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "LEGENDSWC2026HSL": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "YIQIZOUGUO10SWC": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    }
+  }
 }
