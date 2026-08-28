@@ -18,65 +18,59 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Normalize YunaMyst branding on PC and mobile
+      - name: Set exact YunaMyst logo on PC and mobile
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
 
-          p = Path("index.html")
-          s = p.read_text(encoding="utf-8")
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
 
-          # Remove the exact stray fragment reported in the upper-left corner.
-          for bad in ('yst.\">', 'yst.\">', 'yst.\">', 'yst.\'>'):
-              s = s.replace(bad, '')
-
-          # Remove malformed standalone text if it occurs immediately after <body>.
-          s = re.sub(r'(<body[^>]*>\s*)yst\.?["\'>]+\s*', r'\1', s, flags=re.I)
-
-          # Normalize every common wrong capitalization to exactly YunaMyst.
-          for bad in ('YunaMYst', 'YunaMYST', 'YunaMyST', 'YunaMySt', 'YunaMysT', 'YunaMYST'):
-              s = s.replace(bad, 'YunaMyst')
-
-          # Force the header logo itself to the exact spelling requested.
+          # Exact branding: YunaMyst. Do not resize or capitalize the y in Myst.
           s = re.sub(
-              r'(<div class="logo">).*?(<small>SUMMONERS WAR</small></div>)',
-              r'\1YunaM<span class="myst-y">y</span>st\2',
+              r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
+              '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>',
               s,
               count=1,
               flags=re.S,
           )
 
-          # Fix any remaining uppercase y inside the Myst span.
-          s = s.replace('<span class="myst-y">Y</span>', '<span class="myst-y">y</span>')
-          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaM<span class="myst-y">y</span>st')
+          # Fix metadata/title too.
+          s = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1Códigos ativos de Summoners War — YunaMyst.\2', s, count=1)
+          s = re.sub(r'<title>.*?</title>', '<title>YunaMyst — Summoners War</title>', s, count=1, flags=re.S)
 
-          # Remove any visible stray text node containing the reported fragment.
-          marker_js = 'YUNAMYST REMOVE STRAY CORNER TEXT 20260828 V1'
-          js = f'''\n<script id="yunamyst-remove-stray-corner-text">\n/* {marker_js} */\n(function(){{\n  function clean(){{\n    var root=document.body;\n    if(!root) return;\n    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);\n    var nodes=[];\n    while(w.nextNode()) nodes.push(w.currentNode);\n    nodes.forEach(function(n){{\n      if(n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) return;\n      n.nodeValue=n.nodeValue.replace(/yst\\.\\\">/g,'').replace(/yst\\.\">/g,'');\n    }});\n  }}\n  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',clean); else clean();\n}})();\n</script>\n'''
-          if marker_js not in s:
-              s = s.replace('</body>', js + '</body>', 1)
+          # Remove old logo-sizing overrides that made the y smaller.
+          s = re.sub(r'<style id="yunamyst-header-clean-workflow">.*?</style>', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-logo-normal-size">.*?</style>', '', s, flags=re.S)
 
-          # Keep only the lowercase y in Myst smaller so it never overlaps the following letters.
-          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260828 V5'
-          css = f'''\n<style id="yunamyst-header-clean-workflow">\n/* {marker} */\n.logo .myst-y {{\n  font-size: .76em !important;\n  display: inline-block !important;\n  line-height: 1 !important;\n  transform: translateY(.02em) !important;\n}}\n@media (max-width: 850px) {{\n  .logo .myst-y {{ font-size: .76em !important; }}\n}}\n</style>\n'''
+          css = '''
+          <style id="yunamyst-logo-normal-size">
+          /* EXACT LOGO: YunaMyst — same font size on PC and mobile */
+          .logo{white-space:nowrap!important}
+          .logo .myst-y{font-size:inherit!important;display:inline!important;line-height:inherit!important;transform:none!important}
+          @media(max-width:850px){.logo{white-space:nowrap!important}}
+          </style>
+          '''
+          s = s.replace('</head>', css + '\n</head>', 1)
 
-          if marker not in s:
-              s = s.replace('</head>', css + '</head>', 1)
+          # Remove old inline logo span if another script inserted it.
+          s = s.replace('YunaM<span class="myst-y">y</span>st', 'YunaMyst')
+          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaMyst')
+          s = s.replace('YunaMYst', 'YunaMyst').replace('YunaMYST', 'YunaMyst').replace('YunaMyST', 'YunaMyst')
 
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verify YunaMyst branding
+      - name: Verify exact branding
         shell: bash
         run: |
-          grep -nF 'YunaM<span class="myst-y">y</span>st' index.html
-          if grep -nE 'YunaMYst|YunaMYST|YunaMyST|YunaMySt|YunaMysT|YunaMYST|<span class="myst-y">Y</span>' index.html; then
-            echo 'Wrong YunaMyst capitalization still exists.'
+          grep -nF '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>' index.html
+          if grep -nE 'YunaMYst|YunaMYST|YunaMyST|YunaMySt|YunaMysT|myst-y.*font-size:[[:space:]]*\.' index.html; then
+            echo 'Incorrect YunaMyst branding remains.'
             exit 1
           fi
-          echo 'YunaMyst branding verified.'
 
       - name: Commit and push
         shell: bash
@@ -85,8 +79,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --cached --quiet; then
-            echo "No changes needed."
+            echo "No index changes needed."
             exit 0
           fi
-          git commit -m "Normalize YunaMyst branding [skip header]"
+          git commit -m "Fix YunaMyst logo on PC and mobile [skip header]"
           git push
