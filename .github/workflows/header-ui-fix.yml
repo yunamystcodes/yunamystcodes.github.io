@@ -2,8 +2,7 @@ name: Fix YunaMyst header on PC and mobile
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -13,12 +12,11 @@ jobs:
   fix-header:
     if: ${{ !contains(github.event.head_commit.message, '[skip header]') }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set exact YunaMyst logo on PC and mobile
+      - name: Set exact YunaMyst logo
         shell: bash
         run: |
           python - <<'PY'
@@ -28,37 +26,27 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Exact branding: YunaMyst. Do not resize or capitalize the y in Myst.
+          # The logo must be exactly YunaMyst on both desktop and mobile.
           s = re.sub(
               r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
               '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>',
-              s,
-              count=1,
-              flags=re.S,
+              s, count=1, flags=re.S
           )
 
-          # Fix metadata/title too.
+          # Remove all previous injected logo variants.
+          s = s.replace('YunaM<span class="myst-y">y</span>st', 'YunaMyst')
+          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaMyst')
+          s = re.sub(r'YunaM\s*<span[^>]*>\s*[yY]\s*</span>\s*st', 'YunaMyst', s, flags=re.I)
+          for bad in ('YunaMYst', 'YunaMYST', 'YunaMyST', 'YunaMySt', 'YunaMysT'):
+              s = s.replace(bad, 'YunaMyst')
+
+          # Metadata must also use the exact name.
           s = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1Códigos ativos de Summoners War — YunaMyst.\2', s, count=1)
           s = re.sub(r'<title>.*?</title>', '<title>YunaMyst — Summoners War</title>', s, count=1, flags=re.S)
 
-          # Remove old logo-sizing overrides that made the y smaller.
+          # Remove old CSS that reduced the y in Myst.
           s = re.sub(r'<style id="yunamyst-header-clean-workflow">.*?</style>', '', s, flags=re.S)
           s = re.sub(r'<style id="yunamyst-logo-normal-size">.*?</style>', '', s, flags=re.S)
-
-          css = '''
-          <style id="yunamyst-logo-normal-size">
-          /* EXACT LOGO: YunaMyst — same font size on PC and mobile */
-          .logo{white-space:nowrap!important}
-          .logo .myst-y{font-size:inherit!important;display:inline!important;line-height:inherit!important;transform:none!important}
-          @media(max-width:850px){.logo{white-space:nowrap!important}}
-          </style>
-          '''
-          s = s.replace('</head>', css + '\n</head>', 1)
-
-          # Remove old inline logo span if another script inserted it.
-          s = s.replace('YunaM<span class="myst-y">y</span>st', 'YunaMyst')
-          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaMyst')
-          s = s.replace('YunaMYst', 'YunaMyst').replace('YunaMYST', 'YunaMyst').replace('YunaMyST', 'YunaMyst')
 
           p.write_text(s, encoding='utf-8')
           PY
@@ -66,11 +54,12 @@ jobs:
       - name: Verify exact branding
         shell: bash
         run: |
-          grep -nF '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>' index.html
-          if grep -nE 'YunaMYst|YunaMYST|YunaMyST|YunaMySt|YunaMysT|myst-y.*font-size:[[:space:]]*\.' index.html; then
-            echo 'Incorrect YunaMyst branding remains.'
+          grep -qF '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>' index.html
+          if grep -nE 'YunaMYst|YunaMYST|YunaMyST|YunaMySt|YunaMysT|myst-y' index.html; then
+            echo 'Incorrect/old YunaMyst logo markup remains.'
             exit 1
           fi
+          echo 'Exact YunaMyst logo verified.'
 
       - name: Commit and push
         shell: bash
@@ -79,8 +68,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --cached --quiet; then
-            echo "No index changes needed."
+            echo 'No index changes needed.'
             exit 0
           fi
-          git commit -m "Fix YunaMyst logo on PC and mobile [skip header]"
+          git commit -m 'Fix exact YunaMyst logo on PC and mobile [skip header]'
           git push
