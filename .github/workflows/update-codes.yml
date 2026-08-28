@@ -7,6 +7,10 @@ on:
     - cron: '17 * * * *'
   workflow_dispatch:
 
+concurrency:
+  group: yunamyst-codes-update
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -31,7 +35,6 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          # Mantém YunaMyst e reduz somente o segundo Y (o Y de Myst).
           s = re.sub(r'YunaM(?:<span class="myst-y">[Yy]</span>)?[Yy]st', 'YunaM<span class="myst-y">Y</span>st', s, count=1)
           css = '''\n<style id="yunamyst-y-fix">\n.logo .myst-y{font-size:.60em!important;display:inline-block!important;line-height:.78!important;vertical-align:baseline!important;transform:translateY(-.08em)!important}\n@media(max-width:850px){.logo .myst-y{font-size:.56em!important;line-height:.76!important;transform:translateY(-.07em)!important}}\n</style>\n'''
           if 'id="yunamyst-y-fix"' in s:
