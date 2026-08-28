@@ -29,7 +29,9 @@ SOURCES = (
 )
 TRUSTED = {"sw-teams", "swcoupon", "summonerswarcodes", "swquery", "swgt"}
 USER_REPORTED_INACTIVE = set()
-REJECTED = {"IDTOP8GO"}
+# Códigos antigos/confirmadamente fora de época que não devem voltar à lista
+# mesmo que uma fonte secundária mantenha uma página antiga marcada como ativa.
+REJECTED = {"IDTOP8GO", "SW2025DEC", "SW2025NOV", "SW2025OCT", "JUNSW2026W6C"}
 ROOT = Path(__file__).resolve().parents[1]
 INDEX, HISTORY, CODES_JSON = ROOT / "index.html", ROOT / "codes-history.json", ROOT / "codes.json"
 CODE_RE = re.compile(r"\b[A-Z0-9][A-Z0-9]{5,31}\b", re.I)
@@ -37,7 +39,7 @@ BANNED = {"ACTIVE","EXPIRED","WORKING","AVAILABLE","CODES","CODE","SUMMONERS","W
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/14.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
+    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/15.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -52,8 +54,6 @@ def normalize_codes(tokens):
     out, seen = [], set()
     for token in tokens:
         code = token.strip().strip("`.,:;()[]{}<>\"").upper()
-        # Um código publicado precisa ter letras + números. Isso impede que
-        # palavras normais extraídas do texto das páginas virem códigos.
         if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or not re.search(r"[A-Z]", code) or not re.search(r"\d", code):
             continue
         if code not in seen:
@@ -78,8 +78,6 @@ def parse_source(name, raw):
         return sorted(normalize_codes(re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)))
     blocks=active_blocks(text)
     candidates=set(normalize_codes(CODE_RE.findall(" ".join(blocks)))) if blocks else set()
-    # Nunca varrer os primeiros milhares de caracteres de uma fonte confiável:
-    # isso capturava palavras normais do artigo e publicava-as como códigos.
     for match in CODE_RE.finditer(text):
         window=text[max(0,match.start()-90):match.end()+90].lower()
         if "active" in window and "expired" not in window:
@@ -122,10 +120,7 @@ def main():
 
     confirmed=sorted([
         v for v in found.values()
-        if (
-            len(v["sources"] & TRUSTED) >= 1
-            or len(v["sources"]) >= 2
-        )
+        if (len(v["sources"] & TRUSTED) >= 1 or len(v["sources"]) >= 2)
         and (re.search(r"\d", v["code"]) or len(v["code"]) >= 10)
     ], key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
     active=[v["code"] for v in confirmed]
