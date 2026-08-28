@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-26T16:59:30Z",
+  "updated": "2026-08-28T01:33:03Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": 2,
@@ -8,10 +8,8 @@
     "AMPRELIMSLEGACYDRP",
     "AUGSW2026V7N",
     "SWXFRIEREN2026",
-    "APAC26LEGASEA",
     "GLHF2026AMERICAS",
     "LEGENDSWC2026HSL",
-    "PAI2026BANGKOK",
     "SWC26X10LEGACYBND",
     "YIQIZOUGUO10SWC"
   ],
@@ -84,22 +82,6 @@
         "swquery"
       ]
     },
-    "APAC26LEGASEA": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
     "GLHF2026AMERICAS": {
       "trusted": [
         "summonerswarcodes",
@@ -117,22 +99,6 @@
       ]
     },
     "LEGENDSWC2026HSL": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swgt",
-        "swquery"
-      ]
-    },
-    "PAI2026BANGKOK": {
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
