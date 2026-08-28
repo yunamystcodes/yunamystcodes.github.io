@@ -7,6 +7,13 @@ pt:{nav:['⌂ INÍCIO','⚔ SUMMONERS WAR','❔ COMO USAR'],profile:'Conteúdo d
 en:{nav:['⌂ HOME','⚔ SUMMONERS WAR','❔ HOW TO USE'],profile:'Daily content from<br>Summoners War!',about:'<b>✦ ABOUT THE SITE</b><br><br>Here you can find the <b>active codes</b> for Summoners War: Sky Arena.<br><br>💜 Save the site and come back often!',updated:'⟳ Always updated!',active:'🟢 ACTIVE CODES',how:'❓ HOW TO USE',partner:'🤝 PARTNERSHIP',partnerTitle:'🤝 YUNAMYST PARTNERSHIP',partnerText:'Want to partner with YunaMyst Codes? This space is for creators, brands and projects related to Summoners War.',contact:'CONTACT US',status:'🔄 Active code',copy:'▣ COPY',link:'🔗 OFFICIAL LINK',footer:'YunaMyst • Summoners War: Sky Arena • Community website',button:'🇬🇧 ENG',steps:[['Copy the code','Click COPY on the code you want.'],['Open the game','Enter Summoners War: Sky Arena.'],['Redeem the code','Use the redemption link.'],['Enjoy!','Receive the reward in the game.']],faq:[['Where do I enter the codes?','Copy the code and use the redemption link.'],['Do codes expire?','Yes. Expired codes are removed from the active list.'],['Can I use it on iPhone?','Yes. The site works normally on mobile.']]}
 };
 let langText='pt';
+function removeKnownStaleCodes(){
+ const stale=new Set(['SW2025DEC','SW2025NOV','SW2025OCT','JUNSW2026W6C']);
+ document.querySelectorAll('.auto-code').forEach(card=>{
+   const code=card.querySelector('.cinfo strong')?.textContent?.trim().toUpperCase();
+   if(code && (stale.has(code)||/^SW2025/.test(code))) card.remove();
+ });
+}
 function normalizeBrand(){
  const logo=document.querySelector('.logo');
  if(logo) logo.innerHTML='YunaM<span class="myst-y">Y</span>st<small>SUMMONERS WAR</small>';
@@ -20,6 +27,7 @@ function apply(lang){
  const t=T[lang]||T.pt;
  langText=lang==='en'?'en':'pt';
  document.documentElement.lang=lang==='en'?'en':'pt-BR';
+ removeKnownStaleCodes();
  document.querySelectorAll('.navlinks a').forEach((x,i)=>x.textContent=t.nav[i]);
  const profile=$('perfilTexto');if(profile)profile.innerHTML=t.profile;
  const about=document.querySelector('.about');if(about)about.innerHTML=t.about;
@@ -47,6 +55,6 @@ en?.addEventListener('click',()=>apply('en'));
 document.addEventListener('click',e=>{if(ls&&!ls.contains(e.target))ls.classList.remove('open')});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')ls?.classList.remove('open')});
 apply(localStorage.getItem('yunamyst-lang')==='en'?'en':'pt');
-// Recarrega o site a cada hora para mostrar automaticamente códigos novos e remover os expirados.
+// Atualiza o conteúdo visível de hora a hora; o workflow do GitHub também sincroniza os códigos.
 setInterval(()=>window.location.reload(),60*60*1000);
 })();
