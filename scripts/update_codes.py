@@ -37,7 +37,7 @@ BANNED = {"ACTIVE","EXPIRED","WORKING","AVAILABLE","CODES","CODE","SUMMONERS","W
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/12.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
+    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/13.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -116,9 +116,21 @@ def main():
             codes=parse_source(name,fetch(url)); successful+=1; print(f"Fonte {name}: {len(codes)} candidatos ativos")
             for code in codes: found.setdefault(code,{"code":code,"sources":set()})["sources"].add(name)
         except Exception as exc: errors.append(f"{name}: {exc}"); print(f"Fonte {name}: ERRO - {exc}")
-    confirmed=sorted([v for v in found.values() if len(v["sources"]&TRUSTED)>=2 and (re.search(r"\d",v["code"]) or "sw-teams" in v["sources"])],key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
+
+    # PUBLICAÇÃO: não exigir mais 2 fontes confiáveis.
+    # Um código encontrado por pelo menos uma fonte confiável já pode entrar no site.
+    # Se vier de fontes não confiáveis, exigimos 2 fontes independentes.
+    confirmed=sorted([
+        v for v in found.values()
+        if (
+            len(v["sources"] & TRUSTED) >= 1
+            or len(v["sources"]) >= 2
+        )
+        and (re.search(r"\d", v["code"]) or len(v["code"]) >= 10)
+    ], key=lambda v:(-len(v["sources"]&TRUSTED),-len(v["sources"]),v["code"]))
     active=[v["code"] for v in confirmed]
-    if not active: raise RuntimeError("Nenhum código confirmado por 2 fontes confiáveis; atualização abortada.")
+    if not active: raise RuntimeError("Nenhum código encontrado; atualização abortada para não apagar os códigos existentes.")
+
     now=datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00","Z")
     history={"active":[],"expired":[],"missing":{},"updated_at":now,"sources":{},"source_errors":[]}
     if HISTORY.exists():
@@ -133,7 +145,7 @@ def main():
     index=replace_div_by_id(INDEX.read_text(encoding="utf-8"),"ativos",'<div id="ativos" class="code-list">\n'+"\n".join(card(c) for c in active)+'\n</div>')
     INDEX.write_text(remove_expired_ui(index),encoding="utf-8")
     details={v["code"]:{"trusted":sorted(v["sources"]&TRUSTED),"all":sorted(v["sources"])} for v in confirmed}
-    CODES_JSON.write_text(json.dumps({"updated":now,"source_count":len(SOURCES),"successful_sources":successful,"trusted_confirmation":2,"codes":active,"sources":details},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    CODES_JSON.write_text(json.dumps({"updated":now,"source_count":len(SOURCES),"successful_sources":successful,"trusted_confirmation":"1 trusted OR 2 independent","codes":active,"sources":details},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     HISTORY.write_text(json.dumps({"active":active,"expired":expired,"missing":{k:v for k,v in missing.items() if k not in current and v<2},"updated_at":now,"sources":details,"source_errors":errors},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(f"20 fontes configuradas: {len(SOURCES)}"); print(f"Fontes que responderam: {successful}/{len(SOURCES)}"); print(f"Códigos ativos publicados: {len(active)}"); print(f"Novos códigos confirmados: {', '.join(sorted(current-previous_active)) or 'nenhum'}"); print(f"Expirados nesta execução: {', '.join(newly_expired) or 'nenhum'}")
 
