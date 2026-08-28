@@ -7,7 +7,152 @@
     "GLHF2026AMERICAS",
     "LEGENDSWC2026HSL",
     "SWC26X10LEGACYBND",
-    "YIQIZOUGUO10SWC"
+    "YIQIZOUGUO10SWC",
+    "EXPIRATION",
+    "FREQUENTLY",
+    "ANNIVERSARY",
+    "CHAMPIONSHIP",
+    "MILESTONES",
+    "PROGRESSION",
+    "REDEMPTION",
+    "SPECIFICALLY",
+    "COLLECTION",
+    "IMMEDIATELY",
+    "TROUBLESHOOTING",
+    "ANNOUNCEMENTS",
+    "CATEGORIES",
+    "CELEBRATIONS",
+    "COLLABORATION",
+    "COLLABORATIONS",
+    "CONSISTENTLY",
+    "EQUIVALENT",
+    "EXCLUSIVELY",
+    "MAINTAINED",
+    "OCCASIONALLY",
+    "PARTNERSHIP",
+    "PERMANENTLY",
+    "PRIORITIZE",
+    "REDEMPTIONS",
+    "REGARDLESS",
+    "REGISTRATION",
+    "SUMMONHENGE",
+    "2NEWTOMORROW2",
+    "DISCOVERED",
+    "INFORMATION",
+    "MAXIMIZING",
+    "SUMMONERSWAR",
+    "1SURPR1SE",
+    "26SWXLOTRS2",
+    "ABBREVIATION",
+    "ACCELERATES",
+    "ACCUMULATES",
+    "ACHIEVEMENTS",
+    "ACQUISITION",
+    "ACTIONABLE",
+    "ADDITIONAL",
+    "ALPHANUMERIC",
+    "ALTERNATIVE",
+    "ANNOUNCEMENT",
+    "APPEARANCE",
+    "APPLICATIONS",
+    "APRSW2026M08",
+    "ATTEMPTING",
+    "AUTOMATICALLY",
+    "AVAILABILITY",
+    "AWAKENINGS",
+    "BORASPBRASIL2025",
+    "BOTTLENECK",
+    "BREAKDOWNS",
+    "CALCULATOR",
+    "CHARACTERS",
+    "CHRONICLES",
+    "CHRONOLOGICAL",
+    "COMMEMORATE",
+    "COMMEMORATIVE",
+    "COMMEMORATIVES",
+    "COMPLETING",
+    "CONSISTENT",
+    "CONSTANTLY",
+    "CONVENTION",
+    "CONVERSELY",
+    "CREDENTIALS",
+    "DEFINITION",
+    "DETERMINES",
+    "DETERMINISTIC",
+    "DIFFERENCE",
+    "DIFFERENCES",
+    "DISAPPEARS",
+    "DISCLAIMER",
+    "DISTINCTION",
+    "DISTRIBUTES",
+    "EFFICIENCY",
+    "ESPECIALLY",
+    "EXPERIENCE",
+    "FRUSTRATION",
+    "FUNCTIONAL",
+    "FUNCTIONALITY",
+    "FUNCTIONALLY",
+    "FURTHERMORE",
+    "GAMESCOM2US2025",
+    "GUARANTEED",
+    "GUIDELINES",
+    "IDENTIFIABLE",
+    "IDENTIFIER",
+    "ILLUSTRATING",
+    "IMPORTANTLY",
+    "INACCURACIES",
+    "INDEFINITELY",
+    "INDIVIDUALLY",
+    "LEADERBOARDS",
+    "LEGITIMATE",
+    "LIVESTREAM",
+    "LOTR4CO11ABON",
+    "MAINTENANCE",
+    "MEANINGFUL",
+    "NECROPOLIS",
+    "NOTICEABLY",
+    "NOTIFICATIONS",
+    "OBTAINABLE",
+    "OFFICIALLY",
+    "PARTNERSHIPS",
+    "PERFORMANCE",
+    "POTENTIALLY",
+    "PREFERENCE",
+    "PREVIOUSLY",
+    "PRIORITIZING",
+    "PROMOTIONAL",
+    "RECRUITING",
+    "RECRUITMENT",
+    "REDEEMABLE",
+    "REFERENCED",
+    "REGISTERED",
+    "RESPECTIVE",
+    "RESPONSIBLE",
+    "SHAPESHIFTING",
+    "SIMULTANEOUSLY",
+    "SPECIALIZE",
+    "STANDARDIZED",
+    "STATISTICS",
+    "SUBJUGATION",
+    "SUBSCRIPTION",
+    "SUMMARIZES",
+    "SUPPLEMENTARY",
+    "SW2025DEC",
+    "SW2025NOV",
+    "SW2025OCT",
+    "SW25HSZN",
+    "SWC25HAMBOISO",
+    "SWCPARISNOUSVOILA",
+    "SWELSTARTS",
+    "SWELWEEK1",
+    "THROUGHOUT",
+    "TOURNAMENT",
+    "TRANSITION",
+    "UNDERSTAND",
+    "UNDERSTANDING",
+    "VISIBILITY",
+    "WAKUWAKUSWC2025",
+    "JUNSW2026W6C"
   ],
   "expired": [
     "912XUXIECHUANQI",
@@ -25,9 +170,6 @@
     "JULSW2026Y1O",
     "GZS3ACHAMP10N",
     "MAYSW2026Z2Q",
-    "APRSW2026M08",
-    "LOTR4CO11ABON",
-    "26SWXLOTRS2",
     "MARSW2026K61",
     "COL3KY8G1FT15",
     "FEBSW2026E82",
@@ -36,11 +178,9 @@
     "JANSW2026C13",
     "1SURPR1SEG1FT",
     "SW2025DEC9PJ",
-    "2NEWTOMORROW2",
     "SW2025NOVQ5W",
     "NEXTWF25PARISA1G",
     "APAC25FUNA1NGY0",
-    "SWC25HAMBOISO",
     "SW2025OCTP3T",
     "20FIGHT4GLORY25",
     "SWSA100RUSH",
@@ -248,44 +388,12 @@
     "LEAGUEWEEK4": 1,
     "SW2024MARW1M": 1,
     "SW2023JLJ9E": 1,
-    "JUNSW2026W6C": 1,
     "IDTOP8GO": 1,
-    "EQUIVALENT": 1,
-    "MAINTAINED": 1,
-    "FREQUENTLY": 1,
-    "COLLECTION": 1,
-    "TROUBLESHOOTING": 1,
-    "EXPIRATION": 1,
-    "OCCASIONALLY": 1,
-    "SPECIFICALLY": 1,
-    "REDEMPTION": 1,
-    "COLLABORATION": 1,
-    "CATEGORIES": 1,
-    "CONSISTENTLY": 1,
-    "PRIORITIZE": 1,
-    "AUTOMATICALLY": 1,
-    "PROMOTIONAL": 1,
-    "CHAMPIONSHIP": 1,
-    "ANNIVERSARY": 1,
-    "ANNOUNCEMENTS": 1,
-    "CELEBRATIONS": 1,
-    "MILESTONES": 1,
-    "REGISTRATION": 1,
-    "PARTNERSHIP": 1,
-    "EXCLUSIVELY": 1,
-    "SUBJUGATION": 1,
-    "COLLABORATIONS": 1,
-    "NECROPOLIS": 1,
-    "REGARDLESS": 1,
-    "IMMEDIATELY": 1,
-    "REDEMPTIONS": 1,
-    "SUMMONHENGE": 1,
-    "PROGRESSION": 1,
     "THEB3STMAGE": 1,
     "PAI2026BANGKOK": 1,
     "APAC26LEGASEA": 1
   },
-  "updated_at": "2026-08-28T01:33:03Z",
+  "updated_at": "2026-08-28T07:55:29Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -417,6 +525,1248 @@
         "swcoupon",
         "swgt",
         "swquery"
+      ]
+    },
+    "EXPIRATION": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "pocketgamer",
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "FREQUENTLY": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "pockettactics",
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "ANNIVERSARY": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "CHAMPIONSHIP": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "MILESTONES": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "PROGRESSION": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "REDEMPTION": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "SPECIFICALLY": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "COLLECTION": {
+      "trusted": [
+        "summonerswarcodes",
+        "swgt"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swgt",
+        "tryhardguides"
+      ]
+    },
+    "IMMEDIATELY": {
+      "trusted": [
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "findingdulcinea",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "TROUBLESHOOTING": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "findingdulcinea",
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "ANNOUNCEMENTS": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "CATEGORIES": {
+      "trusted": [
+        "summonerswarcodes",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swquery"
+      ]
+    },
+    "CELEBRATIONS": {
+      "trusted": [
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "COLLABORATION": {
+      "trusted": [
+        "summonerswarcodes",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swquery"
+      ]
+    },
+    "COLLABORATIONS": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "CONSISTENTLY": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "EQUIVALENT": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "EXCLUSIVELY": {
+      "trusted": [
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "MAINTAINED": {
+      "trusted": [
+        "summonerswarcodes",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swquery"
+      ]
+    },
+    "OCCASIONALLY": {
+      "trusted": [
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "PARTNERSHIP": {
+      "trusted": [
+        "summonerswarcodes",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swquery"
+      ]
+    },
+    "PERMANENTLY": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "PRIORITIZE": {
+      "trusted": [
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "REDEMPTIONS": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "REGARDLESS": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swcoupon"
+      ]
+    },
+    "REGISTRATION": {
+      "trusted": [
+        "swgt",
+        "swquery"
+      ],
+      "all": [
+        "swgt",
+        "swquery"
+      ]
+    },
+    "SUMMONHENGE": {
+      "trusted": [
+        "summonerswarcodes",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "swquery"
+      ]
+    },
+    "2NEWTOMORROW2": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "findingdulcinea",
+        "swquery"
+      ]
+    },
+    "DISCOVERED": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "findingdulcinea",
+        "swcoupon"
+      ]
+    },
+    "INFORMATION": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "findingdulcinea",
+        "swcoupon"
+      ]
+    },
+    "MAXIMIZING": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "findingdulcinea",
+        "swcoupon"
+      ]
+    },
+    "SUMMONERSWAR": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "findingdulcinea",
+        "swcoupon"
+      ]
+    },
+    "1SURPR1SE": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "26SWXLOTRS2": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "ABBREVIATION": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "ACCELERATES": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "ACCUMULATES": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "ACHIEVEMENTS": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "ACQUISITION": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "ACTIONABLE": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "ADDITIONAL": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "ALPHANUMERIC": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "ALTERNATIVE": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "ANNOUNCEMENT": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "APPEARANCE": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "APPLICATIONS": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "APRSW2026M08": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "ATTEMPTING": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "AUTOMATICALLY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "AVAILABILITY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "AWAKENINGS": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "BORASPBRASIL2025": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "BOTTLENECK": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "BREAKDOWNS": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "CALCULATOR": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "CHARACTERS": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "CHRONICLES": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "CHRONOLOGICAL": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "COMMEMORATE": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "COMMEMORATIVE": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "COMMEMORATIVES": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "COMPLETING": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "CONSISTENT": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "CONSTANTLY": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "CONVENTION": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "CONVERSELY": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "CREDENTIALS": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "DEFINITION": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "DETERMINES": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "DETERMINISTIC": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "DIFFERENCE": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "DIFFERENCES": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "DISAPPEARS": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "DISCLAIMER": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "DISTINCTION": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "DISTRIBUTES": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "EFFICIENCY": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "ESPECIALLY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "EXPERIENCE": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "FRUSTRATION": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "FUNCTIONAL": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "FUNCTIONALITY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "FUNCTIONALLY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "FURTHERMORE": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "GAMESCOM2US2025": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "GUARANTEED": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "GUIDELINES": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "IDENTIFIABLE": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "IDENTIFIER": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "ILLUSTRATING": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "IMPORTANTLY": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "INACCURACIES": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "INDEFINITELY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "INDIVIDUALLY": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "LEADERBOARDS": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "LEGITIMATE": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "LIVESTREAM": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "LOTR4CO11ABON": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "MAINTENANCE": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "MEANINGFUL": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "NECROPOLIS": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "NOTICEABLY": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "NOTIFICATIONS": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "OBTAINABLE": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "OFFICIALLY": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "PARTNERSHIPS": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "PERFORMANCE": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "POTENTIALLY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "PREFERENCE": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "PREVIOUSLY": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "PRIORITIZING": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "PROMOTIONAL": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "RECRUITING": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "RECRUITMENT": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "REDEEMABLE": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "REFERENCED": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "REGISTERED": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "RESPECTIVE": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "RESPONSIBLE": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "SHAPESHIFTING": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "SIMULTANEOUSLY": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "SPECIALIZE": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "STANDARDIZED": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "STATISTICS": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "SUBJUGATION": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "SUBSCRIPTION": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "SUMMARIZES": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SUPPLEMENTARY": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SW2025DEC": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SW2025NOV": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SW2025OCT": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SW25HSZN": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SWC25HAMBOISO": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SWCPARISNOUSVOILA": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SWELSTARTS": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "SWELWEEK1": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "THROUGHOUT": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "TOURNAMENT": {
+      "trusted": [
+        "swgt"
+      ],
+      "all": [
+        "swgt"
+      ]
+    },
+    "TRANSITION": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "UNDERSTAND": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "UNDERSTANDING": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "VISIBILITY": {
+      "trusted": [
+        "summonerswarcodes"
+      ],
+      "all": [
+        "summonerswarcodes"
+      ]
+    },
+    "WAKUWAKUSWC2025": {
+      "trusted": [
+        "swquery"
+      ],
+      "all": [
+        "swquery"
+      ]
+    },
+    "JUNSW2026W6C": {
+      "trusted": [],
+      "all": [
+        "levelgeeks",
+        "pocketgamer"
       ]
     }
   },
