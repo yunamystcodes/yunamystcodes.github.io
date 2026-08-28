@@ -3,9 +3,9 @@
   .top .navlinks{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:30px;white-space:nowrap}
   .logo{font-size:32px!important;white-space:nowrap!important}
 }
-/* YunaMyst must always use the exact same lettering: YunaMyst. */
+/* YunaMyst: reduzir o Y de Myst para não sobrepor o subtítulo. */
 .logo{white-space:nowrap!important}
-.logo .myst-y{font-size:inherit!important;display:inline!important;line-height:inherit!important;transform:none!important}
+.logo .myst-y{font-size:.62em!important;display:inline-block!important;line-height:.8!important;vertical-align:baseline!important;transform:translateY(-.08em)!important}
 .sound-control{display:flex!important;align-items:center!important;margin-left:auto!important;margin-right:6px!important;flex:none!important}
 .lang-switch{display:flex!important;align-items:center!important;gap:6px!important;margin-left:0!important;position:relative!important;flex:none!important}
 .lang-switch .lang-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid #633487!important;border-radius:10px!important;background:#10091c!important;color:#fff!important;padding:9px 12px!important;font-weight:800!important;font-size:12px!important;cursor:pointer!important;touch-action:manipulation!important;white-space:nowrap!important}
@@ -15,7 +15,7 @@
 .lang-switch .lang-option.selected,.lang-switch .lang-option:hover{background:#2b1242!important}
 @media(max-width:850px){
   .logo{font-size:24px!important;white-space:nowrap!important}
-  .logo .myst-y{font-size:inherit!important}
+  .logo .myst-y{font-size:.58em!important;line-height:.78!important;transform:translateY(-.07em)!important}
   .sound-control{margin-left:auto!important;margin-right:5px!important}
   .sound-btn{width:38px!important;height:38px!important;font-size:17px!important}
   .lang-switch{gap:5px!important;margin-left:0!important}
