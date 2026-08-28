@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-28T08:26:30Z",
+  "updated": "2026-08-28T08:57:17Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -9,14 +9,14 @@
     "SWXFRIEREN2026",
     "LEGENDSWC2026HSL",
     "YIQIZOUGUO10SWC",
-    "GLHF2026AMERICAS",
-    "SWC26X10LEGACYBND",
     "1SURPR1SE",
     "26SWXLOTRS2",
+    "GLHF2026AMERICAS",
     "LOTR4CO11ABON",
     "SW2025DEC",
     "SW2025NOV",
     "SW2025OCT",
+    "SWC26X10LEGACYBND",
     "JUNSW2026W6C"
   ],
   "sources": {
@@ -93,26 +93,6 @@
         "swquery"
       ]
     },
-    "GLHF2026AMERICAS": {
-      "trusted": [
-        "sw-teams",
-        "swquery"
-      ],
-      "all": [
-        "sw-teams",
-        "swquery"
-      ]
-    },
-    "SWC26X10LEGACYBND": {
-      "trusted": [
-        "sw-teams",
-        "swquery"
-      ],
-      "all": [
-        "sw-teams",
-        "swquery"
-      ]
-    },
     "1SURPR1SE": {
       "trusted": [
         "swquery"
@@ -127,6 +107,14 @@
       ],
       "all": [
         "summonerswarcodes"
+      ]
+    },
+    "GLHF2026AMERICAS": {
+      "trusted": [
+        "sw-teams"
+      ],
+      "all": [
+        "sw-teams"
       ]
     },
     "LOTR4CO11ABON": {
@@ -159,6 +147,14 @@
       ],
       "all": [
         "swquery"
+      ]
+    },
+    "SWC26X10LEGACYBND": {
+      "trusted": [
+        "sw-teams"
+      ],
+      "all": [
+        "sw-teams"
       ]
     },
     "JUNSW2026W6C": {
