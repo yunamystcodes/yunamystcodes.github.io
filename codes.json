@@ -1,131 +1,18 @@
 {
-  "updated": "2026-08-28T08:58:57Z",
+  "updated": "2026-08-28T09:10:00Z",
   "source_count": 20,
   "successful_sources": 13,
-  "trusted_confirmation": "1 trusted OR 2 independent",
+  "trusted_confirmation": "current trusted sources",
   "codes": [
     "SWXFRIEREN2026",
-    "4READY4TDOT",
     "AUGSW2026V7N",
-    "LEGENDSWC2026HSL",
-    "YIQIZOUGUO10SWC",
-    "1SURPR1SE",
-    "26SWXLOTRS2",
+    "APAC26LEGASEA",
+    "PAI2026BANGKOK",
+    "SWC26X10LEGACYBND",
     "GLHF2026AMERICAS",
-    "LOTR4CO11ABON",
-    "SWC26X10LEGACYBND"
-  ],
-  "sources": {
-    "SWXFRIEREN2026": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "pocketgamer",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "4READY4TDOT": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "AUGSW2026V7N": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "LEGENDSWC2026HSL": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "YIQIZOUGUO10SWC": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "1SURPR1SE": {
-      "trusted": [
-        "swquery"
-      ],
-      "all": [
-        "swquery"
-      ]
-    },
-    "26SWXLOTRS2": {
-      "trusted": [
-        "summonerswarcodes"
-      ],
-      "all": [
-        "summonerswarcodes"
-      ]
-    },
-    "GLHF2026AMERICAS": {
-      "trusted": [
-        "sw-teams"
-      ],
-      "all": [
-        "sw-teams"
-      ]
-    },
-    "LOTR4CO11ABON": {
-      "trusted": [
-        "summonerswarcodes"
-      ],
-      "all": [
-        "summonerswarcodes"
-      ]
-    },
-    "SWC26X10LEGACYBND": {
-      "trusted": [
-        "sw-teams"
-      ],
-      "all": [
-        "sw-teams"
-      ]
-    }
-  }
+    "YIQIZOUGUO10SWC",
+    "LEGENDSWC2026HSL",
+    "AMPRELIMSLEGACYDRP",
+    "4READY4TDOT"
+  ]
 }
