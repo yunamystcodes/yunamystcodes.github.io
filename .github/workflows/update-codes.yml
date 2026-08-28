@@ -28,6 +28,32 @@ jobs:
       - name: Buscar 20 fontes e atualizar códigos
         run: python3 scripts/update_codes.py
 
+      - name: Sincronizar index com os códigos e recompensas atuais
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          # O index não deve guardar uma segunda lista de códigos: a lista oficial
+          # vem de codes.json e auto-codes.js. Isto evita expirados e duplicados.
+          m = re.search(r'<div\b(?=[^>]*\bid=["\']ativos["\'])[^>]*>', s, re.I)
+          if m:
+              tags = re.compile(r'<div\b[^>]*>|</div\s*>', re.I)
+              depth = 0
+              end = None
+              for tag in tags.finditer(s, m.start()):
+                  depth += 1 if tag.group(0).lower().startswith('<div') else -1
+                  if depth == 0:
+                      end = tag.end(); break
+              if end:
+                  s = s[:m.start()] + '<div id="ativos" class="code-list"></div>' + s[end:]
+          # Garantir que o JavaScript que desenha os códigos está no index.
+          if 'src="./auto-codes.js"' not in s and "src='./auto-codes.js'" not in s:
+              s = s.replace('</body>', '<script src="./auto-codes.js?v=20260828"></script>\n</body>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
       - name: Corrigir YunaMyst no index
         run: |
           python3 - <<'PY'
@@ -44,25 +70,25 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verificar YunaMyst
+      - name: Verificar index
         run: |
           python3 - <<'PY'
           from pathlib import Path
           s = Path('index.html').read_text(encoding='utf-8')
+          if 'id="ativos"' not in s or 'auto-codes.js' not in s:
+              raise SystemExit('ERRO: index não está ligado ao sistema automático de códigos')
           if 'YunaM<span class="myst-y">Y</span>st' not in s:
               raise SystemExit('ERRO: YunaMyst não foi corrigido no index.html')
-          if 'id="yunamyst-y-fix"' not in s:
-              raise SystemExit('ERRO: CSS do Y não foi aplicado')
-          print('OK: YunaMyst correto, com apenas o Y de Myst reduzido em PC e telemóvel.')
+          print('OK: index usa uma única lista automática, sem lista duplicada de códigos.')
           PY
 
       - name: Guardar alterações
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml scripts/update_codes.py assets/header-final.css assets/i18n.js
+          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml scripts/update_codes.py assets/header-final.css assets/i18n.js auto-codes.js
           if ! git diff --cached --quiet; then
-            git commit -m 'Atualizar códigos e corrigir YunaMyst no cabeçalho'
+            git commit -m 'Atualizar index com recompensas e botoes Copiar e Link iOS'
             git push
           else
             echo 'Nenhuma alteração necessária.'
