@@ -37,7 +37,7 @@ BANNED = {"ACTIVE","EXPIRED","WORKING","AVAILABLE","CODES","CODE","SUMMONERS","W
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/13.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
+    req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; YunaMyst-Code-Updater/14.0)","Accept":"text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.7"})
     with urllib.request.urlopen(req, timeout=25) as response:
         return response.read().decode("utf-8", "ignore")
 
@@ -52,9 +52,9 @@ def normalize_codes(tokens):
     out, seen = [], set()
     for token in tokens:
         code = token.strip().strip("`.,:;()[]{}<>\"").upper()
-        if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or not re.search(r"[A-Z]", code):
-            continue
-        if not re.search(r"\d", code) and len(code) < 10:
+        # Um código publicado precisa ter letras + números. Isso impede que
+        # palavras normais extraídas do texto das páginas virem códigos.
+        if not 6 <= len(code) <= 32 or code in BANNED or code in REJECTED or not re.search(r"[A-Z]", code) or not re.search(r"\d", code):
             continue
         if code not in seen:
             seen.add(code); out.append(code)
@@ -62,7 +62,7 @@ def normalize_codes(tokens):
 
 
 def active_blocks(text):
-    lower = text.lower(); starts=("working summoners war codes","working codes","available codes","active summoners war codes","new & active summoners war codes","new and active summoners war codes","currently working summoners war codes","working summoners war codes","new summoners war codes","all summoners war codes 2026"); stops=("expired summoners war codes","expired codes","expired","how to redeem","how do i redeem","how to use")
+    lower = text.lower(); starts=("working summoners war codes","working codes","available codes","active summoners war codes","new & active summoners war codes","new and active summoners war codes","currently working summoners war codes","working summoners war codes","new summoners war codes","all summoners war codes 2026","active promotional codes"); stops=("expired summoners war codes","expired codes","expired","how to redeem","how do i redeem","how to use")
     blocks=[]
     for marker in starts:
         start=lower.find(marker)
@@ -76,11 +76,14 @@ def parse_source(name, raw):
     text=clean_text(raw)
     if name == "sw-teams":
         return sorted(normalize_codes(re.findall(r"\b([A-Za-z0-9]{6,32})\b\s+Active\b", text, flags=re.I)))
-    blocks=active_blocks(text); candidates=set(normalize_codes(CODE_RE.findall(" ".join(blocks)))) if blocks else set()
-    if name in TRUSTED: candidates.update(normalize_codes(CODE_RE.findall(text[:12000])))
+    blocks=active_blocks(text)
+    candidates=set(normalize_codes(CODE_RE.findall(" ".join(blocks)))) if blocks else set()
+    # Nunca varrer os primeiros milhares de caracteres de uma fonte confiável:
+    # isso capturava palavras normais do artigo e publicava-as como códigos.
     for match in CODE_RE.finditer(text):
         window=text[max(0,match.start()-90):match.end()+90].lower()
-        if "active" in window and "expired" not in window: candidates.update(normalize_codes([match.group(0)]))
+        if "active" in window and "expired" not in window:
+            candidates.update(normalize_codes([match.group(0)]))
     return sorted(candidates)
 
 
@@ -117,9 +120,6 @@ def main():
             for code in codes: found.setdefault(code,{"code":code,"sources":set()})["sources"].add(name)
         except Exception as exc: errors.append(f"{name}: {exc}"); print(f"Fonte {name}: ERRO - {exc}")
 
-    # PUBLICAÇÃO: não exigir mais 2 fontes confiáveis.
-    # Um código encontrado por pelo menos uma fonte confiável já pode entrar no site.
-    # Se vier de fontes não confiáveis, exigimos 2 fontes independentes.
     confirmed=sorted([
         v for v in found.values()
         if (
