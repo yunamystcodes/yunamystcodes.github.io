@@ -3,7 +3,6 @@
   .top .navlinks{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:30px;white-space:nowrap}
   .logo{font-size:32px!important;white-space:nowrap!important}
 }
-/* YunaMyst: reduzir o Y de Myst para não sobrepor o subtítulo. */
 .logo{white-space:nowrap!important}
 .logo .myst-y{font-size:.62em!important;display:inline-block!important;line-height:.8!important;vertical-align:baseline!important;transform:translateY(-.08em)!important}
 .sound-control{display:flex!important;align-items:center!important;margin-left:auto!important;margin-right:6px!important;flex:none!important}
@@ -13,6 +12,13 @@
 .lang-switch.open .lang-menu{display:block!important}
 .lang-switch .lang-option{display:block!important;width:100%!important;border:0!important;background:transparent!important;color:#fff!important;padding:9px!important;text-align:left!important;border-radius:7px!important;font-size:11px!important;font-weight:800!important;cursor:pointer!important;touch-action:manipulation!important}
 .lang-switch .lang-option.selected,.lang-switch .lang-option:hover{background:#2b1242!important}
+.reward-icon{background-image:url('/assets/rewards-sprite.webp?v=20260828')!important;background-repeat:no-repeat!important;background-size:288px 48px!important;background-color:transparent!important;border-radius:0!important;clip-path:none!important;filter:drop-shadow(0 2px 3px #0008)!important}
+.reward-icon.scroll{background-position:-4.5px -6px!important}
+.reward-icon.scroll-yellow{background-position:-51.75px -6px!important}
+.reward-icon.scroll-red{background-position:-102px -6.75px!important}
+.reward-icon.crystal{background-position:-154.5px -14.25px!important}
+.reward-icon.mana{background-position:-197.25px -4.5px!important}
+.reward-icon.energy{background-position:-247.5px -2.25px!important}
 @media(max-width:850px){
   .logo{font-size:24px!important;white-space:nowrap!important}
   .logo .myst-y{font-size:.58em!important;line-height:.78!important;transform:translateY(-.07em)!important}
@@ -22,4 +28,11 @@
   .lang-switch .lang-btn{padding:8px 10px!important;font-size:10px!important}
   .lang-switch .lang-menu{right:0!important;min-width:112px!important}
   .lang-switch .lang-option{padding:9px 8px!important;font-size:10px!important}
+  .reward-icon{background-size:224px 37.333px!important}
+  .reward-icon.scroll{background-position:-3.5px -4.67px!important}
+  .reward-icon.scroll-yellow{background-position:-40.25px -4.67px!important}
+  .reward-icon.scroll-red{background-position:-79.33px -5.25px!important}
+  .reward-icon.crystal{background-position:-120.17px -11.08px!important}
+  .reward-icon.mana{background-position:-153.42px -3.5px!important}
+  .reward-icon.energy{background-position:-192.5px -1.75px!important}
 }
