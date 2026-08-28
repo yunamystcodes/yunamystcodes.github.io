@@ -41,7 +41,7 @@ jobs:
           s = s.replace('YunaMyst.</span>', 'YunaMyst</span>')
 
           # Keep only the lowercase y in Myst smaller, on desktop and mobile.
-          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260826 V2'
+          marker = 'YUNAMYST HEADER CLEAN WORKFLOW 20260828 V3'
           css = f'''\n<style id="yunamyst-header-clean-workflow">\n/* {marker} */\n.logo .myst-y {{\n  font-size: .76em !important;\n  display: inline-block !important;\n  line-height: 1 !important;\n  transform: translateY(.02em) !important;\n}}\n@media (max-width: 850px) {{\n  .logo .myst-y {{ font-size: .76em !important; }}\n}}\n</style>\n'''
 
           if marker not in s:
