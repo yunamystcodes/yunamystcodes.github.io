@@ -45,7 +45,7 @@
     "SWC26X10LEGACYBND"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T09:28:29Z",
+  "updated_at": "2026-08-29T09:36:41Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -82,12 +82,14 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
-        "swcoupon"
+        "swcoupon",
+        "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
-        "swcoupon"
+        "swcoupon",
+        "swquery"
       ]
     },
     "AUGSW2026V7N": {

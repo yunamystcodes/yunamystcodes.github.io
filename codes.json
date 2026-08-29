@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-29T09:28:29Z",
+  "updated": "2026-08-29T09:36:41Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -51,12 +51,14 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
-        "swcoupon"
+        "swcoupon",
+        "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
-        "swcoupon"
+        "swcoupon",
+        "swquery"
       ]
     },
     "AUGSW2026V7N": {
