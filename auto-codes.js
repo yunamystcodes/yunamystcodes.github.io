@@ -1,17 +1,13 @@
 (()=>{
 'use strict';
 const redeem='https://withhive.me/313/';
-const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND']);
-const FALLBACK_CODES=['4READY4TDOT','912XUXIECHUANQI','AMPRELIMSLEGACYDRP','APAC26LEGASEA','AUGSW2026V7N','LEGENDSWC2026HSL','PAI2026BANGKOK','SWC2026JUELEBA','SWXFRIEREN2026','YIQIZOUGUO10SWC'];
+const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA']);
+const FALLBACK_CODES=[];
 const REWARDS={
  '4READY4TDOT':[['gold','x1'],['mana','x200K'],['energy','x50']],
- '912XUXIECHUANQI':[['gold','x1'],['crystal','x100'],['energy','x50']],
  'AMPRELIMSLEGACYDRP':[['gold','x1'],['energy','x100']],
  'LEGENDSWC2026HSL':[['gold','x1'],['energy','x100']],
  'YIQIZOUGUO10SWC':[['gold','x1'],['energy','x100']],
- 'PAI2026BANGKOK':[['gold','x1']],
- 'APAC26LEGASEA':[['gold','x1'],['mana','x200K']],
- 'SWC2026JUELEBA':[['gold','x1'],['crystal','x100'],['energy','x50']],
  'AUGSW2026V7N':[['yellow','x3'],['energy','x100']],
  'SWXFRIEREN2026':[['gold','x3'],['mana','x300K'],['energy','x100']]
 };
@@ -33,7 +29,7 @@ function fallback(code,b,old){try{const t=document.createElement('textarea');t.v
 function bind(root=document){root.querySelectorAll('.copy[data-code]').forEach(b=>{if(b.dataset.bound)return;b.dataset.bound='1';b.addEventListener('click',e=>{e.preventDefault();copy(b.dataset.code,b)})})}
 function clean(root){root.querySelectorAll('.code').forEach(x=>{const c=x.querySelector('.cinfo strong');if(c&&!valid(c.textContent))x.remove()})}
 function render(codes,root){const unique=[...new Set(codes.map(norm).filter(valid))];root.innerHTML=unique.map(card).join('');clean(root);bind(root)}
-async function load(){const root=document.getElementById('ativos');if(!root)return;try{const r=await fetch('./codes.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();const codes=Array.isArray(d.codes)?d.codes:[];if(codes.length<8)throw 0;render(codes,root)}catch(e){render(FALLBACK_CODES,root)}profileFix()}
+async function load(){const root=document.getElementById('ativos');if(!root)return;try{const r=await fetch('./codes.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();const codes=Array.isArray(d.codes)?d.codes:[];if(codes.length===0)throw 0;render(codes,root)}catch(e){render(FALLBACK_CODES,root)}profileFix()}
 function lang(){const sw=document.getElementById('langSwitch'),t=document.getElementById('langToggle');if(!sw||!t)return;if(!t.dataset.bound){t.dataset.bound='1';t.onclick=e=>{e.preventDefault();e.stopPropagation();sw.classList.toggle('open')}}}
 function sound(){const a=document.getElementById('bgMusic'),b=document.getElementById('soundToggle');if(!a||!b||b.dataset.bound)return;b.dataset.bound='1';const k='yunamyst-mute-v3';try{a.muted=localStorage.getItem(k)==='1'}catch(e){}const sync=()=>b.textContent=a.muted?'🔇':'🔊';sync();b.onclick=e=>{e.preventDefault();e.stopPropagation();a.muted=!a.muted;try{localStorage.setItem(k,a.muted?'1':'0')}catch(x){}if(!a.muted)a.play().catch(()=>{});sync()}}
 function init(){styles();lang();sound();bind();load();profileFix();setInterval(load,60*60*1000)}
