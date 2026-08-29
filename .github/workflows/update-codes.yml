@@ -1,8 +1,6 @@
 name: Atualizar códigos automaticamente
 
 on:
-  push:
-    branches: [main]
   schedule:
     - cron: '17 * * * *'
   workflow_dispatch:
@@ -19,74 +17,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Preparar Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Buscar 20 fontes e atualizar códigos
-        run: python3 scripts/update_codes.py
-
-      - name: Sincronizar index com os códigos e recompensas atuais
+      - name: Verificar códigos e atualizar lista
+        run: python3 scripts/update_codes_safe.py
+      - name: Verificar dados publicados
         run: |
           python3 - <<'PY'
-          from pathlib import Path
-          import re
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          m = re.search(r'<div\b(?=[^>]*\bid=["\']ativos["\'])[^>]*>', s, re.I)
-          if m:
-              tags = re.compile(r'<div\b[^>]*>|</div\s*>', re.I)
-              depth = 0
-              end = None
-              for tag in tags.finditer(s, m.start()):
-                  depth += 1 if tag.group(0).lower().startswith('<div') else -1
-                  if depth == 0:
-                      end = tag.end(); break
-              if end:
-                  s = s[:m.start()] + '<div id="ativos" class="code-list"></div>' + s[end:]
-          if 'src="./auto-codes.js' not in s and "src='./auto-codes.js" not in s:
-              s = s.replace('</body>', '<script src="./auto-codes.js?v=20260828"></script>\n</body>', 1)
-          if 'src="./reward-images.js' not in s and "src='./reward-images.js" not in s:
-              s = s.replace('</body>', '<script src="./reward-images.js?v=20260828"></script>\n</body>', 1)
-          p.write_text(s, encoding='utf-8')
+          import json
+          d=json.load(open('codes.json',encoding='utf-8'))
+          codes=d.get('codes',[])
+          if len(codes)!=len(set(codes)): raise SystemExit('ERRO: existem códigos duplicados')
+          blocked={'GLHF2026AMERICAS','SWC26X10LEGACYBND'}
+          if blocked.intersection(codes): raise SystemExit('ERRO: código rejeitado voltou à lista')
+          if not codes: raise SystemExit('ERRO: lista vazia')
+          print(f'OK: {len(codes)} códigos ativos, sem duplicados e sem códigos bloqueados.')
           PY
-
-      - name: Corrigir YunaMyst no index
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          s = re.sub(r'YunaM(?:<span class="myst-y">[Yy]</span>)?[Yy]st', 'YunaM<span class="myst-y">Y</span>st', s, count=1)
-          css = '''\n<style id="yunamyst-y-fix">\n.logo .myst-y{font-size:.60em!important;display:inline-block!important;line-height:.78!important;vertical-align:baseline!important;transform:translateY(-.08em)!important}\n@media(max-width:850px){.logo .myst-y{font-size:.56em!important;line-height:.76!important;transform:translateY(-.07em)!important}}\n</style>\n'''
-          if 'id="yunamyst-y-fix"' in s:
-              s = re.sub(r'<style id="yunamyst-y-fix">.*?</style>', css.strip(), s, count=1, flags=re.S)
-          else:
-              s = s.replace('</head>', css + '</head>', 1)
-          p.write_text(s, encoding='utf-8')
-          PY
-
-      - name: Verificar index
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          s = Path('index.html').read_text(encoding='utf-8')
-          for needle in ('id="ativos"','auto-codes.js','reward-images.js','YunaM<span class="myst-y">Y</span>st'):
-              if needle not in s:
-                  raise SystemExit(f'ERRO: falta {needle} no index.html')
-          print('OK: index ligado ao sistema automático e às imagens reais das recompensas.')
-          PY
-
-      - name: Guardar alterações
+      - name: Guardar atualização
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json index.html .github/workflows/update-codes.yml scripts/update_codes.py assets/header-final.css assets/i18n.js auto-codes.js reward-images.js assets/rewards-sprite.webp
+          git add codes.json codes-history.json
           if ! git diff --cached --quiet; then
-            git commit -m 'Aplicar imagens reais das recompensas no index'
+            git commit -m 'Atualizar códigos ativos automaticamente'
             git push
           else
             echo 'Nenhuma alteração necessária.'
