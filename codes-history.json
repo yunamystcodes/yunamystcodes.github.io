@@ -149,7 +149,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T07:23:36Z",
+  "updated_at": "2026-08-29T08:23:58Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -166,18 +166,9 @@
       ]
     },
     "4READY4TDOT": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
+      "trusted": [],
       "all": [
-        "levelgeeks",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
+        "levelgeeks"
       ]
     },
     "912XUXIECHUANQI": {
