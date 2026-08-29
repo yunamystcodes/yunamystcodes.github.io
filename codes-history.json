@@ -3,10 +3,8 @@
     "4READY4TDOT",
     "912XUXIECHUANQI",
     "AMPRELIMSLEGACYDRP",
-    "APAC26LEGASEA",
     "AUGSW2026V7N",
     "LEGENDSWC2026HSL",
-    "PAI2026BANGKOK",
     "SWC2026JUELEBA",
     "SWXFRIEREN2026",
     "YIQIZOUGUO10SWC"
@@ -45,7 +43,7 @@
     "SWC26X10LEGACYBND"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T00:43:30Z",
+  "updated_at": "2026-08-29T00:45:25Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -73,10 +71,6 @@
       "trusted": [],
       "all": []
     },
-    "APAC26LEGASEA": {
-      "trusted": [],
-      "all": []
-    },
     "AUGSW2026V7N": {
       "trusted": [
         "summonerswarcodes",
@@ -94,10 +88,6 @@
       ]
     },
     "LEGENDSWC2026HSL": {
-      "trusted": [],
-      "all": []
-    },
-    "PAI2026BANGKOK": {
       "trusted": [],
       "all": []
     },
