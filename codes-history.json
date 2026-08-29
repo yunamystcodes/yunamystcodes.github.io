@@ -148,7 +148,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T05:23:45Z",
+  "updated_at": "2026-08-29T06:24:12Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -158,6 +158,7 @@
         "swquery"
       ],
       "all": [
+        "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -166,7 +167,9 @@
     },
     "912XUXIECHUANQI": {
       "trusted": [],
-      "all": []
+      "all": [
+        "levelgeeks"
+      ]
     },
     "AMPRELIMSLEGACYDRP": {
       "trusted": [],
@@ -180,6 +183,7 @@
         "swquery"
       ],
       "all": [
+        "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -192,7 +196,9 @@
     },
     "SWC2026JUELEBA": {
       "trusted": [],
-      "all": []
+      "all": [
+        "levelgeeks"
+      ]
     },
     "SWXFRIEREN2026": {
       "trusted": [
