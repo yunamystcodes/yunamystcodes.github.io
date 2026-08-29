@@ -1,0 +1,40 @@
+name: Corrigir imagens das recompensas no index
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Atualizar cache das imagens e garantir CSS correto no index
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=re.sub(r'<meta name="build-version" content="[^"]*">','<meta name="build-version" content="reward-images-fixed-20260829-v2">',s,count=1)
+          # Remove versões antigas do script e coloca uma versão com cache-bust.
+          s=re.sub(r'<script[^>]+src=["\'](?:\./)?reward-images\.js(?:\?[^"\']*)?["\'][^>]*></script>','<script src="./reward-images.js?v=20260829-v2"></script>',s)
+          if 'reward-images.js?v=20260829-v2' not in s:
+              s=s.replace('</body>','<script src="./reward-images.js?v=20260829-v2"></script>\n</body>',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Publicar index corrigido
+        run: |
+          git config user.name 'YunaMyst Codes Bot'
+          git config user.email 'actions@github.com'
+          git add index.html reward-images.js
+          if ! git diff --cached --quiet; then
+            git commit -m 'Corrigir imagens reais das recompensas no index'
+            git push
+          else
+            echo 'Index já está atualizado.'
+          fi
