@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-29T04:24:02Z",
+  "updated": "2026-08-29T05:23:45Z",
   "source_count": 11,
   "successful_sources": 11,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -22,7 +22,6 @@
         "swquery"
       ],
       "all": [
-        "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -31,9 +30,7 @@
     },
     "912XUXIECHUANQI": {
       "trusted": [],
-      "all": [
-        "levelgeeks"
-      ]
+      "all": []
     },
     "AMPRELIMSLEGACYDRP": {
       "trusted": [],
@@ -47,7 +44,6 @@
         "swquery"
       ],
       "all": [
-        "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -60,9 +56,7 @@
     },
     "SWC2026JUELEBA": {
       "trusted": [],
-      "all": [
-        "levelgeeks"
-      ]
+      "all": []
     },
     "SWXFRIEREN2026": {
       "trusted": [
