@@ -1,14 +1,91 @@
 {
-  "updated": "2026-08-29T00:55:00Z",
+  "updated": "2026-08-29T00:46:56Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "4READY4TDOT",
+    "912XUXIECHUANQI",
     "AMPRELIMSLEGACYDRP",
     "AUGSW2026V7N",
     "LEGENDSWC2026HSL",
+    "SWC2026JUELEBA",
     "SWXFRIEREN2026",
     "YIQIZOUGUO10SWC"
-  ]
+  ],
+  "sources": {
+    "4READY4TDOT": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "912XUXIECHUANQI": {
+      "trusted": [],
+      "all": [
+        "levelgeeks",
+        "pockettactics"
+      ]
+    },
+    "AMPRELIMSLEGACYDRP": {
+      "trusted": [],
+      "all": []
+    },
+    "AUGSW2026V7N": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "levelgeeks",
+        "pockettactics",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "LEGENDSWC2026HSL": {
+      "trusted": [],
+      "all": []
+    },
+    "SWC2026JUELEBA": {
+      "trusted": [],
+      "all": [
+        "levelgeeks",
+        "pockettactics"
+      ]
+    },
+    "SWXFRIEREN2026": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "pocketgamer",
+        "pockettactics",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "YIQIZOUGUO10SWC": {
+      "trusted": [],
+      "all": []
+    }
+  }
 }
