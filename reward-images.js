@@ -15,23 +15,23 @@ function css(){
  let old=document.getElementById(id); if(old) old.remove();
  const s=document.createElement('style'); s.id=id;
  s.textContent=`
- .yunamyst-real-reward{width:64px!important;height:64px!important;min-width:64px!important;min-height:64px!important;display:block!important;flex:none!important;background-image:url('${SPRITE}')!important;background-repeat:no-repeat!important;background-size:448px 64px!important;background-color:transparent!important;border:0!important;border-radius:0!important;clip-path:none!important;filter:none!important;transform:none!important;margin:0 auto!important}
+ .yunamyst-real-reward{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;display:block!important;flex:none!important;background-image:url('${SPRITE}')!important;background-repeat:no-repeat!important;background-size:336px 48px!important;background-color:transparent!important;border:0!important;border-radius:0!important;clip-path:none!important;filter:none!important;transform:none!important;margin:0 auto!important}
  .yunamyst-real-reward.energy{background-position:0 0!important}
- .yunamyst-real-reward.yellow{background-position:-64px 0!important}
- .yunamyst-real-reward.blue{background-position:-128px 0!important}
- .yunamyst-real-reward.red{background-position:-192px 0!important}
- .yunamyst-real-reward.crystal{background-position:-256px 0!important}
- .yunamyst-real-reward.gold{background-position:-320px 0!important}
- .yunamyst-real-reward.mana{background-position:-384px 0!important}
- .code .reward{min-width:0!important;overflow:visible!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:2px!important}
+ .yunamyst-real-reward.yellow{background-position:-48px 0!important}
+ .yunamyst-real-reward.blue{background-position:-96px 0!important}
+ .yunamyst-real-reward.red{background-position:-144px 0!important}
+ .yunamyst-real-reward.crystal{background-position:-192px 0!important}
+ .yunamyst-real-reward.gold{background-position:-240px 0!important}
+ .yunamyst-real-reward.mana{background-position:-288px 0!important}
+ .code .reward{min-width:0!important;overflow:visible!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:1px!important}
  .code .reward .reward-name{display:none!important}
- .code .reward b,.code .reward .qty{display:block!important;font-size:13px!important;line-height:1!important;margin-top:2px!important;white-space:nowrap!important;color:#fff!important}
+ .code .reward b,.code .reward .qty{display:block!important;font-size:13px!important;line-height:1!important;margin-top:1px!important;white-space:nowrap!important;color:#fff!important}
  @media(max-width:850px){
-  .yunamyst-real-reward{width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;background-size:378px 54px!important}
-  .yunamyst-real-reward.energy{background-position:0 0!important}.yunamyst-real-reward.yellow{background-position:-54px 0!important}.yunamyst-real-reward.blue{background-position:-108px 0!important}.yunamyst-real-reward.red{background-position:-162px 0!important}.yunamyst-real-reward.crystal{background-position:-216px 0!important}.yunamyst-real-reward.gold{background-position:-270px 0!important}.yunamyst-real-reward.mana{background-position:-324px 0!important}
+  .yunamyst-real-reward{width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;background-size:294px 42px!important}
+  .yunamyst-real-reward.energy{background-position:0 0!important}.yunamyst-real-reward.yellow{background-position:-42px 0!important}.yunamyst-real-reward.blue{background-position:-84px 0!important}.yunamyst-real-reward.red{background-position:-126px 0!important}.yunamyst-real-reward.crystal{background-position:-168px 0!important}.yunamyst-real-reward.gold{background-position:-210px 0!important}.yunamyst-real-reward.mana{background-position:-252px 0!important}
   .code .reward b,.code .reward .qty{font-size:12px!important}
  }
- @media(max-width:390px){.yunamyst-real-reward{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;background-size:336px 48px!important}.yunamyst-real-reward.energy{background-position:0 0!important}.yunamyst-real-reward.yellow{background-position:-48px 0!important}.yunamyst-real-reward.blue{background-position:-96px 0!important}.yunamyst-real-reward.red{background-position:-144px 0!important}.yunamyst-real-reward.crystal{background-position:-192px 0!important}.yunamyst-real-reward.gold{background-position:-240px 0!important}.yunamyst-real-reward.mana{background-position:-288px 0!important}}
+ @media(max-width:390px){.yunamyst-real-reward{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;background-size:266px 38px!important}.yunamyst-real-reward.energy{background-position:0 0!important}.yunamyst-real-reward.yellow{background-position:-38px 0!important}.yunamyst-real-reward.blue{background-position:-76px 0!important}.yunamyst-real-reward.red{background-position:-114px 0!important}.yunamyst-real-reward.crystal{background-position:-152px 0!important}.yunamyst-real-reward.gold{background-position:-190px 0!important}.yunamyst-real-reward.mana{background-position:-228px 0!important}}
  `;
  document.head.appendChild(s);
 }
