@@ -1,8 +1,8 @@
 {
   "active": [
+    "SWXFRIEREN2026",
     "4READY4TDOT",
-    "AUGSW2026V7N",
-    "SWXFRIEREN2026"
+    "AUGSW2026V7N"
   ],
   "expired": [
     "11BALIDENGNILAI1",
@@ -85,8 +85,23 @@
     "YYDSSWC26ZAN"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T00:28:50Z",
+  "updated_at": "2026-08-29T00:30:00Z",
   "sources": {
+    "SWXFRIEREN2026": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "pocketgamer",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
     "4READY4TDOT": {
       "trusted": [
         "summonerswarcodes",
@@ -95,7 +110,6 @@
         "swquery"
       ],
       "all": [
-        "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -110,22 +124,6 @@
         "swquery"
       ],
       "all": [
-        "levelgeeks",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SWXFRIEREN2026": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "pocketgamer",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
