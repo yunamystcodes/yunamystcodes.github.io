@@ -1,142 +1,19 @@
 {
   "active": [
     "4READY4TDOT",
+    "AMPRELIMSLEGACYDRP",
+    "LEGENDSWC2026HSL",
+    "YIQIZOUGUO10SWC",
+    "PAI2026BANGKOK",
+    "APAC26LEGASEA",
     "AUGSW2026V7N",
     "SWXFRIEREN2026"
   ],
   "expired": [
-    "11BALIDENGNILAI1",
-    "1SURPR1SE",
-    "1SURPR1SEG1FT",
-    "2026TEAMJPDARE",
-    "20ALLEZBLEUSWC25",
-    "20FIGHT4GLORY25",
-    "20POURLESWC25",
-    "20SWC25BEGINS2",
-    "25R0AD2P4RISWC",
-    "26SWXLOTRS2",
-    "2NEWTOMORROW2",
-    "4MINGYIDAOXIAN",
-    "4P4C15H3R3",
-    "4TICKETSLEFT2BR",
-    "912XUXIECHUANQI",
-    "AMCUPWAIT4USWC",
-    "APAC25FUNA1NGY0",
-    "APRSW2026M08",
-    "BORASPBRASIL2025",
-    "COL3KY8G1FT15",
-    "COMINGUP34LGND",
-    "CUINAPAC18OCT",
-    "FEBSW2026E82",
-    "GEARING4PARIS",
-    "GETUR5STAR",
-    "GLHF2026AMERICAS",
-    "GO2WINBUSAN168",
-    "GZS3ACHAMP10N",
-    "H4MBURGISWAITING",
-    "HURRASWC2026",
-    "IDTOP8GO",
-    "IGYEORA4WF2026",
-    "INVOCATEUREU26",
-    "JANSW2026C13",
-    "JULSW2026Y1O",
-    "JUNSW2026W6C",
-    "LEGENDSWC2026HSL",
-    "LOTR4CO11ABON",
-    "MARSW2026K61",
-    "MAYSW2026Z2Q",
-    "NEXTWF25PARISA1G",
-    "NEXTWF25PARISA1GA",
-    "NIJINBANG66SWC",
-    "OQKR1STWFNUGU",
-    "OSAKAK1T3YA314",
-    "RONGY4OZH1LUSWC",
-    "SCHOENHIERSWC",
-    "SW2025APR1C4",
-    "SW2025APR8C4",
-    "SW2025AUGR5Q",
-    "SW2025DEC",
-    "SW2025DEC9PJ",
-    "SW2025FEB3D9",
-    "SW2025JAN6A8",
-    "SW2025JUL9UA",
-    "SW2025JUNY5C",
-    "SW2025MAR1N3",
-    "SW2025NOV",
-    "SW2025NOVQ5W",
-    "SW2025OCT",
-    "SW2025OCTP3T",
-    "SW2025SEPJ6Z",
-    "SWC2026JUELEBA",
-    "SWC2026ROADTOWF",
-    "SWC25HAMBOISO",
-    "SWC25SEAULTYEET",
-    "SWC26X10LEGACYBND",
-    "SWCHZHU4NYINGNI25",
-    "SWCPARISNOUSVOILA",
-    "SWCTICKET2HAMBURG",
-    "SWSA100RUSH",
-    "W3LCOME2SWC25APAC",
-    "WASWIRDSWC2026",
-    "YIQIZOUGUO10SWC",
-    "YYDSSWC26ZAN"
+    "11BALIDENGNILAI1","1SURPR1SE","1SURPR1SEG1FT","2026TEAMJPDARE","20ALLEZBLEUSWC25","20FIGHT4GLORY25","20POURLESWC25","20SWC25BEGINS2","25R0AD2P4RISWC","26SWXLOTRS2","2NEWTOMORROW2","4MINGYIDAOXIAN","4P4C15H3R3","4TICKETSLEFT2BR","912XUXIECHUANQI","AMCUPWAIT4USWC","APAC25FUNA1NGY0","APRSW2026M08","BORASPBRASIL2025","COL3KY8G1FT15","COMINGUP34LGND","CUINAPAC18OCT","FEBSW2026E82","GEARING4PARIS","GETUR5STAR","GLHF2026AMERICAS","GO2WINBUSAN168","GZS3ACHAMP10N","H4MBURGISWAITING","HURRASWC2026","IDTOP8GO","IGYEORA4WF2026","INVOCATEUREU26","JANSW2026C13","JULSW2026Y1O","JUNSW2026W6C","LOTR4CO11ABON","MARSW2026K61","MAYSW2026Z2Q","NEXTWF25PARISA1G","NEXTWF25PARISA1GA","NIJINBANG66SWC","OQKR1STWFNUGU","OSAKAK1T3YA314","RONGY4OZH1LUSWC","SCHOENHIERSWC","SW2025APR1C4","SW2025APR8C4","SW2025AUGR5Q","SW2025DEC","SW2025DEC9PJ","SW2025FEB3D9","SW2025JAN6A8","SW2025JUL9UA","SW2025JUNY5C","SW2025MAR1N3","SW2025NOV","SW2025NOVQ5W","SW2025OCT","SW2025OCTP3T","SW2025SEPJ6Z","SWC2026JUELEBA","SWC2026ROADTOWF","SWC25HAMBOISO","SWC25SEAULTYEET","SWC26X10LEGACYBND","SWCHZHU4NYINGNI25","SWCPARISNOUSVOILA","SWCTICKET2HAMBURG","SWSA100RUSH","W3LCOME2SWC25APAC","WASWIRDSWC2026","YYDSSWC26ZAN"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T00:27:43Z",
-  "sources": {
-    "4READY4TDOT": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "levelgeeks",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "AUGSW2026V7N": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "levelgeeks",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SWXFRIEREN2026": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "pocketgamer",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    }
-  },
-  "source_errors": [
-    "gameskinny: HTTP Error 404: Not Found",
-    "pcgamesn: HTTP Error 404: Not Found",
-    "gamezebo: HTTP Error 404: Not Found",
-    "droidgamers: HTTP Error 404: Not Found",
-    "supercheats: HTTP Error 404: Not Found",
-    "mrguider: HTTP Error 403: Forbidden",
-    "progameguides: HTTP Error 403: Forbidden"
-  ]
+  "updated_at": "2026-08-29T01:10:00Z",
+  "sources": {},
+  "source_errors": []
 }
