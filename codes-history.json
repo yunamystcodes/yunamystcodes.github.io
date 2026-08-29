@@ -13,97 +13,21 @@
     "YIQIZOUGUO10SWC"
   ],
   "expired": [
-    "11BALIDENGNILAI1",
     "1SURPR1SE",
     "1SURPR1SEG1FT",
-    "2021LIHOSWC",
-    "2024WEREGOIN2VEGAS",
     "2026TEAMJPDARE",
-    "20ALLEZBLEUSWC25",
-    "20CHALLENGETHEWRLD21",
-    "20FIGHT4GLORY25",
-    "20JPTEAMHADARE25",
-    "20POURLESWC25",
-    "20SUNDAYSMON22",
-    "20SWC25BEGINS2",
-    "21JIAYOUSWCJIAYOU",
-    "25R0AD2P4RISWC",
     "26SWXLOTRS2",
-    "2MORETODAY",
-    "2NEWTOMORROW2",
-    "4P4C15H3R3",
-    "4TICKETSLEFT2BR",
-    "AGAIN11TYU",
-    "ALLEZLEUROPE21",
-    "APAC25FUNA1NGY0",
-    "APACNEXTRD4WAR",
-    "APACSANSANG2024",
     "APRSW2026M08",
-    "AUFNACHJAPAN24",
-    "BORASPBRASIL2025",
-    "CHAMP32B0RN",
     "COL3KY8G1FT15",
-    "CUATWORLDS20",
-    "CUINAPAC18OCT",
-    "CUOCT08SWCNYC",
-    "DAPHNISWINGS5",
-    "DEVNOTE2025DSCOLLAB",
-    "DINHNOCSWC2024",
     "FEBSW2026E82",
-    "FIGHTING4GLORY",
-    "G3TSWMYTG1FT",
-    "GAMESCOM2US2025",
-    "GEARING4PARIS",
-    "GETUR5STAR",
     "GLHF2026AMERICAS",
-    "HAPPYNEWLT20",
-    "HENGAPTOKYO1109",
     "IDTOP8GO",
     "JANSW2026C13",
     "JUNSW2026W6C",
-    "KRNAKAY0SH1JP",
-    "LETLT32BEG1N",
-    "LETSFETZEU2021",
-    "LETSGO16FINAL",
     "LOTR4CO11ABON",
     "MARSW2026K61",
     "MAYSW2026Z2Q",
-    "MEGASWC2020",
-    "MERRYLT19",
-    "NAYASUPERMATCH25",
-    "NETTOUSWC2024",
-    "NEXTAPACCUP26OCT",
-    "NEXTMAR8TOKYO",
-    "NEXTUPNOV13",
-    "NEXTWF25PARISA1GA",
-    "NIJINBANG66SWC",
-    "OCT22SWCAPAC",
     "OSAKAK1T3YA314",
-    "POISONMASTER00",
-    "RINGFREISWC2024",
-    "ROCKWITHSWC2021",
-    "RONGY4OZH1LUSWC",
-    "SARABASWC2024",
-    "SCHOENHIERSWC",
-    "SEEU1N26AGA1N",
-    "SW11YABDAYGIFT",
-    "SW2021AUG82",
-    "SW2021DEC23",
-    "SW2021NOV12",
-    "SW2021OCT01",
-    "SW2021SEP93",
-    "SW2022APR18",
-    "SW2022FEB65",
-    "SW2022JAN97",
-    "SW2022JUL14",
-    "SW2022MAR31",
-    "SW2022MAY53",
-    "SW2022OCT34",
-    "SW2022SEP90",
-    "SW2024DECS9Q",
-    "SW2024NOVU5Z",
-    "SW2024OCTM6B",
-    "SW2024SEPM1V",
     "SW2025APR1C4",
     "SW2025APR8C4",
     "SW2025AUGR5Q",
@@ -114,44 +38,15 @@
     "SW2025JUL9UA",
     "SW2025JUNY5C",
     "SW2025MAR1N3",
-    "SW2025MAYA5Q",
     "SW2025NOV",
     "SW2025NOVQ5W",
     "SW2025OCT",
     "SW2025OCTP3T",
     "SW2025SEPJ6Z",
-    "SW25HSZN",
-    "SW2923THANKYOU",
-    "SW8THBIRTHDAY",
-    "SWC24FERTIGLOS",
-    "SWC24JPNODEBAN",
-    "SWC24SAISYUKESSEN",
-    "SWC25HAMBOISO",
-    "SWC25SEAULTYEET",
-    "SWC26X10LEGACYBND",
-    "SWCHZHU4NYINGNI25",
-    "SWCPARISNOUSVOILA",
-    "SWCWANNAGO2VEGAS",
-    "SWCZANZAN2021",
-    "SWELTOP1",
-    "SWELWEEK1",
-    "SWPLAY2GETHER",
-    "SWSA100RUSH",
-    "SWSAXBASHARKKF3I9",
-    "SWSTARROUND2",
-    "SWXDSHAPPY25",
-    "THX4ENJDSCOLLAB",
-    "TY4SW11TH",
-    "VIVALASVEGASSWC2024",
-    "W3LCOME2SWC25APAC",
-    "WAKUWAKUSWC2025",
-    "WELCOMEELLIA22",
-    "WHOSNEXT21AMERICAS",
-    "Y0UK0S0SM25",
-    "YOUKOSOSWC24WF"
+    "SWC26X10LEGACYBND"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T23:23:50Z",
+  "updated_at": "2026-08-29T23:54:39Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -176,7 +71,8 @@
     "912XUXIECHUANQI": {
       "trusted": [],
       "all": [
-        "levelgeeks"
+        "levelgeeks",
+        "pockettactics"
       ]
     },
     "AMPRELIMSLEGACYDRP": {
@@ -206,6 +102,7 @@
       ],
       "all": [
         "levelgeeks",
+        "pockettactics",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -214,12 +111,16 @@
     },
     "LAST4PUNCHIN": {
       "trusted": [
+        "summonerswarcodes",
         "sw-teams",
-        "swcoupon"
+        "swcoupon",
+        "swquery"
       ],
       "all": [
+        "summonerswarcodes",
         "sw-teams",
-        "swcoupon"
+        "swcoupon",
+        "swquery"
       ]
     },
     "LEGENDSWC2026HSL": {
@@ -229,7 +130,8 @@
     "SWC2026JUELEBA": {
       "trusted": [],
       "all": [
-        "levelgeeks"
+        "levelgeeks",
+        "pockettactics"
       ]
     },
     "SWXFRIEREN2026": {
@@ -241,6 +143,7 @@
       ],
       "all": [
         "pocketgamer",
+        "pockettactics",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -252,5 +155,13 @@
       "all": []
     }
   },
-  "source_errors": []
+  "source_errors": [
+    "gameskinny: HTTP Error 404: Not Found",
+    "pcgamesn: HTTP Error 404: Not Found",
+    "gamezebo: HTTP Error 404: Not Found",
+    "droidgamers: HTTP Error 404: Not Found",
+    "supercheats: HTTP Error 404: Not Found",
+    "mrguider: HTTP Error 403: Forbidden",
+    "progameguides: HTTP Error 403: Forbidden"
+  ]
 }
