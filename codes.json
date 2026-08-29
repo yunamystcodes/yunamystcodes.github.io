@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-29T09:48:34Z",
+  "updated": "2026-08-29T09:59:07Z",
   "source_count": 20,
   "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -32,14 +32,11 @@
     },
     "4READY4TDOT": {
       "trusted": [],
-      "all": [
-        "levelgeeks"
-      ]
+      "all": []
     },
     "912XUXIECHUANQI": {
       "trusted": [],
       "all": [
-        "levelgeeks",
         "pockettactics"
       ]
     },
@@ -69,7 +66,6 @@
         "swquery"
       ],
       "all": [
-        "levelgeeks",
         "pockettactics",
         "summonerswarcodes",
         "sw-teams",
@@ -84,7 +80,6 @@
     "SWC2026JUELEBA": {
       "trusted": [],
       "all": [
-        "levelgeeks",
         "pockettactics"
       ]
     },
