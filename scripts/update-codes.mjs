@@ -8,10 +8,20 @@ const sources = [
   'https://swgt.io/gamecodes/'
 ];
 
-// Códigos confirmados pelo administrador como expirados/não funcionais.
+// Códigos que já foram confirmados como expirados/não funcionais.
+// Inclui os códigos que o administrador pediu para remover e códigos
+// que já passaram a data de validade indicada pelas fontes atuais.
 const expired = new Set([
   'GLHF2026AMERICAS',
-  'SWC26X10LEGACYBND'
+  'SWC26X10LEGACYBND',
+  'PAI2026BANGKOK',
+  'APAC26LEGASEA',
+  '912XUXIECHUANQI',
+  'SWC2026JUELEBA',
+  'H4MBURGISWAITING',
+  'HURRASWC2026',
+  '4MINGYIDAOXIAN',
+  'YYDSSWC26ZAN'
 ]);
 
 const banned = new Set([
@@ -31,7 +41,7 @@ let successfulSources = 0;
 
 for (const url of sources) {
   try {
-    const response = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0 YunaMystCodesBot/2.0' } });
+    const response = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0 YunaMystCodesBot/3.0' } });
     if (!response.ok) continue;
     const html = await response.text();
     successfulSources++;
@@ -40,32 +50,25 @@ for (const url of sources) {
     for (const raw of matches) {
       const code = normalize(raw);
       if (!valid(code)) continue;
-      const pos = text.indexOf(raw);
-      const context = text.slice(Math.max(0, pos - 140), pos + 140).toLowerCase();
-      if (context.includes('expired') || context.includes('expirado') || context.includes('not working') || context.includes('inactive')) continue;
+      const pos = text.toLowerCase().indexOf(String(raw).toLowerCase());
+      const context = text.slice(Math.max(0, pos - 220), pos + 220).toLowerCase();
+      if (context.includes('expired') || context.includes('expirado') || context.includes('not working') || context.includes('inactive') || context.includes('no longer')) continue;
       found.add(code);
     }
   } catch {}
 }
 
-let previous = [];
-try {
-  const old = JSON.parse(await fs.readFile('codes.json', 'utf8'));
-  previous = Array.isArray(old.codes) ? old.codes : [];
-} catch {}
-
-let codes = [...found].filter(valid);
-if (codes.length < 2) codes = [...new Set(previous.map(normalize).filter(valid))];
-
-// Deduplicação final, sem qualquer código marcado como expirado.
-codes = [...new Set(codes)].filter(valid).slice(0, 60).sort();
-if (codes.length < 2) throw new Error('Não foi possível confirmar códigos ativos; atualização abortada para não publicar expirados.');
+// Never repopulate the active list from an old snapshot when live discovery
+// returns fewer codes. An old snapshot can contain codes that expired since
+// the previous run. Only the live, validated set may be published.
+const codes = [...new Set([...found].filter(valid))].sort();
+if (codes.length < 2) throw new Error('Não foi possível confirmar pelo menos 2 códigos ativos; atualização abortada para não publicar expirados.');
 
 const data = {
   updated: new Date().toISOString(),
   source_count: sources.length,
   successful_sources: successfulSources,
-  rule: 'somente códigos ativos; sem duplicados; expirados bloqueados',
+  rule: 'somente códigos ativos confirmados; sem duplicados; expirados bloqueados; nunca recuperar snapshot antigo',
   codes
 };
 
