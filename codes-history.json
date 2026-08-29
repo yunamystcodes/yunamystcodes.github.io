@@ -45,7 +45,7 @@
     "SWC26X10LEGACYBND"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T00:41:52Z",
+  "updated_at": "2026-08-29T00:43:30Z",
   "sources": {
     "4READY4TDOT": {
       "trusted": [
@@ -133,7 +133,6 @@
     "gameskinny: HTTP Error 404: Not Found",
     "pcgamesn: HTTP Error 404: Not Found",
     "gamezebo: HTTP Error 404: Not Found",
-    "thenerdstash: The read operation timed out",
     "droidgamers: HTTP Error 404: Not Found",
     "supercheats: HTTP Error 404: Not Found",
     "mrguider: HTTP Error 403: Forbidden",
