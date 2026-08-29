@@ -1,7 +1,7 @@
 {
-  "updated": "2026-08-29T08:23:58Z",
-  "source_count": 11,
-  "successful_sources": 11,
+  "updated": "2026-08-29T08:58:48Z",
+  "source_count": 20,
+  "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "2SOREIKENIPPON6",
@@ -38,7 +38,8 @@
     "912XUXIECHUANQI": {
       "trusted": [],
       "all": [
-        "levelgeeks"
+        "levelgeeks",
+        "pockettactics"
       ]
     },
     "AMPRELIMSLEGACYDRP": {
@@ -54,6 +55,7 @@
       ],
       "all": [
         "levelgeeks",
+        "pockettactics",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -67,7 +69,8 @@
     "SWC2026JUELEBA": {
       "trusted": [],
       "all": [
-        "levelgeeks"
+        "levelgeeks",
+        "pockettactics"
       ]
     },
     "SWXFRIEREN2026": {
@@ -79,6 +82,7 @@
       ],
       "all": [
         "pocketgamer",
+        "pockettactics",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
