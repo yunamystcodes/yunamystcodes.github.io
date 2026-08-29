@@ -1,9 +1,10 @@
 {
-  "updated": "2026-08-29T06:24:12Z",
+  "updated": "2026-08-29T07:23:36Z",
   "source_count": 11,
   "successful_sources": 11,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
+    "2SOREIKENIPPON6",
     "4READY4TDOT",
     "912XUXIECHUANQI",
     "AMPRELIMSLEGACYDRP",
@@ -14,6 +15,20 @@
     "YIQIZOUGUO10SWC"
   ],
   "sources": {
+    "2SOREIKENIPPON6": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
     "4READY4TDOT": {
       "trusted": [
         "summonerswarcodes",
