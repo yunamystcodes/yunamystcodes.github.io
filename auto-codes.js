@@ -2,13 +2,16 @@
 'use strict';
 const redeem='https://withhive.me/313/';
 const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND']);
+const FALLBACK_CODES=['4READY4TDOT','912XUXIECHUANQI','AMPRELIMSLEGACYDRP','APAC26LEGASEA','AUGSW2026V7N','LEGENDSWC2026HSL','PAI2026BANGKOK','SWC2026JUELEBA','SWXFRIEREN2026','YIQIZOUGUO10SWC'];
 const REWARDS={
  '4READY4TDOT':[['gold','x1'],['mana','x200K'],['energy','x50']],
+ '912XUXIECHUANQI':[['gold','x1'],['crystal','x100'],['energy','x50']],
  'AMPRELIMSLEGACYDRP':[['gold','x1'],['energy','x100']],
  'LEGENDSWC2026HSL':[['gold','x1'],['energy','x100']],
  'YIQIZOUGUO10SWC':[['gold','x1'],['energy','x100']],
  'PAI2026BANGKOK':[['gold','x1']],
  'APAC26LEGASEA':[['gold','x1'],['mana','x200K']],
+ 'SWC2026JUELEBA':[['gold','x1'],['crystal','x100'],['energy','x50']],
  'AUGSW2026V7N':[['yellow','x3'],['energy','x100']],
  'SWXFRIEREN2026':[['gold','x3'],['mana','x300K'],['energy','x100']]
 };
@@ -16,7 +19,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const norm=c=>String(c).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const valid=c=>{c=norm(c);return /^[A-Z0-9]{6,32}$/.test(c)&&/[A-Z]/.test(c)&&/\d/.test(c)&&!blocked.has(c)};
 function styles(){if(document.getElementById('yunamyst-real-rewards'))return;const s=document.createElement('style');s.id='yunamyst-real-rewards';s.textContent=`
-.reward-icon{width:48px;height:48px;display:block;background-image:url('/assets/rewards-sprite.webp?v=20260829-2')!important;background-repeat:no-repeat!important;background-size:288px 48px!important;background-color:transparent!important;border:0!important;border-radius:0!important;clip-path:none!important;filter:drop-shadow(0 2px 3px #0008)}
+.reward-icon{width:48px;height:48px;display:block;background-image:url('/assets/rewards-sprite.webp?v=20260829-3')!important;background-repeat:no-repeat!important;background-size:288px 48px!important;background-color:transparent!important;border:0!important;border-radius:0!important;clip-path:none!important;filter:drop-shadow(0 2px 3px #0008)}
 .reward-icon.gold{background-position:0 0!important}.reward-icon.yellow{background-position:-48px 0!important}.reward-icon.red{background-position:-96px 0!important}.reward-icon.crystal{background-position:-144px 0!important}.reward-icon.mana{background-position:-192px 0!important}.reward-icon.energy{background-position:-240px 0!important}.reward-icon.blue{background-position:0 0!important}
 .code.auto-code{grid-template-columns:58px minmax(150px,1fr) repeat(3,58px) 128px 128px;gap:8px;min-height:103px}.reward{min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;overflow:visible}.reward b{font-size:12px;line-height:1}.reward small{font-size:8px;color:#d5ccd9;white-space:nowrap}
 .copy,.link{height:44px!important;width:100%!important;border-radius:9px!important;font-weight:900;font-size:11px!important;display:flex!important;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;touch-action:manipulation}.copy{border:1px solid #edbd4e!important;background:linear-gradient(#f6cd70,#bd7d1d)!important;color:#251400!important}.link{border:1px solid #bba5f4!important;background:#f8f8fb!important;color:#151018!important}
@@ -29,9 +32,10 @@ function copy(code,b){const old=b.textContent,done=()=>{b.textContent='✓ COPIA
 function fallback(code,b,old){try{const t=document.createElement('textarea');t.value=code;t.style.cssText='position:fixed;opacity:0';document.body.appendChild(t);t.select();if(document.execCommand('copy')){b.textContent='✓ COPIADO!';setTimeout(()=>b.textContent=old,1500);t.remove();return}t.remove()}catch(e){}window.prompt('Copie o código:',code)}
 function bind(root=document){root.querySelectorAll('.copy[data-code]').forEach(b=>{if(b.dataset.bound)return;b.dataset.bound='1';b.addEventListener('click',e=>{e.preventDefault();copy(b.dataset.code,b)})})}
 function clean(root){root.querySelectorAll('.code').forEach(x=>{const c=x.querySelector('.cinfo strong');if(c&&!valid(c.textContent))x.remove()})}
-async function load(){const root=document.getElementById('ativos');if(!root)return;try{const r=await fetch('./codes.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();const codes=[...new Set((Array.isArray(d.codes)?d.codes:[]).map(norm).filter(valid))];root.innerHTML=codes.map(card).join('')}catch(e){}clean(root);bind(root);profileFix()}
+function render(codes,root){const unique=[...new Set(codes.map(norm).filter(valid))];root.innerHTML=unique.map(card).join('');clean(root);bind(root)}
+async function load(){const root=document.getElementById('ativos');if(!root)return;try{const r=await fetch('./codes.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();const codes=Array.isArray(d.codes)?d.codes:[];if(codes.length<8)throw 0;render(codes,root)}catch(e){render(FALLBACK_CODES,root)}profileFix()}
 function lang(){const sw=document.getElementById('langSwitch'),t=document.getElementById('langToggle');if(!sw||!t)return;if(!t.dataset.bound){t.dataset.bound='1';t.onclick=e=>{e.preventDefault();e.stopPropagation();sw.classList.toggle('open')}}}
-function sound(){const a=document.getElementById('bgMusic'),b=document.getElementById('soundToggle');if(!a||!b||b.dataset.bound)return;b.dataset.bound='1';const k='yunamyst-mute-v3';try{a.muted=localStorage.getItem(k)==='1'}catch(e){}const sync=()=>b.textContent=a.muted?'🔇':'🔊';sync();b.onclick=e=>{e.preventDefault();a.muted=!a.muted;try{localStorage.setItem(k,a.muted?'1':'0')}catch(x){}if(!a.muted)a.play().catch(()=>{});sync()}}
+function sound(){const a=document.getElementById('bgMusic'),b=document.getElementById('soundToggle');if(!a||!b||b.dataset.bound)return;b.dataset.bound='1';const k='yunamyst-mute-v3';try{a.muted=localStorage.getItem(k)==='1'}catch(e){}const sync=()=>b.textContent=a.muted?'🔇':'🔊';sync();b.onclick=e=>{e.preventDefault();e.stopPropagation();a.muted=!a.muted;try{localStorage.setItem(k,a.muted?'1':'0')}catch(x){}if(!a.muted)a.play().catch(()=>{});sync()}}
 function init(){styles();lang();sound();bind();load();profileFix();setInterval(load,60*60*1000)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
