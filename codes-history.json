@@ -6,6 +6,7 @@
     "AMPRELIMSLEGACYDRP",
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
+    "LAST4PUNCHIN",
     "LEGENDSWC2026HSL",
     "SWC2026JUELEBA",
     "SWXFRIEREN2026",
@@ -150,7 +151,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T22:23:59Z",
+  "updated_at": "2026-08-29T23:23:50Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -209,6 +210,16 @@
         "sw-teams",
         "swcoupon",
         "swquery"
+      ]
+    },
+    "LAST4PUNCHIN": {
+      "trusted": [
+        "sw-teams",
+        "swcoupon"
+      ],
+      "all": [
+        "sw-teams",
+        "swcoupon"
       ]
     },
     "LEGENDSWC2026HSL": {
