@@ -4,6 +4,7 @@
     "4READY4TDOT",
     "912XUXIECHUANQI",
     "AMPRELIMSLEGACYDRP",
+    "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
     "LEGENDSWC2026HSL",
     "SWC2026JUELEBA",
@@ -44,7 +45,7 @@
     "SWC26X10LEGACYBND"
   ],
   "missing": {},
-  "updated_at": "2026-08-29T09:08:00Z",
+  "updated_at": "2026-08-29T09:13:20Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -76,6 +77,14 @@
     "AMPRELIMSLEGACYDRP": {
       "trusted": [],
       "all": []
+    },
+    "APAC1K0UB4NGK0K": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
     },
     "AUGSW2026V7N": {
       "trusted": [
