@@ -2,9 +2,11 @@
   "active": [
     "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
+    "912XUXIECHUANQI",
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
     "LAST4PUNCHIN",
+    "SWC2026JUELEBA",
     "SWXFRIEREN2026"
   ],
   "expired": [
@@ -41,7 +43,7 @@
     "SWC26X10LEGACYBND"
   ],
   "missing": {},
-  "updated_at": "2026-08-30T01:38:25Z",
+  "updated_at": "2026-08-30T01:39:16Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -59,14 +61,23 @@
     },
     "2SWCTORONTOTHE6IX": {
       "trusted": [
+        "summonerswarcodes",
         "sw-teams",
         "swcoupon",
         "swquery"
       ],
       "all": [
+        "summonerswarcodes",
         "sw-teams",
         "swcoupon",
         "swquery"
+      ]
+    },
+    "912XUXIECHUANQI": {
+      "trusted": [],
+      "all": [
+        "levelgeeks",
+        "pockettactics"
       ]
     },
     "APAC1K0UB4NGK0K": {
@@ -91,6 +102,7 @@
         "swquery"
       ],
       "all": [
+        "levelgeeks",
         "pockettactics",
         "summonerswarcodes",
         "sw-teams",
@@ -110,6 +122,13 @@
         "sw-teams",
         "swcoupon",
         "swquery"
+      ]
+    },
+    "SWC2026JUELEBA": {
+      "trusted": [],
+      "all": [
+        "levelgeeks",
+        "pockettactics"
       ]
     },
     "SWXFRIEREN2026": {
