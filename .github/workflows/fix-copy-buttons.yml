@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Fix button layout in index
         shell: python
         run: |
@@ -23,7 +25,7 @@ jobs:
           s=p.read_text(encoding='utf-8')
           css='''
           <style id="yunamyst-copy-buttons-final">
-          .code{position:relative!important;padding-right:242px!important;}
+          .code{position:relative!important;padding-right:242px!important;overflow:hidden!important;}
           .code>.copy{position:absolute!important;right:128px!important;top:50%!important;transform:translateY(-50%)!important;width:110px!important;min-width:110px!important;height:44px!important;white-space:nowrap!important;}
           .code>.link{position:absolute!important;right:10px!important;top:50%!important;transform:translateY(-50%)!important;width:110px!important;min-width:110px!important;height:44px!important;white-space:nowrap!important;}
           @media(max-width:1050px) and (min-width:851px){
@@ -41,7 +43,7 @@ jobs:
           s=re.sub(r'<style id="yunamyst-copy-buttons-fix">.*?</style>\s*','',s,flags=re.S)
           s=s.replace('</body>',css+'</body>',1)
           p.write_text(s,encoding='utf-8')
-      - name: Publish
+      - name: Publish safely
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
@@ -49,4 +51,6 @@ jobs:
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Fix copy and iOS buttons [skip copy-fix]"
-          git push
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
