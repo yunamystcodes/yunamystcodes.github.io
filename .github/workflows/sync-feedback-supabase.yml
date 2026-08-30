@@ -1,0 +1,123 @@
+name: Sincronizar feedbacks com Supabase
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-feedback:
+    if: ${{ !contains(github.event.head_commit.message, '[skip supabase feedback]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ligar feedbacks ao Supabase
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          start = '<script id="yunamyst-feedback-all-js">'
+          end = '</script>'
+          if start not in s:
+              raise SystemExit('Script de feedback não encontrado')
+
+          new_js = r'''<script id="yunamyst-feedback-all-js">
+          (function(){
+            const SUPABASE_URL='https://uxwbbaeupemihonwyszu.supabase.co';
+            const SUPABASE_KEY='sb_publishable_6A3yVOK07l0h6bmdjZ0U3A_CjzobvMX';
+            const root=document.getElementById('ym-feedback');
+            const modal=document.getElementById('ym-feedback-modal');
+            const list=document.getElementById('ym-feedback-list');
+            const open=document.getElementById('ym-feedback-all');
+            const close=document.getElementById('ym-feedback-modal-close');
+            if(!root||!modal||!list||!open||!close)return;
+
+            const headers={
+              'apikey':SUPABASE_KEY,
+              'Authorization':'Bearer '+SUPABASE_KEY,
+              'Content-Type':'application/json'
+            };
+
+            const escapeText=(v)=>String(v==null?'':v);
+            const render=(items)=>{
+              list.innerHTML='';
+              if(!items.length){
+                list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';
+                return;
+              }
+              items.forEach(x=>{
+                const box=document.createElement('div');box.className='ym-feedback-item';
+                const head=document.createElement('div');head.className='ym-feedback-item-head';
+                const name=document.createElement('div');name.className='ym-feedback-item-name';name.textContent=escapeText(x.name)||'Jogador';
+                const stars=document.createElement('div');stars.className='ym-feedback-item-stars';
+                const n=Math.max(0,Math.min(5,Number(x.rating)||0));
+                stars.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+                const text=document.createElement('div');text.className='ym-feedback-item-text';text.textContent=escapeText(x.message);
+                head.append(name,stars);box.append(head,text);list.append(box);
+              });
+            };
+
+            const loadFeedbacks=async()=>{
+              list.innerHTML='<div class="ym-feedback-empty">A carregar feedbacks...</div>';
+              try{
+                const res=await fetch(SUPABASE_URL+'/rest/v1/feedbacks?select=id,name,rating,message,created_at&order=created_at.desc&limit=100',{headers});
+                if(!res.ok)throw new Error('Falha ao carregar');
+                render(await res.json());
+              }catch(e){
+                list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>';
+              }
+            };
+
+            open.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');loadFeedbacks()});
+            close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});
+            modal.addEventListener('click',e=>{if(e.target===modal)close.click()});
+            document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close.click()});
+
+            const submit=document.getElementById('ym-feedback-submit');
+            if(submit)submit.addEventListener('click',()=>{
+              setTimeout(async()=>{
+                const name=root.querySelector('.ym-feedback-name');
+                const message=root.querySelector('.ym-feedback-text');
+                const stars=root.querySelectorAll('.ym-star.active').length;
+                const text=(message&&message.value||'').trim();
+                if(!text||!stars)return;
+                try{
+                  await fetch(SUPABASE_URL+'/rest/v1/feedbacks',{method:'POST',headers:{...headers,'Prefer':'return=minimal'},body:JSON.stringify({name:(name&&name.value||'').trim()||'Jogador',rating:stars,message:text})});
+                  if(modal.classList.contains('open'))loadFeedbacks();
+                }catch(e){}
+              },150);
+            });
+          })();
+          </script>'''
+
+          pattern = re.escape(start) + r'.*?' + re.escape(end)
+          s = re.sub(pattern, new_js, s, count=1, flags=re.S)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Verificar integração
+        shell: bash
+        run: |
+          grep -qF "https://uxwbbaeupemihonwyszu.supabase.co/rest/v1/feedbacks" index.html
+          grep -qF "id=\"yunamyst-feedback-all-js\"" index.html
+          echo 'Feedbacks ligados ao Supabase.'
+
+      - name: Publicar index
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Sincronizar feedbacks entre dispositivos [skip supabase feedback]"
+          git fetch origin main
+          git rebase origin/main
+          git push
