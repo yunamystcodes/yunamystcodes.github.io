@@ -49,4 +49,6 @@ jobs:
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'Fix YunaMyst logo on PC and mobile [skip header]'
+          git fetch origin main
+          git rebase origin/main
           git push
