@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Aplicar correcao do cabecalho
+      - name: Aplicar correcao do cabecalho e feedback
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -108,13 +108,50 @@ jobs:
 </script>'''
               s = s.replace('</body>', js + '\n</body>', 1)
 
+          # Feedback: show a clear confirmation immediately after a successful form submit.
+          feedback_marker = '<script id="yunamyst-feedback-confirmation">'
+          if feedback_marker not in s:
+              feedback_js = r'''<script id="yunamyst-feedback-confirmation">
+(function(){
+  function setupFeedback(){
+    const forms=document.querySelectorAll('form');
+    forms.forEach(function(form){
+      if(form.dataset.feedbackConfirmReady) return;
+      const button=[...form.querySelectorAll('button,input[type="submit"]')].find(function(el){
+        return /ENVIAR FEEDBACK|SEND FEEDBACK|ENVIAR/i.test((el.textContent||el.value||'').trim());
+      });
+      if(!button) return;
+      form.dataset.feedbackConfirmReady='1';
+      let status=document.createElement('div');
+      status.className='feedback-success-message';
+      status.setAttribute('role','status');
+      status.setAttribute('aria-live','polite');
+      status.textContent='✓ Feedback enviado com sucesso! Obrigado pela avaliação.';
+      status.style.cssText='display:none;margin-top:10px;padding:10px 12px;border:1px solid #c89628;border-radius:9px;background:#2a1807;color:#f0c45c;font-size:11px;font-weight:800;text-align:center;';
+      button.insertAdjacentElement('afterend',status);
+      form.addEventListener('submit',function(){
+        status.style.display='block';
+      });
+      button.addEventListener('click',function(){
+        setTimeout(function(){
+          if(form.checkValidity()) status.style.display='block';
+        },0);
+      });
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupFeedback); else setupFeedback();
+  setTimeout(setupFeedback,500);
+})();
+</script>'''
+              s = s.replace('</body>', feedback_js + '\n</body>', 1)
+
           p.write_text(s, encoding='utf-8')
           PY
       - name: Confirmar alteracao
         run: |
           grep -qF 'YunaMyst<small>SUMMONERS WAR</small></div>' index.html
           grep -qF 'yunamyst-subtitle-spacing-fix' index.html
-          grep -qF 'margin-top:5px!important' index.html
+          grep -qF 'feedback-success-message' index.html
           git config user.name 'YunaMyst Header Bot'
           git config user.email 'actions@github.com'
           git add index.html .github/workflows/fix-header-controls.yml
