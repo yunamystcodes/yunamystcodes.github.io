@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-30T08:09:04Z",
+  "updated": "2026-08-30T08:19:45Z",
   "source_count": 11,
   "successful_sources": 11,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -144,7 +144,6 @@
         "swquery"
       ],
       "all": [
-        "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
