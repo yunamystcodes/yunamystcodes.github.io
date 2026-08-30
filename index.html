@@ -126,42 +126,72 @@ document.addEventListener('DOMContentLoaded',function(){
 </style>
 <script id="yunamyst-feedback-all-js">
 (function(){
-  const KEY='yunamyst_feedbacks_v2';
+  const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks';
   const root=document.getElementById('ym-feedback');
   const modal=document.getElementById('ym-feedback-modal');
   const list=document.getElementById('ym-feedback-list');
   const open=document.getElementById('ym-feedback-all');
   const close=document.getElementById('ym-feedback-modal-close');
   if(!root||!modal||!list||!open||!close)return;
-  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
-  const render=()=>{
-    const items=read().slice().reverse();
-    list.innerHTML='';
-    if(!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados neste navegador.</div>';return;}
-    items.forEach(x=>{
-      const box=document.createElement('div');box.className='ym-feedback-item';
-      const head=document.createElement('div');head.className='ym-feedback-item-head';
-      const name=document.createElement('div');name.className='ym-feedback-item-name';name.textContent=x.name||'Jogador';
-      const stars=document.createElement('div');stars.className='ym-feedback-item-stars';const n=Math.max(0,Math.min(5,Number(x.rating)||0));stars.textContent='★'.repeat(n)+'☆'.repeat(5-n);
-      const text=document.createElement('div');text.className='ym-feedback-item-text';text.textContent=x.message||'';
-      head.append(name,stars);box.append(head,text);list.append(box);
-    });
-  };
-  open.addEventListener('click',()=>{render();modal.classList.add('open');modal.setAttribute('aria-hidden','false')});
-  close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});
+
+  async function loadFeedbacks(){
+    list.innerHTML='<div class="ym-feedback-empty">A carregar feedbacks...</div>';
+    try{
+      const res=await fetch(API,{cache:'no-store'});
+      if(!res.ok)throw new Error('GET '+res.status);
+      const items=await res.json();
+      list.innerHTML='';
+      if(!items.length){
+        list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';
+        return;
+      }
+      items.forEach(x=>{
+        const box=document.createElement('div');box.className='ym-feedback-item';
+        const head=document.createElement('div');head.className='ym-feedback-item-head';
+        const name=document.createElement('div');name.className='ym-feedback-item-name';name.textContent=x.name||'Jogador';
+        const stars=document.createElement('div');stars.className='ym-feedback-item-stars';
+        const n=Math.max(0,Math.min(5,Number(x.rating)||0));
+        stars.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+        const text=document.createElement('div');text.className='ym-feedback-item-text';text.textContent=x.message||'';
+        head.append(name,stars);box.append(head,text);list.append(box);
+      });
+    }catch(e){
+      console.error('Feedbacks:',e);
+      list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>';
+    }
+  }
+
+  open.addEventListener('click',()=>{
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    loadFeedbacks();
+  });
+  close.addEventListener('click',()=>{
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+  });
   modal.addEventListener('click',e=>{if(e.target===modal)close.click()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close.click()});
+
   const submit=document.getElementById('ym-feedback-submit');
   if(submit)submit.addEventListener('click',()=>{
-    setTimeout(()=>{
+    setTimeout(async()=>{
       const name=root.querySelector('.ym-feedback-name');
       const message=root.querySelector('.ym-feedback-text');
-      const stars=root.querySelectorAll('.ym-star.active').length;
+      const rating=root.querySelectorAll('.ym-star.active').length;
       const text=(message&&message.value||'').trim();
-      if(!text||!stars)return;
-      const items=read();items.push({name:(name&&name.value||'').trim()||'Jogador',rating:stars,message:text,createdAt:Date.now()});
-      localStorage.setItem(KEY,JSON.stringify(items.slice(-50)));
-    },100);
+      if(!text||!rating)return;
+      try{
+        const res=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:(name&&name.value||'').trim()||'Jogador',rating,message:text})});
+        if(!res.ok)throw new Error('POST '+res.status);
+        localStorage.removeItem('yunamyst_feedbacks_v2');
+        alert('✓ Feedback enviado com sucesso!');
+        if(modal.classList.contains('open'))loadFeedbacks();
+      }catch(e){
+        console.error('Envio de feedback:',e);
+        alert('Não foi possível enviar o feedback. Tenta novamente.');
+      }
+    },180);
   });
 })();
 </script>
