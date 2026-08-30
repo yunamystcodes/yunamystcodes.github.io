@@ -205,19 +205,24 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
+
 <style id="yunamyst-copy-buttons-final">
-.code{grid-template-columns:52px minmax(110px,1fr) repeat(3,48px) 110px 110px!important;gap:7px!important;overflow:hidden!important}
-.code>.copy{grid-column:6!important;grid-row:1!important;width:110px!important;min-width:110px!important;max-width:110px!important;white-space:nowrap!important;overflow:hidden!important}
-.code>.link{grid-column:7!important;grid-row:1!important;width:110px!important;min-width:110px!important;max-width:110px!important;white-space:nowrap!important;overflow:hidden!important}
+/* FINAL: keep both actions fully inside every code card */
+.code{position:relative!important;overflow:hidden!important;box-sizing:border-box!important;padding-right:250px!important;}
+.code>.copy,.code>.link{box-sizing:border-box!important;position:absolute!important;top:50%!important;transform:translateY(-50%)!important;height:44px!important;width:112px!important;min-width:112px!important;max-width:112px!important;white-space:nowrap!important;z-index:5!important;}
+.code>.copy{right:130px!important;}
+.code>.link{right:10px!important;}
 @media(max-width:1050px) and (min-width:851px){
-  .code{grid-template-columns:48px minmax(90px,1fr) repeat(3,44px) 100px 100px!important;gap:6px!important}
-  .code>.copy{width:100px!important;min-width:100px!important;max-width:100px!important}
-  .code>.link{width:100px!important;min-width:100px!important;max-width:100px!important}
+  .code{padding-right:226px!important;}
+  .code>.copy,.code>.link{width:104px!important;min-width:104px!important;max-width:104px!important;}
+  .code>.copy{right:114px!important;}
+  .code>.link{right:10px!important;}
 }
 @media(max-width:850px){
-  .code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;overflow:hidden!important}
-  .code>.copy{grid-area:copy!important;grid-column:auto!important;grid-row:auto!important;width:100%!important;min-width:0!important;max-width:none!important}
-  .code>.link{grid-area:link!important;grid-column:auto!important;grid-row:auto!important;width:100%!important;min-width:0!important;max-width:none!important}
+  .code{padding:8px!important;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:48px 56px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;}
+  .code>.copy,.code>.link{position:static!important;transform:none!important;width:100%!important;min-width:0!important;max-width:none!important;height:44px!important;}
+  .code>.copy{grid-area:copy!important;}
+  .code>.link{grid-area:link!important;}
 }
 </style></body>
 </html>
