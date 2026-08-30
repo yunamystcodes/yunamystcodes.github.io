@@ -175,8 +175,8 @@ document.addEventListener('DOMContentLoaded',function(){
 <section class="ym-feedback" id="ym-feedback">
   <h2>💜 FEEDBACK</h2>
   <div class="ym-feedback-body" id="ym-feedback-form">
-    <label class="ym-feedback-label" for="ym-feedback-name">Nome do player</label>
-    <input class="ym-feedback-name" id="ym-feedback-name" maxlength="30" placeholder="Seu nome no jogo">
+    <label class="ym-feedback-label" for="ym-feedback-name">Nome do player <span>(opcional)</span></label>
+    <input class="ym-feedback-name" id="ym-feedback-name" maxlength="30" placeholder="Seu nome no jogo (opcional)">
     <label class="ym-feedback-label" style="margin-top:13px">Sua avaliação</label>
     <div class="ym-stars" id="ym-stars" aria-label="Avaliação de 1 a 5 estrelas">
       <button class="ym-star" type="button" data-star="1" aria-label="1 estrela">★</button>
@@ -247,5 +247,10 @@ document.addEventListener('DOMContentLoaded',function(){
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',moveFeedback); else moveFeedback();
 })();
 </script>
+
+<style id="yunamyst-feedback-name-optional">
+/* YUNAMYST FEEDBACK NAME OPTIONAL V1 */
+#ym-feedback .ym-feedback-label span{color:#9f96ae;font-weight:700;margin-left:3px}
+</style>
 </body>
 </html>
