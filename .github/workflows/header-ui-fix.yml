@@ -22,51 +22,35 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
-
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-
-          # Normalize any previous logo markup first.
-          s = re.sub(r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
-                     '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>',
-                     s, count=1, flags=re.S)
-
-          # Remove old versions of this fix.
+          pattern = r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>'
+          replacement = '<div class="logo">YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>'
+          s, count = re.subn(pattern, replacement, s, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit('Logo not found')
           s = re.sub(r'<style id="yunamyst-myst-y-final">.*?</style>\s*', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-y-fix">.*?</style>\s*', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>\s*', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-header-clean-workflow">.*?</style>\s*', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-logo-normal-size">.*?</style>\s*', '', s, flags=re.S)
-
-          # Make only the lowercase y in Myst smaller and slightly raised.
-          s = s.replace('YunaMyst<small>SUMMONERS WAR</small></div>',
-                        'YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>', 1)
-
-          logo_css = '''<style id="yunamyst-myst-y-final">
-          .logo .myst-y{display:inline-block;font-size:.78em;line-height:1;vertical-align:baseline;position:relative;top:-.04em}
+          css = '''<style id="yunamyst-myst-y-final">
+          .logo .myst-y{display:inline-block;font-size:.78em;line-height:1;vertical-align:baseline;position:relative;top:-.04em;margin-right:.02em}
           @media(max-width:850px){.logo .myst-y{font-size:.78em;top:-.04em}}
           </style>'''
-          s = s.replace('</head>', logo_css + '\n</head>', 1)
-
+          s = s.replace('</head>', css + '\n</head>', 1)
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verify index
+      - name: Verify
         shell: bash
         run: |
           grep -qF 'YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>' index.html
           grep -qF '.logo .myst-y' index.html
-          echo 'Header fix verified for PC and mobile.'
+          echo 'Header verified.'
 
-      - name: Commit index fix
+      - name: Commit index.html
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          if git diff --cached --quiet; then
-            echo 'No index changes needed.'
-            exit 0
-          fi
-          git commit -m 'Fix Myst y overlap on PC and mobile [skip header]'
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Fix Myst y overlap [skip header]'
           git push
