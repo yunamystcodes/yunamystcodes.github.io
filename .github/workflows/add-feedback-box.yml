@@ -26,7 +26,6 @@ jobs:
           if 'id="ym-feedback"' not in s:
               raise SystemExit('Secção de feedback não encontrada no index.html')
 
-          # Botão imediatamente abaixo de ENVIAR FEEDBACK.
           if 'id="ym-feedback-all"' not in s:
               button = '<button class="ym-feedback-all" id="ym-feedback-all" type="button">VER TODOS OS FEEDBACKS</button>'
               target = '<button class="ym-feedback-submit" id="ym-feedback-submit" type="button">ENVIAR FEEDBACK</button>'
@@ -34,7 +33,6 @@ jobs:
                   raise SystemExit('Botão ENVIAR FEEDBACK não encontrado')
               s = s.replace(target, target + button, 1)
 
-          # Janela dos feedbacks.
           if 'id="ym-feedback-modal"' not in s:
               modal = '''
           <div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true">
@@ -61,24 +59,28 @@ jobs:
           </style>'''
               s = s.replace('</body>', css + '</body>', 1)
 
-          # Fixar os botoes de COPIAR e LINK iOS nas colunas certas.
-          # Isto impede que, quando um código tem menos recompensas, os botoes encolham ou mudem de coluna.
-          if 'id="yunamyst-copy-buttons-fix"' not in s:
-              css = '''
-          <style id="yunamyst-copy-buttons-fix">
-          .code>.copy{grid-column:6!important;grid-row:1!important;white-space:nowrap!important;min-width:128px!important}
-          .code>.link{grid-column:7!important;grid-row:1!important;white-space:nowrap!important;min-width:128px!important}
+          # Corrigir definitivamente a grelha dos botoes COPIAR e LINK iOS.
+          # Desktop: botoes em colunas proprias e sempre com largura fixa.
+          # Mobile: os dois botoes ocupam a ultima linha, metade para cada um.
+          s = re.sub(r'<style id="yunamyst-copy-buttons-final">.*?</style>\s*', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-copy-buttons-fix">.*?</style>\s*', '', s, flags=re.S)
+          css = '''
+          <style id="yunamyst-copy-buttons-final">
+          .code{grid-template-columns:52px minmax(110px,1fr) repeat(3,48px) 110px 110px!important;gap:7px!important;overflow:hidden!important}
+          .code>.copy{grid-column:6!important;grid-row:1!important;width:110px!important;min-width:110px!important;max-width:110px!important;white-space:nowrap!important;overflow:hidden!important}
+          .code>.link{grid-column:7!important;grid-row:1!important;width:110px!important;min-width:110px!important;max-width:110px!important;white-space:nowrap!important;overflow:hidden!important}
           @media(max-width:1050px) and (min-width:851px){
-            .code>.copy{grid-column:6!important;min-width:105px!important}
-            .code>.link{grid-column:7!important;min-width:105px!important}
+            .code{grid-template-columns:48px minmax(90px,1fr) repeat(3,44px) 100px 100px!important;gap:6px!important}
+            .code>.copy{width:100px!important;min-width:100px!important;max-width:100px!important}
+            .code>.link{width:100px!important;min-width:100px!important;max-width:100px!important}
           }
           @media(max-width:850px){
-            .code>.copy{grid-area:copy!important;grid-column:auto!important;grid-row:auto!important;min-width:0!important;width:100%!important}
-            .code>.link{grid-area:link!important;grid-column:auto!important;grid-row:auto!important;min-width:0!important;width:100%!important}
-            .code>.copy,.code>.link{white-space:nowrap!important}
+            .code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;overflow:hidden!important}
+            .code>.copy{grid-area:copy!important;grid-column:auto!important;grid-row:auto!important;width:100%!important;min-width:0!important;max-width:none!important}
+            .code>.link{grid-area:link!important;grid-column:auto!important;grid-row:auto!important;width:100%!important;min-width:0!important;max-width:none!important}
           }
           </style>'''
-              s = s.replace('</body>', css + '</body>', 1)
+          s = s.replace('</body>', css + '</body>', 1)
 
           if 'id="yunamyst-feedback-all-js"' not in s:
               js = '''
