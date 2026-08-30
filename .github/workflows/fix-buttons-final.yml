@@ -1,0 +1,34 @@
+name: Fix COPIAR and LINK iOS buttons
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply button layout only
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='<!-- YUNAMYST BUTTON FIX FINAL -->'
+          css='''\n<style id="yunamyst-button-fix-final">\n/* FINAL: keep COPIAR and LINK iOS fully inside each code card */\n.code{grid-template-columns:52px minmax(110px,1fr) 52px 52px 52px minmax(108px,120px) minmax(108px,120px)!important;gap:8px!important;}\n.code .copy,.code .link{min-width:0!important;width:100%!important;max-width:100%!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}\n@media(max-width:1050px) and (min-width:851px){.code{grid-template-columns:48px minmax(90px,1fr) 44px 44px 44px minmax(92px,1fr) minmax(92px,1fr)!important;gap:6px!important;}}\n@media(max-width:850px){.code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;width:100%!important;}\n.code .copy,.code .link{width:100%!important;max-width:100%!important;min-width:0!important;height:44px!important;font-size:11px!important;padding:0 6px!important;}\n}\n</style>\n'''
+          if marker not in s:
+              pos=s.rfind('</head>')
+              s=s[:pos]+marker+css+s[pos:]
+              p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit button fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix COPIAR and LINK iOS layout final'
+          git push
