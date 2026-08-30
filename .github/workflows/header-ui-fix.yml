@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set exact YunaMyst logo
+      - name: Fix Myst y overlap in index
         shell: bash
         run: |
           python - <<'PY'
@@ -26,49 +26,39 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Keep the lowercase y in Myst slightly smaller so its descender
-          # does not overlap the nearby w, on both desktop and mobile.
-          s = re.sub(
-              r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
-              '<div class="logo">YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>',
-              s, count=1, flags=re.S
-          )
+          # Normalize any previous logo markup first.
+          s = re.sub(r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
+                     '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>',
+                     s, count=1, flags=re.S)
 
-          # Remove any previous logo variants before applying the final one.
-          s = re.sub(r'YunaM\s*<span[^>]*>\s*[yY]\s*</span>\s*st', 'YunaMyst', s, flags=re.I)
-          for bad in ('YunaMYst', 'YunaMYST', 'YunaMyST', 'YunaMySt', 'YunaMysT'):
-              s = s.replace(bad, 'YunaMyst')
+          # Remove old versions of this fix.
+          s = re.sub(r'<style id="yunamyst-myst-y-final">.*?</style>\s*', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-y-fix">.*?</style>\s*', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>\s*', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-header-clean-workflow">.*?</style>\s*', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-logo-normal-size">.*?</style>\s*', '', s, flags=re.S)
 
-          # Remove old injected logo fixes.
-          s = re.sub(r'<style id="yunamyst-y-fix">.*?</style>', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-header-clean-workflow">.*?</style>', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-logo-normal-size">.*?</style>', '', s, flags=re.S)
-          s = re.sub(r'\.logo \.myst-y\{[^}]*\}', '', s)
-          s = re.sub(r'@media\(max-width:850px\)\{\.logo \.myst-y\{[^}]*\}\}', '', s)
+          # Make only the lowercase y in Myst smaller and slightly raised.
+          s = s.replace('YunaMyst<small>SUMMONERS WAR</small></div>',
+                        'YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>', 1)
 
-          # Apply the same smaller y on PC and mobile.
           logo_css = '''<style id="yunamyst-myst-y-final">
-          .logo .myst-y{display:inline-block;font-size:.82em;line-height:1;vertical-align:baseline;position:relative;top:-.01em}
-          @media(max-width:850px){.logo .myst-y{font-size:.82em}}
+          .logo .myst-y{display:inline-block;font-size:.78em;line-height:1;vertical-align:baseline;position:relative;top:-.04em}
+          @media(max-width:850px){.logo .myst-y{font-size:.78em;top:-.04em}}
           </style>'''
           s = s.replace('</head>', logo_css + '\n</head>', 1)
-
-          # Metadata must also use the exact name.
-          s = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1Códigos ativos de Summoners War — YunaMyst.\2', s, count=1)
-          s = re.sub(r'<title>.*?</title>', '<title>YunaMyst — Summoners War</title>', s, count=1, flags=re.S)
 
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verify exact branding and y size
+      - name: Verify index
         shell: bash
         run: |
-          grep -qF '<div class="logo">YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>' index.html
+          grep -qF 'YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>' index.html
           grep -qF '.logo .myst-y' index.html
-          echo 'YunaMyst logo verified with smaller Myst y for PC and mobile.'
+          echo 'Header fix verified for PC and mobile.'
 
-      - name: Commit and push
+      - name: Commit index fix
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
