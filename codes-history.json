@@ -150,7 +150,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-30T01:27:25Z",
+  "updated_at": "2026-08-30T01:37:38Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -168,10 +168,14 @@
     },
     "2SWCTORONTOTHE6IX": {
       "trusted": [
-        "sw-teams"
+        "sw-teams",
+        "swcoupon",
+        "swquery"
       ],
       "all": [
-        "sw-teams"
+        "sw-teams",
+        "swcoupon",
+        "swquery"
       ]
     },
     "APAC1K0UB4NGK0K": {

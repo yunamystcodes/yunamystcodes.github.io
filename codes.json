@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-30T01:27:25Z",
+  "updated": "2026-08-30T01:37:38Z",
   "source_count": 11,
   "successful_sources": 11,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -27,10 +27,14 @@
     },
     "2SWCTORONTOTHE6IX": {
       "trusted": [
-        "sw-teams"
+        "sw-teams",
+        "swcoupon",
+        "swquery"
       ],
       "all": [
-        "sw-teams"
+        "sw-teams",
+        "swcoupon",
+        "swquery"
       ]
     },
     "APAC1K0UB4NGK0K": {
