@@ -10,4 +10,16 @@
 .left .profile h3{font-size:21px!important;line-height:1.1!important;}
 .left .profile p{font-size:13px!important;line-height:1.5!important;}
 .left .profile .social-links{font-size:0!important;line-height:0!important;}
-@media(max-width:850px){.left .social-links{height:30px!important;min-height:30px!important;overflow:hidden!important;margin:8px auto 0!important}.left .social-links a{font-size:0!important;color:transparent!important}.left .profile{font-size:0!important}.left .profile h3{font-size:17px!important;line-height:1.1!important;margin:4px 0!important}.left .profile p{font-size:10px!important;line-height:1.25!important;margin:0 auto!important}}
+
+/* Center the main navigation in the header independently of the logo and right-side controls. */
+.top .navlinks{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:24px!important;white-space:nowrap!important;}
+.top .navlinks a{display:block!important;white-space:nowrap!important;}
+
+@media(max-width:850px){
+  .left .social-links{height:30px!important;min-height:30px!important;overflow:hidden!important;margin:8px auto 0!important}
+  .left .social-links a{font-size:0!important;color:transparent!important}
+  .left .profile{font-size:0!important}
+  .left .profile h3{font-size:17px!important;line-height:1.1!important;margin:4px 0!important}
+  .left .profile p{font-size:10px!important;line-height:1.25!important;margin:0 auto!important}
+  .top .navlinks{display:none!important;}
+}
