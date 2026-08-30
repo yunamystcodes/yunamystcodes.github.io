@@ -35,7 +35,14 @@
   ]
 }
 </script>
-</head>
+
+<style id="yunamyst-mobile-rewards-fix">
+@media(max-width:850px){
+  .reward{display:block!important;flex:1 1 58px;min-width:55px;max-width:100px;text-align:center!important}
+  .reward img{display:block!important;width:42px!important;height:42px!important;object-fit:contain!important;margin:auto!important}
+  .rewards{display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;justify-content:center!important;gap:7px!important;padding:3px 0!important}
+}
+</style></head>
 <body>
 <div class="bg"></div>
 <header class="top"><div class="container nav">
@@ -53,7 +60,27 @@
 <main class="container layout">
 <aside class="left"><div class="panel profile"><div class="avatar"></div><h3>♛ YUNAMYST ♛</h3><p data-i18n="profileText">Conteúdo diário de<br>Summoners War!</p><div class="social-links"><a class="social-btn" href="https://www.twitch.tv/YunaMyst" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/twitch/9146FF" alt="Twitch"></a><a class="social-btn" href="https://www.tiktok.com/@yunamyst_" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/tiktok/FFFFFF" alt="TikTok"></a><a class="social-btn" href="https://www.youtube.com/@YunaMyst" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/youtube/FF0000" alt="YouTube"></a></div></div><div class="panel about"><b data-i18n="aboutTitle">✦ SOBRE O SITE</b><br><br><span data-i18n="aboutText">Aqui encontras os <b>códigos ativos</b> de Summoners War: Sky Arena.<br><br>💜 Guarda o site e volta sempre!</span></div></aside>
 <section class="panel" id="codigos"><div class="section-head"><span data-i18n="codesTitle">⚔ SUMMONERS WAR</span><span data-i18n="updated">⟳ Sempre atualizados!</span></div><div id="ativos" class="code-list"></div><div class="tabs"><button class="tab" type="button" data-i18n="activeCodes">🟢 CÓDIGOS ATIVOS</button></div></section>
-<aside class="right" id="como"><div class="panel"><h2 data-i18n="howTitle">❓ COMO USAR</h2><div class="step"><div class="num">1</div><div><b data-i18n="step1b">Copie o código</b><span data-i18n="step1">Clica em COPIAR no código desejado.</span></div></div><div class="step"><div class="num">2</div><div><b data-i18n="step2b">Abra o jogo</b><span data-i18n="step2">Entra no Summoners War: Sky Arena.</span></div></div><div class="step"><div class="num">3</div><div><b data-i18n="step3b">Resgata o código</b><span data-i18n="step3">Usa o link de resgate.</span></div></div><div class="step"><div class="num">4</div><div><b data-i18n="step4b">Aproveita!</b><span data-i18n="step4">Recebe a recompensa no jogo.</span></div></div></div><div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q" data-i18n="faq1q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a" data-i18n="faq1a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q" data-i18n="faq2q">Os códigos expiram?<span>＋</span></div><div class="faq-a" data-i18n="faq2a">Sim. Quando expiram, deixam de aparecer na lista de códigos ativos.</div></div><div class="faq-item"><div class="faq-q" data-i18n="faq3q">Posso usar no iPhone?<span>＋</span></div><div class="faq-a" data-i18n="faq3a">Sim. Usa o botão LINK iOS no código.</div></div></div></aside>
+<aside class="right" id="como"><div class="panel"><h2 data-i18n="howTitle">❓ COMO USAR</h2><div class="step"><div class="num">1</div><div><b data-i18n="step1b">Copie o código</b><span data-i18n="step1">Clica em COPIAR no código desejado.</span></div></div><div class="step"><div class="num">2</div><div><b data-i18n="step2b">Abra o jogo</b><span data-i18n="step2">Entra no Summoners War: Sky Arena.</span></div></div><div class="step"><div class="num">3</div><div><b data-i18n="step3b">Resgata o código</b><span data-i18n="step3">Usa o link de resgate.</span></div></div><div class="step"><div class="num">4</div><div><b data-i18n="step4b">Aproveita!</b><span data-i18n="step4">Recebe a recompensa no jogo.</span></div></div></div><div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q" data-i18n="faq1q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a" data-i18n="faq1a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q" data-i18n="faq2q">Os códigos expiram?<span>＋</span></div><div class="faq-a" data-i18n="faq2a">Sim. Quando expiram, deixam de aparecer na lista de códigos ativos.</div></div><div class="faq-item"><div class="faq-q" data-i18n="faq3q">Posso usar no iPhone?<span>＋</span></div><div class="faq-a" data-i18n="faq3a">Sim. Usa o botão LINK iOS no código.</div></div></div>
+<section class="panel ym-feedback" id="ym-feedback">
+  <h2>💜 FEEDBACK</h2>
+  <div class="ym-feedback-inner">
+    <label>Nome de player <span>(opcional)</span></label>
+    <input class="ym-feedback-name" type="text" maxlength="40" placeholder="Ex: YunaMyst">
+    <label>Como você avalia o site?</label>
+    <div class="ym-stars" aria-label="Avaliação">
+      <button class="ym-star" type="button" data-rating="1" aria-label="1 estrela">★</button>
+      <button class="ym-star" type="button" data-rating="2" aria-label="2 estrelas">★</button>
+      <button class="ym-star" type="button" data-rating="3" aria-label="3 estrelas">★</button>
+      <button class="ym-star" type="button" data-rating="4" aria-label="4 estrelas">★</button>
+      <button class="ym-star" type="button" data-rating="5" aria-label="5 estrelas">★</button>
+    </div>
+    <label>Mensagem</label>
+    <textarea class="ym-feedback-text" maxlength="1000" placeholder="Deixa a tua opinião ou sugestão..."></textarea>
+    <button class="ym-feedback-submit" id="ym-feedback-submit" type="button">ENVIAR FEEDBACK</button>
+    <button class="ym-feedback-all" id="ym-feedback-all" type="button">VER TODOS OS FEEDBACKS</button>
+  </div>
+</section>
+</aside>
 </main>
 <footer class="footer"><span data-i18n="footer">YunaMyst • Summoners War: Sky Arena • Site de comunidade</span></footer>
 <audio id="bgMusic" src="./One%20More%20Scroll.mp3" loop preload="auto" playsinline></audio>
@@ -94,5 +121,104 @@ applyLang();load();setInterval(load,600000);
   .code>.copy{grid-area:copy!important;}
   .code>.link{grid-area:link!important;}
 }
-</style></body>
+</style>
+<style id="yunamyst-feedback-css">
+.ym-feedback{margin-top:12px}
+.ym-feedback h2{padding:18px;font-size:18px;border-bottom:1px solid #fff1;color:#f0ce70}
+.ym-feedback-inner{padding:15px;display:flex;flex-direction:column;gap:8px}
+.ym-feedback label{font-size:11px;font-weight:900;color:#d9cde5;margin-top:3px}
+.ym-feedback label span{font-weight:400;color:#9f96ae}
+.ym-feedback input,.ym-feedback textarea{width:100%;border:1px solid #633487;border-radius:9px;background:#0a0518;color:#fff;padding:10px;font:12px Arial;outline:none}
+.ym-feedback textarea{min-height:90px;resize:vertical}
+.ym-feedback input:focus,.ym-feedback textarea:focus{border-color:#b65cff;box-shadow:0 0 0 2px #b65cff22}
+.ym-stars{display:flex;gap:5px;padding:2px 0 4px}
+.ym-star{border:0;background:transparent;color:#6d6478;font-size:25px;line-height:1;cursor:pointer;padding:0 2px}
+.ym-star.active,.ym-star:hover{color:#f3c65e}
+.ym-feedback-submit,.ym-feedback-all{width:100%;height:40px;border-radius:9px;font-weight:900;font-size:10px;cursor:pointer}
+.ym-feedback-submit{border:1px solid #b65cff;background:linear-gradient(135deg,#7c39c8,#4b2181);color:#fff}
+.ym-feedback-all{border:1px solid #8d58c8;background:#140a24;color:#eadcff;margin-top:0}
+.ym-feedback-modal{display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:16px;background:#020108cc;backdrop-filter:blur(5px)}
+.ym-feedback-modal.open{display:flex}
+.ym-feedback-modal-card{position:relative;width:min(620px,calc(100% - 20px));max-height:min(78vh,720px);overflow:auto;padding:22px 18px 18px;border:1px solid #be66ff99;border-radius:16px;background:linear-gradient(180deg,#160a28,#070412);box-shadow:0 25px 80px #000c}
+.ym-feedback-modal-card h3{font-size:17px;margin-bottom:14px;color:#f0ce70;padding-right:30px}
+.ym-feedback-modal-close{position:absolute;right:10px;top:9px;width:30px;height:30px;border:1px solid #fff3;border-radius:50%;background:#160b25;color:#fff;font-size:19px;cursor:pointer}
+.ym-feedback-item{padding:13px 12px;margin-bottom:9px;border:1px solid #633487;border-radius:11px;background:#0c0618}
+.ym-feedback-item-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.ym-feedback-item-name{font-weight:900;color:#fff;font-size:12px}.ym-feedback-item-stars{color:#f3c65e;font-size:13px;letter-spacing:1px}.ym-feedback-item-text{color:#c9c0d0;font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-word}.ym-feedback-empty{padding:22px;text-align:center;color:#9f96ae;font-size:11px}
+@media(max-width:850px){.ym-feedback{width:100%}.ym-feedback-inner{padding:13px}.ym-feedback-modal-card{width:calc(100% - 12px)}}
+</style>
+<div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true">
+  <div class="ym-feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="ym-feedback-modal-title">
+    <button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button" aria-label="Fechar">×</button>
+    <h3 id="ym-feedback-modal-title">💜 TODOS OS FEEDBACKS</h3>
+    <div id="ym-feedback-list" class="ym-feedback-list"></div>
+  </div>
+</div>
+<script id="yunamyst-feedback-js">
+(function(){
+  const root=document.getElementById('ym-feedback');
+  if(!root)return;
+  const KEY='yunamyst_feedbacks_v2';
+  const stars=[...root.querySelectorAll('.ym-star')];
+  let rating=0;
+  stars.forEach(star=>star.addEventListener('click',()=>{
+    rating=Number(star.dataset.rating)||0;
+    stars.forEach(x=>x.classList.toggle('active',Number(x.dataset.rating)<=rating));
+  }));
+  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
+  const submit=document.getElementById('ym-feedback-submit');
+  if(submit)submit.addEventListener('click',()=>{
+    const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador';
+    const message=(root.querySelector('.ym-feedback-text')?.value||'').trim();
+    if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return;}
+    const items=read();items.push({name,rating,message,createdAt:Date.now()});
+    localStorage.setItem(KEY,JSON.stringify(items.slice(-50)));
+    root.querySelector('.ym-feedback-text').value='';
+    stars.forEach(x=>x.classList.remove('active'));rating=0;
+    submit.textContent='FEEDBACK ENVIADO ✓';
+    setTimeout(()=>submit.textContent='ENVIAR FEEDBACK',1600);
+  });
+  const modal=document.getElementById('ym-feedback-modal'),list=document.getElementById('ym-feedback-list'),open=document.getElementById('ym-feedback-all'),close=document.getElementById('ym-feedback-modal-close');
+  const render=()=>{
+    const items=read().slice().reverse();list.innerHTML='';
+    if(!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados neste navegador.</div>';return;}
+    items.forEach(x=>{const box=document.createElement('div');box.className='ym-feedback-item';box.innerHTML='<div class="ym-feedback-item-head"><div class="ym-feedback-item-name"></div><div class="ym-feedback-item-stars"></div></div><div class="ym-feedback-item-text"></div>';box.querySelector('.ym-feedback-item-name').textContent=x.name||'Jogador';const n=Math.max(0,Math.min(5,Number(x.rating)||0));box.querySelector('.ym-feedback-item-stars').textContent='★'.repeat(n)+'☆'.repeat(5-n);box.querySelector('.ym-feedback-item-text').textContent=x.message||'';list.append(box)});
+  };
+  open?.addEventListener('click',()=>{render();modal.classList.add('open');modal.setAttribute('aria-hidden','false')});
+  close?.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});
+  modal?.addEventListener('click',e=>{if(e.target===modal)close.click()});
+})();
+</script>
+<script id="yunamyst-language-fix">
+(function(){
+  const PT={navHome:'⌂ INÍCIO',navCodes:'⚔ SUMMONERS WAR',navHow:'❔ COMO USAR',hero:'SUMMONERS WAR',whats:'WHATSAPP',partner:'🤝 PARCERIA',codes:'🎁 CÓDIGOS ATIVOS',updated:'⟳ Sempre atualizados!',active:'🔄 Código ativo',copy:'▣ COPIAR',ios:'🔗 LINK iOS',how:'❔ COMO USAR',faq:'FAQ',feedback:'💜 FEEDBACK',send:'ENVIAR FEEDBACK',all:'VER TODOS OS FEEDBACKS'};
+  const EN={navHome:'⌂ HOME',navCodes:'⚔ SUMMONERS WAR',navHow:'❔ HOW TO USE',hero:'SUMMONERS WAR',whats:'WHATSAPP',partner:'🤝 PARTNERSHIP',codes:'🎁 ACTIVE CODES',updated:'⟳ Always updated!',active:'🔄 Active code',copy:'▣ COPY',ios:'🔗 iOS LINK',how:'❔ HOW TO USE',faq:'FAQ',feedback:'💜 FEEDBACK',send:'SEND FEEDBACK',all:'VIEW ALL FEEDBACK'};
+  const switcher=document.getElementById('langSwitch'),toggle=document.getElementById('langToggle'),pt=document.getElementById('langPTOption'),en=document.getElementById('langENOption');
+  const textNode=(el,text)=>{if(!el)return;const nodes=[...el.childNodes].filter(n=>n.nodeType===3);if(nodes.length)nodes[nodes.length-1].nodeValue=text;else el.appendChild(document.createTextNode(text))};
+  const apply=(lang)=>{
+    const T=lang==='en'?EN:PT;
+    document.documentElement.lang=lang==='en'?'en':'pt-BR';
+    document.querySelectorAll('[data-i18n="navHome"]').forEach(x=>textNode(x,T.navHome));
+    document.querySelectorAll('[data-i18n="navCodes"]').forEach(x=>textNode(x,T.navCodes));
+    document.querySelectorAll('[data-i18n="navHow"]').forEach(x=>textNode(x,T.navHow));
+    const h=document.querySelector('.hero h1');if(h)h.textContent=T.hero;
+    const wa=document.querySelector('.community-tab.whatsapp');if(wa)textNode(wa,T.whats);
+    const pa=document.querySelector('.community-tab.partnership');if(pa)textNode(pa,T.partner);
+    const head=document.querySelector('#codigos .section-head');if(head){const span=head.querySelector('span');head.firstChild.textContent=T.codes+' ';if(span)span.textContent=T.updated}
+    document.querySelectorAll('.cinfo small').forEach(x=>{if(/Código ativo|Active code/i.test(x.textContent))x.textContent=T.active});
+    document.querySelectorAll('.copy').forEach(x=>textNode(x,T.copy));
+    document.querySelectorAll('.link').forEach(x=>textNode(x,T.ios));
+    document.querySelectorAll('#como h2').forEach(x=>textNode(x,T.how));
+    const fb=document.getElementById('ym-feedback');if(fb){const h2=fb.querySelector('h2');if(h2)textNode(h2,T.feedback);const sub=fb.querySelector('.ym-feedback-submit');if(sub)sub.textContent=T.send;const all=fb.querySelector('.ym-feedback-all');if(all)all.textContent=T.all}
+    if(toggle)toggle.textContent=lang==='en'?'🇬🇧 ENG':'🇧🇷 PT/BR';
+    pt?.classList.toggle('selected',lang!=='en');en?.classList.toggle('selected',lang==='en');
+    localStorage.setItem('yunamyst_lang',lang);
+  };
+  toggle?.addEventListener('click',e=>{e.stopPropagation();switcher.classList.toggle('open')});
+  pt?.addEventListener('click',()=>{apply('pt');switcher.classList.remove('open')});
+  en?.addEventListener('click',()=>{apply('en');switcher.classList.remove('open')});
+  document.addEventListener('click',e=>{if(!switcher.contains(e.target))switcher.classList.remove('open')});
+  apply(localStorage.getItem('yunamyst_lang')||'pt');
+})();
+</script></body>
 </html>
