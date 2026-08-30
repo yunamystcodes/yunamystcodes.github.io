@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fix Myst y overlap in index
+      - name: Fix YunaMyst logo on PC and mobile
         shell: bash
         run: |
           python - <<'PY'
@@ -25,25 +25,21 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           pattern = r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>'
-          replacement = '<div class="logo">YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>'
+          replacement = '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>'
           s, count = re.subn(pattern, replacement, s, count=1, flags=re.S)
           if count != 1:
               raise SystemExit('Logo not found')
+          s = re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>\s*', '', s, flags=re.S)
           s = re.sub(r'<style id="yunamyst-myst-y-final">.*?</style>\s*', '', s, flags=re.S)
-          css = '''<style id="yunamyst-myst-y-final">
-          .logo .myst-y{display:inline-block;font-size:.78em;line-height:1;vertical-align:baseline;position:relative;top:-.04em;margin-right:.02em}
-          @media(max-width:850px){.logo .myst-y{font-size:.78em;top:-.04em}}
-          </style>'''
-          s = s.replace('</head>', css + '\n</head>', 1)
           p.write_text(s, encoding='utf-8')
           PY
 
       - name: Verify
         shell: bash
         run: |
-          grep -qF 'YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>' index.html
-          grep -qF '.logo .myst-y' index.html
-          echo 'Header verified.'
+          grep -qF 'YunaMyst<small>SUMMONERS WAR</small></div>' index.html
+          ! grep -qF 'class="myst-y"' index.html
+          echo 'YunaMyst logo verified.'
 
       - name: Commit index.html
         shell: bash
@@ -52,5 +48,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Fix Myst y overlap [skip header]'
+          git commit -m 'Fix YunaMyst logo on PC and mobile [skip header]'
           git push
