@@ -1,0 +1,49 @@
+name: Corrigir ícones das recompensas no telemóvel
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-mobile-rewards:
+    if: ${{ !contains(github.event.head_commit.message, '[skip mobile rewards]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aplicar correção sem alterar o layout
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          if 'id="yunamyst-mobile-reward-sprite-fix"' not in s:
+              js='''
+          <script id="yunamyst-mobile-reward-sprite-fix">
+          (function(){
+            const fix=()=>document.querySelectorAll('#ativos .reward img').forEach(img=>{
+              if(img.dataset.spriteFixed)return;
+              const m=(img.style.objectPosition||'').match(/(-?\\d+)px\\s+0/);
+              if(!m)return;
+              const pos=Math.abs(parseInt(m[1],10)||0);
+              const span=document.createElement('span');
+              span.style.cssText='display:block;width:42px;height:42px;margin:auto;background-image:url("'+img.src+'");background-repeat:no-repeat;background-size:336px 48px;background-position:-'+pos+'px 0;background-color:transparent;';
+              img.replaceWith(span);
+            });
+            const root=document.getElementById('ativos');
+            if(root){new MutationObserver(fix).observe(root,{childList:true,subtree:true});fix();}
+          })();
+          </script>'''
+              s=s.replace('</body>',js+'\\n</body>',1)
+              p.write_text(s,encoding='utf-8')
+      - name: Publicar
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/fix-mobile-reward-icons.yml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Fix reward icons on mobile [skip mobile rewards]"
+          git push
