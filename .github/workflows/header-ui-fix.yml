@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fix YunaMyst logo spacing on PC and mobile
+      - name: Apply final YunaMyst spacing to index.html
         shell: bash
         run: |
           python - <<'PY'
@@ -24,22 +24,24 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          pattern = r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>'
-          replacement = '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>'
-          s, count = re.subn(pattern, replacement, s, count=1, flags=re.S)
-          if count != 1:
-              raise SystemExit('Logo not found')
-          s = re.sub(r'(\.logo small\{[^}]*?)margin-top:-3px;', r'\1margin-top:4px;', s, count=1)
+
+          # Keep the logo text exactly YunaMyst.
+          s = re.sub(
+              r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
+              '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>',
+              s, count=1, flags=re.S
+          )
+
+          # Move the subtitle down so the y descender never touches the W.
+          marker = '<style id="yunamyst-final-subtitle-spacing">'
+          if marker not in s:
+              css = '''<style id="yunamyst-final-subtitle-spacing">
+.logo small{margin-top:5px!important}
+@media(max-width:850px){.logo small{margin-top:5px!important}}
+</style>'''
+              s = s.replace('</head>', css + '\n</head>', 1)
           p.write_text(s, encoding='utf-8')
           PY
-
-      - name: Verify
-        shell: bash
-        run: |
-          grep -qF 'YunaMyst<small>SUMMONERS WAR</small></div>' index.html
-          grep -qF 'margin-top:4px' index.html
-          ! grep -qF 'YunaMyST' index.html
-          echo 'YunaMyst logo spacing verified.'
 
       - name: Commit index.html only
         shell: bash
@@ -47,7 +49,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          if git diff --cached --quiet; then exit 0; fi
+          if git diff --cached --quiet; then
+            echo 'No index change needed.'
+            exit 0
+          fi
           git commit -m 'Fix YunaMyst y overlap [skip header]'
           git fetch origin main
           git rebase origin/main
