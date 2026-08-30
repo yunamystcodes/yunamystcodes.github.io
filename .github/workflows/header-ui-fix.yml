@@ -40,6 +40,12 @@ jobs:
           for bad in ('YunaMYst', 'YunaMYST', 'YunaMyST', 'YunaMySt', 'YunaMysT'):
               s = s.replace(bad, 'YunaMyst')
 
+          # Remove old CSS that reduced/repositioned the lowercase y.
+          s = re.sub(r'<style id="yunamyst-y-fix">.*?</style>', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>', '', s, flags=re.S)
+          s = re.sub(r'\.logo \.myst-y\{[^}]*\}', '', s)
+          s = re.sub(r'@media\(max-width:850px\)\{\.logo \.myst-y\{[^}]*\}\}', '', s)
+
           # Metadata must also use the exact name.
           s = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1Códigos ativos de Summoners War — YunaMyst.\2', s, count=1)
           s = re.sub(r'<title>.*?</title>', '<title>YunaMyst — Summoners War</title>', s, count=1, flags=re.S)
