@@ -26,46 +26,47 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # The logo must be exactly YunaMyst on both desktop and mobile.
+          # Keep the lowercase y in Myst slightly smaller so its descender
+          # does not overlap the nearby w, on both desktop and mobile.
           s = re.sub(
               r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
-              '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>',
+              '<div class="logo">YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>',
               s, count=1, flags=re.S
           )
 
-          # Remove all previous injected logo variants.
-          s = s.replace('YunaM<span class="myst-y">y</span>st', 'YunaMyst')
-          s = s.replace('YunaM<span class="myst-y">Y</span>st', 'YunaMyst')
+          # Remove any previous logo variants before applying the final one.
           s = re.sub(r'YunaM\s*<span[^>]*>\s*[yY]\s*</span>\s*st', 'YunaMyst', s, flags=re.I)
           for bad in ('YunaMYst', 'YunaMYST', 'YunaMyST', 'YunaMySt', 'YunaMysT'):
               s = s.replace(bad, 'YunaMyst')
 
-          # Remove old CSS that reduced/repositioned the lowercase y.
+          # Remove old injected logo fixes.
           s = re.sub(r'<style id="yunamyst-y-fix">.*?</style>', '', s, flags=re.S)
           s = re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-header-clean-workflow">.*?</style>', '', s, flags=re.S)
+          s = re.sub(r'<style id="yunamyst-logo-normal-size">.*?</style>', '', s, flags=re.S)
           s = re.sub(r'\.logo \.myst-y\{[^}]*\}', '', s)
           s = re.sub(r'@media\(max-width:850px\)\{\.logo \.myst-y\{[^}]*\}\}', '', s)
+
+          # Apply the same smaller y on PC and mobile.
+          logo_css = '''<style id="yunamyst-myst-y-final">
+          .logo .myst-y{display:inline-block;font-size:.82em;line-height:1;vertical-align:baseline;position:relative;top:-.01em}
+          @media(max-width:850px){.logo .myst-y{font-size:.82em}}
+          </style>'''
+          s = s.replace('</head>', logo_css + '\n</head>', 1)
 
           # Metadata must also use the exact name.
           s = re.sub(r'(<meta name="description" content=")[^"]*(")', r'\1Códigos ativos de Summoners War — YunaMyst.\2', s, count=1)
           s = re.sub(r'<title>.*?</title>', '<title>YunaMyst — Summoners War</title>', s, count=1, flags=re.S)
 
-          # Remove old CSS that reduced the y in Myst.
-          s = re.sub(r'<style id="yunamyst-header-clean-workflow">.*?</style>', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-logo-normal-size">.*?</style>', '', s, flags=re.S)
-
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Verify exact branding
+      - name: Verify exact branding and y size
         shell: bash
         run: |
-          grep -qF '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>' index.html
-          if grep -nE 'YunaMYst|YunaMYST|YunaMyST|YunaMySt|YunaMysT|myst-y' index.html; then
-            echo 'Incorrect/old YunaMyst logo markup remains.'
-            exit 1
-          fi
-          echo 'Exact YunaMyst logo verified.'
+          grep -qF '<div class="logo">YunaM<span class="myst-y">y</span>st<small>SUMMONERS WAR</small></div>' index.html
+          grep -qF '.logo .myst-y' index.html
+          echo 'YunaMyst logo verified with smaller Myst y for PC and mobile.'
 
       - name: Commit and push
         shell: bash
@@ -77,5 +78,5 @@ jobs:
             echo 'No index changes needed.'
             exit 0
           fi
-          git commit -m 'Fix exact YunaMyst logo on PC and mobile [skip header]'
+          git commit -m 'Fix Myst y overlap on PC and mobile [skip header]'
           git push
