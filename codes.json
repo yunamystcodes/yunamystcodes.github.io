@@ -1,18 +1,79 @@
 {
-  "updated": "2026-08-30T01:57:31Z",
-  "source_count": 20,
-  "successful_sources": 13,
+  "updated": "2026-08-30T02:19:42Z",
+  "source_count": 11,
+  "successful_sources": 11,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
-    "912XUXIECHUANQI",
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
-    "LAST4PUNCHIN",
-    "SWC2026JUELEBA",
     "SWXFRIEREN2026"
   ],
+  "rewards": {
+    "2SOREIKENIPPON6": [
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "gold",
+        "x1"
+      ]
+    ],
+    "2SWCTORONTOTHE6IX": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "gold",
+        "x1"
+      ],
+      [
+        "red",
+        "x100"
+      ]
+    ],
+    "APAC1K0UB4NGK0K": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "gold",
+        "x1"
+      ]
+    ],
+    "AUGSW2026V7N": [
+      [
+        "red",
+        "x3"
+      ],
+      [
+        "energy",
+        "x100"
+      ]
+    ],
+    "SWXFRIEREN2026": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "mana",
+        "x300000"
+      ],
+      [
+        "gold",
+        "x3"
+      ]
+    ]
+  },
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -42,13 +103,6 @@
         "swquery"
       ]
     },
-    "912XUXIECHUANQI": {
-      "trusted": [],
-      "all": [
-        "levelgeeks",
-        "pockettactics"
-      ]
-    },
     "APAC1K0UB4NGK0K": {
       "trusted": [
         "summonerswarcodes",
@@ -72,32 +126,10 @@
       ],
       "all": [
         "levelgeeks",
-        "pockettactics",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
         "swquery"
-      ]
-    },
-    "LAST4PUNCHIN": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SWC2026JUELEBA": {
-      "trusted": [],
-      "all": [
-        "levelgeeks",
-        "pockettactics"
       ]
     },
     "SWXFRIEREN2026": {
@@ -109,7 +141,6 @@
       ],
       "all": [
         "pocketgamer",
-        "pockettactics",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
