@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Ajustar feedback no index
+      - name: Atualizar feedback no index
         shell: python
         run: |
           from pathlib import Path
@@ -23,47 +23,101 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           marker = '<!-- YUNAMYST-FEEDBACK-V1 -->'
-
           if marker not in s:
               print('Feedback ainda não existe; nada a ajustar.')
               raise SystemExit(0)
 
-          # O nome do player é opcional: não bloquear o envio quando ficar vazio.
-          replacements = {
-              'Nome do player</label>': 'Nome do player <span>(opcional)</span></label>',
-              'Nome do player</div>': 'Nome do player <span>(opcional)</span></div>',
-              'placeholder="Seu nome no jogo"': 'placeholder="Seu nome no jogo (opcional)"',
-              'placeholder="Nome do player"': 'placeholder="Nome do player (opcional)"',
-          }
-          for old, new in replacements.items():
-              s = s.replace(old, new)
-
-          # Se o campo tiver required, remover apenas do campo do nome do player.
+          # Nome opcional.
+          s = s.replace('Nome do player</label>', 'Nome do player <span>(opcional)</span></label>')
           s = re.sub(r'(<input[^>]*class="[^"]*ym-feedback-name[^"]*"[^>]*?)\s+required(?=[\s>])', r'\1', s, flags=re.I)
-          s = re.sub(r'(<input[^>]*id="[^"]*player[^"]*"[^>]*?)\s+required(?=[\s>])', r'\1', s, flags=re.I)
 
-          optional_marker = '/* YUNAMYST FEEDBACK NAME OPTIONAL V1 */'
-          if optional_marker not in s:
-              patch = '''\n<style id="yunamyst-feedback-name-optional">\n/* YUNAMYST FEEDBACK NAME OPTIONAL V1 */\n#ym-feedback .ym-feedback-label span{color:#9f96ae;font-weight:700;margin-left:3px}\n</style>\n'''
-              s = s.replace('</body>', patch + '</body>', 1) if '</body>' in s else s + patch
+          # Botão abaixo de ENVIAR FEEDBACK.
+          if 'id="ym-feedback-all"' not in s:
+              btn = '<button class="ym-feedback-all" id="ym-feedback-all" type="button">VER TODOS OS FEEDBACKS</button>'
+              s = s.replace('</section></aside>', btn + '</section></aside>', 1)
 
-          # Caixa de feedbacks enviados: fica imediatamente abaixo do formulário.
-          display_marker = 'YUNAMYST-FEEDBACK-SENT-BOX-V1'
-          if display_marker not in s:
-              display_css = '''\n<style id="yunamyst-feedback-sent-box">\n/* YUNAMYST-FEEDBACK-SENT-BOX-V1 */\n#ym-feedback-sent{margin-top:12px;padding:15px;border:1px solid #633487;border-radius:14px;background:linear-gradient(180deg,#0c071df2,#050411f2);box-shadow:0 12px 30px #0005}\n#ym-feedback-sent h3{margin:0 0 11px;color:#f0ce70;font-size:14px}\n.ym-sent-empty{color:#9f96ae;font-size:11px;line-height:1.5}\n.ym-sent-item{padding:11px 0;border-top:1px solid #ffffff12}\n.ym-sent-item:first-child{border-top:0;padding-top:0}\n.ym-sent-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:5px}\n.ym-sent-name{color:#dda1ff;font-weight:900;font-size:11px}\n.ym-sent-stars{color:#f0c45c;letter-spacing:1px;font-size:12px}\n.ym-sent-message{color:#cfc7d7;font-size:11px;line-height:1.5;word-break:break-word}\n@media(max-width:850px){#ym-feedback-sent{margin-top:10px;padding:13px}.ym-sent-message{font-size:10px}}\n</style>\n'''
-              display_js = '''\n<script id="yunamyst-feedback-sent-js">\n(function(){\n  const KEY='yunamyst_feedbacks_v1';\n  function esc(v){return String(v||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}\n  function getItems(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}\n  function render(){\n    const box=document.getElementById('ym-feedback-sent');\n    if(!box)return;\n    const items=getItems();\n    const body=box.querySelector('.ym-sent-list');\n    if(!body)return;\n    if(!items.length){body.innerHTML='<div class="ym-sent-empty">Ainda não há feedbacks enviados neste dispositivo.</div>';return;}\n    body.innerHTML=items.slice().reverse().map(function(x){\n      const stars=Math.max(0,Math.min(5,Number(x.rating)||0));\n      return '<div class="ym-sent-item"><div class="ym-sent-head"><span class="ym-sent-name">'+esc(x.name||'Jogador')+'</span><span class="ym-sent-stars">'+('★'.repeat(stars))+('☆'.repeat(5-stars))+'</span></div><div class="ym-sent-message">'+esc(x.message)+'</div></div>';\n    }).join('');\n  }\n  function setup(){\n    const formBox=document.getElementById('ym-feedback');\n    if(!formBox)return;\n    if(!document.getElementById('ym-feedback-sent')){\n      const box=document.createElement('div');\n      box.id='ym-feedback-sent';\n      box.innerHTML='<h3>FEEDBACKS ENVIADOS</h3><div class="ym-sent-list"></div>';
-      formBox.insertAdjacentElement('afterend',box);\n    }\n    if(!formBox.dataset.sentCapture){\n      formBox.dataset.sentCapture='1';\n      formBox.addEventListener('click',function(e){\n        const btn=e.target.closest('button');\n        if(!btn || !/ENVIAR FEEDBACK/i.test(btn.textContent||''))return;\n        const name=(formBox.querySelector('.ym-feedback-name')||formBox.querySelector('input[placeholder*="nome" i]'));\n        const msg=(formBox.querySelector('textarea')||formBox.querySelector('.ym-feedback-message'));
-        let rating=0;\n        const checked=formBox.querySelector('input[name="rating"]:checked,input[name="stars"]:checked,input[type="radio"]:checked');\n        if(checked)rating=Number(checked.value)||Number(checked.dataset.rating)||0;\n        if(!rating){const active=formBox.querySelector('.active[data-rating],.selected[data-rating],.star.active');if(active)rating=Number(active.dataset.rating)||0;}\n        const message=(msg&&msg.value||'').trim();\n        if(!message)return;\n        const item={name:(name&&name.value||'').trim()||'Jogador',rating:rating,message:message};\n        const items=getItems();\n        items.push(item);\n        localStorage.setItem(KEY,JSON.stringify(items.slice(-30)));\n        setTimeout(render,50);\n      },true);\n    }\n    render();\n  }\n  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();\n  setTimeout(setup,500);\n  setTimeout(setup,1500);\n})();\n</script>\n'''
-              s = s.replace('</head>', display_css + '</head>', 1)
-              s = s.replace('</body>', display_js + '</body>', 1)
+          # Janela que abre ao clicar no botão.
+          if 'id="ym-feedback-modal"' not in s:
+              modal = '''
+          <div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true">
+            <div class="ym-feedback-modal-card" role="dialog" aria-modal="true">
+              <button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button" aria-label="Fechar">×</button>
+              <h3>💜 TODOS OS FEEDBACKS</h3>
+              <div id="ym-feedback-list" class="ym-feedback-list"></div>
+            </div>
+          </div>'''
+              s = s.replace('</body>', modal + '</body>', 1)
+
+          if 'id="yunamyst-feedback-all-css"' not in s:
+              css = '''
+          <style id="yunamyst-feedback-all-css">
+          .ym-feedback-all{width:100%;height:38px;margin-top:8px;border:1px solid #8d58c8;border-radius:9px;background:#140a24;color:#eadcff;font-weight:900;font-size:10px;cursor:pointer}
+          .ym-feedback-modal{display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:16px;background:#020108cc;backdrop-filter:blur(5px)}
+          .ym-feedback-modal.open{display:flex}
+          .ym-feedback-modal-card{position:relative;width:min(620px,calc(100% - 20px));max-height:min(78vh,720px);overflow:auto;padding:22px 18px 18px;border:1px solid #be66ff99;border-radius:16px;background:linear-gradient(180deg,#160a28,#070412);box-shadow:0 25px 80px #000c}
+          .ym-feedback-modal-card h3{font-size:17px;margin-bottom:14px;color:#f0ce70;padding-right:30px}
+          .ym-feedback-modal-close{position:absolute;right:10px;top:9px;width:30px;height:30px;border:1px solid #fff3;border-radius:50%;background:#160b25;color:#fff;font-size:19px;cursor:pointer}
+          .ym-feedback-item{padding:13px 12px;margin-bottom:9px;border:1px solid #633487;border-radius:11px;background:#0c0618}
+          .ym-feedback-item-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+          .ym-feedback-item-name{font-weight:900;color:#fff;font-size:12px}.ym-feedback-item-stars{color:#f3c65e;font-size:13px;letter-spacing:1px}.ym-feedback-item-text{color:#c9c0d0;font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-word}.ym-feedback-empty{padding:22px;text-align:center;color:#9f96ae;font-size:11px}
+          </style>'''
+              s = s.replace('</body>', css + '</body>', 1)
+
+          if 'id="yunamyst-feedback-all-js"' not in s:
+              js = '''
+          <script id="yunamyst-feedback-all-js">
+          (function(){
+            const KEY='yunamyst_feedbacks_v2';
+            const root=document.getElementById('ym-feedback');
+            const modal=document.getElementById('ym-feedback-modal');
+            const list=document.getElementById('ym-feedback-list');
+            const open=document.getElementById('ym-feedback-all');
+            const close=document.getElementById('ym-feedback-modal-close');
+            if(!root||!modal||!list||!open||!close)return;
+            const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
+            const render=()=>{
+              const items=read().slice().reverse();
+              list.innerHTML='';
+              if(!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados neste navegador.</div>';return;}
+              items.forEach(x=>{
+                const box=document.createElement('div');box.className='ym-feedback-item';
+                const head=document.createElement('div');head.className='ym-feedback-item-head';
+                const name=document.createElement('div');name.className='ym-feedback-item-name';name.textContent=x.name||'Jogador';
+                const stars=document.createElement('div');stars.className='ym-feedback-item-stars';const n=Math.max(0,Math.min(5,Number(x.rating)||0));stars.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+                const text=document.createElement('div');text.className='ym-feedback-item-text';text.textContent=x.message||'';
+                head.append(name,stars);box.append(head,text);list.append(box);
+              });
+            };
+            open.addEventListener('click',()=>{render();modal.classList.add('open');modal.setAttribute('aria-hidden','false')});
+            close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});
+            modal.addEventListener('click',e=>{if(e.target===modal)close.click()});
+            document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close.click()});
+            const submit=document.getElementById('ym-feedback-submit');
+            if(submit)submit.addEventListener('click',()=>{
+              setTimeout(()=>{
+                const name=root.querySelector('.ym-feedback-name');
+                const message=root.querySelector('.ym-feedback-text');
+                const stars=root.querySelectorAll('.ym-star.active').length;
+                const text=(message&&message.value||'').trim();
+                if(!text||!stars)return;
+                const items=read();items.push({name:(name&&name.value||'').trim()||'Jogador',rating:stars,message:text,createdAt:Date.now()});
+                localStorage.setItem(KEY,JSON.stringify(items.slice(-50)));
+              },100);
+            });
+          })();
+          </script>'''
+              s = s.replace('</body>', js + '</body>', 1)
 
           p.write_text(s, encoding='utf-8')
 
       - name: Publicar alteração no index
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet && exit 0
-          git commit -m "Mostrar feedbacks enviados abaixo do formulario"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Adicionar botão Ver todos os feedbacks [skip feedback]"
+          git fetch origin main
+          git rebase origin/main
           git push
