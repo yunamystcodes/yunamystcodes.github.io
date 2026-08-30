@@ -34,11 +34,49 @@ jobs:
           if not codes: raise SystemExit('ERRO: lista vazia')
           print(f'OK: {len(codes)} códigos ativos, sem duplicados e sem códigos bloqueados.')
           PY
+      - name: Melhorar apenas o SEO da página inicial
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from datetime import datetime
+          import re
+          import json
+
+          path=Path('index.html')
+          html=path.read_text(encoding='utf-8')
+          year=datetime.utcnow().year
+          title=f'Summoners War — Códigos Ativos {year} | YunaCodes'
+          description=f'Códigos de Summoners War ativos em {year}, recompensas grátis e últimos códigos disponíveis. Lista atualizada regularmente no YunaCodes.'
+
+          html,n=re.subn(r'<title>.*?</title>',f'<title>{title}</title>',html,count=1,flags=re.DOTALL)
+          if n!=1: raise SystemExit('SEO: <title> não encontrado.')
+
+          html,n=re.subn(r'<meta\s+name=["\']description["\']\s+content=["\'][^"\']*["\']\s*/?>',f'<meta name="description" content="{description}">',html,count=1,flags=re.IGNORECASE)
+          if n!=1: raise SystemExit('SEO: meta description não encontrada.')
+
+          if 'rel="canonical"' not in html.lower():
+              html=html.replace('</head>','<link rel="canonical" href="https://yunacodes.com/">\n</head>',1)
+
+          if 'application/ld+json' not in html:
+              schema={
+                  '@context':'https://schema.org',
+                  '@type':'WebSite',
+                  'name':'YunaCodes',
+                  'alternateName':'YunaMyst Codes',
+                  'url':'https://yunacodes.com/',
+                  'description':description,
+                  'inLanguage':['pt-BR','en']
+              }
+              jsonld='<script type="application/ld+json">\n'+json.dumps(schema,ensure_ascii=False,indent=2)+'\n</script>\n'
+              html=html.replace('</head>',jsonld+'</head>',1)
+
+          path.write_text(html,encoding='utf-8')
+          PY
       - name: Guardar atualização
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json
+          git add codes.json codes-history.json index.html
           if ! git diff --cached --quiet; then
             git commit -m 'Atualizar códigos ativos automaticamente'
             git push
