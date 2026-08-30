@@ -1,0 +1,38 @@
+name: Centralizar navegação do cabeçalho
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - '.github/workflows/center-header-nav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  center-nav:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Centralizar navegação
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          css = '''\n/* HEADER NAV CENTRALIZADA - YunaMyst */\n.top .nav { position: relative !important; }\n.top .navlinks { position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 24px !important; margin: 0 !important; }\n.top .navlinks a { white-space: nowrap !important; }\n@media (max-width: 850px) { .top .navlinks { display: none !important; } }\n'''
+          marker = '/* HEADER NAV CENTRALIZADA - YunaMyst */'
+          if marker not in s:
+              s = s.replace('</style>', css + '</style>', 1)
+          p.write_text(s, encoding='utf-8')
+
+      - name: Commit e publicar
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Centralizar navegacao do cabecalho no index'
+          git push
