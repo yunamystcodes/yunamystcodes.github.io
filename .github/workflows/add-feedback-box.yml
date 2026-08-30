@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Adicionar feedback ao index
+      - name: Ajustar feedback no index
         shell: python
         run: |
           from pathlib import Path
@@ -22,83 +22,53 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           marker = '<!-- YUNAMYST-FEEDBACK-V1 -->'
-          if marker in s:
-              print('Feedback já existe; nada a fazer.')
+
+          if marker not in s:
+              print('Feedback ainda não existe; nada a ajustar.')
               raise SystemExit(0)
 
-          css = r'''<style id="yunamyst-feedback-css">
-          .ym-feedback{margin-top:12px;background:linear-gradient(180deg,#0c071df7,#050411f7);border:1px solid #be66ff66;border-radius:18px;box-shadow:0 18px 45px #0006;overflow:hidden}
-          .ym-feedback h2{padding:18px;font-size:18px;border-bottom:1px solid #fff1;color:#fff}
-          .ym-feedback-body{padding:16px}
-          .ym-feedback-label{display:block;color:#d99cff;font-size:11px;font-weight:900;margin:0 0 7px}
-          .ym-feedback-name,.ym-feedback-text{width:100%;border:1px solid #633487;border-radius:10px;background:#090513;color:#fff;outline:none;padding:11px 12px;font:700 12px Arial}
-          .ym-feedback-name:focus,.ym-feedback-text:focus{border-color:#be66ff;box-shadow:0 0 0 2px #be66ff22}
-          .ym-feedback-text{min-height:82px;resize:vertical;line-height:1.45}
-          .ym-stars{display:flex;gap:4px;margin:2px 0 14px}
-          .ym-star{border:0;background:transparent;color:#5b5363;font-size:27px;line-height:1;cursor:pointer;padding:0 2px;touch-action:manipulation}
-          .ym-star.active{color:#f3c65e;text-shadow:0 0 10px #f3c65e66}
-          .ym-feedback-submit{width:100%;height:42px;margin-top:12px;border:1px solid #edbd4e;border-radius:9px;background:linear-gradient(#f6cd70,#bd7d1d);color:#251400;font-weight:900;font-size:11px;cursor:pointer;touch-action:manipulation}
-          .ym-feedback-sent{padding:16px;border-top:1px solid #fff1}
-          .ym-feedback-sent-title{color:#f0c45c;font-size:14px;font-weight:900;margin-bottom:8px}
-          .ym-feedback-sent-stars{color:#f3c65e;font-size:22px;letter-spacing:2px;margin-bottom:8px}
-          .ym-feedback-sent-name{font-size:13px;font-weight:900;color:#fff;margin-bottom:6px}
-          .ym-feedback-sent-text{font-size:12px;line-height:1.5;color:#cfc7d7;white-space:pre-wrap;word-break:break-word}
-          .ym-feedback-again{margin-top:12px;border:1px solid #633487;border-radius:9px;background:#12091f;color:#d99cff;padding:9px 12px;font-weight:900;font-size:10px;cursor:pointer}
-          @media(max-width:850px){.ym-feedback h2{padding:16px;font-size:17px}.ym-feedback-body,.ym-feedback-sent{padding:14px}.ym-star{font-size:25px}}
-          </style>'''
+          patch_marker = '/* YUNAMYST FEEDBACK SMALL RIGHT V2 */'
+          if patch_marker in s:
+              print('Feedback compacto já aplicado; nada a fazer.')
+              raise SystemExit(0)
 
-          html = r'''<!-- YUNAMYST-FEEDBACK-V1 -->
-          <section class="ym-feedback" id="ym-feedback">
-            <h2>💜 FEEDBACK</h2>
-            <div class="ym-feedback-body" id="ym-feedback-form">
-              <label class="ym-feedback-label" for="ym-feedback-name">Nome do player</label>
-              <input class="ym-feedback-name" id="ym-feedback-name" maxlength="30" placeholder="Seu nome no jogo">
-              <label class="ym-feedback-label" style="margin-top:13px">Sua avaliação</label>
-              <div class="ym-stars" id="ym-stars" aria-label="Avaliação de 1 a 5 estrelas">
-                <button class="ym-star" type="button" data-star="1" aria-label="1 estrela">★</button>
-                <button class="ym-star" type="button" data-star="2" aria-label="2 estrelas">★</button>
-                <button class="ym-star" type="button" data-star="3" aria-label="3 estrelas">★</button>
-                <button class="ym-star" type="button" data-star="4" aria-label="4 estrelas">★</button>
-                <button class="ym-star" type="button" data-star="5" aria-label="5 estrelas">★</button>
-              </div>
-              <label class="ym-feedback-label" for="ym-feedback-text">Mensagem</label>
-              <textarea class="ym-feedback-text" id="ym-feedback-text" maxlength="300" placeholder="Escreve o que achaste do site..."></textarea>
-              <button class="ym-feedback-submit" id="ym-feedback-submit" type="button">ENVIAR FEEDBACK</button>
-            </div>
-            <div id="ym-feedback-sent" hidden></div>
-          </section>
-          <script>
-          (()=>{
-            const root=document.getElementById('ym-feedback'); if(!root)return;
-            const form=document.getElementById('ym-feedback-form'), sent=document.getElementById('ym-feedback-sent');
-            const stars=[...root.querySelectorAll('.ym-star')]; let rating=0;
-            const paint=()=>stars.forEach((b,i)=>b.classList.toggle('active',i<rating));
-            stars.forEach(b=>b.addEventListener('click',()=>{rating=Number(b.dataset.star);paint()}));
-            const show=(name,text,r)=>{
-              form.hidden=true; sent.hidden=false;
-              sent.innerHTML='<div class="ym-feedback-sent"><div class="ym-feedback-sent-title">✓ Feedback enviado!</div><div class="ym-feedback-sent-stars">'+('★'.repeat(r)+'☆'.repeat(5-r))+'</div><div class="ym-feedback-sent-name"></div><div class="ym-feedback-sent-text"></div><button class="ym-feedback-again" type="button">ENVIAR OUTRO FEEDBACK</button></div>';
-              sent.querySelector('.ym-feedback-sent-name').textContent=name;
-              sent.querySelector('.ym-feedback-sent-text').textContent=text;
-              sent.querySelector('.ym-feedback-again').onclick=()=>{sent.hidden=true;form.hidden=false;document.getElementById('ym-feedback-name').focus()};
-            };
-            document.getElementById('ym-feedback-submit').addEventListener('click',()=>{
-              const name=document.getElementById('ym-feedback-name').value.trim();
-              const text=document.getElementById('ym-feedback-text').value.trim();
-              if(!name){alert('Coloca o nome do player.');return}
-              if(!rating){alert('Escolhe de 1 a 5 estrelas.');return}
-              if(!text){alert('Escreve uma mensagem.');return}
-              show(name,text,rating);
-            });
+          patch = r'''<style id="yunamyst-feedback-small-right">
+          /* YUNAMYST FEEDBACK SMALL RIGHT V2 */
+          .right #ym-feedback{display:block!important;margin-top:12px!important;width:100%!important;background:linear-gradient(180deg,#0c071df7,#050411f7)!important;border:1px solid #be66ff66!important;border-radius:18px!important;box-shadow:0 18px 45px #0006!important;overflow:hidden!important}
+          .right #ym-feedback h2{padding:16px!important;font-size:17px!important;border-bottom:1px solid #fff1!important}
+          .right #ym-feedback .ym-feedback-body{padding:14px!important}
+          .right #ym-feedback .ym-feedback-label{font-size:10px!important;margin-bottom:6px!important}
+          .right #ym-feedback .ym-feedback-name,.right #ym-feedback .ym-feedback-text{font-size:11px!important;padding:9px 10px!important;border-radius:9px!important}
+          .right #ym-feedback .ym-feedback-text{min-height:64px!important}
+          .right #ym-feedback .ym-stars{gap:2px!important;margin:2px 0 10px!important}
+          .right #ym-feedback .ym-star{font-size:23px!important;padding:0 1px!important}
+          .right #ym-feedback .ym-feedback-submit{height:38px!important;margin-top:9px!important;font-size:10px!important}
+          .right #ym-feedback .ym-feedback-sent{padding:14px!important}
+          .right #ym-feedback .ym-feedback-sent-title{font-size:13px!important}
+          .right #ym-feedback .ym-feedback-sent-stars{font-size:19px!important}
+          .right #ym-feedback .ym-feedback-sent-name{font-size:12px!important}
+          .right #ym-feedback .ym-feedback-sent-text{font-size:11px!important}
+          @media(max-width:850px){.right #ym-feedback{margin-top:12px!important}.right #ym-feedback h2{padding:14px!important;font-size:16px!important}.right #ym-feedback .ym-feedback-body,.right #ym-feedback .ym-feedback-sent{padding:12px!important}.right #ym-feedback .ym-star{font-size:22px!important}}
+          </style>
+          <script id="yunamyst-feedback-small-right-js">
+          /* YUNAMYST FEEDBACK SMALL RIGHT V2 */
+          (function(){
+            function moveFeedback(){
+              var feedback=document.getElementById('ym-feedback');
+              var right=document.querySelector('.layout > .right');
+              var faq=right && right.querySelector('.faq');
+              if(feedback && right && faq && feedback.parentElement!==right){
+                right.insertBefore(feedback,faq.nextSibling);
+              }
+            }
+            if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',moveFeedback); else moveFeedback();
           })();
           </script>'''
 
-          # Insert immediately before the FAQ/right-column closing area when possible;
-          # otherwise append before body close. The layout remains responsive.
-          insert = css + '\n' + html
           if '</body>' in s:
-              s = s.replace('</body>', insert + '\n</body>', 1)
+              s = s.replace('</body>', patch + '\n</body>', 1)
           else:
-              s += insert
+              s += patch
           p.write_text(s, encoding='utf-8')
 
       - name: Publicar alteração no index
@@ -107,5 +77,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Adicionar feedback com estado pós-envio"
+          git commit -m "Colocar feedback pequeno abaixo do FAQ"
           git push
