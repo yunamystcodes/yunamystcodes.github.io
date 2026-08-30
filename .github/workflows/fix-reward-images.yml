@@ -20,11 +20,11 @@ jobs:
           import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          s=re.sub(r'<meta name="build-version" content="[^"]*">','<meta name="build-version" content="reward-images-fixed-20260829-v2">',s,count=1)
-          # Remove versões antigas do script e coloca uma versão com cache-bust.
-          s=re.sub(r'<script[^>]+src=["\'](?:\./)?reward-images\.js(?:\?[^"\']*)?["\'][^>]*></script>','<script src="./reward-images.js?v=20260829-v2"></script>',s)
-          if 'reward-images.js?v=20260829-v2' not in s:
-              s=s.replace('</body>','<script src="./reward-images.js?v=20260829-v2"></script>\n</body>',1)
+          s=re.sub(r'<meta name="build-version" content="[^"]*">','<meta name="build-version" content="reward-images-layout-fixed-20260830-v2">',s,count=1)
+          s=re.sub(r'<script[^>]+src=["\'](?:\./)?reward-images\.js(?:\?[^"\']*)?["\'][^>]*></script>','<script src="./reward-images.js?v=20260830-v2"></script>',s)
+          fix_css='''<style id="yunamyst-reward-grid-fix-v2">\n.code.reward-count-1>.reward[data-slot="1"],.code.reward-count-2>.reward[data-slot="1"],.code.reward-count-3>.reward[data-slot="1"]{grid-column:3}\n.code.reward-count-2>.reward[data-slot="2"],.code.reward-count-3>.reward[data-slot="2"]{grid-column:4}\n.code.reward-count-3>.reward[data-slot="3"]{grid-column:5}\n@media(max-width:850px){\n.code.reward-count-1>.reward[data-slot="1"],.code.reward-count-2>.reward[data-slot="1"],.code.reward-count-3>.reward[data-slot="1"]{grid-area:r1}\n.code.reward-count-2>.reward[data-slot="2"],.code.reward-count-3>.reward[data-slot="2"]{grid-area:r2}\n.code.reward-count-3>.reward[data-slot="3"]{grid-area:r3}\n.code.reward-count-1>.copy,.code.reward-count-2>.copy,.code.reward-count-3>.copy{grid-area:copy}\n.code.reward-count-1>.link,.code.reward-count-2>.link,.code.reward-count-3>.link{grid-area:link}\n}\n</style>'''
+          s=re.sub(r'<style id="yunamyst-reward-grid-fix-v2">.*?</style>','',s,flags=re.S)
+          s=s.replace('</head>',fix_css+'\n</head>',1)
           p.write_text(s,encoding='utf-8')
           PY
       - name: Publicar index corrigido
@@ -33,7 +33,7 @@ jobs:
           git config user.email 'actions@github.com'
           git add index.html reward-images.js
           if ! git diff --cached --quiet; then
-            git commit -m 'Corrigir imagens reais das recompensas no index'
+            git commit -m 'Corrigir posicionamento das imagens das recompensas no index'
             git push
           else
             echo 'Index já está atualizado.'
