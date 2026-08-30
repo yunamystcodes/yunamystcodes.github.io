@@ -20,6 +20,17 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
+
+          # ONLY this visual fix: move SUMMONERS WAR below the Y descender.
+          # The logo text remains exactly YunaMyst on desktop and mobile.
+          spacing_marker = '<style id="yunamyst-subtitle-spacing-fix">'
+          if spacing_marker not in s:
+              css_spacing = '''<style id="yunamyst-subtitle-spacing-fix">
+.logo small{margin-top:5px!important}
+@media(max-width:850px){.logo small{margin-top:5px!important}}
+</style>'''
+              s = s.replace('</head>', css_spacing + '\n</head>', 1)
+
           marker = '<style id="yunamyst-header-controls-fix">'
           if marker not in s:
               css = r'''<style id="yunamyst-header-controls-fix">
@@ -101,6 +112,9 @@ jobs:
           PY
       - name: Confirmar alteracao
         run: |
+          grep -qF 'YunaMyst<small>SUMMONERS WAR</small></div>' index.html
+          grep -qF 'yunamyst-subtitle-spacing-fix' index.html
+          grep -qF 'margin-top:5px!important' index.html
           git config user.name 'YunaMyst Header Bot'
           git config user.email 'actions@github.com'
           git add index.html .github/workflows/fix-header-controls.yml
