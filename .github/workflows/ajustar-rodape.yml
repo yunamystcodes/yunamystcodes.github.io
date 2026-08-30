@@ -20,13 +20,20 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = 'YUNAMYST FOOTER FINAL 20260821'
-          if marker not in s:
+
+          footer_marker = 'YUNAMYST FOOTER FINAL 20260821'
+          if footer_marker not in s:
               css = '''\n<style id="yunamyst-footer-final">\n/* YUNAMYST FOOTER FINAL 20260821 */\n#rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}\n@media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}\n</style>\n'''
               s = s.replace('</head>', css + '</head>', 1)
               js = '''\n<script id="yunamyst-footer-final-js">\n/* YUNAMYST FOOTER FINAL 20260821 */\ndocument.addEventListener('DOMContentLoaded',function(){\n  var f=document.getElementById('rodape');\n  var layout=document.querySelector('.layout');\n  if(f && layout){ layout.insertAdjacentElement('afterend',f); }\n});\n</script>\n'''
               s = s.replace('</body>', js + '</body>', 1)
-              p.write_text(s,encoding='utf-8')
+
+          nav_marker = 'HEADER NAV CENTRALIZADA - YunaMyst'
+          if nav_marker not in s:
+              nav_css = '''\n<style id="yunamyst-header-nav-centered">\n/* HEADER NAV CENTRALIZADA - YunaMyst */\n.top .nav{position:relative!important}\n.top .navlinks{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:24px!important;margin:0!important;white-space:nowrap!important}\n.top .navlinks a{white-space:nowrap!important}\n@media(max-width:850px){.top .navlinks{display:none!important}}\n</style>\n'''
+              s = s.replace('</head>', nav_css + '</head>', 1)
+
+          p.write_text(s,encoding='utf-8')
           PY
 
       - name: Commit alteracao
@@ -34,5 +41,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Centralizar rodape abaixo dos codigos"
+          git diff --cached --quiet || git commit -m "Centralizar navegacao do cabecalho no index"
           git push
