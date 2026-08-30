@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-30T09:57:59Z",
+  "updated": "2026-08-30T10:08:23Z",
   "source_count": 11,
   "successful_sources": 11,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -9,6 +9,7 @@
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
     "SWCJOAAAKR26",
+    "SWGAJA2BKK",
     "SWXFRIEREN2026"
   ],
   "rewards": {
@@ -61,6 +62,24 @@
       ]
     ],
     "SWCJOAAAKR26": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "gold",
+        "x1"
+      ],
+      [
+        "red",
+        "x100"
+      ]
+    ],
+    "SWGAJA2BKK": [
       [
         "energy",
         "x100"
@@ -152,6 +171,20 @@
       ]
     },
     "SWCJOAAAKR26": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "SWGAJA2BKK": {
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
