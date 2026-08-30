@@ -29,12 +29,7 @@ jobs:
           s, count = re.subn(pattern, replacement, s, count=1, flags=re.S)
           if count != 1:
               raise SystemExit('Logo not found')
-          # Move the subtitle down. This fixes the y/W overlap without changing
-          # the YunaMyst spelling or the rest of the site, on desktop and mobile.
           s = re.sub(r'(\.logo small\{[^}]*?)margin-top:-3px;', r'\1margin-top:4px;', s, count=1)
-          s = re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>\s*', '', s, flags=re.S)
-          s = re.sub(r'<style id="yunamyst-myst-y-final">.*?</style>\s*', '', s, flags=re.S)
-          s = re.sub(r'\.logo \.myst-y\{[^}]*\}', '', s)
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -42,10 +37,9 @@ jobs:
         shell: bash
         run: |
           grep -qF 'YunaMyst<small>SUMMONERS WAR</small></div>' index.html
-          ! grep -qF 'YunaMyST' index.html
-          ! grep -qF 'class="myst-y"' index.html
           grep -qF 'margin-top:4px' index.html
-          echo 'YunaMyst logo and subtitle spacing verified.'
+          ! grep -qF 'YunaMyST' index.html
+          echo 'YunaMyst logo spacing verified.'
 
       - name: Commit index.html only
         shell: bash
