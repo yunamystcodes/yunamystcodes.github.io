@@ -16,10 +16,7 @@
 .top .navlinks a{display:block!important;white-space:nowrap!important;}
 
 @media(max-width:850px){
-  .left .social-links{height:30px!important;min-height:30px!important;overflow:hidden!important;margin:8px auto 0!important}
-  .left .social-links a{font-size:0!important;color:transparent!important}
-  .left .profile{font-size:0!important}
-  .left .profile h3{font-size:17px!important;line-height:1.1!important;margin:4px 0!important}
-  .left .profile p{font-size:10px!important;line-height:1.25!important;margin:0 auto!important}
+  .left .social-links{height:30px!important;min-height:30px!important;overflow:hidden!important;margin:8px auto 0!important}.left .social-links a{font-size:0!important;color:transparent!important}.left .profile{font-size:0!important}.left .profile h3{font-size:17px!important;line-height:1.1!important;margin:4px 0!important}.left .profile p{font-size:10px!important;line-height:1.25!important;margin:0 auto!important}
   .top .navlinks{display:none!important;}
 }
+/* trigger header-nav workflow */
