@@ -152,7 +152,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-30T23:46:16Z",
+  "updated_at": "2026-08-30T23:56:16Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -304,6 +304,7 @@
         "swquery"
       ],
       "all": [
+        "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
