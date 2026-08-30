@@ -22,27 +22,24 @@ jobs:
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<!-- YUNAMYST-FEEDBACK-V1 -->'
-          if marker not in s:
-              print('Feedback ainda não existe; nada a ajustar.')
-              raise SystemExit(0)
+          if 'id="ym-feedback"' not in s:
+              raise SystemExit('Secção de feedback não encontrada no index.html')
 
-          # Nome opcional.
-          s = s.replace('Nome do player</label>', 'Nome do player <span>(opcional)</span></label>')
-          s = re.sub(r'(<input[^>]*class="[^"]*ym-feedback-name[^"]*"[^>]*?)\s+required(?=[\s>])', r'\1', s, flags=re.I)
-
-          # Botão abaixo de ENVIAR FEEDBACK.
+          # Botão imediatamente abaixo de ENVIAR FEEDBACK.
           if 'id="ym-feedback-all"' not in s:
-              btn = '<button class="ym-feedback-all" id="ym-feedback-all" type="button">VER TODOS OS FEEDBACKS</button>'
-              s = s.replace('</section></aside>', btn + '</section></aside>', 1)
+              button = '<button class="ym-feedback-all" id="ym-feedback-all" type="button">VER TODOS OS FEEDBACKS</button>'
+              target = '<button class="ym-feedback-submit" id="ym-feedback-submit" type="button">ENVIAR FEEDBACK</button>'
+              if target not in s:
+                  raise SystemExit('Botão ENVIAR FEEDBACK não encontrado')
+              s = s.replace(target, target + button, 1)
 
-          # Janela que abre ao clicar no botão.
+          # Janela dos feedbacks.
           if 'id="ym-feedback-modal"' not in s:
               modal = '''
           <div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true">
-            <div class="ym-feedback-modal-card" role="dialog" aria-modal="true">
+            <div class="ym-feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="ym-feedback-modal-title">
               <button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button" aria-label="Fechar">×</button>
-              <h3>💜 TODOS OS FEEDBACKS</h3>
+              <h3 id="ym-feedback-modal-title">💜 TODOS OS FEEDBACKS</h3>
               <div id="ym-feedback-list" class="ym-feedback-list"></div>
             </div>
           </div>'''
