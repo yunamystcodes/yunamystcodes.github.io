@@ -18,6 +18,7 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
@@ -38,14 +39,23 @@ jobs:
               s = s.replace(old, new)
 
           # Se o campo tiver required, remover apenas do campo do nome do player.
-          import re
           s = re.sub(r'(<input[^>]*class="[^"]*ym-feedback-name[^"]*"[^>]*?)\s+required(?=[\s>])', r'\1', s, flags=re.I)
           s = re.sub(r'(<input[^>]*id="[^"]*player[^"]*"[^>]*?)\s+required(?=[\s>])', r'\1', s, flags=re.I)
 
-          patch_marker = '/* YUNAMYST FEEDBACK NAME OPTIONAL V1 */'
-          if patch_marker not in s:
+          optional_marker = '/* YUNAMYST FEEDBACK NAME OPTIONAL V1 */'
+          if optional_marker not in s:
               patch = '''\n<style id="yunamyst-feedback-name-optional">\n/* YUNAMYST FEEDBACK NAME OPTIONAL V1 */\n#ym-feedback .ym-feedback-label span{color:#9f96ae;font-weight:700;margin-left:3px}\n</style>\n'''
               s = s.replace('</body>', patch + '</body>', 1) if '</body>' in s else s + patch
+
+          # Caixa de feedbacks enviados: fica imediatamente abaixo do formulário.
+          display_marker = 'YUNAMYST-FEEDBACK-SENT-BOX-V1'
+          if display_marker not in s:
+              display_css = '''\n<style id="yunamyst-feedback-sent-box">\n/* YUNAMYST-FEEDBACK-SENT-BOX-V1 */\n#ym-feedback-sent{margin-top:12px;padding:15px;border:1px solid #633487;border-radius:14px;background:linear-gradient(180deg,#0c071df2,#050411f2);box-shadow:0 12px 30px #0005}\n#ym-feedback-sent h3{margin:0 0 11px;color:#f0ce70;font-size:14px}\n.ym-sent-empty{color:#9f96ae;font-size:11px;line-height:1.5}\n.ym-sent-item{padding:11px 0;border-top:1px solid #ffffff12}\n.ym-sent-item:first-child{border-top:0;padding-top:0}\n.ym-sent-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:5px}\n.ym-sent-name{color:#dda1ff;font-weight:900;font-size:11px}\n.ym-sent-stars{color:#f0c45c;letter-spacing:1px;font-size:12px}\n.ym-sent-message{color:#cfc7d7;font-size:11px;line-height:1.5;word-break:break-word}\n@media(max-width:850px){#ym-feedback-sent{margin-top:10px;padding:13px}.ym-sent-message{font-size:10px}}\n</style>\n'''
+              display_js = '''\n<script id="yunamyst-feedback-sent-js">\n(function(){\n  const KEY='yunamyst_feedbacks_v1';\n  function esc(v){return String(v||'').replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]})}\n  function getItems(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}\n  function render(){\n    const box=document.getElementById('ym-feedback-sent');\n    if(!box)return;\n    const items=getItems();\n    const body=box.querySelector('.ym-sent-list');\n    if(!body)return;\n    if(!items.length){body.innerHTML='<div class="ym-sent-empty">Ainda não há feedbacks enviados neste dispositivo.</div>';return;}\n    body.innerHTML=items.slice().reverse().map(function(x){\n      const stars=Math.max(0,Math.min(5,Number(x.rating)||0));\n      return '<div class="ym-sent-item"><div class="ym-sent-head"><span class="ym-sent-name">'+esc(x.name||'Jogador')+'</span><span class="ym-sent-stars">'+('★'.repeat(stars))+('☆'.repeat(5-stars))+'</span></div><div class="ym-sent-message">'+esc(x.message)+'</div></div>';\n    }).join('');\n  }\n  function setup(){\n    const formBox=document.getElementById('ym-feedback');\n    if(!formBox)return;\n    if(!document.getElementById('ym-feedback-sent')){\n      const box=document.createElement('div');\n      box.id='ym-feedback-sent';\n      box.innerHTML='<h3>FEEDBACKS ENVIADOS</h3><div class="ym-sent-list"></div>';
+      formBox.insertAdjacentElement('afterend',box);\n    }\n    if(!formBox.dataset.sentCapture){\n      formBox.dataset.sentCapture='1';\n      formBox.addEventListener('click',function(e){\n        const btn=e.target.closest('button');\n        if(!btn || !/ENVIAR FEEDBACK/i.test(btn.textContent||''))return;\n        const name=(formBox.querySelector('.ym-feedback-name')||formBox.querySelector('input[placeholder*="nome" i]'));\n        const msg=(formBox.querySelector('textarea')||formBox.querySelector('.ym-feedback-message'));
+        let rating=0;\n        const checked=formBox.querySelector('input[name="rating"]:checked,input[name="stars"]:checked,input[type="radio"]:checked');\n        if(checked)rating=Number(checked.value)||Number(checked.dataset.rating)||0;\n        if(!rating){const active=formBox.querySelector('.active[data-rating],.selected[data-rating],.star.active');if(active)rating=Number(active.dataset.rating)||0;}\n        const message=(msg&&msg.value||'').trim();\n        if(!message)return;\n        const item={name:(name&&name.value||'').trim()||'Jogador',rating:rating,message:message};\n        const items=getItems();\n        items.push(item);\n        localStorage.setItem(KEY,JSON.stringify(items.slice(-30)));\n        setTimeout(render,50);\n      },true);\n    }\n    render();\n  }\n  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();\n  setTimeout(setup,500);\n  setTimeout(setup,1500);\n})();\n</script>\n'''
+              s = s.replace('</head>', display_css + '</head>', 1)
+              s = s.replace('</body>', display_js + '</body>', 1)
 
           p.write_text(s, encoding='utf-8')
 
@@ -55,5 +65,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Tornar nome do player opcional"
+          git commit -m "Mostrar feedbacks enviados abaixo do formulario"
           git push
