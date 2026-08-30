@@ -1,0 +1,43 @@
+name: Aplicar loop infinito no fundo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bg-loop.yml'
+      - 'index.html'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-bg-loop:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Adicionar animação ao fundo existente
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = ".bg{position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(5,2,15,.5),rgba(5,2,15,.94)),url('https://tec8.com.br/wp-content/uploads/2019/06/Summoners-War.jpg') center/cover no-repeat;pointer-events:none}"
+          new = old + ".bg{animation:yunamystBgLoop 18s ease-in-out infinite alternate;transform-origin:center center;will-change:transform}@keyframes yunamystBgLoop{0%{transform:scale(1.02)}100%{transform:scale(1.06)}}"
+          if old in s and 'yunamystBgLoop' not in s:
+              s = s.replace(old, new, 1)
+          elif 'yunamystBgLoop' in s:
+              raise SystemExit(0)
+          else:
+              raise SystemExit('Regra .bg não encontrada; nada foi alterado.')
+          p.write_text(s, encoding='utf-8')
+
+      - name: Publicar alteração no index
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Adicionar loop infinito ao fundo do site'
+          git push
