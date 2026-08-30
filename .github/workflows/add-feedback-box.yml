@@ -9,12 +9,13 @@ permissions:
 
 jobs:
   add-feedback:
+    if: ${{ !contains(github.event.head_commit.message, '[skip feedback]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Atualizar feedback no index
+      - name: Atualizar feedback e botoes no index
         shell: python
         run: |
           from pathlib import Path
@@ -57,6 +58,25 @@ jobs:
           .ym-feedback-item{padding:13px 12px;margin-bottom:9px;border:1px solid #633487;border-radius:11px;background:#0c0618}
           .ym-feedback-item-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
           .ym-feedback-item-name{font-weight:900;color:#fff;font-size:12px}.ym-feedback-item-stars{color:#f3c65e;font-size:13px;letter-spacing:1px}.ym-feedback-item-text{color:#c9c0d0;font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-word}.ym-feedback-empty{padding:22px;text-align:center;color:#9f96ae;font-size:11px}
+          </style>'''
+              s = s.replace('</body>', css + '</body>', 1)
+
+          # Fixar os botoes de COPIAR e LINK iOS nas colunas certas.
+          # Isto impede que, quando um código tem menos recompensas, os botoes encolham ou mudem de coluna.
+          if 'id="yunamyst-copy-buttons-fix"' not in s:
+              css = '''
+          <style id="yunamyst-copy-buttons-fix">
+          .code>.copy{grid-column:6!important;grid-row:1!important;white-space:nowrap!important;min-width:128px!important}
+          .code>.link{grid-column:7!important;grid-row:1!important;white-space:nowrap!important;min-width:128px!important}
+          @media(max-width:1050px) and (min-width:851px){
+            .code>.copy{grid-column:6!important;min-width:105px!important}
+            .code>.link{grid-column:7!important;min-width:105px!important}
+          }
+          @media(max-width:850px){
+            .code>.copy{grid-area:copy!important;grid-column:auto!important;grid-row:auto!important;min-width:0!important;width:100%!important}
+            .code>.link{grid-area:link!important;grid-column:auto!important;grid-row:auto!important;min-width:0!important;width:100%!important}
+            .code>.copy,.code>.link{white-space:nowrap!important}
+          }
           </style>'''
               s = s.replace('</body>', css + '</body>', 1)
 
@@ -114,7 +134,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Adicionar botão Ver todos os feedbacks [skip feedback]"
+          git commit -m "Fix copy and iOS buttons [skip feedback]"
           git fetch origin main
           git rebase origin/main
           git push
