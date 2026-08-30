@@ -1,6 +1,7 @@
 {
   "active": [
     "2SOREIKENIPPON6",
+    "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
     "SWXFRIEREN2026"
@@ -149,7 +150,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-30T01:17:09Z",
+  "updated_at": "2026-08-30T01:27:25Z",
   "sources": {
     "2SOREIKENIPPON6": {
       "trusted": [
@@ -163,6 +164,14 @@
         "sw-teams",
         "swcoupon",
         "swquery"
+      ]
+    },
+    "2SWCTORONTOTHE6IX": {
+      "trusted": [
+        "sw-teams"
+      ],
+      "all": [
+        "sw-teams"
       ]
     },
     "APAC1K0UB4NGK0K": {
