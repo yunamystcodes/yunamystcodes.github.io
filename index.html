@@ -215,5 +215,37 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 })();
 </script>
+<style id="yunamyst-feedback-small-right">
+/* YUNAMYST FEEDBACK SMALL RIGHT V2 */
+.right #ym-feedback{display:block!important;margin-top:12px!important;width:100%!important;background:linear-gradient(180deg,#0c071df7,#050411f7)!important;border:1px solid #be66ff66!important;border-radius:18px!important;box-shadow:0 18px 45px #0006!important;overflow:hidden!important}
+.right #ym-feedback h2{padding:16px!important;font-size:17px!important;border-bottom:1px solid #fff1!important}
+.right #ym-feedback .ym-feedback-body{padding:14px!important}
+.right #ym-feedback .ym-feedback-label{font-size:10px!important;margin-bottom:6px!important}
+.right #ym-feedback .ym-feedback-name,.right #ym-feedback .ym-feedback-text{font-size:11px!important;padding:9px 10px!important;border-radius:9px!important}
+.right #ym-feedback .ym-feedback-text{min-height:64px!important}
+.right #ym-feedback .ym-stars{gap:2px!important;margin:2px 0 10px!important}
+.right #ym-feedback .ym-star{font-size:23px!important;padding:0 1px!important}
+.right #ym-feedback .ym-feedback-submit{height:38px!important;margin-top:9px!important;font-size:10px!important}
+.right #ym-feedback .ym-feedback-sent{padding:14px!important}
+.right #ym-feedback .ym-feedback-sent-title{font-size:13px!important}
+.right #ym-feedback .ym-feedback-sent-stars{font-size:19px!important}
+.right #ym-feedback .ym-feedback-sent-name{font-size:12px!important}
+.right #ym-feedback .ym-feedback-sent-text{font-size:11px!important}
+@media(max-width:850px){.right #ym-feedback{margin-top:12px!important}.right #ym-feedback h2{padding:14px!important;font-size:16px!important}.right #ym-feedback .ym-feedback-body,.right #ym-feedback .ym-feedback-sent{padding:12px!important}.right #ym-feedback .ym-star{font-size:22px!important}}
+</style>
+<script id="yunamyst-feedback-small-right-js">
+/* YUNAMYST FEEDBACK SMALL RIGHT V2 */
+(function(){
+  function moveFeedback(){
+    var feedback=document.getElementById('ym-feedback');
+    var right=document.querySelector('.layout > .right');
+    var faq=right && right.querySelector('.faq');
+    if(feedback && right && faq && feedback.parentElement!==right){
+      right.insertBefore(feedback,faq.nextSibling);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',moveFeedback); else moveFeedback();
+})();
+</script>
 </body>
 </html>
