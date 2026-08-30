@@ -1,13 +1,14 @@
 {
-  "updated": "2026-08-30T01:37:38Z",
-  "source_count": 11,
-  "successful_sources": 11,
+  "updated": "2026-08-30T01:38:25Z",
+  "source_count": 20,
+  "successful_sources": 13,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
+    "LAST4PUNCHIN",
     "SWXFRIEREN2026"
   ],
   "sources": {
@@ -59,7 +60,21 @@
         "swquery"
       ],
       "all": [
-        "levelgeeks",
+        "pockettactics",
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "LAST4PUNCHIN": {
+      "trusted": [
+        "summonerswarcodes",
+        "sw-teams",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
@@ -75,6 +90,7 @@
       ],
       "all": [
         "pocketgamer",
+        "pockettactics",
         "summonerswarcodes",
         "sw-teams",
         "swcoupon",
