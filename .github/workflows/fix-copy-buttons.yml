@@ -1,4 +1,4 @@
-name: Fix copy and iOS buttons
+name: Fix copy and iOS buttons FINAL
 
 on:
   push:
@@ -25,22 +25,27 @@ jobs:
           s=p.read_text(encoding='utf-8')
           css='''
           <style id="yunamyst-copy-buttons-final">
-          .code{position:relative!important;padding-right:242px!important;overflow:hidden!important;}
-          .code>.copy{position:absolute!important;right:128px!important;top:50%!important;transform:translateY(-50%)!important;width:110px!important;min-width:110px!important;height:44px!important;white-space:nowrap!important;}
-          .code>.link{position:absolute!important;right:10px!important;top:50%!important;transform:translateY(-50%)!important;width:110px!important;min-width:110px!important;height:44px!important;white-space:nowrap!important;}
+          /* FINAL: keep both actions fully inside every code card */
+          .code{position:relative!important;overflow:hidden!important;box-sizing:border-box!important;padding-right:250px!important;}
+          .code>.copy,.code>.link{box-sizing:border-box!important;position:absolute!important;top:50%!important;transform:translateY(-50%)!important;height:44px!important;width:112px!important;min-width:112px!important;max-width:112px!important;white-space:nowrap!important;z-index:5!important;}
+          .code>.copy{right:130px!important;}
+          .code>.link{right:10px!important;}
           @media(max-width:1050px) and (min-width:851px){
-            .code{padding-right:216px!important;}
-            .code>.copy{right:112px!important;width:100px!important;min-width:100px!important;}
-            .code>.link{right:8px!important;width:100px!important;min-width:100px!important;}
+            .code{padding-right:226px!important;}
+            .code>.copy,.code>.link{width:104px!important;min-width:104px!important;max-width:104px!important;}
+            .code>.copy{right:114px!important;}
+            .code>.link{right:10px!important;}
           }
           @media(max-width:850px){
-            .code{position:relative!important;padding-right:8px!important;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;}
-            .code>.copy{position:static!important;grid-area:copy!important;transform:none!important;width:100%!important;min-width:0!important;height:44px!important;}
-            .code>.link{position:static!important;grid-area:link!important;transform:none!important;width:100%!important;min-width:0!important;height:44px!important;}
+            .code{padding:8px!important;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:48px 56px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;}
+            .code>.copy,.code>.link{position:static!important;transform:none!important;width:100%!important;min-width:0!important;max-width:none!important;height:44px!important;}
+            .code>.copy{grid-area:copy!important;}
+            .code>.link{grid-area:link!important;}
           }
           </style>'''
           s=re.sub(r'<style id="yunamyst-copy-buttons-final">.*?</style>\s*','',s,flags=re.S)
           s=re.sub(r'<style id="yunamyst-copy-buttons-fix">.*?</style>\s*','',s,flags=re.S)
+          if '</body>' not in s: raise SystemExit('index.html body not found')
           s=s.replace('</body>',css+'</body>',1)
           p.write_text(s,encoding='utf-8')
       - name: Publish safely
@@ -50,7 +55,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Fix copy and iOS buttons [skip copy-fix]"
+          git commit -m "Apply final copy and iOS button fix [skip copy-fix]"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
