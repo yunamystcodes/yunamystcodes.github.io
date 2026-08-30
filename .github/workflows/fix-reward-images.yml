@@ -1,4 +1,4 @@
-name: Corrigir imagens das recompensas no index
+name: Corrigir imagens e detalhes do index
 
 on:
   push:
@@ -13,28 +13,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Atualizar cache das imagens e garantir CSS correto no index
+      - name: Corrigir apenas o logo YunaMyst no index
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          s=re.sub(r'<meta name="build-version" content="[^"]*">','<meta name="build-version" content="reward-images-layout-fixed-20260830-v2">',s,count=1)
-          s=re.sub(r'<script[^>]+src=["\'](?:\./)?reward-images\.js(?:\?[^"\']*)?["\'][^>]*></script>','<script src="./reward-images.js?v=20260830-v2"></script>',s)
-          fix_css='''<style id="yunamyst-reward-grid-fix-v2">\n.code.reward-count-1>.reward[data-slot="1"],.code.reward-count-2>.reward[data-slot="1"],.code.reward-count-3>.reward[data-slot="1"]{grid-column:3}\n.code.reward-count-2>.reward[data-slot="2"],.code.reward-count-3>.reward[data-slot="2"]{grid-column:4}\n.code.reward-count-3>.reward[data-slot="3"]{grid-column:5}\n@media(max-width:850px){\n.code.reward-count-1>.reward[data-slot="1"],.code.reward-count-2>.reward[data-slot="1"],.code.reward-count-3>.reward[data-slot="1"]{grid-area:r1}\n.code.reward-count-2>.reward[data-slot="2"],.code.reward-count-3>.reward[data-slot="2"]{grid-area:r2}\n.code.reward-count-3>.reward[data-slot="3"]{grid-area:r3}\n.code.reward-count-1>.copy,.code.reward-count-2>.copy,.code.reward-count-3>.copy{grid-area:copy}\n.code.reward-count-1>.link,.code.reward-count-2>.link,.code.reward-count-3>.link{grid-area:link}\n}\n</style>'''
-          s=re.sub(r'<style id="yunamyst-reward-grid-fix-v2">.*?</style>','',s,flags=re.S)
-          s=s.replace('</head>',fix_css+'\n</head>',1)
+
+          # Corrige o texto do logo para YunaMyst (M + y minúsculo + st)
+          s=s.replace('YunaM<span class="myst-y">y</span>st', 'YunaM<span class="myst-y">y</span>st')
+
+          # Garante que o y fique menor e ligeiramente abaixo, sem subir sobre o M/W visualmente.
+          css='''<style id="yunamyst-logo-fix-v3">\n.logo .myst-y{font-size:.58em!important;display:inline-block!important;line-height:1!important;vertical-align:baseline!important;position:relative!important;top:.08em!important;margin:0 -.015em!important}\n@media(max-width:850px){.logo .myst-y{font-size:.58em!important;top:.08em!important}}\n</style>'''
+          s=re.sub(r'<style id="yunamyst-logo-fix-v3">.*?</style>','',s,flags=re.S)
+          s=s.replace('</head>',css+'\n</head>',1)
+
           p.write_text(s,encoding='utf-8')
           PY
-      - name: Publicar index corrigido
+      - name: Publicar alteração no index
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add index.html reward-images.js
+          git add index.html
           if ! git diff --cached --quiet; then
-            git commit -m 'Corrigir posicionamento das imagens das recompensas no index'
+            git commit -m 'Corrigir logo YunaMyst no PC e telemóvel'
             git push
           else
-            echo 'Index já está atualizado.'
+            echo 'Index já está corrigido.'
           fi
