@@ -52,6 +52,20 @@
 .code .copy,.code .link{width:100%!important;max-width:100%!important;min-width:0!important;height:44px!important;font-size:11px!important;padding:0 6px!important;}
 }
 </style>
+
+<style id="yunamyst-footer-final">
+/* YUNAMYST FOOTER FINAL 20260821 */
+#rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}
+@media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}
+</style>
+
+<style id="yunamyst-header-nav-centered">
+/* HEADER NAV CENTRALIZADA - YunaMyst */
+.top .nav{position:relative!important}
+.top .navlinks{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:24px!important;margin:0!important;white-space:nowrap!important}
+.top .navlinks a{white-space:nowrap!important}
+@media(max-width:850px){.top .navlinks{display:none!important}}
+</style>
 </head>
 <body>
 <div class="bg"></div>
@@ -246,5 +260,14 @@ applyLang();load();setInterval(load,600000);
   .code>.copy{grid-area:copy!important;}
   .code>.link{grid-area:link!important;}
 }
-</style></body>
+</style>
+<script id="yunamyst-footer-final-js">
+/* YUNAMYST FOOTER FINAL 20260821 */
+document.addEventListener('DOMContentLoaded',function(){
+  var f=document.getElementById('rodape');
+  var layout=document.querySelector('.layout');
+  if(f && layout){ layout.insertAdjacentElement('afterend',f); }
+});
+</script>
+</body>
 </html>
