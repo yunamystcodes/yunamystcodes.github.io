@@ -3,7 +3,6 @@
     "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
-    "AUGSW2026V7N",
     "SWCJOAAAKR26",
     "SWGAJA2BKK",
     "SWXFRIEREN2026"
@@ -152,7 +151,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-31T16:16:07Z",
+  "updated_at": "2026-08-31T16:26:49Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -186,16 +185,6 @@
       [
         "gold",
         "x1"
-      ]
-    ],
-    "AUGSW2026V7N": [
-      [
-        "red",
-        "x3"
-      ],
-      [
-        "energy",
-        "x100"
       ]
     ],
     "SWCJOAAAKR26": [
@@ -282,15 +271,6 @@
         "sw-teams",
         "swcoupon",
         "swquery"
-      ]
-    },
-    "AUGSW2026V7N": {
-      "trusted": [
-        "sw-teams"
-      ],
-      "all": [
-        "levelgeeks",
-        "sw-teams"
       ]
     },
     "SWCJOAAAKR26": {
