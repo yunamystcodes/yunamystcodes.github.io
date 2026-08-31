@@ -4,7 +4,6 @@
     "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
-    "SEPSW2026I8B",
     "SWCJOAAAKR26",
     "SWGAJA2BKK",
     "SWXFRIEREN2026"
@@ -153,7 +152,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-31T16:00:37Z",
+  "updated_at": "2026-08-31T16:16:07Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -172,19 +171,11 @@
       ],
       [
         "mana",
-        "x300000"
+        "x200000"
       ],
       [
         "gold",
         "x1"
-      ],
-      [
-        "red",
-        "x100"
-      ],
-      [
-        "blue",
-        "x300000"
       ]
     ],
     "APAC1K0UB4NGK0K": [
@@ -207,28 +198,6 @@
         "x100"
       ]
     ],
-    "SEPSW2026I8B": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "mana",
-        "x300000"
-      ],
-      [
-        "gold",
-        "x1"
-      ],
-      [
-        "red",
-        "x100"
-      ],
-      [
-        "blue",
-        "x300000"
-      ]
-    ],
     "SWCJOAAAKR26": [
       [
         "energy",
@@ -236,19 +205,11 @@
       ],
       [
         "mana",
-        "x300000"
+        "x200000"
       ],
       [
         "gold",
         "x1"
-      ],
-      [
-        "red",
-        "x100"
-      ],
-      [
-        "blue",
-        "x300000"
       ]
     ],
     "SWGAJA2BKK": [
@@ -258,19 +219,11 @@
       ],
       [
         "mana",
-        "x300000"
+        "x200000"
       ],
       [
         "gold",
         "x1"
-      ],
-      [
-        "red",
-        "x100"
-      ],
-      [
-        "blue",
-        "x300000"
       ]
     ],
     "SWXFRIEREN2026": [
@@ -333,31 +286,11 @@
     },
     "AUGSW2026V7N": {
       "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
+        "sw-teams"
       ],
       "all": [
         "levelgeeks",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SEPSW2026I8B": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
+        "sw-teams"
       ]
     },
     "SWCJOAAAKR26": {
