@@ -4,6 +4,7 @@
     "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
+    "SEPSW2026I8B",
     "SWCJOAAAKR26",
     "SWGAJA2BKK",
     "SWXFRIEREN2026"
@@ -152,7 +153,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-31T15:08:09Z",
+  "updated_at": "2026-08-31T15:18:42Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -171,7 +172,7 @@
       ],
       [
         "mana",
-        "x200000"
+        "x300000"
       ],
       [
         "gold",
@@ -180,6 +181,10 @@
       [
         "red",
         "x100"
+      ],
+      [
+        "blue",
+        "x300000"
       ]
     ],
     "APAC1K0UB4NGK0K": [
@@ -202,14 +207,14 @@
         "x100"
       ]
     ],
-    "SWCJOAAAKR26": [
+    "SEPSW2026I8B": [
       [
         "energy",
         "x100"
       ],
       [
         "mana",
-        "x200000"
+        "x300000"
       ],
       [
         "gold",
@@ -218,6 +223,32 @@
       [
         "red",
         "x100"
+      ],
+      [
+        "blue",
+        "x300000"
+      ]
+    ],
+    "SWCJOAAAKR26": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "mana",
+        "x300000"
+      ],
+      [
+        "gold",
+        "x1"
+      ],
+      [
+        "red",
+        "x100"
+      ],
+      [
+        "blue",
+        "x300000"
       ]
     ],
     "SWGAJA2BKK": [
@@ -227,7 +258,7 @@
       ],
       [
         "mana",
-        "x200000"
+        "x300000"
       ],
       [
         "gold",
@@ -236,6 +267,10 @@
       [
         "red",
         "x100"
+      ],
+      [
+        "blue",
+        "x300000"
       ]
     ],
     "SWXFRIEREN2026": [
@@ -307,6 +342,18 @@
         "levelgeeks",
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
+        "swquery"
+      ]
+    },
+    "SEPSW2026I8B": {
+      "trusted": [
+        "summonerswarcodes",
+        "swcoupon",
+        "swquery"
+      ],
+      "all": [
+        "summonerswarcodes",
         "swcoupon",
         "swquery"
       ]
