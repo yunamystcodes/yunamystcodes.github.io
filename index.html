@@ -42,7 +42,17 @@
   .reward img{display:block!important;width:42px!important;height:42px!important;object-fit:contain!important;margin:auto!important}
   .rewards{display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;justify-content:center!important;gap:7px!important;padding:3px 0!important}
 }
-</style></head>
+</style><!-- YUNAMYST BUTTON FIX FINAL -->
+<style id="yunamyst-button-fix-final">
+/* FINAL: keep COPIAR and LINK iOS fully inside each code card */
+.code{grid-template-columns:52px minmax(110px,1fr) 52px 52px 52px minmax(108px,120px) minmax(108px,120px)!important;gap:8px!important;}
+.code .copy,.code .link{min-width:0!important;width:100%!important;max-width:100%!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+@media(max-width:1050px) and (min-width:851px){.code{grid-template-columns:48px minmax(90px,1fr) 44px 44px 44px minmax(92px,1fr) minmax(92px,1fr)!important;gap:6px!important;}}
+@media(max-width:850px){.code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;width:100%!important;}
+.code .copy,.code .link{width:100%!important;max-width:100%!important;min-width:0!important;height:44px!important;font-size:11px!important;padding:0 6px!important;}
+}
+</style>
+</head>
 <body>
 <div class="bg"></div>
 <header class="top"><div class="container nav">
