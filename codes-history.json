@@ -151,7 +151,7 @@
     "YOUKOSOSWC24WF"
   ],
   "missing": {},
-  "updated_at": "2026-08-31T18:16:18Z",
+  "updated_at": "2026-08-31T18:26:41Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -235,11 +235,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -247,11 +249,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -259,11 +263,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -271,11 +277,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -283,11 +291,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -295,17 +305,17 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "pocketgamer",
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     }
   },
-  "source_errors": [
-    "swcoupon: IncompleteRead(50888 bytes read)"
-  ]
+  "source_errors": []
 }

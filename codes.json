@@ -1,7 +1,7 @@
 {
-  "updated": "2026-08-31T18:16:18Z",
+  "updated": "2026-08-31T18:26:41Z",
   "source_count": 11,
-  "successful_sources": 10,
+  "successful_sources": 11,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "2SOREIKENIPPON6",
@@ -94,11 +94,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -106,11 +108,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -118,11 +122,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -130,11 +136,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -142,11 +150,13 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     },
@@ -154,12 +164,14 @@
       "trusted": [
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ],
       "all": [
         "pocketgamer",
         "summonerswarcodes",
         "sw-teams",
+        "swcoupon",
         "swquery"
       ]
     }
