@@ -213,8 +213,8 @@ applyLang();load();setInterval(load,600000);
     document.querySelectorAll('[data-i18n="navCodes"]').forEach(x=>textNode(x,T.navCodes));
     document.querySelectorAll('[data-i18n="navHow"]').forEach(x=>textNode(x,T.navHow));
     const h=document.querySelector('.hero h1');if(h)h.textContent=T.hero;
-    const wa=document.querySelector('.community-tab.whatsapp');if(wa)textNode(wa,T.whats);
-    const pa=document.querySelector('.community-tab.partnership');if(pa)textNode(pa,T.partner);
+    const wa=document.querySelector('.community-tab.whatsapp');const ws=wa?.querySelector('strong');if(ws)ws.textContent=T.whats;
+    const pa=document.querySelector('.community-tab.partnership');const ps=pa?.querySelector('strong');if(ps)ps.textContent=T.partner;
     const head=document.querySelector('#codigos .section-head');if(head){const span=head.querySelector('span');head.firstChild.textContent=T.codes+' ';if(span)span.textContent=T.updated}
     document.querySelectorAll('.cinfo small').forEach(x=>{if(/Código ativo|Active code/i.test(x.textContent))x.textContent=T.active});
     document.querySelectorAll('.copy').forEach(x=>textNode(x,T.copy));
