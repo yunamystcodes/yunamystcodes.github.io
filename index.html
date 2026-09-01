@@ -118,7 +118,7 @@ function applyLang(){document.documentElement.lang=lang==='en'?'en':'pt-BR';docu
 function rewardIcon(kind){const pos={energy:0,yellow:48,blue:96,red:144,crystal:192,gold:240,mana:288}[kind];if(pos===undefined){const s=document.createElement('span');s.textContent='🎁';return s}const img=document.createElement('img');img.src=SPRITE;img.alt=kind;img.style.objectPosition='0 0';img.style.objectFit='cover';img.style.objectPosition='-'+pos+'px 0';img.style.width='48px';img.style.height='48px';img.style.clipPath='inset(0 '+(288-pos)+'px 0 '+pos+'px)';img.style.marginLeft=pos?'auto':'auto';return img}
 function makeCard(code,rewards){const a=document.createElement('article');a.className='code';const top=document.createElement('div');top.className='code-top';const gift=document.createElement('div');gift.className='gift';gift.textContent='🎁';const info=document.createElement('div');info.className='cinfo';const strong=document.createElement('strong');strong.textContent=code;const small=document.createElement('small');small.textContent=t('activeStatus');info.append(strong,small);top.append(gift,info);a.append(top);const rw=document.createElement('div');rw.className='rewards';(rewards||[]).forEach(([kind,qty])=>{const r=document.createElement('div');r.className='reward';r.append(rewardIcon(kind));const b=document.createElement('b');b.textContent=qty;r.append(b);rw.append(r)});a.append(rw);const actions=document.createElement('div');actions.className='actions';const copy=document.createElement('button');copy.className='copy';copy.type='button';copy.textContent=t('copy');copy.onclick=()=>{navigator.clipboard?.writeText(code).then(()=>{copy.textContent=t('copied');setTimeout(()=>copy.textContent=t('copy'),1500)}).catch(()=>window.prompt(t('copyPrompt'),code))};const link=document.createElement('a');link.className='link';link.href=redeem+encodeURIComponent(code);link.target='_blank';link.rel='noopener noreferrer';link.textContent=t('ios');actions.append(copy,link);a.append(actions);return a}
 function renderCodes(codes){const root=$('ativos');if(!root)return;root.innerHTML='';codes.forEach(c=>root.append(makeCard(c.code,c.rewards)))}
-async function load(){try{const r=await fetch('./codes.json?v=1788254361'+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);const d=await r.json();window.__codes=(d.codes||[]).map(code=>({code:String(code).toUpperCase(),rewards:d.rewards?.[code]||[]}));renderCodes(window.__codes)}catch(e){$('ativos').innerHTML='<div style="padding:25px;text-align:center;color:#c9c0d0">'+t('loadError')+'</div>'}}
+async function load(){try{const r=await fetch('./codes.json?v=1788255270'+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);const d=await r.json();window.__codes=(d.codes||[]).map(code=>({code:String(code).toUpperCase(),rewards:d.rewards?.[code]||[]}));renderCodes(window.__codes)}catch(e){$('ativos').innerHTML='<div style="padding:25px;text-align:center;color:#c9c0d0">'+t('loadError')+'</div>'}}
 const ls=$('langSwitch');$('langToggle').onclick=e=>{e.stopPropagation();ls.classList.toggle('open')};document.addEventListener('click',e=>{if(!ls.contains(e.target))ls.classList.remove('open')});$('langPTOption').onclick=()=>{lang='pt';localStorage.setItem('yunamyst-lang','pt');ls.classList.remove('open');applyLang()};$('langENOption').onclick=()=>{lang='en';localStorage.setItem('yunamyst-lang','en');ls.classList.remove('open');applyLang()};
 $('partnershipBtn').onclick=()=>$('parceriaModal').classList.add('open');$('modalClose').onclick=()=>$('parceriaModal').classList.remove('open');$('parceriaModal').onclick=e=>{if(e.target.id==='parceriaModal')$('parceriaModal').classList.remove('open')};document.querySelectorAll('.faq-q').forEach(q=>q.onclick=()=>q.parentElement.classList.toggle('active'));
 const music=$('bgMusic'),sound=$('soundToggle');if(music&&sound){music.volume=.06;music.muted=localStorage.getItem('yunamyst-mute-v3')==='1';sound.textContent=music.muted?'🔇':'🔊';sound.onclick=()=>{music.muted=!music.muted;localStorage.setItem('yunamyst-mute-v3',music.muted?'1':'0');if(!music.muted)music.play().catch(()=>{});sound.textContent=music.muted?'🔇':'🔊'}}
@@ -159,41 +159,7 @@ applyLang();load();setInterval(load,600000);
     <div id="ym-feedback-list" class="ym-feedback-list"></div>
   </div>
 </div>
-<script id="yunamyst-feedback-js">
-(function(){
-  const root=document.getElementById('ym-feedback');
-  if(!root)return;
-  const KEY='yunamyst_feedbacks_v2';
-  const stars=[...root.querySelectorAll('.ym-star')];
-  let rating=0;
-  stars.forEach(star=>star.addEventListener('click',()=>{
-    rating=Number(star.dataset.rating)||0;
-    stars.forEach(x=>x.classList.toggle('active',Number(x.dataset.rating)<=rating));
-  }));
-  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
-  const submit=document.getElementById('ym-feedback-submit');
-  if(submit)submit.addEventListener('click',()=>{
-    const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador';
-    const message=(root.querySelector('.ym-feedback-text')?.value||'').trim();
-    if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return;}
-    const items=read();items.push({name,rating,message,createdAt:Date.now()});
-    localStorage.setItem(KEY,JSON.stringify(items.slice(-50)));
-    root.querySelector('.ym-feedback-text').value='';
-    stars.forEach(x=>x.classList.remove('active'));rating=0;
-    submit.textContent='FEEDBACK ENVIADO ✓';
-    setTimeout(()=>submit.textContent='ENVIAR FEEDBACK',1600);
-  });
-  const modal=document.getElementById('ym-feedback-modal'),list=document.getElementById('ym-feedback-list'),open=document.getElementById('ym-feedback-all'),close=document.getElementById('ym-feedback-modal-close');
-  const render=()=>{
-    const items=read().slice().reverse();list.innerHTML='';
-    if(!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados neste navegador.</div>';return;}
-    items.forEach(x=>{const box=document.createElement('div');box.className='ym-feedback-item';box.innerHTML='<div class="ym-feedback-item-head"><div class="ym-feedback-item-name"></div><div class="ym-feedback-item-stars"></div></div><div class="ym-feedback-item-text"></div>';box.querySelector('.ym-feedback-item-name').textContent=x.name||'Jogador';const n=Math.max(0,Math.min(5,Number(x.rating)||0));box.querySelector('.ym-feedback-item-stars').textContent='★'.repeat(n)+'☆'.repeat(5-n);box.querySelector('.ym-feedback-item-text').textContent=x.message||'';list.append(box)});
-  };
-  open?.addEventListener('click',()=>{render();modal.classList.add('open');modal.setAttribute('aria-hidden','false')});
-  close?.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});
-  modal?.addEventListener('click',e=>{if(e.target===modal)close.click()});
-})();
-</script>
+
 <script id="yunamyst-language-fix">
 (function(){
   const PT={navHome:'⌂ INÍCIO',navCodes:'⚔ SUMMONERS WAR',navHow:'❔ COMO USAR',hero:'SUMMONERS WAR',whats:'WHATSAPP',partner:'🤝 PARCERIA',codes:'🎁 CÓDIGOS ATIVOS',updated:'⟳ Sempre atualizados!',active:'🔄 Código ativo',copy:'▣ COPIAR',ios:'🔗 LINK iOS',how:'❔ COMO USAR',faq:'FAQ',feedback:'💜 FEEDBACK',send:'ENVIAR FEEDBACK',all:'VER TODOS OS FEEDBACKS'};
@@ -278,5 +244,53 @@ document.addEventListener('DOMContentLoaded',function(){
 .code>.actions{display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}
 .code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}
 }
-</style></body>
+</style><script id="yunamyst-feedback-central-js">
+(function(){
+const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks';
+const root=document.getElementById('ym-feedback');
+const modal=document.getElementById('ym-feedback-modal');
+const list=document.getElementById('ym-feedback-list');
+const open=document.getElementById('ym-feedback-all');
+const close=document.getElementById('ym-feedback-modal-close');
+if(!root||!modal||!list||!open||!close)return;
+let rating=0;
+const stars=[...root.querySelectorAll('.ym-star')];
+const submit=document.getElementById('ym-feedback-submit');
+stars.forEach(star=>star.addEventListener('click',()=>{rating=Number(star.dataset.rating)||0;stars.forEach(x=>x.classList.toggle('active',Number(x.dataset.rating)<=rating));}));
+async function loadFeedbacks(){
+list.innerHTML='<div class="ym-feedback-empty">A carregar todos os feedbacks...</div>';
+try{
+const res=await fetch(API+'?t='+Date.now(),{cache:'no-store',headers:{'Accept':'application/json'}});
+if(!res.ok)throw new Error('GET '+res.status);
+const items=await res.json(); list.innerHTML='';
+if(!Array.isArray(items)||!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';return;}
+items.forEach(x=>{
+const box=document.createElement('div');box.className='ym-feedback-item';
+const head=document.createElement('div');head.className='ym-feedback-item-head';
+const name=document.createElement('div');name.className='ym-feedback-item-name';name.textContent=x.name||'Jogador';
+const starsBox=document.createElement('div');starsBox.className='ym-feedback-item-stars';
+const n=Math.max(0,Math.min(5,Number(x.rating)||0));starsBox.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+const text=document.createElement('div');text.className='ym-feedback-item-text';text.textContent=x.message||'';
+head.append(name,starsBox);box.append(head,text);list.append(box);
+});
+}catch(e){console.error('Feedbacks:',e);list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>';}}
+if(submit)submit.addEventListener('click',async()=>{
+const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador';
+const message=(root.querySelector('.ym-feedback-text')?.value||'').trim();
+if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return;}
+submit.disabled=true; const oldText=submit.textContent; submit.textContent='A ENVIAR...';
+try{
+const res=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,rating,message})});
+if(!res.ok)throw new Error('POST '+res.status);
+root.querySelector('.ym-feedback-text').value='';stars.forEach(x=>x.classList.remove('active'));rating=0;
+submit.textContent='FEEDBACK ENVIADO ✓'; await loadFeedbacks(); setTimeout(()=>submit.textContent=oldText,1800);
+}catch(e){console.error('Envio de feedback:',e);alert('Não foi possível enviar o feedback. Tenta novamente.');submit.textContent=oldText;}finally{submit.disabled=false;}
+});
+open.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');loadFeedbacks();});
+close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
+modal.addEventListener('click',e=>{if(e.target===modal)close.click();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close.click();});
+})();
+</script>
+</body>
 </html>
