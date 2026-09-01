@@ -16,7 +16,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Fix button layout and language in index
+      - name: Add reliable language switch to index
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          tag='<script src="./language-fix.js?v=20260901"></script>'
+          if 'language-fix.js' not in s:
+              if '</body>' not in s: raise SystemExit('body not found')
+              s=s.replace('</body>',tag+'\n</body>',1)
+              p.write_text(s,encoding='utf-8')
+      - name: Fix button layout in index
         shell: python
         run: |
           from pathlib import Path
@@ -25,22 +36,12 @@ jobs:
           s=p.read_text(encoding='utf-8')
           css='''
           <style id="yunamyst-copy-buttons-real-final">
-          @media(min-width:851px){.code{display:grid!important;grid-template-columns:52px minmax(120px,1fr) minmax(170px,1fr) 220px!important;gap:8px!important;align-items:center!important;min-width:0!important;overflow:hidden!important;box-sizing:border-box!important}.code-top{display:contents!important}.code-top>.gift{grid-column:1!important;min-width:0!important}.code-top>.cinfo{grid-column:2!important;min-width:0!important}.code>.rewards{grid-column:3!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-width:0!important;overflow:hidden!important;padding:0!important}.code>.actions{grid-column:4!important;display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:44px!important;padding:0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}}
-          @media(max-width:1050px) and (min-width:851px){.code{grid-template-columns:48px minmax(95px,1fr) minmax(125px,1fr) 190px!important;gap:6px!important}.code>.actions{gap:6px!important}}
-          @media(max-width:850px){.code{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:9px!important;padding:12px 9px!important;width:100%!important;min-width:0!important;overflow:visible!important;box-sizing:border-box!important}.code-top{display:flex!important;align-items:center!important;gap:10px!important;width:100%!important;min-width:0!important}.code-top>.gift{width:44px!important;height:44px!important;flex:none!important}.code-top>.cinfo{flex:1!important;min-width:0!important}.code>.rewards{display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;justify-content:center!important;gap:7px!important;width:100%!important;min-width:0!important;overflow:visible!important;padding:3px 0!important}.code>.actions{display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}}
+          @media(min-width:851px){.code{display:grid!important;grid-template-columns:52px minmax(120px,1fr) minmax(170px,1fr) 220px!important;gap:8px!important;align-items:center!important;min-width:0!important;overflow:hidden!important;box-sizing:border-box!important}.code-top{display:contents!important}.code-top>.gift{grid-column:1!important}.code-top>.cinfo{grid-column:2!important}.code>.rewards{grid-column:3!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-width:0!important;overflow:hidden!important}.code>.actions{grid-column:4!important;display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;height:44px!important;padding:0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}}
+          @media(max-width:850px){.code{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:9px!important;padding:12px 9px!important;width:100%!important;min-width:0!important;overflow:visible!important;box-sizing:border-box!important}.code-top{display:flex!important;align-items:center!important;gap:10px!important;width:100%!important}.code-top>.gift{width:44px!important;height:44px!important;flex:none!important}.code-top>.cinfo{flex:1!important;min-width:0!important}.code>.rewards{display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;justify-content:center!important;gap:7px!important;width:100%!important;overflow:visible!important;padding:3px 0!important}.code>.actions{display:flex!important;gap:8px!important;width:100%!important}.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}}
           </style>'''
-          s=re.sub(r'<style id="yunamyst-copy-buttons-final">.*?</style>\s*','',s,flags=re.S)
           s=re.sub(r'<style id="yunamyst-copy-buttons-real-final">.*?</style>\s*','',s,flags=re.S)
-          s=re.sub(r'<style id="yunamyst-copy-buttons-fix">.*?</style>\s*','',s,flags=re.S)
-          s=re.sub(r'<style id="yunamyst-button-fix-final">.*?</style>\s*','',s,flags=re.S)
-          s=re.sub(r'<style id="yunamyst-button-layout-real-fix">.*?</style>\s*','',s,flags=re.S)
           if '</body>' not in s: raise SystemExit('index.html body not found')
           s=s.replace('</body>',css+'</body>',1)
-          marker='<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->'
-          if marker not in s:
-            lang_js=r'''<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->
-<script>(function(){const pt={'HOME':'INÍCIO','HOW TO USE':'COMO USAR','Always updated!':'Sempre atualizados!','Active code':'Código ativo','Copy the code':'Copie o código','Click COPY on the desired code.':'Clica em COPIAR no código desejado.','Open the game':'Abra o jogo','Enter Summoners War: Sky Arena.':'Entra no Summoners War: Sky Arena.','Redeem the code':'Resgata o código','Use the redeem link.':'Usa o link de resgate.','Enjoy!':'Aproveita!','Receive the reward in the game.':'Recebe a recompensa no jogo.','Where do I enter the codes?':'Onde coloco os códigos?','Do the codes expire?':'Os códigos expiram?','Can I use on iPhone?':'Posso usar no iPhone?','Player name (optional)':'Nome de player (opcional)','How do you rate the site?':'Como você avalia o site?','Your rating':'Sua avaliação','Message':'Mensagem','Leave your opinion or suggestion...':'Deixa a tua opinião ou sugestão...','SEND FEEDBACK':'ENVIAR FEEDBACK','VIEW ALL FEEDBACK':'VER TODOS OS FEEDBACKS','ALL FEEDBACKS':'TODOS OS FEEDBACKS','No feedbacks have been submitted on this browser yet.':'Ainda não há feedbacks enviados neste navegador.','ABOUT THE SITE':'SOBRE O SITE','Daily Summoners War content!':'Conteúdo diário de Summoners War!','Here you can find the active Summoners War: Sky Arena codes.':'Aqui encontras os códigos ativos de Summoners War: Sky Arena.','Save the site and come back always!':'Guarda o site e volta sempre!','PARTNERSHIP':'PARCERIA','COPY':'COPIAR','iOS LINK':'LINK iOS'};const reverse={};for(const k in pt)reverse[pt[k]]=k;const original=new WeakMap();function translate(toEN){document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,a,button,label,small,strong,b,span').forEach(el=>{if(el.children.length)return;if(!original.has(el))original.set(el,el.textContent.trim());const o=original.get(el);el.textContent=toEN?(pt[o]||o):(reverse[o]||o)});document.documentElement.lang=toEN?'en':'pt-BR';const b=document.getElementById('langToggle');if(b)b.textContent=toEN?'🇬🇧 ENG':'🇧🇷 PT/BR';document.getElementById('langPTOption')?.classList.toggle('selected',!toEN);document.getElementById('langENOption')?.classList.toggle('selected',toEN)}function apply(en){translate(en);try{localStorage.setItem('yunamyst-language',en?'en':'pt')}catch(e){}document.getElementById('langSwitch')?.classList.remove('open')}function setup(){const sw=document.getElementById('langSwitch'),t=document.getElementById('langToggle'),p=document.getElementById('langPTOption'),e=document.getElementById('langENOption');if(!sw||!t||!p||!e)return;t.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();sw.classList.toggle('open')},true);p.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(false)},true);e.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(true)},true);document.addEventListener('click',x=>{if(!sw.contains(x.target))sw.classList.remove('open')},true);try{if(localStorage.getItem('yunamyst-language')==='en')setTimeout(()=>apply(true),0)}catch(x){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup()})();</script>'''
-            s=s.replace('</body>',lang_js+'\n</body>',1)
           p.write_text(s,encoding='utf-8')
       - name: Publish safely
         shell: bash
@@ -49,7 +50,10 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Apply real code card button layout and language fix [skip copy-fix]"
-          git fetch origin main
-          git rebase origin/main
-          git push origin HEAD:main
+          git commit -m "Apply language and code card fixes [skip copy-fix]"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort || true; git reset --hard origin/main; }
+          done
+          exit 1
