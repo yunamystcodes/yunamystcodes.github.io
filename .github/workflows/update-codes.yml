@@ -28,6 +28,20 @@ jobs:
         run: python3 scripts/update_codes_safe.py
       - name: Garantir feedbacks centralizados entre todos os aparelhos
         run: python3 scripts/ensure_feedback_central.py
+      - name: Garantir carregador de códigos, recompensas e feedbacks no site
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          # O index usa auto-codes.js para renderizar os códigos de codes.json,
+          # incluindo as imagens das recompensas e a leitura dos feedbacks globais.
+          if not re.search(r'<script[^>]+src=["\'](?:\./)?auto-codes\.js', s, re.I):
+              s=s.replace('</body>', '<script src="./auto-codes.js?v=20260901"></script>\n</body>', 1)
+          p.write_text(s,encoding='utf-8')
+          print('OK: auto-codes.js está ligado ao index.')
+          PY
       - name: Verificar dados publicados
         run: |
           python3 - <<'PY'
