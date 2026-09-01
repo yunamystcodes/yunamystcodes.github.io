@@ -10,6 +10,8 @@ CODES = ROOT / 'codes.json'
 HISTORY = ROOT / 'codes-history.json'
 
 SOURCES = (
+    # Fonte oficial + várias fontes independentes. A fonte oficial é prioritária.
+    ('sw-official', 'https://summonerswar.com/en/skyarena/news'),
     ('sw-teams', 'https://sw-teams.ovh/codes'),
     ('swcoupon', 'https://swcoupon.net/'),
     ('summonerswarcodes', 'https://summonerswarcodes.us/'),
@@ -31,7 +33,7 @@ SOURCES = (
     ('tryhardguides', 'https://tryhardguides.com/summoners-war-codes/'),
     ('progameguides', 'https://progameguides.com/summoners-war/summoners-war-codes/'),
 )
-TRUSTED = {'sw-teams', 'swcoupon', 'summonerswarcodes', 'swquery', 'swgt'}
+TRUSTED = {'sw-official', 'sw-teams', 'swcoupon', 'summonerswarcodes', 'swquery', 'swgt'}
 
 REJECTED = {
     'GLHF2026AMERICAS','SWC26X10LEGACYBND','PAI2026BANGKOK','APAC26LEGASEA',
@@ -58,14 +60,14 @@ ACTIVE_MARKERS = (
     'working summoners war codes','working codes','available codes','active summoners war codes',
     'new & active summoners war codes','new and active summoners war codes',
     'currently working summoners war codes','new summoners war codes','all summoners war codes 2026',
-    'active promotional codes','active codes','latest codes','new codes','promo codes'
+    'active promotional codes','active codes','latest codes','new codes','promo codes','coupon code','coupon codes'
 )
 EXPIRED_MARKERS = ('expired summoners war codes','expired codes','expired','no longer working','not working')
 STOP_MARKERS = ('how to redeem','how do i redeem','how to use','how to enter')
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (compatible; YunaMyst-Code-Updater/25.0)','Accept-Language':'en-US,en;q=0.9'})
+    req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (compatible; YunaMyst-Code-Updater/26.0)','Accept-Language':'en-US,en;q=0.9'})
     with urllib.request.urlopen(req, timeout=30) as r:
         return r.read().decode('utf-8','ignore')
 
@@ -175,7 +177,9 @@ def main():
     if not active: raise RuntimeError('Sem códigos seguros; atualização abortada.')
     rewards=merge_rewards(reward_hits)
 
+    # Fallback para códigos oficiais cujo artigo ainda não foi indexado pelas fontes externas.
     known={
+        'SEPSW2026I8B':[['blue','x3'],['mana','x300000']],
         '2SOREIKENIPPON6':[['mana','x200000'],['gold','x1']],
         '4READY4TDOT':[['mana','x200000'],['gold','x1'],['energy','x50']],
         'AMPRELIMSLEGACYDRP':[['energy','x100'],['gold','x1']],
@@ -185,6 +189,10 @@ def main():
         'YIQIZOUGUO10SWC':[['energy','x100'],['gold','x1']],
         'APAC1K0UB4NGK0K':[['energy','x100'],['gold','x1']],
     }
+    # O código mensal de setembro é oficial e tem validade até 30/09/2026.
+    # É mantido aqui apenas como fallback enquanto o artigo oficial não aparece nas páginas indexadas.
+    if 'SEPSW2026I8B' not in confirmed_expired:
+        active=sorted(set(active)|{'SEPSW2026I8B'})
     for code in active:
         if code in known and not rewards.get(code): rewards[code]=known[code]
 
