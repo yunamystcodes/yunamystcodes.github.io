@@ -49,8 +49,6 @@ function setup(){
  document.addEventListener('click',e=>{if(!sw.contains(e.target))sw.classList.remove('open')});
  const wanted=current();
  if(wanted==='en'){
-   // The older auto-codes script may have already translated the page. First restore
-   // the known English strings to Portuguese, then apply the complete English map.
    translate(false);translate(true);
  }else{
    translate(false);
@@ -58,5 +56,35 @@ function setup(){
  const root=document.getElementById('ativos');
  if(root){new MutationObserver(()=>{if(document.documentElement.lang==='en')translate(true)}).observe(root,{childList:true,subtree:true})}
 }
+
+/* DATA DOS FEEDBACKS: acrescenta a data real antes do nome, sem alterar o conteúdo do feedback. */
+(function(){
+ const originalFetch=window.fetch;
+ if(typeof originalFetch!=='function')return;
+ window.fetch=function(input,init){
+  return originalFetch.apply(this,arguments).then(response=>{
+   try{
+    const url=typeof input==='string'?input:(input&&input.url)||'';
+    const method=init&&init.method?String(init.method).toUpperCase():'GET';
+    if(!url.includes('/functions/v1/feedbacks')||method!=='GET')return response;
+    return response.clone().json().then(data=>{
+     if(!Array.isArray(data))return response;
+     const dated=data.map(item=>{
+      if(!item||typeof item!=='object')return item;
+      const raw=item.created_at||item.createdAt||item.date||item.created||null;
+      if(!raw)return item;
+      const d=new Date(raw);
+      if(Number.isNaN(d.getTime()))return item;
+      const date=new Intl.DateTimeFormat('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Europe/Lisbon'}).format(d);
+      const name=String(item.name||'Jogador').replace(/^\(\d{2}\/\d{2}\/\d{4}\)\s*/,'');
+      return Object.assign({},item,{name:'('+date+') '+name});
+     });
+     return new Response(JSON.stringify(dated),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json'}});
+    }).catch(()=>response);
+   }catch(e){return response}
+  });
+ };
+})();
+
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
 })();
