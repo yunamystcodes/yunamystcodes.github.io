@@ -1,40 +1,8 @@
-name: Apply language fix now
+name: Disabled language workflow
 on:
-  push:
-permissions:
-  contents: write
+  workflow_dispatch:
 jobs:
-  fix:
-    if: github.actor != 'github-actions[bot]'
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Patch index and remove this workflow
-        run: |
-          python3 <<'PY'
-          from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-          marker='<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->'
-          if marker not in s:
-            js=r'''<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->
-<script>
-(function(){
-const pt={'HOME':'INÍCIO','HOW TO USE':'COMO USAR','Always updated!':'Sempre atualizados!','Active code':'Código ativo','Copy the code':'Copie o código','Click COPY on the desired code.':'Clica em COPIAR no código desejado.','Open the game':'Abra o jogo','Enter Summoners War: Sky Arena.':'Entra no Summoners War: Sky Arena.','Redeem the code':'Resgata o código','Use the redeem link.':'Usa o link de resgate.','Enjoy!':'Aproveita!','Receive the reward in the game.':'Recebe a recompensa no jogo.','Where do I enter the codes?':'Onde coloco os códigos?','Do the codes expire?':'Os códigos expiram?','Can I use on iPhone?':'Posso usar no iPhone?','Player name (optional)':'Nome de player (opcional)','How do you rate the site?':'Como você avalia o site?','Your rating':'Sua avaliação','Message':'Mensagem','Leave your opinion or suggestion...':'Deixa a tua opinião ou sugestão...','SEND FEEDBACK':'ENVIAR FEEDBACK','VIEW ALL FEEDBACK':'VER TODOS OS FEEDBACKS','ALL FEEDBACKS':'TODOS OS FEEDBACKS','No feedbacks have been submitted on this browser yet.':'Ainda não há feedbacks enviados neste navegador.','ABOUT THE SITE':'SOBRE O SITE','Daily Summoners War content!':'Conteúdo diário de Summoners War!','Here you can find the active Summoners War: Sky Arena codes.':'Aqui encontras os códigos ativos de Summoners War: Sky Arena.','Save the site and come back always!':'Guarda o site e volta sempre!','PARTNERSHIP':'PARCERIA','COPY':'COPIAR','iOS LINK':'LINK iOS'};
-const reverse={};for(const k in pt)reverse[pt[k]]=k;const original=new WeakMap();
-function translate(toEN){document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,a,button,label,small,strong,b,span').forEach(el=>{if(el.children.length)return;if(!original.has(el))original.set(el,el.textContent.trim());const o=original.get(el);el.textContent=toEN?(pt[o]||o):(reverse[o]||o);});document.documentElement.lang=toEN?'en':'pt-BR';const b=document.getElementById('langToggle');if(b)b.textContent=toEN?'🇬🇧 ENG':'🇧🇷 PT/BR';document.getElementById('langPTOption')?.classList.toggle('selected',!toEN);document.getElementById('langENOption')?.classList.toggle('selected',toEN);}
-function apply(en){translate(en);try{localStorage.setItem('yunamyst-language',en?'en':'pt')}catch(e){}document.getElementById('langSwitch')?.classList.remove('open');}
-function setup(){const sw=document.getElementById('langSwitch'),t=document.getElementById('langToggle'),p=document.getElementById('langPTOption'),e=document.getElementById('langENOption');if(!sw||!t||!p||!e)return;t.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();sw.classList.toggle('open')},true);p.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(false)},true);e.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(true)},true);document.addEventListener('click',x=>{if(!sw.contains(x.target))sw.classList.remove('open')},true);try{if(localStorage.getItem('yunamyst-language')==='en')setTimeout(()=>apply(true),0)}catch(x){}}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
-})();
-</script>'''
-            s=s.replace('</body>',js+'\n</body>',1)
-            p.write_text(s,encoding='utf-8')
-          PY
-          git config user.name 'YunaMyst'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html .github/workflows/fix-language-now.yml
-          git commit -m 'Fix PT-BR and English language switching' || exit 0
-          git rm -f .github/workflows/fix-language-now.yml
-          git commit -m 'Remove temporary language fix workflow'
-          git push
+      - run: echo "Disabled; language switching is handled by language-fix.js"
