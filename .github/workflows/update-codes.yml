@@ -16,8 +16,8 @@ permissions:
 
 jobs:
   update:
-    # O próprio commit criado pelo bot não deve iniciar outro ciclo.
-    if: github.event_name != 'push' || github.event.head_commit.author.username != 'github-actions[bot]'
+    # Evita um ciclo infinito quando o próprio bot publica a atualização.
+    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'Atualizar códigos ativos automaticamente')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
