@@ -1,0 +1,52 @@
+name: MIGRAÇÃO FINAL DO FEEDBACK LOCAL
+
+on:
+  workflow_run:
+    workflows: ["FEEDBACK GLOBAL — FORÇAR CORREÇÃO FINAL"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Adicionar migração automática do feedback antigo
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html'); s=p.read_text(encoding='utf-8')
+          s=re.sub(r'<script id="yunamyst-feedback-legacy-migration">.*?</script>','',s,flags=re.S)
+          js=r'''<script id="yunamyst-feedback-legacy-migration">
+          (function(){
+            const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks',KEY='yunamyst_feedbacks_v2';
+            async function migrate(){
+              try{
+                const raw=localStorage.getItem(KEY);if(!raw)return;
+                const data=JSON.parse(raw);const items=Array.isArray(data)?data:(Array.isArray(data?.items)?data.items:[]);if(!items.length){localStorage.removeItem(KEY);return;}
+                let sent=0;
+                for(const x of items){const message=String(x?.message||x?.text||'').trim(),rating=Number(x?.rating);if(!message||!Number.isInteger(rating)||rating<1||rating>5)continue;const name=String(x?.name||'Jogador').trim().slice(0,40)||'Jogador';const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,rating,message})});if(r.ok)sent++;}
+                if(sent===items.length)localStorage.removeItem(KEY);
+              }catch(e){console.warn('Migração de feedback:',e)}
+            }
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',migrate);else migrate();
+          })();
+          </script>'''
+          s=s.replace('</body>',js+'\n</body>',1)
+          p.write_text(s,encoding='utf-8')
+      - name: Publicar migração
+        shell: bash
+        run: |
+          git config user.name 'YunaMyst Feedback Bot'
+          git config user.email 'actions@github.com'
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Migrar feedback local para base global [skip feedback-global] [skip feedback-migration]'
+          git push origin HEAD:main
