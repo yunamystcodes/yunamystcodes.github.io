@@ -1,99 +1,46 @@
 {
-  "updated": "2026-09-01T21:42:53Z",
-  "source_count": 21,
-  "successful_sources": 14,
-  "trusted_confirmation": "1 trusted OR 2 independent",
+  "updated": "2026-09-01T22:45:00Z",
+  "source_count": 4,
+  "successful_sources": 4,
+  "rule": "somente códigos atualmente confirmados; expirados removidos automaticamente; sem snapshot antigo",
   "codes": [
+    "2SOREIKENIPPON6",
+    "2SWCTORONTOTHE6IX",
+    "APAC1K0UB4NGK0K",
+    "AUGSW2026V7N",
+    "LAST4PUNCHIN",
+    "SEPSW2026I8B",
+    "SWCJOAAAKR26",
+    "SWGAJA2BKK",
+    "SWXFRIEREN2026"
+  ],
+  "rewards": {
+    "2SOREIKENIPPON6": [["mana", "x200000"], ["gold", "x1"]],
+    "2SWCTORONTOTHE6IX": [["energy", "x100"], ["gold", "x1"]],
+    "APAC1K0UB4NGK0K": [["energy", "x100"], ["gold", "x1"]],
+    "AUGSW2026V7N": [["energy", "x100"], ["red", "x3"]],
+    "LAST4PUNCHIN": [["mana", "x200000"], ["gold", "x1"]],
+    "SEPSW2026I8B": [["blue", "x3"], ["mana", "x300000"]],
+    "SWCJOAAAKR26": [["gold", "x1"]],
+    "SWGAJA2BKK": [["mana", "x200000"], ["gold", "x1"]],
+    "SWXFRIEREN2026": [["energy", "x100"], ["mana", "x300000"], ["gold", "x3"]]
+  },
+  "sources": {
+    "2SOREIKENIPPON6": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
+    "2SWCTORONTOTHE6IX": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
+    "APAC1K0UB4NGK0K": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
+    "AUGSW2026V7N": ["sw-teams", "swcoupon"],
+    "LAST4PUNCHIN": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
+    "SEPSW2026I8B": ["official/community current notice"],
+    "SWCJOAAAKR26": ["swcoupon", "summonerswarcodes", "swquery"],
+    "SWGAJA2BKK": ["swcoupon", "summonerswarcodes"],
+    "SWXFRIEREN2026": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"]
+  },
+  "expired": [
     "9CIRCLE",
     "CCXQDUIH4A4",
-    "SEPSW2026I8B",
     "SWC2026",
     "THE10TH"
   ],
-  "rewards": {
-    "9CIRCLE": [],
-    "CCXQDUIH4A4": [
-      [
-        "crystal",
-        "x500"
-      ],
-      [
-        "gold",
-        "x3"
-      ]
-    ],
-    "SEPSW2026I8B": [
-      [
-        "blue",
-        "x3"
-      ],
-      [
-        "mana",
-        "x300000"
-      ]
-    ],
-    "SWC2026": [
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "THE10TH": [
-      [
-        "crystal",
-        "x500"
-      ],
-      [
-        "gold",
-        "x3"
-      ]
-    ]
-  },
-  "sources": {
-    "9CIRCLE": {
-      "trusted": [
-        "swcoupon"
-      ],
-      "all": [
-        "swcoupon"
-      ]
-    },
-    "CCXQDUIH4A4": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    },
-    "SEPSW2026I8B": {
-      "trusted": [],
-      "all": []
-    },
-    "SWC2026": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    },
-    "THE10TH": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    }
-  },
-  "source_errors": [
-    "gameskinny: HTTP Error 404: Not Found",
-    "pcgamesn: HTTP Error 404: Not Found",
-    "gamezebo: HTTP Error 404: Not Found",
-    "droidgamers: HTTP Error 404: Not Found",
-    "supercheats: HTTP Error 404: Not Found",
-    "mrguider: HTTP Error 403: Forbidden",
-    "progameguides: HTTP Error 403: Forbidden"
-  ]
+  "source_errors": []
 }
