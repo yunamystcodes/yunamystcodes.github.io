@@ -11,18 +11,49 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Apply button layout only
+      - name: Apply correct button layout only
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
           marker='<!-- YUNAMYST BUTTON FIX FINAL -->'
-          css='''\n<style id="yunamyst-button-fix-final">\n/* FINAL: keep COPIAR and LINK iOS fully inside each code card */\n.code{grid-template-columns:52px minmax(110px,1fr) 52px 52px 52px minmax(108px,120px) minmax(108px,120px)!important;gap:8px!important;}\n.code .copy,.code .link{min-width:0!important;width:100%!important;max-width:100%!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}\n@media(max-width:1050px) and (min-width:851px){.code{grid-template-columns:48px minmax(90px,1fr) 44px 44px 44px minmax(92px,1fr) minmax(92px,1fr)!important;gap:6px!important;}}\n@media(max-width:850px){.code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;width:100%!important;}\n.code .copy,.code .link{width:100%!important;max-width:100%!important;min-width:0!important;height:44px!important;font-size:11px!important;padding:0 6px!important;}\n}\n</style>\n'''
-          if marker not in s:
-              pos=s.rfind('</head>')
-              s=s[:pos]+marker+css+s[pos:]
-              p.write_text(s,encoding='utf-8')
+          start=s.find(marker)
+          if start >= 0:
+              style_start=s.find('<style', start)
+              style_end=s.find('</style>', style_start)
+              if style_start >= 0 and style_end >= 0:
+                  s=s[:start]+s[style_end+8:]
+          css='''
+          <style id="yunamyst-button-fix-final">
+          /* FINAL: buttons stay fully inside every code card on PC and mobile */
+          .code{display:grid!important;grid-template-columns:52px minmax(120px,1fr) repeat(3,minmax(48px,58px)) minmax(100px,110px) minmax(100px,110px)!important;gap:8px!important;align-items:center!important;min-width:0!important;overflow:hidden!important;}
+          .code > .gift{grid-column:1;min-width:0!important;}
+          .code > .cinfo{grid-column:2;min-width:0!important;}
+          .code > .reward{min-width:0!important;width:100%!important;}
+          .code > .copy{grid-column:6!important;min-width:0!important;width:100%!important;max-width:110px!important;height:44px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+          .code > .link{grid-column:7!important;min-width:0!important;width:100%!important;max-width:110px!important;height:44px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+          @media(max-width:1050px) and (min-width:851px){
+            .code{grid-template-columns:48px minmax(90px,1fr) repeat(3,minmax(42px,52px)) minmax(92px,1fr) minmax(92px,1fr)!important;gap:6px!important;}
+            .code > .copy,.code > .link{max-width:none!important;}
+          }
+          @media(max-width:850px){
+            .code{display:grid!important;grid-template-columns:44px repeat(3,minmax(0,1fr))!important;grid-template-rows:52px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;width:100%!important;min-width:0!important;}
+            .code > .gift{grid-area:gift!important;width:44px!important;height:44px!important;}
+            .code > .cinfo{grid-area:info!important;width:100%!important;min-width:0!important;}
+            .code > .reward:nth-child(3){grid-area:r1!important;}
+            .code > .reward:nth-child(4){grid-area:r2!important;}
+            .code > .reward:nth-child(5){grid-area:r3!important;}
+            .code > .copy{grid-area:copy!important;width:100%!important;max-width:none!important;min-width:0!important;height:44px!important;padding:0 6px!important;font-size:11px!important;}
+            .code > .link{grid-area:link!important;width:100%!important;max-width:none!important;min-width:0!important;height:44px!important;padding:0 6px!important;font-size:11px!important;}
+          }
+          </style>
+          '''
+          pos=s.rfind('</head>')
+          if pos < 0: raise SystemExit('head tag not found')
+          s=s[:pos]+marker+css+s[pos:]
+          p.write_text(s,encoding='utf-8')
           PY
       - name: Commit button fix
         run: |
@@ -30,5 +61,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Fix COPIAR and LINK iOS layout final'
+          git commit -m 'Fix COPIAR and LINK iOS layout on PC and mobile'
           git push
