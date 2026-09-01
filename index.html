@@ -78,6 +78,22 @@
 #rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}
 @media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}
 </style>
+
+<style id="yunamyst-mobile-reward-horizontal-fix">
+/* Telemóvel: 3 recompensas lado a lado. PC não é alterado. */
+@media (max-width:850px){
+  .codes > .code{
+    display:grid!important;
+    grid-template-columns:44px repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:58px 66px 44px!important;
+    grid-template-areas:"gift info info info" "gift r1 r2 r3" "copy copy link link"!important;
+    align-items:center!important;
+  }
+  .codes > .code > .reward:nth-child(3){grid-area:r1!important;}
+  .codes > .code > .reward:nth-child(4){grid-area:r2!important;}
+  .codes > .code > .reward:nth-child(5){grid-area:r3!important;}
+}
+</style>
 </head>
 <body>
 <div class="bg"></div>
