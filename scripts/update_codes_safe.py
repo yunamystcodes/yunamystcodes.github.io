@@ -9,204 +9,222 @@ ROOT = Path(__file__).resolve().parents[1]
 CODES = ROOT / 'codes.json'
 HISTORY = ROOT / 'codes-history.json'
 
+# Fontes que mantêm listas de cupons atualizadas. A lista publicada é sempre
+# reconstruída a partir do estado atual dessas fontes; não recuperamos códigos
+# antigos só porque estavam no snapshot anterior.
 SOURCES = (
-    # Fonte oficial + várias fontes independentes. A fonte oficial é prioritária.
-    ('sw-official', 'https://summonerswar.com/en/skyarena/news'),
     ('sw-teams', 'https://sw-teams.ovh/codes'),
     ('swcoupon', 'https://swcoupon.net/'),
     ('summonerswarcodes', 'https://summonerswarcodes.us/'),
     ('swquery', 'https://swquery.net/'),
-    ('swgt', 'https://swgt.io/gamecodes/'),
-    ('pocketgamer', 'https://www.pocketgamer.com/summoners-war/codes/'),
-    ('pockettactics', 'https://www.pockettactics.com/summoners-war/codes'),
-    ('levelgeeks', 'https://levelgeeks.net/summoners-war-codes/'),
-    ('findingdulcinea', 'https://findingdulcinea.com/summoners-war-codes/'),
-    ('gameskinny', 'https://www.gameskinny.com/tips/summoners-war-codes/'),
-    ('pcgamesn', 'https://www.pcgamesn.com/summoners-war/codes'),
-    ('gamezebo', 'https://www.gamezebo.com/walkthroughs/summoners-war-codes/'),
-    ('thenerdstash', 'https://www.thenerdstash.com/summoners-war-codes/'),
-    ('touchtapplay', 'https://www.touchtapplay.com/summoners-war-codes/'),
-    ('droidgamers', 'https://www.droidgamers.com/guides/summoners-war-codes/'),
-    ('mejoress', 'https://www.mejoress.com/en/summoners-war-codes/'),
-    ('supercheats', 'https://www.supercheats.com/summoners-war-codes-cheats-tips'),
-    ('mrguider', 'https://www.mrguider.org/codes/summoners-war-codes/'),
-    ('tryhardguides', 'https://tryhardguides.com/summoners-war-codes/'),
-    ('progameguides', 'https://progameguides.com/summoners-war/summoners-war-codes/'),
 )
-TRUSTED = {'sw-official', 'sw-teams', 'swcoupon', 'summonerswarcodes', 'swquery', 'swgt'}
+TRUSTED = {name for name, _url in SOURCES}
 
-REJECTED = {
-    'GLHF2026AMERICAS','SWC26X10LEGACYBND','PAI2026BANGKOK','APAC26LEGASEA',
-    '912XUXIECHUANQI','SWC2026JUELEBA','LAST4PUNCHIN','IDTOP8GO','1SURPR1SE',
-    '1SURPR1SEG1FT','JUNSW2026W6C','MAYSW2026Z2Q','APRSW2026M08','LOTR4CO11ABON',
-    '26SWXLOTRS2','MARSW2026K61','COL3KY8G1FT15','FEBSW2026E82','OSAKAK1T3YA314',
-    '2026TEAMJPDARE','JANSW2026C13','SW2025DEC','SW2025DEC9PJ','SW2025NOV',
-    'SW2025NOVQ5W','SW2025OCT','SW2025OCTP3T','SW2025SEPJ6Z','SW2025AUGR5Q',
-    'SW2025JUL9UA','SW2025JUNY5C','SW2025APR8C4','SW2025APR1C4','SW2025MAR1N3',
-    'SW2025FEB3D9','SW2025JAN6A8','2NEWTOMORROW2','NEXTWF25PARISA1GA','APAC25FUNA1NGY0',
-    'SWC25HAMBOISO','SWCPARISNOUSVOILA','20FIGHT4GLORY25','SCHOENHIERSWC','SWSA100RUSH',
-    'GETUR5STAR','GEARING4PARIS','SWCHZHU4NYINGNI25','RONGY4OZH1LUSWC','11BALIDENGNILAI1',
-    '20POURLESWC25','BORASPBRASIL2025'
+# Falsos positivos/códigos que já foram identificados no site e devem deixar
+# de aparecer imediatamente. Depois disso, a remoção normal é automática:
+# se um código desaparecer das fontes ativas, ele sai do codes.json.
+KNOWN_BAD = {
+    '9CIRCLE',
+    'CCXQDUIH4A4',
+    'SWC2026',
+    'THE10TH',
+    'GLHF2026AMERICAS', 'SWC26X10LEGACYBND', 'PAI2026BANGKOK',
+    'APAC26LEGASEA', '912XUXIECHUANQI', 'SWC2026JUELEBA',
+    'LAST4PUNCHIN',
+    'H4MBURGISWAITING', 'HURRASWC2026', '4MINGYIDAOXIAN',
+    'YYDSSWC26ZAN', '1SURPR1SE', '1SURPR1SEG1FT',
+    'AUGSW2026V7N', 'SWXFRIEREN2026'
 }
 
-CODE_RE = re.compile(r'\b[A-Z0-9][A-Z0-9_-]{5,31}\b', re.I)
 BANNED = {
-    'ACTIVE','EXPIRED','WORKING','AVAILABLE','CODES','CODE','SUMMONERS','WAR','SKY','ARENA',
-    'ENERGY','MANA','SCROLL','REDEEM','COUPON','COPY','REWARD','REWARDS','LATEST','NEW',
-    'GUIDE','GAME','GAMES','COM2US','ANDROID','IPHONE','WINDOWS','FACEBOOK','DISCORD',
-    'TWITTER','INSTAGRAM','YOUTUBE','CURRENTLY','PROMO','PROMOTIONAL'
+    'ACTIVE','EXPIRED','WORKING','AVAILABLE','CODES','CODE','SUMMONERS','WAR',
+    'SKY','ARENA','ENERGY','MANA','SCROLL','REDEEM','COUPON','COPY','REWARD',
+    'REWARDS','LATEST','NEW','GUIDE','GAME','GAMES','COM2US','ANDROID','IPHONE',
+    'WINDOWS','FACEBOOK','DISCORD','TWITTER','INSTAGRAM','YOUTUBE','CURRENTLY',
+    'PROMO','PROMOTIONAL','VERIFIED','NOEXPIRATION'
 }
-ACTIVE_MARKERS = (
-    'working summoners war codes','working codes','available codes','active summoners war codes',
-    'new & active summoners war codes','new and active summoners war codes',
-    'currently working summoners war codes','new summoners war codes','all summoners war codes 2026',
-    'active promotional codes','active codes','latest codes','new codes','promo codes','coupon code','coupon codes'
+
+CODE_RE = re.compile(r'(?<![A-Z0-9])[A-Z0-9][A-Z0-9_-]{5,31}(?![A-Z0-9])', re.I)
+ACTIVE_WORDS = (
+    'active', 'available', 'working', 'verified', 'no expiration',
+    'new & active', 'new and active', 'currently working'
 )
-EXPIRED_MARKERS = ('expired summoners war codes','expired codes','expired','no longer working','not working')
-STOP_MARKERS = ('how to redeem','how do i redeem','how to use','how to enter')
+EXPIRED_WORDS = ('expired', 'no longer working', 'inactive', 'not working')
+
+# Recompensas conhecidas para códigos que aparecem sem recompensa legível na
+# página. Novos códigos continuam sendo descobertos automaticamente.
+KNOWN_REWARDS = {
+    'SWGAJA2BKK': [['mana','x200000'],['gold','x1']],
+    'SWCJOAAAKR26': [['gold','x1']],
+    '2SWCTORONTOTHE6IX': [['energy','x100'],['gold','x1']],
+    'APAC1K0UB4NGK0K': [['energy','x100'],['gold','x1']],
+    '2SOREIKENIPPON6': [['mana','x200000'],['gold','x1']],
+    'SWXFRIEREN2026': [['energy','x100'],['mana','x300000'],['gold','x3']],
+    'SEPSW2026I8B': [['blue','x3'],['mana','x300000']],
+}
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (compatible; YunaMyst-Code-Updater/26.0)','Accept-Language':'en-US,en;q=0.9'})
+    req = urllib.request.Request(
+        url,
+        headers={
+            'User-Agent': 'Mozilla/5.0 (compatible; YunaMyst-Code-Updater/27.0)',
+            'Accept-Language': 'en-US,en;q=0.9',
+        },
+    )
     with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read().decode('utf-8','ignore')
+        return r.read().decode('utf-8', 'ignore')
 
 
-def clean(raw):
-    raw=re.sub(r'<script\b[^>]*>.*?</script>',' ',raw,flags=re.I|re.S)
-    raw=re.sub(r'<style\b[^>]*>.*?</style>',' ',raw,flags=re.I|re.S)
-    raw=re.sub(r'<[^>]+>',' ',raw)
-    return re.sub(r'\s+',' ',html.unescape(raw))
+def clean_lines(raw):
+    # Mantém quebras entre elementos da tabela para evitar interpretar IDs,
+    # URLs, títulos e outros textos como cupons.
+    raw = re.sub(r'<script\b[^>]*>.*?</script>', '\n', raw, flags=re.I | re.S)
+    raw = re.sub(r'<style\b[^>]*>.*?</style>', '\n', raw, flags=re.I | re.S)
+    raw = re.sub(r'<br\s*/?>', '\n', raw, flags=re.I)
+    raw = re.sub(r'</(?:tr|li|p|div|td|th|h1|h2|h3|h4|section)>', '\n', raw, flags=re.I)
+    raw = re.sub(r'<[^>]+>', ' ', raw)
+    raw = html.unescape(raw)
+    return [re.sub(r'\s+', ' ', x).strip() for x in raw.splitlines() if x.strip()]
 
 
-def norm(values):
-    out=[]
-    for value in values:
-        c=value.strip().strip('`.,:;()[]{}<>"\'').upper().replace('-','').replace('_','')
-        if 6<=len(c)<=32 and c not in BANNED and c not in REJECTED and re.search(r'[A-Z]',c) and re.search(r'\d',c) and c not in out:
-            out.append(c)
-    return out
+def normalize(value):
+    c = value.strip(' `.,:;()[]{}<>\"\'').upper().replace('-', '').replace('_', '')
+    if not (6 <= len(c) <= 32):
+        return ''
+    if c in BANNED or c in KNOWN_BAD:
+        return ''
+    if not re.search(r'[A-Z]', c) or not re.search(r'\d', c):
+        return ''
+    return c
 
 
-def sections(text,markers,stops):
-    low=text.lower(); blocks=[]
-    for marker in markers:
-        start=0
-        while True:
-            p=low.find(marker,start)
-            if p<0: break
-            ends=[low.find(stop,p+len(marker)) for stop in stops]
-            ends=[e for e in ends if e>=0]
-            end=min(ends) if ends else min(len(text),p+20000)
-            blocks.append(text[p:end]); start=p+len(marker)
-    return blocks
+def parse_source(raw):
+    lines = clean_lines(raw)
+    active = set()
+    expired = set()
+    reward_hits = {}
 
+    for i, line in enumerate(lines):
+        low = line.lower()
+        window = ' '.join(lines[max(0, i-1):min(len(lines), i+2)]).lower()
+        tokens = [normalize(m.group()) for m in CODE_RE.finditer(line)]
+        tokens = {t for t in tokens if t}
+        if not tokens:
+            continue
 
-def parse(raw):
-    text=clean(raw)
-    active_blocks=sections(text,ACTIVE_MARKERS,EXPIRED_MARKERS+STOP_MARKERS)
-    expired_blocks=sections(text,EXPIRED_MARKERS,STOP_MARKERS)
-    active=set(norm(CODE_RE.findall('\n'.join(active_blocks)))) if active_blocks else set()
-    expired=set(norm(CODE_RE.findall('\n'.join(expired_blocks)))) if expired_blocks else set()
-    low=text.lower()
-    for match in CODE_RE.finditer(text):
-        token=norm([match.group()])
-        if not token: continue
-        left=max(0,match.start()-220); right=min(len(text),match.end()+220)
-        context=low[left:right]
-        if any(k in context for k in ('active code','working code','new code','promo code','coupon code','redeem code')) and 'expired' not in context:
-            active.update(token)
-    return active-expired,expired
+        is_expired = any(w in window for w in EXPIRED_WORDS)
+        is_active = any(w in window for w in ACTIVE_WORDS) or 'no expiration' in window
+        if is_expired:
+            expired.update(tokens)
+        if is_active and not is_expired:
+            active.update(tokens)
 
+            # Recompensas mais comuns quando estão no mesmo bloco da tabela.
+            around = ' '.join(lines[max(0, i-2):min(len(lines), i+3)])
+            pairs = []
+            patterns = [
+                ('energy', r'(?:energy|energia)\s*[×x:]?\s*(\d[\d,.]*)'),
+                ('mana', r'mana\s*[×x:]?\s*(\d[\d,.]*)'),
+                ('crystal', r'(?:crystal|crystals|cristais)\s*[×x:]?\s*(\d[\d,.]*)'),
+                ('gold', r'(?:mystical scroll|scroll m[íi]stico|scroll)\s*[×x:]?\s*(\d[\d,.]*)'),
+                ('red', r'(?:fire scroll|scroll fire)\s*[×x:]?\s*(\d[\d,.]*)'),
+                ('blue', r'(?:water scroll|scroll water)\s*[×x:]?\s*(\d[\d,.]*)'),
+                ('yellow', r'(?:wind scroll|scroll wind)\s*[×x:]?\s*(\d[\d,.]*)'),
+            ]
+            for kind, pattern in patterns:
+                m = re.search(pattern, around, re.I)
+                if m:
+                    pairs.append([kind, 'x' + m.group(1).replace(',', '').replace('.', '')])
+            for code in tokens:
+                if pairs:
+                    reward_hits.setdefault(code, []).append(pairs)
 
-def parse_rewards(raw,code):
-    text=clean(raw); i=text.upper().find(code.upper())
-    if i<0: return []
-    chunk=text[max(0,i-500):i+1200]; out=[]
-    def add(kind,names):
-        p=re.search(r'(?:x|×|:)??\s*([0-9][0-9,.]*)\s*(?:x|×)?\s*'+'|'.join(map(re.escape,names)),chunk,re.I)
-        if not p: p=re.search('|'.join(map(re.escape,names))+r'\s*(?:x|×|:)?\s*([0-9][0-9,.]*)',chunk,re.I)
-        if p:
-            value=next((g for g in p.groups() if g),None)
-            if value and not any(k==kind for k,_ in out): out.append([kind,'x'+value.replace(',','').replace('.','')])
-    add('energy',['ENERGY','ENERGIA']); add('mana',['MANA']); add('crystal',['CRYSTAL','CRYSTALS','CRISTAIS'])
-    add('gold',['MYSTICAL SCROLL','MYSTICAL','SCROLL MYSTICAL','SCROLLS MYSTICAL','SCROLL'])
-    add('red',['FIRE SCROLL','SCROLL FIRE','FIRE']); add('blue',['WATER SCROLL','SCROLL WATER','WATER']); add('yellow',['WIND SCROLL','SCROLL WIND','WIND'])
-    return out
-
-
-def merge_rewards(hits):
-    merged={}
-    for code,items in hits.items():
-        counts={}
-        for _source,data in items:
-            for kind,amount in data: counts[(kind,amount)]=counts.get((kind,amount),0)+1
-        merged[code]=[list(k) for k,_v in sorted(counts.items(),key=lambda x:-x[1])]
-    return merged
-
-
-def load_previous():
-    try:
-        old=json.loads(CODES.read_text(encoding='utf-8'))
-        if isinstance(old,dict): return {str(c).upper() for c in old.get('codes',[])}
-    except Exception: pass
-    return set()
+    return active - expired, expired, reward_hits
 
 
 def main():
-    found={}; explicit_expired={}; errors=[]; reward_hits={}
-    for name,url in SOURCES:
+    found = {}
+    explicit_expired = set()
+    rewards = {}
+    errors = []
+
+    for name, url in SOURCES:
         try:
-            raw=fetch(url); active,expired=parse(raw)
+            raw = fetch(url)
+            active, expired, reward_hits = parse_source(raw)
             for code in active:
-                found.setdefault(code,set()).add(name)
-                rewards=parse_rewards(raw,code)
-                if rewards: reward_hits.setdefault(code,[]).append((name,rewards))
-            for code in expired: explicit_expired.setdefault(code,set()).add(name)
-        except Exception as ex: errors.append(f'{name}: {ex}')
+                found.setdefault(code, set()).add(name)
+            explicit_expired.update(expired)
+            for code, items in reward_hits.items():
+                rewards.setdefault(code, []).extend(items)
+        except Exception as ex:
+            errors.append(f'{name}: {ex}')
 
-    confirmed={code for code,sources in found.items() if len(sources & TRUSTED)>=1 or len(sources)>=2}
-    confirmed_expired={code for code,sources in explicit_expired.items() if len(sources & TRUSTED)>=1 or len(sources)>=2}
-    previous=load_previous()
-    successful=len(SOURCES)-len(errors)
+    # Pelo menos uma fonte confiável precisa confirmar o código atual. Se todas
+    # falharem, abortamos sem tocar no codes.json para não publicar lixo.
+    confirmed = {code for code, sources in found.items() if sources & TRUSTED}
+    confirmed -= explicit_expired
+    confirmed -= KNOWN_BAD
 
-    # Uma fonte indisponível nunca deve causar uma limpeza destrutiva.
-    if successful<3: confirmed|=previous
+    if not confirmed:
+        raise RuntimeError('Nenhum código ativo confirmado; atualização abortada para não apagar a lista válida.')
 
-    active=sorted((confirmed-REJECTED)-confirmed_expired)
-    if not active: raise RuntimeError('Sem códigos seguros; atualização abortada.')
-    rewards=merge_rewards(reward_hits)
+    # Consolida recompensas e aplica os fallbacks conhecidos.
+    merged_rewards = {}
+    for code in sorted(confirmed):
+        counts = {}
+        for source_items in rewards.get(code, []):
+            for item in source_items:
+                key = tuple(item)
+                counts[key] = counts.get(key, 0) + 1
+        if counts:
+            merged_rewards[code] = [list(k) for k, _ in sorted(counts.items(), key=lambda x: -x[1])]
+        elif code in KNOWN_REWARDS:
+            merged_rewards[code] = KNOWN_REWARDS[code]
+        else:
+            merged_rewards[code] = []
 
-    # Fallback para códigos oficiais cujo artigo ainda não foi indexado pelas fontes externas.
-    known={
-        'SEPSW2026I8B':[['blue','x3'],['mana','x300000']],
-        '2SOREIKENIPPON6':[['mana','x200000'],['gold','x1']],
-        '4READY4TDOT':[['mana','x200000'],['gold','x1'],['energy','x50']],
-        'AMPRELIMSLEGACYDRP':[['energy','x100'],['gold','x1']],
-        'AUGSW2026V7N':[['red','x3'],['energy','x100']],
-        'LEGENDSWC2026HSL':[['energy','x100'],['gold','x1']],
-        'SWXFRIEREN2026':[['energy','x100'],['mana','x300000'],['gold','x3']],
-        'YIQIZOUGUO10SWC':[['energy','x100'],['gold','x1']],
-        'APAC1K0UB4NGK0K':[['energy','x100'],['gold','x1']],
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+    active = sorted(confirmed)
+    source_details = {
+        code: sorted(found.get(code, set()))
+        for code in active
     }
-    # O código mensal de setembro é oficial e tem validade até 30/09/2026.
-    # É mantido aqui apenas como fallback enquanto o artigo oficial não aparece nas páginas indexadas.
-    if 'SEPSW2026I8B' not in confirmed_expired:
-        active=sorted(set(active)|{'SEPSW2026I8B'})
-    for code in active:
-        if code in known and not rewards.get(code): rewards[code]=known[code]
 
-    now=datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
-    details={code:{'trusted':sorted(found.get(code,set())&TRUSTED),'all':sorted(found.get(code,set()))} for code in active}
     try:
-        old=json.loads(CODES.read_text(encoding='utf-8')); old_expired=set(old.get('expired',[])) if isinstance(old,dict) else set()
-    except Exception: old_expired=set()
+        old = json.loads(CODES.read_text(encoding='utf-8'))
+        old_expired = set(old.get('expired', [])) if isinstance(old, dict) else set()
+    except Exception:
+        old_expired = set()
 
-    expired=sorted(old_expired|REJECTED|confirmed_expired)
-    payload={'updated':now,'source_count':len(SOURCES),'successful_sources':successful,'trusted_confirmation':'1 trusted OR 2 independent','codes':active,'rewards':{code:rewards.get(code,[]) for code in active},'sources':details,'source_errors':errors}
-    CODES.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    HISTORY.write_text(json.dumps({'active':active,'expired':expired,'missing':{},'updated_at':now,'rewards':{code:rewards.get(code,[]) for code in active},'sources':details,'source_errors':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print(f'Fontes OK: {successful}/{len(SOURCES)}'); print(f'Códigos ativos publicados: {len(active)}'); print('Códigos:',', '.join(active))
-    if errors: print('Falhas:',' | '.join(errors))
+    expired = sorted(old_expired | KNOWN_BAD | explicit_expired)
+    payload = {
+        'updated': now,
+        'source_count': len(SOURCES),
+        'successful_sources': len(SOURCES) - len(errors),
+        'rule': 'somente códigos atualmente confirmados nas fontes; expirados removidos automaticamente; sem snapshot antigo',
+        'codes': active,
+        'rewards': {code: merged_rewards.get(code, []) for code in active},
+        'sources': source_details,
+        'source_errors': errors,
+    }
+    CODES.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    HISTORY.write_text(json.dumps({
+        'active': active,
+        'expired': expired,
+        'updated_at': now,
+        'rewards': payload['rewards'],
+        'sources': source_details,
+        'source_errors': errors,
+    }, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
-if __name__=='__main__': main()
+    print(f'Fontes OK: {len(SOURCES) - len(errors)}/{len(SOURCES)}')
+    print(f'Códigos ativos publicados: {len(active)}')
+    print('Códigos:', ', '.join(active))
+    if errors:
+        print('Falhas:', ' | '.join(errors))
+
+
+if __name__ == '__main__':
+    main()
