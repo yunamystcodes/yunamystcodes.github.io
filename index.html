@@ -260,5 +260,20 @@ document.addEventListener('DOMContentLoaded',function(){
 <script id="yunamyst-feedback-central-js">
 (function(){const API="https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks",root=document.getElementById("ym-feedback"),modal=document.getElementById("ym-feedback-modal"),list=document.getElementById("ym-feedback-list"),open=document.getElementById("ym-feedback-all"),close=document.getElementById("ym-feedback-modal-close");if(!root||!modal||!list||!open||!close)return;let rating=0;const stars=[...root.querySelectorAll(".ym-star")],submit=document.getElementById("ym-feedback-submit");stars.forEach(s=>s.onclick=()=>{rating=+s.dataset.rating||0;stars.forEach(x=>x.classList.toggle("active",+x.dataset.rating<=rating))});async function load(){list.innerHTML="<div class=\"ym-feedback-empty\">A carregar todos os feedbacks...</div>";try{const r=await fetch(API+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw 0;const a=await r.json();list.innerHTML="";if(!Array.isArray(a)||!a.length){list.innerHTML="<div class=\"ym-feedback-empty\">Ainda não há feedbacks enviados.</div>";return}a.forEach(x=>{const b=document.createElement("div");b.className="ym-feedback-item";const h=document.createElement("div");h.className="ym-feedback-item-head";const n=document.createElement("div");n.className="ym-feedback-item-name";n.textContent=x.name||"Jogador";const st=document.createElement("div");st.className="ym-feedback-item-stars";const q=Math.max(0,Math.min(5,+x.rating||0));st.textContent="★".repeat(q)+"☆".repeat(5-q);const t=document.createElement("div");t.className="ym-feedback-item-text";t.textContent=x.message||"";h.append(n,st);b.append(h,t);list.append(b)})}catch(e){list.innerHTML="<div class=\"ym-feedback-empty\">Não foi possível carregar os feedbacks. Tenta novamente.</div>"}}submit?.addEventListener("click",async()=>{const name=(root.querySelector(".ym-feedback-name")?.value||"").trim()||"Jogador",message=(root.querySelector(".ym-feedback-text")?.value||"").trim();if(!rating||!message)return alert("Escolhe uma avaliação e escreve uma mensagem.");submit.disabled=true;try{const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,rating,message})});if(!r.ok)throw 0;root.querySelector(".ym-feedback-text").value="";stars.forEach(x=>x.classList.remove("active"));rating=0;await load()}catch(e){alert("Não foi possível enviar o feedback. Tenta novamente.")}finally{submit.disabled=false}});open.onclick=()=>{modal.classList.add("open");modal.setAttribute("aria-hidden","false");load()};close.onclick=()=>{modal.classList.remove("open");modal.setAttribute("aria-hidden","true")};modal.onclick=e=>{if(e.target===modal)close.click()}})();
 </script>
+<script id="yunamyst-feedback-legacy-migration">
+(function(){
+  const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks',KEY='yunamyst_feedbacks_v2';
+  async function migrate(){
+    try{
+      const raw=localStorage.getItem(KEY);if(!raw)return;
+      const data=JSON.parse(raw);const items=Array.isArray(data)?data:(Array.isArray(data?.items)?data.items:[]);if(!items.length){localStorage.removeItem(KEY);return;}
+      let sent=0;
+      for(const x of items){const message=String(x?.message||x?.text||'').trim(),rating=Number(x?.rating);if(!message||!Number.isInteger(rating)||rating<1||rating>5)continue;const name=String(x?.name||'Jogador').trim().slice(0,40)||'Jogador';const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,rating,message})});if(r.ok)sent++;}
+      if(sent===items.length)localStorage.removeItem(KEY);
+    }catch(e){console.warn('Migração de feedback:',e)}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',migrate);else migrate();
+})();
+</script>
 </body>
 </html>
