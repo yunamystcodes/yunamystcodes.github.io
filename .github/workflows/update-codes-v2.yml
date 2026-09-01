@@ -1,0 +1,45 @@
+name: Atualizar códigos ativos - YunaCodes v2
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: yunamyst-codes-v2
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Buscar apenas códigos atualmente ativos
+        run: python3 scripts/update_codes_v2.py
+      - name: Garantir carregador de códigos no site
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          if 'auto-codes.js' not in s:
+              s=s.replace('</body>','<script src="./auto-codes.js?v=20260901"></script>\n</body>',1)
+              p.write_text(s,encoding='utf-8')
+          PY
+      - name: Publicar alterações
+        run: |
+          git config user.name 'YunaMyst Codes Bot'
+          git config user.email 'actions@github.com'
+          git add codes.json codes-history.json index.html
+          if ! git diff --cached --quiet; then
+            git commit -m 'Atualizar códigos ativos automaticamente'
+            git push
+          else
+            echo 'Nenhuma alteração necessária.'
+          fi
