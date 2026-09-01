@@ -72,6 +72,12 @@
 @media(max-width:600px){.ym-brand-footer{margin-top:18px;padding:16px 8px 18px}.ym-footer-name{font-size:20px}.ym-footer-credit{font-size:10px;line-height:1.5}.ym-footer-bottom{font-size:8px}}
 </style>
 <style id="ym-feedback-global-clean">.ym-feedback-modal{display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:14px;background:rgba(2,1,8,.84);backdrop-filter:blur(7px)}.ym-feedback-modal.open{display:flex}.ym-feedback-modal-card{position:relative;width:min(620px,calc(100% - 20px));max-height:78vh;overflow:auto;padding:22px 18px 16px;border:1px solid #be66ff;border-radius:18px;background:linear-gradient(180deg,#160a28f7,#070412f7);box-shadow:0 25px 90px #000c}.ym-feedback-modal-card h3{margin:0 38px 14px 0;color:#f0c45c;font-size:17px}.ym-feedback-modal-close{position:absolute;top:9px;right:9px;width:31px;height:31px;border:1px solid #fff3;border-radius:50%;background:#12091f;color:#fff;font-size:19px;cursor:pointer}.ym-feedback-list{display:flex;flex-direction:column;gap:9px}.ym-feedback-empty{text-align:center;color:#aaa1b3;font-size:12px;padding:16px}.ym-feedback-item{padding:11px;border:1px solid #be66ff40;border-radius:11px;background:#0a0518cc}.ym-feedback-item-head{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:800}.ym-feedback-item-stars{color:#f0c45c;white-space:nowrap}.ym-feedback-item-text{margin-top:6px;color:#c9c0d0;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:600px){.ym-feedback-modal-card{width:calc(100% - 6px);padding:20px 13px 14px}.ym-feedback-modal-card h3{font-size:15px}.ym-feedback-item-head,.ym-feedback-item-text{font-size:11px}}</style>
+
+<style id="yunamyst-footer-final">
+/* YUNAMYST FOOTER FINAL 20260821 */
+#rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}
+@media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}
+</style>
 </head>
 <body>
 <div class="bg"></div>
@@ -141,5 +147,14 @@
   .code>.actions{display:flex!important;gap:8px!important;width:100%!important;min-width:0!important;}
   .code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important;}
 }
-</style></body>
+</style>
+<script id="yunamyst-footer-final-js">
+/* YUNAMYST FOOTER FINAL 20260821 */
+document.addEventListener('DOMContentLoaded',function(){
+  var f=document.getElementById('rodape');
+  var layout=document.querySelector('.layout');
+  if(f && layout){ layout.insertAdjacentElement('afterend',f); }
+});
+</script>
+</body>
 </html>
