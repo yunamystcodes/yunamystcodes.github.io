@@ -26,19 +26,21 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-
           footer_marker = 'YUNAMYST FOOTER FINAL 20260821'
           if footer_marker not in s:
               css = '''\n<style id="yunamyst-footer-final">\n/* YUNAMYST FOOTER FINAL 20260821 */\n#rodape{display:block!important;width:100%!important;max-width:none!important;margin:22px auto 0!important;padding:0 12px 24px!important;text-align:center!important;font-size:10px!important;line-height:1.4!important;color:#9f96ae!important;clear:both!important;position:relative!important;left:auto!important;right:auto!important}\n@media(max-width:850px){#rodape{width:100%!important;max-width:none!important;margin:18px auto 0!important;padding:0 10px 20px!important;text-align:center!important;font-size:9px!important}}\n</style>\n'''
               s = s.replace('</head>', css + '</head>', 1)
               js = '''\n<script id="yunamyst-footer-final-js">\n/* YUNAMYST FOOTER FINAL 20260821 */\ndocument.addEventListener('DOMContentLoaded',function(){\n  var f=document.getElementById('rodape');\n  var layout=document.querySelector('.layout');\n  if(f && layout){ layout.insertAdjacentElement('afterend',f); }\n});\n</script>\n'''
               s = s.replace('</body>', js + '</body>', 1)
-
           nav_marker = 'HEADER NAV CENTRALIZADA - YunaMyst'
           if nav_marker not in s:
               nav_css = '''\n<style id="yunamyst-header-nav-centered">\n/* HEADER NAV CENTRALIZADA - YunaMyst */\n.top .nav{position:relative!important}\n.top .navlinks{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:24px!important;margin:0!important;white-space:nowrap!important}\n.top .navlinks a{white-space:nowrap!important}\n@media(max-width:850px){.top .navlinks{display:none!important}}\n</style>\n'''
               s = s.replace('</head>', nav_css + '</head>', 1)
-
+          lang_marker='<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->'
+          if lang_marker not in s:
+              lang_js=r'''<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->
+<script>(function(){const pt={'HOME':'INÍCIO','HOW TO USE':'COMO USAR','Always updated!':'Sempre atualizados!','Active code':'Código ativo','Copy the code':'Copie o código','Click COPY on the desired code.':'Clica em COPIAR no código desejado.','Open the game':'Abra o jogo','Enter Summoners War: Sky Arena.':'Entra no Summoners War: Sky Arena.','Redeem the code':'Resgata o código','Use the redeem link.':'Usa o link de resgate.','Enjoy!':'Aproveita!','Receive the reward in the game.':'Recebe a recompensa no jogo.','Where do I enter the codes?':'Onde coloco os códigos?','Do the codes expire?':'Os códigos expiram?','Can I use on iPhone?':'Posso usar no iPhone?','Player name (optional)':'Nome de player (opcional)','How do you rate the site?':'Como você avalia o site?','Your rating':'Sua avaliação','Message':'Mensagem','Leave your opinion or suggestion...':'Deixa a tua opinião ou sugestão...','SEND FEEDBACK':'ENVIAR FEEDBACK','VIEW ALL FEEDBACK':'VER TODOS OS FEEDBACKS','ALL FEEDBACKS':'TODOS OS FEEDBACKS','No feedbacks have been submitted on this browser yet.':'Ainda não há feedbacks enviados neste navegador.','ABOUT THE SITE':'SOBRE O SITE','Daily Summoners War content!':'Conteúdo diário de Summoners War!','Here you can find the active Summoners War: Sky Arena codes.':'Aqui encontras os códigos ativos de Summoners War: Sky Arena.','Save the site and come back always!':'Guarda o site e volta sempre!','PARTNERSHIP':'PARCERIA','COPY':'COPIAR','iOS LINK':'LINK iOS'};const reverse={};for(const k in pt)reverse[pt[k]]=k;const original=new WeakMap();function translate(toEN){document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,a,button,label,small,strong,b,span').forEach(el=>{if(el.children.length)return;if(!original.has(el))original.set(el,el.textContent.trim());const o=original.get(el);el.textContent=toEN?(pt[o]||o):(reverse[o]||o)});document.documentElement.lang=toEN?'en':'pt-BR';const b=document.getElementById('langToggle');if(b)b.textContent=toEN?'🇬🇧 ENG':'🇧🇷 PT/BR';document.getElementById('langPTOption')?.classList.toggle('selected',!toEN);document.getElementById('langENOption')?.classList.toggle('selected',toEN)}function apply(en){translate(en);try{localStorage.setItem('yunamyst-language',en?'en':'pt')}catch(e){}document.getElementById('langSwitch')?.classList.remove('open')}function setup(){const sw=document.getElementById('langSwitch'),t=document.getElementById('langToggle'),p=document.getElementById('langPTOption'),e=document.getElementById('langENOption');if(!sw||!t||!p||!e)return;t.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();sw.classList.toggle('open')},true);p.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(false)},true);e.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(true)},true);document.addEventListener('click',x=>{if(!sw.contains(x.target))sw.classList.remove('open')},true);try{if(localStorage.getItem('yunamyst-language')==='en')setTimeout(()=>apply(true),0)}catch(x){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup()})();</script>'''
+              s=s.replace('</body>',lang_js+'\n</body>',1)
           p.write_text(s,encoding='utf-8')
           PY
 
@@ -46,24 +48,18 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           if git diff --quiet -- index.html; then
             echo "Nenhuma alteração necessária no index.html."
             exit 0
           fi
-
           git add index.html
-          git commit -m "Centralizar navegacao do cabecalho no index"
-
+          git commit -m "Corrigir idiomas PT-BR e ENG no index"
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
               echo "Push concluído."
               exit 0
             fi
-            echo "Push falhou; atualizando main antes da tentativa $((attempt + 1))..."
             git fetch origin main
             git rebase origin/main
           done
-
-          echo "Não foi possível fazer push após 3 tentativas."
           exit 1
