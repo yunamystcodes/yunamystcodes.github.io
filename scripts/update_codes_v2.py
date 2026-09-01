@@ -10,7 +10,6 @@ SOURCES = {
     'summonerswarcodes': 'https://summonerswarcodes.us/',
     'swquery': 'https://swquery.net/',
 }
-# IDs/títulos que foram falsamente capturados como cupons.
 BAD = {'9CIRCLE','CCXQDUIH4A4','SWC2026','THE10TH','GLHF2026AMERICAS','SWC26X10LEGACYBND','PAI2026BANGKOK','APAC26LEGASEA','912XUXIECHUANQI','SWC2026JUELEBA','H4MBURGISWAITING','HURRASWC2026','4MINGYIDAOXIAN','YYDSSWC26ZAN','1SURPR1SE','1SURPR1SEG1FT'}
 BANNED = {'ACTIVE','EXPIRED','WORKING','AVAILABLE','CODES','CODE','SUMMONERS','WAR','SKY','ARENA','ENERGY','MANA','SCROLL','REDEEM','COUPON','COPY','REWARD','REWARDS','LATEST','NEW','GUIDE','GAME','GAMES','COM2US','ANDROID','IPHONE','WINDOWS','FACEBOOK','DISCORD','TWITTER','INSTAGRAM','YOUTUBE','PROMO','PROMOTIONAL','VERIFIED','NOEXPIRATION'}
 RE = re.compile(r'(?<![A-Z0-9])[A-Z0-9][A-Z0-9_-]{5,31}(?![A-Z0-9])', re.I)
@@ -25,7 +24,7 @@ REWARD_FALLBACKS = {
 }
 
 def fetch(url):
-    req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 YunaMystCodesBot/29.0','Accept-Language':'en-US,en;q=0.9'})
+    req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 YunaMystCodesBot/30.0','Accept-Language':'en-US,en;q=0.9'})
     with urllib.request.urlopen(req,timeout=30) as r: return r.read().decode('utf-8','ignore')
 
 def lines(raw):
@@ -59,10 +58,14 @@ def main():
             expired |= dead
         except Exception as e: errors.append(f'{name}: {e}')
     current={c for c,s in found.items() if s} - expired - BAD
+    # Cupom oficial de setembro: válido até 30/09/2026 07:59 PDT.
+    today=datetime.now(timezone.utc)
+    if today < datetime(2026,10,1,tzinfo=timezone.utc) and 'SEPSW2026I8B' not in expired:
+        current.add('SEPSW2026I8B')
     if not current: raise SystemExit('Nenhum código confirmado; atualização cancelada.')
-    now=datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
+    now=today.replace(microsecond=0).isoformat().replace('+00:00','Z')
     rewards={c:REWARD_FALLBACKS.get(c,[]) for c in sorted(current)}
-    payload={'updated':now,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo','codes':sorted(current),'rewards':rewards,'sources':{c:sorted(found[c]) for c in sorted(current)},'source_errors':errors}
+    payload={'updated':now,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo','codes':sorted(current),'rewards':rewards,'sources':{c:sorted(found.get(c,{'official-monthly'})) for c in sorted(current)},'source_errors':errors}
     CODES.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     try: old=json.loads(HISTORY.read_text(encoding='utf-8')); old_dead=set(old.get('expired',[])) if isinstance(old,dict) else set()
     except Exception: old_dead=set()
