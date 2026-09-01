@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
 const redeem='https://withhive.me/313/';
+const FEEDBACK_API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks';
 const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA','LAST4PUNCHIN']);
 const FALLBACK_CODES=[];
 const REWARDS={
@@ -32,7 +33,7 @@ function styles(){
  .code.auto-code.reward-count-0{grid-template-rows:56px 44px!important;grid-template-areas:'gift info info info' 'copy copy link link'!important;min-height:120px!important}
  .code>.gift{grid-area:gift}.code>.cinfo{grid-area:info}.code>.reward:nth-child(3){grid-area:r1}.code>.reward:nth-child(4){grid-area:r2}.code>.reward:nth-child(5){grid-area:r3}.copy{grid-area:copy}.link{grid-area:link}.copy,.link{width:100%!important;min-width:0!important}
 }
-/* FEEDBACK MODAL — isolated fix so it can never appear as a normal page element */
+/* FEEDBACK GLOBAL — keep the modal isolated from the page layout */
 .ym-feedback-modal{display:none!important;position:fixed!important;inset:0!important;z-index:99999!important;align-items:center!important;justify-content:center!important;padding:18px!important;background:rgba(2,1,8,.84)!important;backdrop-filter:blur(7px)!important;box-sizing:border-box!important}
 .ym-feedback-modal.open{display:flex!important}
 .ym-feedback-modal-card{position:relative!important;width:min(620px,calc(100% - 20px))!important;max-height:min(78vh,620px)!important;overflow:auto!important;padding:24px 20px 18px!important;border:1px solid #be66ff!important;border-radius:18px!important;background:linear-gradient(180deg,#160a28f7,#070412f7)!important;box-shadow:0 25px 90px #000c!important;color:#fff!important;box-sizing:border-box!important}
@@ -47,6 +48,58 @@ function styles(){
 `;
  document.head.appendChild(s)
 }
+function feedback(){
+ const modal=document.getElementById('ym-feedback-modal');
+ const root=document.getElementById('ym-feedback');
+ const list=document.getElementById('ym-feedback-list');
+ const open=document.getElementById('ym-feedback-all');
+ const close=document.getElementById('ym-feedback-modal-close');
+ if(!modal||!root||!list||!open||!close)return;
+ /* Older builds accidentally placed the modal before <body>. Move it into body safely. */
+ if(document.body && modal.parentElement!==document.body)document.body.appendChild(modal);
+ if(modal.dataset.globalBound==='1')return;
+ modal.dataset.globalBound='1';
+ let rating=0;
+ const stars=[...root.querySelectorAll('.ym-star')];
+ const submit=document.getElementById('ym-feedback-submit');
+ stars.forEach(star=>star.addEventListener('click',()=>{
+   rating=Number(star.dataset.rating)||0;
+   stars.forEach(x=>x.classList.toggle('active',Number(x.dataset.rating)<=rating));
+ }));
+ async function loadFeedbacks(){
+   list.innerHTML='<div class="ym-feedback-empty">A carregar todos os feedbacks...</div>';
+   try{
+     const r=await fetch(FEEDBACK_API+'?t='+Date.now(),{method:'GET',cache:'no-store',headers:{Accept:'application/json'}});
+     if(!r.ok)throw new Error('GET '+r.status);
+     const items=await r.json();list.innerHTML='';
+     if(!Array.isArray(items)||!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';return;}
+     items.forEach(x=>{
+       const box=document.createElement('div');box.className='ym-feedback-item';
+       const head=document.createElement('div');head.className='ym-feedback-item-head';
+       const name=document.createElement('div');name.className='ym-feedback-item-name';name.textContent=x.name||'Jogador';
+       const starBox=document.createElement('div');starBox.className='ym-feedback-item-stars';const n=Math.max(0,Math.min(5,Number(x.rating)||0));starBox.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+       const text=document.createElement('div');text.className='ym-feedback-item-text';text.textContent=x.message||'';
+       head.append(name,starBox);box.append(head,text);list.append(box);
+     });
+   }catch(e){console.error('Feedbacks:',e);list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>';}
+ }
+ if(submit)submit.addEventListener('click',async()=>{
+   const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador';
+   const message=(root.querySelector('.ym-feedback-text')?.value||'').trim();
+   if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return;}
+   submit.disabled=true;const old=submit.textContent;submit.textContent='A ENVIAR...';
+   try{
+     const r=await fetch(FEEDBACK_API,{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,rating,message})});
+     if(!r.ok)throw new Error('POST '+r.status);
+     const text=root.querySelector('.ym-feedback-text');if(text)text.value='';stars.forEach(x=>x.classList.remove('active'));rating=0;
+     submit.textContent='FEEDBACK ENVIADO ✓';await loadFeedbacks();setTimeout(()=>submit.textContent=old,1800);
+   }catch(e){console.error('Envio de feedback:',e);alert('Não foi possível enviar o feedback. Tenta novamente.');submit.textContent=old;}finally{submit.disabled=false;}
+ });
+ open.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');loadFeedbacks();});
+ close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
+ modal.addEventListener('click',e=>{if(e.target===modal)close.click();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close.click();});
+}
 function profileFix(){const p=document.querySelector('.left .profile');if(!p)return;p.querySelectorAll('*').forEach(el=>{const txt=(el.childNodes.length===1?el.textContent:'').trim();if(/^https?:\/\//i.test(txt)||/^www\./i.test(txt))el.remove()});p.querySelectorAll('a').forEach(a=>{a.style.color='#fff';a.style.textDecoration='none'})}
 function card(code){const rewards=REWARDS[code]||[];const slots=rewards.map(()=>'<div class="reward"></div>').join('');return `<article class="code auto-code reward-count-${Math.min(rewards.length,3)}"><div class="gift">🎁</div><div class="cinfo"><strong>${esc(code)}</strong><small>🔄 Código ativo</small></div>${slots}<button class="copy" type="button" data-code="${esc(code)}">▣ COPIAR</button><a class="link" href="${redeem}${encodeURIComponent(code)}" target="_blank" rel="noopener noreferrer">🔗 LINK iOS</a></article>`}
 function copy(code,b){const old=b.textContent,done=()=>{b.textContent='✓ COPIADO!';setTimeout(()=>b.textContent=old,1500)};if(navigator.clipboard&&isSecureContext)navigator.clipboard.writeText(code).then(done).catch(()=>fallback(code,b));else fallback(code,b)}
@@ -57,6 +110,6 @@ function render(codes,root){const unique=[...new Set(codes.map(norm).filter(vali
 async function load(){const root=document.getElementById('ativos');if(!root)return;try{const r=await fetch('./codes.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();const codes=Array.isArray(d.codes)?d.codes:[];if(codes.length===0)throw 0;render(codes,root)}catch(e){render(FALLBACK_CODES,root)}profileFix()}
 function lang(){const sw=document.getElementById('langSwitch'),t=document.getElementById('langToggle');if(!sw||!t)return;if(!t.dataset.bound){t.dataset.bound='1';t.onclick=e=>{e.preventDefault();e.stopPropagation();sw.classList.toggle('open')}}}
 function sound(){const a=document.getElementById('bgMusic'),b=document.getElementById('soundToggle');if(!a||!b||b.dataset.bound)return;b.dataset.bound='1';const k='yunamyst-mute-v3';try{a.muted=localStorage.getItem(k)==='1'}catch(e){}const sync=()=>b.textContent=a.muted?'🔇':'🔊';sync();b.onclick=e=>{e.preventDefault();e.stopPropagation();a.muted=!a.muted;try{localStorage.setItem(k,a.muted?'1':'0')}catch(x){}if(!a.muted)a.play().catch(()=>{});sync()}}
-function init(){styles();lang();sound();bind();load();profileFix();setInterval(load,10*60*1000)}
+function init(){styles();lang();sound();bind();load();profileFix();feedback();setInterval(load,10*60*1000)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
