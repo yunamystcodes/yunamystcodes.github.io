@@ -1,25 +1,99 @@
 {
-  "updated": "2026-09-01T18:30:00Z",
-  "source_count": 3,
-  "trusted_confirmation": "Current active-code sources checked on 2026-09-01",
+  "updated": "2026-09-01T17:10:18Z",
+  "source_count": 21,
+  "successful_sources": 14,
+  "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
+    "9CIRCLE",
+    "CCXQDUIH4A4",
     "SEPSW2026I8B",
-    "SWGAJA2BKK",
-    "SWCJOAAAKR26",
-    "2SWCTORONTOTHE6IX",
-    "LAST4PUNCHIN",
-    "APAC1K0UB4NGK0K",
-    "2SOREIKENIPPON6",
-    "SWXFRIEREN2026"
+    "SWC2026",
+    "THE10TH"
   ],
   "rewards": {
-    "SEPSW2026I8B": [["legendary_water", "x3"], ["mana", "x300000"]],
-    "SWGAJA2BKK": [["mana", "x200000"], ["gold", "x1"]],
-    "SWCJOAAAKR26": [["gold", "x1"]],
-    "2SWCTORONTOTHE6IX": [["energy", "x100"], ["gold", "x1"]],
-    "LAST4PUNCHIN": [["mana", "x200000"], ["gold", "x1"]],
-    "APAC1K0UB4NGK0K": [["energy", "x100"], ["gold", "x1"]],
-    "2SOREIKENIPPON6": [["mana", "x200000"], ["gold", "x1"]],
-    "SWXFRIEREN2026": [["energy", "x100"], ["mana", "x300000"], ["gold", "x3"]]
-  }
+    "9CIRCLE": [],
+    "CCXQDUIH4A4": [
+      [
+        "crystal",
+        "x500"
+      ],
+      [
+        "gold",
+        "x3"
+      ]
+    ],
+    "SEPSW2026I8B": [
+      [
+        "blue",
+        "x3"
+      ],
+      [
+        "mana",
+        "x300000"
+      ]
+    ],
+    "SWC2026": [
+      [
+        "gold",
+        "x1"
+      ]
+    ],
+    "THE10TH": [
+      [
+        "crystal",
+        "x500"
+      ],
+      [
+        "gold",
+        "x3"
+      ]
+    ]
+  },
+  "sources": {
+    "9CIRCLE": {
+      "trusted": [
+        "swcoupon"
+      ],
+      "all": [
+        "swcoupon"
+      ]
+    },
+    "CCXQDUIH4A4": {
+      "trusted": [
+        "sw-official"
+      ],
+      "all": [
+        "sw-official"
+      ]
+    },
+    "SEPSW2026I8B": {
+      "trusted": [],
+      "all": []
+    },
+    "SWC2026": {
+      "trusted": [
+        "sw-official"
+      ],
+      "all": [
+        "sw-official"
+      ]
+    },
+    "THE10TH": {
+      "trusted": [
+        "sw-official"
+      ],
+      "all": [
+        "sw-official"
+      ]
+    }
+  },
+  "source_errors": [
+    "gameskinny: HTTP Error 404: Not Found",
+    "pcgamesn: HTTP Error 404: Not Found",
+    "gamezebo: HTTP Error 404: Not Found",
+    "droidgamers: HTTP Error 404: Not Found",
+    "supercheats: HTTP Error 404: Not Found",
+    "mrguider: HTTP Error 403: Forbidden",
+    "progameguides: HTTP Error 403: Forbidden"
+  ]
 }

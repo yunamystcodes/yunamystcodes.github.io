@@ -4,7 +4,6 @@
     "CCXQDUIH4A4",
     "SEPSW2026I8B",
     "SWC2026",
-    "SWXFRIEREN2026",
     "THE10TH"
   ],
   "expired": [
@@ -323,7 +322,7 @@
     "ZANLA2022SWC"
   ],
   "missing": {},
-  "updated_at": "2026-09-01T16:24:30Z",
+  "updated_at": "2026-09-01T17:10:18Z",
   "rewards": {
     "9CIRCLE": [],
     "CCXQDUIH4A4": [
@@ -350,20 +349,6 @@
       [
         "gold",
         "x1"
-      ]
-    ],
-    "SWXFRIEREN2026": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "mana",
-        "x300000"
-      ],
-      [
-        "gold",
-        "x3"
       ]
     ],
     "THE10TH": [
@@ -404,15 +389,6 @@
       ],
       "all": [
         "sw-official"
-      ]
-    },
-    "SWXFRIEREN2026": {
-      "trusted": [
-        "sw-teams"
-      ],
-      "all": [
-        "pocketgamer",
-        "sw-teams"
       ]
     },
     "THE10TH": {
