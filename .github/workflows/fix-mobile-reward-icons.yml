@@ -19,24 +19,25 @@ jobs:
           from pathlib import Path
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          if 'id="yunamyst-mobile-reward-sprite-fix"' not in s:
-              js='''
-          <script id="yunamyst-mobile-reward-sprite-fix">
-          (function(){
-            const fix=()=>document.querySelectorAll('#ativos .reward img').forEach(img=>{
-              if(img.dataset.spriteFixed)return;
-              const m=(img.style.objectPosition||'').match(/(-?\\d+)px\\s+0/);
-              if(!m)return;
-              const pos=Math.abs(parseInt(m[1],10)||0);
-              const span=document.createElement('span');
-              span.style.cssText='display:block;width:42px;height:42px;margin:auto;background-image:url("'+img.src+'");background-repeat:no-repeat;background-size:336px 48px;background-position:-'+pos+'px 0;background-color:transparent;';
-              img.replaceWith(span);
-            });
-            const root=document.getElementById('ativos');
-            if(root){new MutationObserver(fix).observe(root,{childList:true,subtree:true});fix();}
-          })();
-          </script>'''
-              s=s.replace('</body>',js+'\\n</body>',1)
+          marker='id="yunamyst-mobile-reward-horizontal-fix"'
+          if marker not in s:
+              css='''
+          <style id="yunamyst-mobile-reward-horizontal-fix">
+          /* Telemóvel: 3 recompensas lado a lado. PC não é alterado. */
+          @media (max-width:850px){
+            .codes > .code{
+              display:grid!important;
+              grid-template-columns:44px repeat(3,minmax(0,1fr))!important;
+              grid-template-rows:58px 66px 44px!important;
+              grid-template-areas:"gift info info info" "gift r1 r2 r3" "copy copy link link"!important;
+              align-items:center!important;
+            }
+            .codes > .code > .reward:nth-child(3){grid-area:r1!important;}
+            .codes > .code > .reward:nth-child(4){grid-area:r2!important;}
+            .codes > .code > .reward:nth-child(5){grid-area:r3!important;}
+          }
+          </style>'''
+              s=s.replace('</head>',css+'\n</head>',1)
               p.write_text(s,encoding='utf-8')
       - name: Publicar
         shell: bash
@@ -45,5 +46,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html .github/workflows/fix-mobile-reward-icons.yml
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Fix reward icons on mobile [skip mobile rewards]"
+          git commit -m "Fix mobile rewards horizontal layout [skip mobile rewards]"
           git push
