@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-01T15:44:59Z",
+  "updated": "2026-09-01T16:23:09Z",
   "source_count": 21,
   "successful_sources": 14,
   "trusted_confirmation": "1 trusted OR 2 independent",
@@ -8,6 +8,7 @@
     "CCXQDUIH4A4",
     "SEPSW2026I8B",
     "SWC2026",
+    "SWXFRIEREN2026",
     "THE10TH"
   ],
   "rewards": {
@@ -36,6 +37,20 @@
       [
         "gold",
         "x1"
+      ]
+    ],
+    "SWXFRIEREN2026": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "mana",
+        "x300000"
+      ],
+      [
+        "gold",
+        "x3"
       ]
     ],
     "THE10TH": [
@@ -76,6 +91,15 @@
       ],
       "all": [
         "sw-official"
+      ]
+    },
+    "SWXFRIEREN2026": {
+      "trusted": [
+        "sw-teams"
+      ],
+      "all": [
+        "pocketgamer",
+        "sw-teams"
       ]
     },
     "THE10TH": {
