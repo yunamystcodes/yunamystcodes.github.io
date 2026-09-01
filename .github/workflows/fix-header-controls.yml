@@ -20,9 +20,6 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-
-          # ONLY this visual fix: move SUMMONERS WAR below the Y descender.
-          # The logo text remains exactly YunaMyst on desktop and mobile.
           spacing_marker = '<style id="yunamyst-subtitle-spacing-fix">'
           if spacing_marker not in s:
               css_spacing = '''<style id="yunamyst-subtitle-spacing-fix">
@@ -30,11 +27,9 @@ jobs:
 @media(max-width:850px){.logo small{margin-top:5px!important}}
 </style>'''
               s = s.replace('</head>', css_spacing + '\n</head>', 1)
-
           marker = '<style id="yunamyst-header-controls-fix">'
           if marker not in s:
               css = r'''<style id="yunamyst-header-controls-fix">
-/* CABECALHO: mute ao lado do idioma; idiomas em menu de 1 clique; Y menor */
 .nav{position:relative}
 .header-controls-fixed{display:flex!important;align-items:center!important;gap:7px!important;margin-left:auto!important;flex:none!important}
 .header-controls-fixed .sound-control{display:flex!important;align-items:center!important;margin:0!important}
@@ -43,113 +38,37 @@ jobs:
 .header-controls-fixed .lang-menu{display:none!important;position:absolute!important;right:0!important;top:calc(100% + 7px)!important;z-index:10000!important;min-width:125px!important}
 .header-controls-fixed .lang-switch.open .lang-menu{display:block!important}
 .header-controls-fixed .lang-option{display:block!important;width:100%!important}
-.header-controls-fixed .yunamyst-lang-visible{display:block!important;margin:0!important}
-.header-controls-fixed .yunamyst-lang-visible .lang-option{display:block!important;width:100%!important}
 .logo::first-letter{font-size:.86em}
-@media(max-width:850px){
-  .header-controls-fixed{gap:5px!important}
-  .header-controls-fixed .lang-btn{height:38px!important;padding:8px 10px!important;font-size:10px!important}
-  .header-controls-fixed .sound-btn{width:38px!important;height:38px!important;font-size:17px!important}
-  .logo::first-letter{font-size:.84em}
-}
+@media(max-width:850px){.header-controls-fixed{gap:5px!important}.header-controls-fixed .lang-btn{height:38px!important;padding:8px 10px!important;font-size:10px!important}.header-controls-fixed .sound-btn{width:38px!important;height:38px!important;font-size:17px!important}.logo::first-letter{font-size:.84em}}
 </style>'''
               s = s.replace('</head>', css + '\n</head>', 1)
-
           marker2 = '<script id="yunamyst-header-controls-js">'
           if marker2 not in s:
               js = r'''<script id="yunamyst-header-controls-js">
-(function(){
-  function setupHeader(){
-    const nav=document.querySelector('.nav');
-    if(!nav) return;
-    const lang=document.querySelector('.lang-switch');
-    const soundBtn=document.querySelector('.sound-btn');
-    if(!lang || !soundBtn) return;
-    let sound=soundBtn.closest('.sound-control') || soundBtn.parentElement;
-    let box=document.querySelector('.header-controls-fixed');
-    if(!box){
-      box=document.createElement('div');
-      box.className='header-controls-fixed';
-      nav.appendChild(box);
-    }
-    if(lang.parentElement!==box) box.appendChild(lang);
-    if(sound.parentElement!==box) box.appendChild(sound);
-
-    const menu=lang.querySelector('.lang-menu');
-    if(!menu) return;
-    menu.classList.remove('yunamyst-lang-visible');
-    const visibleWrap=menu.querySelector('.yunamyst-lang-visible');
-    if(visibleWrap) visibleWrap.classList.remove('yunamyst-lang-visible');
-
-    const btn=lang.querySelector('.lang-btn');
-    if(btn && !btn.dataset.oneClick){
-      btn.dataset.oneClick='1';
-      btn.addEventListener('click',function(e){
-        e.preventDefault(); e.stopPropagation();
-        lang.classList.toggle('open');
-      });
-    }
-    menu.querySelectorAll('.lang-option').forEach(function(opt){
-      if(!opt.dataset.oneClick){
-        opt.dataset.oneClick='1';
-        opt.addEventListener('click',function(){
-          lang.classList.remove('open');
-        });
-      }
-    });
-    document.addEventListener('click',function(e){
-      if(!lang.contains(e.target)) lang.classList.remove('open');
-    },{once:false});
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupHeader); else setupHeader();
-  setTimeout(setupHeader,300);
-  setTimeout(setupHeader,1000);
-})();
+(function(){function setupHeader(){const nav=document.querySelector('.nav');if(!nav)return;const lang=document.querySelector('.lang-switch');const soundBtn=document.querySelector('.sound-btn');if(!lang||!soundBtn)return;let sound=soundBtn.closest('.sound-control')||soundBtn.parentElement;let box=document.querySelector('.header-controls-fixed');if(!box){box=document.createElement('div');box.className='header-controls-fixed';nav.appendChild(box)}if(lang.parentElement!==box)box.appendChild(lang);if(sound.parentElement!==box)box.appendChild(sound);const btn=lang.querySelector('.lang-btn');if(btn&&!btn.dataset.oneClick){btn.dataset.oneClick='1';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();lang.classList.toggle('open')})}lang.querySelectorAll('.lang-option').forEach(function(opt){if(!opt.dataset.oneClick){opt.dataset.oneClick='1';opt.addEventListener('click',function(){lang.classList.remove('open')})}});document.addEventListener('click',function(e){if(!lang.contains(e.target))lang.classList.remove('open')})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupHeader);else setupHeader();setTimeout(setupHeader,300);setTimeout(setupHeader,1000)})();
 </script>'''
               s = s.replace('</body>', js + '\n</body>', 1)
-
-          # Feedback: show a clear confirmation immediately after a successful form submit.
           feedback_marker = '<script id="yunamyst-feedback-confirmation">'
           if feedback_marker not in s:
-              feedback_js = r'''<script id="yunamyst-feedback-confirmation">
-(function(){
-  function setupFeedback(){
-    const forms=document.querySelectorAll('form');
-    forms.forEach(function(form){
-      if(form.dataset.feedbackConfirmReady) return;
-      const button=[...form.querySelectorAll('button,input[type="submit"]')].find(function(el){
-        return /ENVIAR FEEDBACK|SEND FEEDBACK|ENVIAR/i.test((el.textContent||el.value||'').trim());
-      });
-      if(!button) return;
-      form.dataset.feedbackConfirmReady='1';
-      let status=document.createElement('div');
-      status.className='feedback-success-message';
-      status.setAttribute('role','status');
-      status.setAttribute('aria-live','polite');
-      status.textContent='✓ Feedback enviado com sucesso! Obrigado pela avaliação.';
-      status.style.cssText='display:none;margin-top:10px;padding:10px 12px;border:1px solid #c89628;border-radius:9px;background:#2a1807;color:#f0c45c;font-size:11px;font-weight:800;text-align:center;';
-      button.insertAdjacentElement('afterend',status);
-      form.addEventListener('submit',function(){
-        status.style.display='block';
-      });
-      button.addEventListener('click',function(){
-        setTimeout(function(){
-          if(form.checkValidity()) status.style.display='block';
-        },0);
-      });
-    });
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupFeedback); else setupFeedback();
-  setTimeout(setupFeedback,500);
-})();
-</script>'''
+              feedback_js = r'''<script id="yunamyst-feedback-confirmation">(function(){function setupFeedback(){document.querySelectorAll('form').forEach(function(form){if(form.dataset.feedbackConfirmReady)return;const button=[...form.querySelectorAll('button,input[type="submit"]')].find(function(el){return /ENVIAR FEEDBACK|SEND FEEDBACK|ENVIAR/i.test((el.textContent||el.value||'').trim())});if(!button)return;form.dataset.feedbackConfirmReady='1';let status=document.createElement('div');status.className='feedback-success-message';status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.textContent='✓ Feedback enviado com sucesso! Obrigado pela avaliação.';status.style.cssText='display:none;margin-top:10px;padding:10px 12px;border:1px solid #c89628;border-radius:9px;background:#2a1807;color:#f0c45c;font-size:11px;font-weight:800;text-align:center;';button.insertAdjacentElement('afterend',status);form.addEventListener('submit',function(){status.style.display='block'})})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupFeedback);else setupFeedback();setTimeout(setupFeedback,500)})();</script>'''
               s = s.replace('</body>', feedback_js + '\n</body>', 1)
-
           p.write_text(s, encoding='utf-8')
+          PY
+      - name: Corrigir idiomas no index
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->'
+          if marker not in s:
+            js=r'''<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->
+<script>(function(){const pt={'HOME':'INÍCIO','HOW TO USE':'COMO USAR','Always updated!':'Sempre atualizados!','Active code':'Código ativo','Copy the code':'Copie o código','Click COPY on the desired code.':'Clica em COPIAR no código desejado.','Open the game':'Abra o jogo','Enter Summoners War: Sky Arena.':'Entra no Summoners War: Sky Arena.','Redeem the code':'Resgata o código','Use the redeem link.':'Usa o link de resgate.','Enjoy!':'Aproveita!','Receive the reward in the game.':'Recebe a recompensa no jogo.','Where do I enter the codes?':'Onde coloco os códigos?','Do the codes expire?':'Os códigos expiram?','Can I use on iPhone?':'Posso usar no iPhone?','Player name (optional)':'Nome de player (opcional)','How do you rate the site?':'Como você avalia o site?','Your rating':'Sua avaliação','Message':'Mensagem','Leave your opinion or suggestion...':'Deixa a tua opinião ou sugestão...','SEND FEEDBACK':'ENVIAR FEEDBACK','VIEW ALL FEEDBACK':'VER TODOS OS FEEDBACKS','ALL FEEDBACKS':'TODOS OS FEEDBACKS','No feedbacks have been submitted on this browser yet.':'Ainda não há feedbacks enviados neste navegador.','ABOUT THE SITE':'SOBRE O SITE','Daily Summoners War content!':'Conteúdo diário de Summoners War!','Here you can find the active Summoners War: Sky Arena codes.':'Aqui encontras os códigos ativos de Summoners War: Sky Arena.','Save the site and come back always!':'Guarda o site e volta sempre!','PARTNERSHIP':'PARCERIA','COPY':'COPIAR','iOS LINK':'LINK iOS'};const reverse={};for(const k in pt)reverse[pt[k]]=k;const original=new WeakMap();function translate(toEN){document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,a,button,label,small,strong,b,span').forEach(el=>{if(el.children.length)return;if(!original.has(el))original.set(el,el.textContent.trim());const o=original.get(el);el.textContent=toEN?(pt[o]||o):(reverse[o]||o)});document.documentElement.lang=toEN?'en':'pt-BR';const b=document.getElementById('langToggle');if(b)b.textContent=toEN?'🇬🇧 ENG':'🇧🇷 PT/BR';document.getElementById('langPTOption')?.classList.toggle('selected',!toEN);document.getElementById('langENOption')?.classList.toggle('selected',toEN)}function apply(en){translate(en);try{localStorage.setItem('yunamyst-language',en?'en':'pt')}catch(e){}document.getElementById('langSwitch')?.classList.remove('open')}function setup(){const sw=document.getElementById('langSwitch'),t=document.getElementById('langToggle'),p=document.getElementById('langPTOption'),e=document.getElementById('langENOption');if(!sw||!t||!p||!e)return;t.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();sw.classList.toggle('open')},true);p.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(false)},true);e.addEventListener('click',x=>{x.preventDefault();x.stopImmediatePropagation();apply(true)},true);document.addEventListener('click',x=>{if(!sw.contains(x.target))sw.classList.remove('open')},true);try{if(localStorage.getItem('yunamyst-language')==='en')setTimeout(()=>apply(true),0)}catch(x){}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup()})();</script>'''
+            s=s.replace('</body>',js+'\n</body>',1)
+            p.write_text(s,encoding='utf-8')
           PY
       - name: Confirmar alteracao
         run: |
-          grep -qF 'YunaMyst<small>SUMMONERS WAR</small></div>' index.html
           grep -qF 'yunamyst-subtitle-spacing-fix' index.html
           grep -qF 'feedback-success-message' index.html
           git config user.name 'YunaMyst Header Bot'
