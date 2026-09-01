@@ -31,15 +31,19 @@ jobs:
           s=p.read_text(encoding='utf-8')
           if 'auto-codes.js' not in s:
               s=s.replace('</body>','<script src="./auto-codes.js?v=20260901"></script>\n</body>',1)
-              p.write_text(s,encoding='utf-8')
-          # O auto-codes.js tinha alguns cupons antigos bloqueados. Remover
-          # apenas os que estão novamente confirmados como ativos pelas fontes.
+          # Nunca permitir que o carregador volte a mostrar o fallback antigo.
+          # Se codes.json falhar, a lista fica vazia em vez de exibir códigos expirados.
           a=Path('auto-codes.js')
           if a.exists():
               x=a.read_text(encoding='utf-8')
-              x=x.replace("'APAC26LEGASEA','LAST4PUNCHIN'", "'APAC26LEGASEA'")
+              x=x.replace("if(!codes.length)throw 0;render(codes,root)}catch(e){render(Object.keys(REWARDS),root)}", "if(!codes.length)throw 0;render(codes,root)}catch(e){root.innerHTML='';}")
               x=x.replace("'APAC26LEGASEA','LAST4PUNCHIN'", "'APAC26LEGASEA'")
               a.write_text(x,encoding='utf-8')
+          # Defesa adicional: remove do DOM qualquer cartão que não esteja em codes.json.
+          guard="""<script id=\"yunamyst-active-codes-guard\">\n(async()=>{try{const r=await fetch('./codes.json?guard='+Date.now(),{cache:'no-store'});if(!r.ok)return;const d=await r.json();const allowed=new Set((Array.isArray(d.codes)?d.codes:[]).map(x=>String(x).toUpperCase().replace(/[^A-Z0-9]/g,'')));const root=document.getElementById('ativos');if(!root)return;const clean=()=>root.querySelectorAll('.auto-code').forEach(el=>{const code=(el.querySelector('.cinfo strong')?.textContent||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(!allowed.has(code))el.remove()});clean();new MutationObserver(clean).observe(root,{childList:true})}catch(e){}})();\n</script>\n"""
+          if 'yunamyst-active-codes-guard' not in s:
+              s=s.replace('</body>',guard+'</body>',1)
+          p.write_text(s,encoding='utf-8')
           PY
       - name: Publicar alterações
         run: |
