@@ -26,6 +26,8 @@ jobs:
           python-version: '3.12'
       - name: Verificar códigos e atualizar lista
         run: python3 scripts/update_codes_safe.py
+      - name: Garantir feedbacks centralizados entre todos os aparelhos
+        run: python3 scripts/ensure_feedback_central.py
       - name: Verificar dados publicados
         run: |
           python3 - <<'PY'
