@@ -5,6 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CODES, HISTORY = ROOT / 'codes.json', ROOT / 'codes-history.json'
 SOURCES = {
+    'com2us-official': 'https://summonerswar.com/pt/skyarena/news',
     'sw-teams': 'https://sw-teams.ovh/codes',
     'swcoupon': 'https://swcoupon.net/',
     'summonerswarcodes': 'https://summonerswarcodes.us/',
