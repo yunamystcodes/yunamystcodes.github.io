@@ -1,0 +1,32 @@
+name: Fix language cache and embedded scripts
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clean language scripts and bump cache
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          # Remove every old inline language-fix block injected by previous workflows.
+          s = re.sub(r'\s*<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->\s*<script>.*?</script>', '', s, flags=re.S)
+          # Replace any old cached external language script reference with the current version.
+          s = re.sub(r'<script\s+src=["\']\./language-fix\.js(?:\?v=[^"\']*)?["\']\s*></script>', '<script src="./language-fix.js?v=20260902"></script>', s)
+          if './language-fix.js?v=20260902' not in s:
+              s = s.replace('</body>', '<script src="./language-fix.js?v=20260902"></script>\n</body>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git diff --cached --quiet || (git commit -m 'Remove conflicting language scripts and refresh cache' && git push)
