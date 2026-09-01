@@ -123,5 +123,20 @@
 </style>
 <footer class="ym-brand-footer" id="yunamyst-brand-footer"><div class="ym-footer-inner"><div class="ym-footer-name">YunaMyst</div><div class="ym-footer-credit"><span class="ym-footer-music">♫</span> Site e letra de música <span class="note">criados por YunaMyst</span> <span class="ym-footer-music">♫</span></div><div class="ym-footer-bottom"><span class="ym-footer-spark">✦</span>© 2026 YunaMyst. Todos os direitos reservados.<span class="ym-footer-spark">✦</span></div></div></footer>
 <!-- YUNAMYST BRAND FOOTER END -->
-</body>
+
+<script id="yunamyst-mobile-reward-sprite-fix">
+(function(){
+  const fix=()=>document.querySelectorAll('#ativos .reward img').forEach(img=>{
+    if(img.dataset.spriteFixed)return;
+    const m=(img.style.objectPosition||'').match(/(-?\d+)px\s+0/);
+    if(!m)return;
+    const pos=Math.abs(parseInt(m[1],10)||0);
+    const span=document.createElement('span');
+    span.style.cssText='display:block;width:42px;height:42px;margin:auto;background-image:url("'+img.src+'");background-repeat:no-repeat;background-size:336px 48px;background-position:-'+pos+'px 0;background-color:transparent;';
+    img.replaceWith(span);
+  });
+  const root=document.getElementById('ativos');
+  if(root){new MutationObserver(fix).observe(root,{childList:true,subtree:true});fix();}
+})();
+</script>\n</body>
 </html>
