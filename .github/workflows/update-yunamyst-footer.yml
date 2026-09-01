@@ -18,6 +18,13 @@ jobs:
           import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
+
+          # Remover apenas o rodape antigo #rodape e o script que o reposicionava.
+          # O novo rodape YunaMyst (ym-brand-footer) permanece intacto.
+          s=re.sub(r'<footer id="rodape"[^>]*>.*?</footer>\s*','',s,flags=re.S)
+          s=re.sub(r'<script id="yunamyst-footer-final-js">.*?</script>\s*','',s,flags=re.S)
+
+          # Garantir que existe apenas um rodape YunaMyst moderno.
           s=re.sub(r'<!-- YUNAMYST BRAND FOOTER START -->.*?<!-- YUNAMYST BRAND FOOTER END -->','',s,flags=re.S)
           footer='''<!-- YUNAMYST BRAND FOOTER START -->
           <style id="yunamyst-brand-footer-css">
@@ -34,6 +41,6 @@ jobs:
           git config user.email 'actions@github.com'
           git add index.html
           if ! git diff --cached --quiet; then
-            git commit -m 'Atualizar rodape YunaMyst no index [skip footer]'
+            git commit -m 'Remover rodape duplicado do index [skip footer]'
             git push
           fi
