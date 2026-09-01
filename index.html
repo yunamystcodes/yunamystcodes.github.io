@@ -90,5 +90,14 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',migrate);else migrate();
 })();
 </script>
+
+<script id="yunamyst-footer-final-js">
+/* YUNAMYST FOOTER FINAL 20260821 */
+document.addEventListener('DOMContentLoaded',function(){
+  var f=document.getElementById('rodape');
+  var layout=document.querySelector('.layout');
+  if(f && layout){ layout.insertAdjacentElement('afterend',f); }
+});
+</script>
 </body>
 </html>
