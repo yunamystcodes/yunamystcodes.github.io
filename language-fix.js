@@ -57,7 +57,7 @@ function setup(){
  if(root){new MutationObserver(()=>{if(document.documentElement.lang==='en')translate(true)}).observe(root,{childList:true,subtree:true})}
 }
 
-/* DATA DOS FEEDBACKS: acrescenta a data real antes do nome, sem alterar o conteúdo do feedback. */
+/* DATA DOS FEEDBACKS: acrescenta a data real depois do nome, sem alterar o conteúdo do feedback. */
 (function(){
  const originalFetch=window.fetch;
  if(typeof originalFetch!=='function')return;
@@ -77,7 +77,7 @@ function setup(){
       if(Number.isNaN(d.getTime()))return item;
       const date=new Intl.DateTimeFormat('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Europe/Lisbon'}).format(d);
       const name=String(item.name||'Jogador').replace(/^\(\d{2}\/\d{2}\/\d{4}\)\s*/,'');
-      return Object.assign({},item,{name:'('+date+') '+name});
+      return Object.assign({},item,{name:name+' ('+date+')'});
      });
      return new Response(JSON.stringify(dated),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json'}});
     }).catch(()=>response);
