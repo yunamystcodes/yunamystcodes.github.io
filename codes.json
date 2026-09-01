@@ -1,179 +1,27 @@
 {
-  "updated": "2026-09-01T06:14:06Z",
-  "source_count": 11,
-  "successful_sources": 11,
+  "updated": "2026-09-01T08:55:00Z",
+  "source_count": 21,
+  "successful_sources": 21,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
+    "SEPSW2026I8B",
     "SWCJOAAAKR26",
     "SWGAJA2BKK",
     "SWXFRIEREN2026"
   ],
   "rewards": {
-    "2SOREIKENIPPON6": [
-      [
-        "mana",
-        "x200000"
-      ],
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "2SWCTORONTOTHE6IX": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "mana",
-        "x200000"
-      ],
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "APAC1K0UB4NGK0K": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "SWCJOAAAKR26": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "mana",
-        "x200000"
-      ],
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "SWGAJA2BKK": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "mana",
-        "x200000"
-      ],
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "SWXFRIEREN2026": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "mana",
-        "x300000"
-      ],
-      [
-        "gold",
-        "x3"
-      ]
-    ]
+    "2SOREIKENIPPON6": [["mana","x200000"],["gold","x1"]],
+    "2SWCTORONTOTHE6IX": [["energy","x100"],["mana","x200000"],["gold","x1"]],
+    "APAC1K0UB4NGK0K": [["energy","x100"],["gold","x1"]],
+    "SEPSW2026I8B": [["blue","x3"],["mana","x300000"]],
+    "SWCJOAAAKR26": [["energy","x100"],["mana","x200000"],["gold","x1"]],
+    "SWGAJA2BKK": [["energy","x100"],["mana","x200000"],["gold","x1"]],
+    "SWXFRIEREN2026": [["energy","x100"],["mana","x300000"],["gold","x3"]]
   },
   "sources": {
-    "2SOREIKENIPPON6": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "2SWCTORONTOTHE6IX": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "APAC1K0UB4NGK0K": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SWCJOAAAKR26": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SWGAJA2BKK": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    },
-    "SWXFRIEREN2026": {
-      "trusted": [
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ],
-      "all": [
-        "pocketgamer",
-        "summonerswarcodes",
-        "sw-teams",
-        "swcoupon",
-        "swquery"
-      ]
-    }
+    "SEPSW2026I8B": {"trusted": ["sw-official"], "all": ["sw-official"]}
   }
 }
