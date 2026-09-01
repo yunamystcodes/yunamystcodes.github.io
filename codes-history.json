@@ -1,10 +1,7 @@
 {
   "active": [
     "9CIRCLE",
-    "CCXQDUIH4A4",
-    "SEPSW2026I8B",
-    "SWC2026",
-    "THE10TH"
+    "SEPSW2026I8B"
   ],
   "expired": [
     "000SLOT",
@@ -322,19 +319,9 @@
     "ZANLA2022SWC"
   ],
   "missing": {},
-  "updated_at": "2026-09-01T20:11:00Z",
+  "updated_at": "2026-09-01T20:30:18Z",
   "rewards": {
     "9CIRCLE": [],
-    "CCXQDUIH4A4": [
-      [
-        "crystal",
-        "x500"
-      ],
-      [
-        "gold",
-        "x3"
-      ]
-    ],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -343,22 +330,6 @@
       [
         "mana",
         "x300000"
-      ]
-    ],
-    "SWC2026": [
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "THE10TH": [
-      [
-        "crystal",
-        "x500"
-      ],
-      [
-        "gold",
-        "x3"
       ]
     ]
   },
@@ -371,36 +342,13 @@
         "swcoupon"
       ]
     },
-    "CCXQDUIH4A4": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    },
     "SEPSW2026I8B": {
       "trusted": [],
       "all": []
-    },
-    "SWC2026": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    },
-    "THE10TH": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
     }
   },
   "source_errors": [
+    "sw-official: The read operation timed out",
     "gameskinny: HTTP Error 404: Not Found",
     "pcgamesn: HTTP Error 404: Not Found",
     "gamezebo: HTTP Error 404: Not Found",
