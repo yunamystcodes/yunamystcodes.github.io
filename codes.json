@@ -1,8 +1,9 @@
 {
-  "updated": "2026-09-01T18:00:00Z",
+  "updated": "2026-09-01T18:05:00Z",
   "source_count": 2,
-  "trusted_confirmation": "2 current independent sources",
+  "trusted_confirmation": "2 current independent sources + official September notice",
   "codes": [
+    "SEPSW2026I8B",
     "SWGAJA2BKK",
     "SWCJOAAAKR26",
     "2SWCTORONTOTHE6IX",
@@ -12,6 +13,7 @@
     "SWXFRIEREN2026"
   ],
   "rewards": {
+    "SEPSW2026I8B": [["legendary_water", "x3"], ["mana", "x300000"]],
     "SWGAJA2BKK": [["mana", "x200000"], ["gold", "x1"]],
     "SWCJOAAAKR26": [["gold", "x1"]],
     "2SWCTORONTOTHE6IX": [["energy", "x100"], ["gold", "x1"]],
