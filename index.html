@@ -226,29 +226,34 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-<style id="yunamyst-copy-buttons-real-final">
-@media(min-width:851px){
-.code{display:grid!important;grid-template-columns:52px minmax(120px,1fr) minmax(170px,1fr) 220px!important;gap:8px!important;align-items:center!important;min-width:0!important;overflow:hidden!important;box-sizing:border-box!important}
-.code-top{display:contents!important}
-.code-top>.gift{grid-column:1!important;min-width:0!important}
-.code-top>.cinfo{grid-column:2!important;min-width:0!important}
-.code>.rewards{grid-column:3!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-width:0!important;overflow:hidden!important;padding:0!important}
-.code>.actions{grid-column:4!important;display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}
-.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:44px!important;padding:0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}
-}
-@media(max-width:1050px) and (min-width:851px){.code{grid-template-columns:48px minmax(95px,1fr) minmax(125px,1fr) 190px!important;gap:6px!important}.code>.actions{gap:6px!important}}
-@media(max-width:850px){
-.code{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:9px!important;padding:12px 9px!important;width:100%!important;min-width:0!important;overflow:visible!important;box-sizing:border-box!important}
-.code-top{display:flex!important;align-items:center!important;gap:10px!important;width:100%!important;min-width:0!important}
-.code-top>.gift{width:44px!important;height:44px!important;flex:none!important}
-.code-top>.cinfo{flex:1!important;min-width:0!important}
-.code>.rewards{display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;justify-content:center!important;gap:7px!important;width:100%!important;min-width:0!important;overflow:visible!important;padding:3px 0!important}
-.code>.actions{display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}
-.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}
-}
-</style><!-- YUNAMYST FEEDBACK GLOBAL FINAL -->
+<!-- YUNAMYST FEEDBACK GLOBAL FINAL -->
 <script id="yunamyst-feedback-central-js">
 (function(){const API="https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks",root=document.getElementById("ym-feedback"),modal=document.getElementById("ym-feedback-modal"),list=document.getElementById("ym-feedback-list"),open=document.getElementById("ym-feedback-all"),close=document.getElementById("ym-feedback-modal-close");if(!root||!modal||!list||!open||!close)return;let rating=0;const stars=[...root.querySelectorAll(".ym-star")],submit=document.getElementById("ym-feedback-submit");stars.forEach(s=>s.onclick=()=>{rating=+s.dataset.rating||0;stars.forEach(x=>x.classList.toggle("active",+x.dataset.rating<=rating))});async function load(){list.innerHTML="<div class=\"ym-feedback-empty\">A carregar todos os feedbacks...</div>";try{const r=await fetch(API+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw 0;const a=await r.json();list.innerHTML="";if(!Array.isArray(a)||!a.length){list.innerHTML="<div class=\"ym-feedback-empty\">Ainda não há feedbacks enviados.</div>";return}a.forEach(x=>{const b=document.createElement("div");b.className="ym-feedback-item";const h=document.createElement("div");h.className="ym-feedback-item-head";const n=document.createElement("div");n.className="ym-feedback-item-name";n.textContent=x.name||"Jogador";const st=document.createElement("div");st.className="ym-feedback-item-stars";const q=Math.max(0,Math.min(5,+x.rating||0));st.textContent="★".repeat(q)+"☆".repeat(5-q);const t=document.createElement("div");t.className="ym-feedback-item-text";t.textContent=x.message||"";h.append(n,st);b.append(h,t);list.append(b)})}catch(e){list.innerHTML="<div class=\"ym-feedback-empty\">Não foi possível carregar os feedbacks. Tenta novamente.</div>"}}submit?.addEventListener("click",async()=>{const name=(root.querySelector(".ym-feedback-name")?.value||"").trim()||"Jogador",message=(root.querySelector(".ym-feedback-text")?.value||"").trim();if(!rating||!message)return alert("Escolhe uma avaliação e escreve uma mensagem.");submit.disabled=true;try{const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,rating,message})});if(!r.ok)throw 0;root.querySelector(".ym-feedback-text").value="";stars.forEach(x=>x.classList.remove("active"));rating=0;await load()}catch(e){alert("Não foi possível enviar o feedback. Tenta novamente.")}finally{submit.disabled=false}});open.onclick=()=>{modal.classList.add("open");modal.setAttribute("aria-hidden","false");load()};close.onclick=()=>{modal.classList.remove("open");modal.setAttribute("aria-hidden","true")};modal.onclick=e=>{if(e.target===modal)close.click()}})();
 </script>
-</body>
+
+<style id="yunamyst-copy-buttons-real-final">
+/* FINAL REAL FIX: code-top, rewards and actions are the actual card wrappers */
+@media(min-width:851px){
+  .code{display:grid!important;grid-template-columns:52px minmax(120px,1fr) minmax(170px,1fr) 220px!important;gap:8px!important;align-items:center!important;min-width:0!important;overflow:hidden!important;box-sizing:border-box!important;}
+  .code-top{display:contents!important;}
+  .code-top>.gift{grid-column:1!important;min-width:0!important;}
+  .code-top>.cinfo{grid-column:2!important;min-width:0!important;}
+  .code>.rewards{grid-column:3!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-width:0!important;overflow:hidden!important;padding:0!important;}
+  .code>.actions{grid-column:4!important;display:flex!important;gap:8px!important;width:100%!important;min-width:0!important;}
+  .code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:44px!important;padding:0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important;}
+}
+@media(max-width:1050px) and (min-width:851px){
+  .code{grid-template-columns:48px minmax(95px,1fr) minmax(125px,1fr) 190px!important;gap:6px!important;}
+  .code>.actions{gap:6px!important;}
+}
+@media(max-width:850px){
+  .code{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:9px!important;padding:12px 9px!important;width:100%!important;min-width:0!important;overflow:visible!important;box-sizing:border-box!important;}
+  .code-top{display:flex!important;align-items:center!important;gap:10px!important;width:100%!important;min-width:0!important;}
+  .code-top>.gift{width:44px!important;height:44px!important;flex:none!important;}
+  .code-top>.cinfo{flex:1!important;min-width:0!important;}
+  .code>.rewards{display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;justify-content:center!important;gap:7px!important;width:100%!important;min-width:0!important;overflow:visible!important;padding:3px 0!important;}
+  .code>.actions{display:flex!important;gap:8px!important;width:100%!important;min-width:0!important;}
+  .code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important;}
+}
+</style></body>
 </html>
