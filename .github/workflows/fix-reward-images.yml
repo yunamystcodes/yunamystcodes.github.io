@@ -21,13 +21,11 @@ jobs:
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
 
-          # Remove qualquer versão do modal que tenha ficado fora do body.
-          modal_re=r'<div class="ym-feedback-modal" id="ym-feedback-modal".*?</div>\s*'
-          matches=list(re.finditer(modal_re,s,flags=re.S))
           modal='''<div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true"><div class="ym-feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="ym-feedback-modal-title"><button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button">×</button><h3 id="ym-feedback-modal-title">💜 TODOS OS FEEDBACKS</h3><div id="ym-feedback-list" class="ym-feedback-list"></div></div></div>'''
-          s=re.sub(modal_re,'',s,flags=re.S)
+          # Remove qualquer modal antigo inteiro, incluindo os dois DIVs finais.
+          s=re.sub(r'<div class="ym-feedback-modal" id="ym-feedback-modal"[^>]*>.*?</div>\s*</div>\s*','',s,flags=re.S)
 
-          # Remove versões antigas do CSS do modal e instala a versão final no HEAD.
+          # Remove CSS antigo do modal e instala uma única versão segura no HEAD.
           s=re.sub(r'<style id="yunamyst-feedback-modal-fix-v2">.*?</style>\s*','',s,flags=re.S)
           s=re.sub(r'<style id="yunamyst-feedback-modal-final">.*?</style>\s*','',s,flags=re.S)
           modal_css='''<style id="yunamyst-feedback-modal-final">
@@ -45,34 +43,24 @@ jobs:
           </style>'''
           s=s.replace('</head>',modal_css+'\n</head>',1)
 
-          # O modal deve existir exatamente uma vez e sempre dentro do BODY.
+          # Coloca o modal somente antes do fechamento do BODY.
           s=s.replace('</body>',modal+'\n</body>',1)
 
-          # Remove CSS duplicado dos botões antes de reinstalar a versão conhecida.
+          # Remove correções duplicadas dos botões e instala a versão final.
           for ident in ['yunamyst-copy-buttons-final','yunamyst-copy-buttons-real-final','yunamyst-copy-buttons-fix','yunamyst-button-fix-final','yunamyst-button-layout-real-fix']:
               s=re.sub(r'<style id="'+re.escape(ident)+r'">.*?</style>\s*','',s,flags=re.S)
-
           button_css='''<style id="yunamyst-copy-buttons-real-final">
-          @media(min-width:851px){
-          .code{display:grid!important;grid-template-columns:52px minmax(120px,1fr) minmax(170px,1fr) 220px!important;gap:8px!important;align-items:center!important;min-width:0!important;overflow:hidden!important;box-sizing:border-box!important}
-          .code-top{display:contents!important}.code-top>.gift{grid-column:1!important;min-width:0!important}.code-top>.cinfo{grid-column:2!important;min-width:0!important}.code>.rewards{grid-column:3!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-width:0!important;overflow:hidden!important;padding:0!important}.code>.actions{grid-column:4!important;display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:44px!important;padding:0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}
-          }
+          @media(min-width:851px){.code{display:grid!important;grid-template-columns:52px minmax(120px,1fr) minmax(170px,1fr) 220px!important;gap:8px!important;align-items:center!important;min-width:0!important;overflow:hidden!important;box-sizing:border-box!important}.code-top{display:contents!important}.code-top>.gift{grid-column:1!important;min-width:0!important}.code-top>.cinfo{grid-column:2!important;min-width:0!important}.code>.rewards{grid-column:3!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;min-width:0!important;overflow:hidden!important;padding:0!important}.code>.actions{grid-column:4!important;display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:44px!important;padding:0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}}
           @media(max-width:1050px) and (min-width:851px){.code{grid-template-columns:48px minmax(95px,1fr) minmax(125px,1fr) 190px!important;gap:6px!important}.code>.actions{gap:6px!important}}
           @media(max-width:850px){.code{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:9px!important;padding:12px 9px!important;width:100%!important;min-width:0!important;overflow:visible!important;box-sizing:border-box!important}.code-top{display:flex!important;align-items:center!important;gap:10px!important;width:100%!important;min-width:0!important}.code-top>.gift{width:44px!important;height:44px!important;flex:none!important}.code-top>.cinfo{flex:1!important;min-width:0!important}.code>.rewards{display:flex!important;flex-wrap:wrap!important;align-items:flex-start!important;justify-content:center!important;gap:7px!important;width:100%!important;min-width:0!important;overflow:visible!important;padding:3px 0!important}.code>.actions{display:flex!important;gap:8px!important;width:100%!important;min-width:0!important}.code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important}}
           </style>'''
           s=s.replace('</body>',button_css+'</body>',1)
 
-          # Garante que não ficou nenhum modal fora do body e que a estrutura HTML está íntegra.
-          head_end=s.find('</head>')
-          body_start=s.find('<body',head_end)
-          body_end=s.rfind('</body>')
-          if head_end < 0 or body_start < 0 or body_end < body_start:
-              raise SystemExit('ERRO: estrutura HTML inválida')
-          before_body=s[:body_start]
-          if '<div class="ym-feedback-modal"' in before_body:
-              raise SystemExit('ERRO: modal de feedback ficou dentro do HEAD')
-          if s.count('id="ym-feedback-modal"') != 1:
-              raise SystemExit('ERRO: modal de feedback duplicado')
+          head_end=s.find('</head>'); body_start=s.find('<body',head_end); body_end=s.rfind('</body>')
+          if head_end<0 or body_start<0 or body_end<body_start: raise SystemExit('ERRO: estrutura HTML inválida')
+          if '<div class="ym-feedback-modal"' in s[:body_start]: raise SystemExit('ERRO: modal fora do body')
+          if s.count('id="ym-feedback-modal"')!=1: raise SystemExit('ERRO: modal duplicado')
+          if 'ym-feedback-modal-final' not in s: raise SystemExit('ERRO: CSS do modal ausente')
           p.write_text(s,encoding='utf-8')
           PY
       - name: Verificar index antes de publicar
