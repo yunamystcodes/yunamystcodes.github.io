@@ -1,0 +1,140 @@
+name: FEEDBACK GLOBAL — FORÇAR CORREÇÃO FINAL
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: feedback-global-final
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, '[skip feedback-global]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout completo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remover feedback local e instalar feedback global
+        shell: python
+        run: |
+          from pathlib import Path
+          import re, time
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Remove TODAS as versões antigas: localStorage, versões antigas e duplicadas.
+          s = re.sub(r'<script[^>]*id=["\']yunamyst-feedback-js["\'][^>]*>.*?</script>', '', s, flags=re.S|re.I)
+          s = re.sub(r'<script[^>]*id=["\']yunamyst-feedback-all-js["\'][^>]*>.*?</script>', '', s, flags=re.S|re.I)
+          s = re.sub(r'<script[^>]*id=["\']yunamyst-feedback-central-js["\'][^>]*>.*?</script>', '', s, flags=re.S|re.I)
+          s = re.sub(r'<script[^>]*>.*?yunamyst_feedbacks_v2.*?</script>', '', s, flags=re.S|re.I)
+
+          # Garante que existe o modal usado pelo botão TODOS OS FEEDBACKS.
+          if 'id="ym-feedback-modal"' not in s:
+              modal = '''<div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true"><div class="ym-feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="ym-feedback-modal-title"><button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button" aria-label="Fechar">×</button><h3 id="ym-feedback-modal-title">💜 TODOS OS FEEDBACKS</h3><div id="ym-feedback-list" class="ym-feedback-list"></div></div></div>'''
+              s = s.replace('</body>', modal + '\n</body>', 1)
+
+          js = r'''<script id="yunamyst-feedback-central-js">
+          (function(){
+            const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks';
+            const root=document.getElementById('ym-feedback');
+            const modal=document.getElementById('ym-feedback-modal');
+            const list=document.getElementById('ym-feedback-list');
+            const open=document.getElementById('ym-feedback-all');
+            const close=document.getElementById('ym-feedback-modal-close');
+            if(!root||!modal||!list||!open||!close)return;
+            let rating=0;
+            const stars=[...root.querySelectorAll('.ym-star')];
+            const submit=document.getElementById('ym-feedback-submit');
+            stars.forEach(star=>star.addEventListener('click',()=>{
+              rating=Number(star.dataset.rating)||0;
+              stars.forEach(x=>x.classList.toggle('active',Number(x.dataset.rating)<=rating));
+            }));
+            async function loadFeedbacks(){
+              list.innerHTML='<div class="ym-feedback-empty">A carregar todos os feedbacks...</div>';
+              try{
+                const res=await fetch(API+'?t='+Date.now(),{method:'GET',cache:'no-store',headers:{Accept:'application/json'}});
+                if(!res.ok)throw new Error('GET '+res.status);
+                const items=await res.json();
+                list.innerHTML='';
+                if(!Array.isArray(items)||!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';return;}
+                items.forEach(x=>{
+                  const box=document.createElement('div');box.className='ym-feedback-item';
+                  const head=document.createElement('div');head.className='ym-feedback-item-head';
+                  const name=document.createElement('div');name.className='ym-feedback-item-name';name.textContent=x.name||'Jogador';
+                  const starsBox=document.createElement('div');starsBox.className='ym-feedback-item-stars';
+                  const n=Math.max(0,Math.min(5,Number(x.rating)||0));starsBox.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+                  const text=document.createElement('div');text.className='ym-feedback-item-text';text.textContent=x.message||'';
+                  head.append(name,starsBox);box.append(head,text);list.append(box);
+                });
+              }catch(e){console.error('Feedbacks:',e);list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>';}
+            }
+            if(submit)submit.addEventListener('click',async()=>{
+              const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador';
+              const message=(root.querySelector('.ym-feedback-text')?.value||'').trim();
+              if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return;}
+              submit.disabled=true;const old=submit.textContent;submit.textContent='A ENVIAR...';
+              try{
+                const res=await fetch(API,{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,rating,message})});
+                if(!res.ok)throw new Error('POST '+res.status);
+                root.querySelector('.ym-feedback-text').value='';stars.forEach(x=>x.classList.remove('active'));rating=0;
+                submit.textContent='FEEDBACK ENVIADO ✓';await loadFeedbacks();setTimeout(()=>submit.textContent=old,1800);
+              }catch(e){console.error('Envio de feedback:',e);alert('Não foi possível enviar o feedback. Tenta novamente.');submit.textContent=old;}finally{submit.disabled=false;}
+            });
+            open.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');loadFeedbacks();});
+            close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true');});
+            modal.addEventListener('click',e=>{if(e.target===modal)close.click();});
+            document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close.click();});
+          })();
+          </script>'''
+
+          s = s.replace('</body>', js + '\n</body>', 1)
+          s = re.sub(r'(<meta\s+name=["\']build-version["\']\s+content=["\'])[^"\']*(["\'])', r'\g<1>feedback-global-final-20260901-' + str(int(time.time())) + r'\g<2>', s, count=1, flags=re.I)
+          p.write_text(s, encoding='utf-8')
+
+      - name: Validar que não existe feedback local
+        shell: bash
+        run: |
+          ! grep -qF 'yunamyst_feedbacks_v2' index.html
+          grep -qF 'id="yunamyst-feedback-central-js"' index.html
+          grep -qF 'uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks' index.html
+          grep -qF 'id="ym-feedback-modal"' index.html
+          echo 'OK: feedback global centralizado instalado.'
+
+      - name: Publicar com proteção contra corrida dos outros workflows
+        shell: bash
+        run: |
+          git config user.name 'YunaMyst Feedback Bot'
+          git config user.email 'actions@github.com'
+          for attempt in 1 2 3 4 5 6; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 - <<'PY'
+          from pathlib import Path
+          import re, time
+          p=Path('index.html'); s=p.read_text(encoding='utf-8')
+          s=re.sub(r'<script[^>]*id=["\']yunamyst-feedback-js["\'][^>]*>.*?</script>','',s,flags=re.S|re.I)
+          s=re.sub(r'<script[^>]*id=["\']yunamyst-feedback-all-js["\'][^>]*>.*?</script>','',s,flags=re.S|re.I)
+          s=re.sub(r'<script[^>]*id=["\']yunamyst-feedback-central-js["\'][^>]*>.*?</script>','',s,flags=re.S|re.I)
+          s=re.sub(r'<script[^>]*>.*?yunamyst_feedbacks_v2.*?</script>','',s,flags=re.S|re.I)
+          if 'id="ym-feedback-modal"' not in s:
+            s=s.replace('</body>','<div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true"><div class="ym-feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="ym-feedback-modal-title"><button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button">×</button><h3 id="ym-feedback-modal-title">💜 TODOS OS FEEDBACKS</h3><div id="ym-feedback-list" class="ym-feedback-list"></div></div></div>\n</body>',1)
+          marker='<!-- YUNAMYST FEEDBACK GLOBAL FINAL -->'
+          js='''<script id="yunamyst-feedback-central-js">\n(function(){const API="https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks",root=document.getElementById("ym-feedback"),modal=document.getElementById("ym-feedback-modal"),list=document.getElementById("ym-feedback-list"),open=document.getElementById("ym-feedback-all"),close=document.getElementById("ym-feedback-modal-close");if(!root||!modal||!list||!open||!close)return;let rating=0;const stars=[...root.querySelectorAll(".ym-star")],submit=document.getElementById("ym-feedback-submit");stars.forEach(s=>s.onclick=()=>{rating=+s.dataset.rating||0;stars.forEach(x=>x.classList.toggle("active",+x.dataset.rating<=rating))});async function load(){list.innerHTML="<div class=\\"ym-feedback-empty\\">A carregar todos os feedbacks...</div>";try{const r=await fetch(API+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw 0;const a=await r.json();list.innerHTML="";if(!Array.isArray(a)||!a.length){list.innerHTML="<div class=\\"ym-feedback-empty\\">Ainda não há feedbacks enviados.</div>";return}a.forEach(x=>{const b=document.createElement("div");b.className="ym-feedback-item";const h=document.createElement("div");h.className="ym-feedback-item-head";const n=document.createElement("div");n.className="ym-feedback-item-name";n.textContent=x.name||"Jogador";const st=document.createElement("div");st.className="ym-feedback-item-stars";const q=Math.max(0,Math.min(5,+x.rating||0));st.textContent="★".repeat(q)+"☆".repeat(5-q);const t=document.createElement("div");t.className="ym-feedback-item-text";t.textContent=x.message||"";h.append(n,st);b.append(h,t);list.append(b)})}catch(e){list.innerHTML="<div class=\\"ym-feedback-empty\\">Não foi possível carregar os feedbacks. Tenta novamente.</div>"}}submit?.addEventListener("click",async()=>{const name=(root.querySelector(".ym-feedback-name")?.value||"").trim()||"Jogador",message=(root.querySelector(".ym-feedback-text")?.value||"").trim();if(!rating||!message)return alert("Escolhe uma avaliação e escreve uma mensagem.");submit.disabled=true;try{const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,rating,message})});if(!r.ok)throw 0;root.querySelector(".ym-feedback-text").value="";stars.forEach(x=>x.classList.remove("active"));rating=0;await load()}catch(e){alert("Não foi possível enviar o feedback. Tenta novamente.")}finally{submit.disabled=false}});open.onclick=()=>{modal.classList.add("open");modal.setAttribute("aria-hidden","false");load()};close.onclick=()=>{modal.classList.remove("open");modal.setAttribute("aria-hidden","true")};modal.onclick=e=>{if(e.target===modal)close.click()}})();\n</script>'''
+          s=s.replace('</body>',marker+'\n'+js+'\n</body>',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+            git add index.html
+            git commit -m 'Forcar feedback global entre todos os dispositivos [skip feedback-global]' || true
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 4
+          done
+          exit 1
