@@ -1,0 +1,92 @@
+name: Restaurar estrutura do site YunaCodes
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    if: startsWith(github.event.head_commit.message, 'RESTORE_YUNACODES_SITE')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restaurar index de uma versão íntegra
+        run: |
+          git checkout 15065bddf909ae12b1042db6e2904e610dc3ef51 -- index.html
+
+      - name: Recolocar feedback global e rodapé sem quebrar o HTML
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+
+          # Remove qualquer bloco de feedback/modal injetado fora do body.
+          s=re.sub(r'\s*<!-- YUNAMYST FEEDBACK GLOBAL FINAL -->.*?(?=<style id="yunamyst-copy-buttons-real-final"|</head>)', '\n', s, flags=re.S)
+          s=re.sub(r'<script id="yunamyst-feedback-central-js">.*?</script>\s*', '', s, flags=re.S)
+          s=re.sub(r'<script id="yunamyst-feedback-legacy-migration">.*?</script>\s*', '', s, flags=re.S)
+
+          # Remove o feedback local antigo: mantém apenas o formulário visual.
+          old_js=r'<script>\(function\(\)\{const root=document\.getElementById\(\'ym-feedback\'\).*?</script>'
+          s=re.sub(old_js, '', s, flags=re.S)
+
+          # Troca o rodapé antigo pelo rodapé compacto pedido.
+          s=re.sub(r'<footer id="rodape"[^>]*>.*?</footer>', '''<footer id="rodape" class="ym-brand-footer">
+          <div class="ym-footer-name">✦ YunaMyst ✦</div>
+          <div class="ym-footer-credit">♫ Site e letra de música criados por YunaMyst ♫</div>
+          <div class="ym-footer-bottom">© 2026 YunaMyst. Todos os direitos reservados.</div>
+          </footer>''', s, flags=re.S)
+
+          footer_css='''<style id="ym-brand-footer-clean">
+          .ym-brand-footer{width:100%;margin:24px auto 0;padding:18px 12px 22px;text-align:center;border-top:1px solid rgba(171,91,255,.35);background:linear-gradient(180deg,rgba(9,5,22,.72),rgba(4,3,13,.96));font-size:10px;color:#9f96ae}
+          .ym-footer-name{font:italic 23px Georgia,serif;color:#d9a8ff;text-shadow:0 0 14px rgba(185,93,255,.4)}
+          .ym-footer-credit{margin:8px 0 10px;color:#b9afc8;font-size:11px;font-weight:700}.ym-footer-bottom{padding-top:9px;border-top:1px solid rgba(182,92,255,.16);font-size:9px}
+          @media(max-width:600px){.ym-brand-footer{margin-top:18px;padding:16px 8px 18px}.ym-footer-name{font-size:20px}.ym-footer-credit{font-size:10px;line-height:1.5}.ym-footer-bottom{font-size:8px}}
+          </style>'''
+          s=s.replace('</head>', footer_css+'\n</head>', 1)
+
+          # Modal limpo, dentro do body.
+          modal='''<div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true"><div class="ym-feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="ym-feedback-modal-title"><button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button" aria-label="Fechar">×</button><h3 id="ym-feedback-modal-title">💜 TODOS OS FEEDBACKS</h3><div id="ym-feedback-list" class="ym-feedback-list"></div></div></div>'''
+          s=s.replace('</body>', modal+'\n</body>', 1)
+
+          feedback_css='''<style id="ym-feedback-global-clean">.ym-feedback-modal{display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:14px;background:rgba(2,1,8,.84);backdrop-filter:blur(7px)}.ym-feedback-modal.open{display:flex}.ym-feedback-modal-card{position:relative;width:min(620px,calc(100% - 20px));max-height:78vh;overflow:auto;padding:22px 18px 16px;border:1px solid #be66ff;border-radius:18px;background:linear-gradient(180deg,#160a28f7,#070412f7);box-shadow:0 25px 90px #000c}.ym-feedback-modal-card h3{margin:0 38px 14px 0;color:#f0c45c;font-size:17px}.ym-feedback-modal-close{position:absolute;top:9px;right:9px;width:31px;height:31px;border:1px solid #fff3;border-radius:50%;background:#12091f;color:#fff;font-size:19px;cursor:pointer}.ym-feedback-list{display:flex;flex-direction:column;gap:9px}.ym-feedback-empty{text-align:center;color:#aaa1b3;font-size:12px;padding:16px}.ym-feedback-item{padding:11px;border:1px solid #be66ff40;border-radius:11px;background:#0a0518cc}.ym-feedback-item-head{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:800}.ym-feedback-item-stars{color:#f0c45c;white-space:nowrap}.ym-feedback-item-text{margin-top:6px;color:#c9c0d0;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:600px){.ym-feedback-modal-card{width:calc(100% - 6px);padding:20px 13px 14px}.ym-feedback-modal-card h3{font-size:15px}.ym-feedback-item-head,.ym-feedback-item-text{font-size:11px}}</style>'''
+          s=s.replace('</head>', feedback_css+'\n</head>', 1)
+
+          feedback_js='''<script id="ym-feedback-global-clean-js">(()=>{const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks',root=document.getElementById('ym-feedback'),modal=document.getElementById('ym-feedback-modal'),list=document.getElementById('ym-feedback-list'),open=document.getElementById('ym-feedback-all'),close=document.getElementById('ym-feedback-modal-close');if(!root||!modal||!list||!open||!close)return;let rating=0;const stars=[...root.querySelectorAll('.ym-star')],submit=document.getElementById('ym-feedback-submit');stars.forEach(x=>x.addEventListener('click',()=>{rating=+x.dataset.star||0;stars.forEach(y=>y.classList.toggle('active',+y.dataset.star<=rating))}));async function load(){list.innerHTML='<div class="ym-feedback-empty">A carregar todos os feedbacks...</div>';try{const r=await fetch(API+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const a=await r.json();list.innerHTML='';if(!Array.isArray(a)||!a.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';return}a.forEach(x=>{const b=document.createElement('div');b.className='ym-feedback-item';const h=document.createElement('div');h.className='ym-feedback-item-head';const n=document.createElement('span');n.textContent=x.name||'Jogador';const st=document.createElement('span');st.className='ym-feedback-item-stars';const q=Math.max(0,Math.min(5,+x.rating||0));st.textContent='★'.repeat(q)+'☆'.repeat(5-q);const t=document.createElement('div');t.className='ym-feedback-item-text';t.textContent=x.message||'';h.append(n,st);b.append(h,t);list.append(b)})}catch(e){list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>'}}submit?.addEventListener('click',async()=>{const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador',message=(root.querySelector('.ym-feedback-text')?.value||'').trim();if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return}submit.disabled=true;try{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,rating,message})});if(!r.ok)throw 0;root.querySelector('.ym-feedback-text').value='';stars.forEach(x=>x.classList.remove('active'));rating=0;await load()}catch(e){alert('Não foi possível enviar o feedback. Tenta novamente')}finally{submit.disabled=false}});open.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');load()});close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});modal.addEventListener('click',e=>{if(e.target===modal)close.click()})})()</script>'''
+          s=s.replace('</body>', feedback_js+'\n</body>', 1)
+
+          # Elimina literal \\n que tinha sido injetado por uma atualização anterior.
+          s=s.replace('\\n<!-- YUNAMYST FEEDBACK GLOBAL FINAL -->','')
+          s=s.replace('\\n','\n')
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Validar HTML básico
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          checks=['<html','<head>','</head>','<body>','</body>','<main class="container layout">','id="ativos"','id="ym-feedback"','id="ym-feedback-modal"']
+          missing=[x for x in checks if x not in s]
+          if missing: raise SystemExit('HTML inválido; faltam: '+', '.join(missing))
+          if s.count('<body>') != 1: raise SystemExit('HTML inválido: body duplicado')
+          if s.count('</body>') != 1: raise SystemExit('HTML inválido: fechamento body duplicado')
+          print('HTML OK:',len(s),'bytes')
+          PY
+
+      - name: Publicar restauração
+        run: |
+          git config user.name 'YunaMyst Site Repair Bot'
+          git config user.email 'actions@github.com'
+          git add index.html .github/workflows/restore-site-now.yml
+          git commit -m 'RESTORED_YUNACODES_SITE [skip site automation]' || true
+          git rm .github/workflows/restore-site-now.yml || true
+          git commit -m 'Remove one-time site repair workflow [skip site automation]' || true
+          git push
