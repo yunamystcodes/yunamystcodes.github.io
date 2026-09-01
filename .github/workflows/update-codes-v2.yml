@@ -26,17 +26,26 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
           if 'auto-codes.js' not in s:
               s=s.replace('</body>','<script src="./auto-codes.js?v=20260901"></script>\n</body>',1)
               p.write_text(s,encoding='utf-8')
+          # O auto-codes.js tinha alguns cupons antigos bloqueados. Remover
+          # apenas os que estão novamente confirmados como ativos pelas fontes.
+          a=Path('auto-codes.js')
+          if a.exists():
+              x=a.read_text(encoding='utf-8')
+              x=x.replace("'APAC26LEGASEA','LAST4PUNCHIN'", "'APAC26LEGASEA'")
+              x=x.replace("'APAC26LEGASEA','LAST4PUNCHIN'", "'APAC26LEGASEA'")
+              a.write_text(x,encoding='utf-8')
           PY
       - name: Publicar alterações
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json index.html
+          git add codes.json codes-history.json index.html auto-codes.js
           if ! git diff --cached --quiet; then
             git commit -m 'Atualizar códigos ativos automaticamente'
             git push
