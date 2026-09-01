@@ -145,5 +145,8 @@
 </style>
 <footer class="ym-brand-footer" id="yunamyst-brand-footer"><div class="ym-footer-inner"><div class="ym-footer-name">YunaMyst</div><div class="ym-footer-credit"><span class="ym-footer-music">♫</span> Site e letra de música <span class="note">criados por YunaMyst</span> <span class="ym-footer-music">♫</span></div><div class="ym-footer-bottom"><span class="ym-footer-spark">✦</span>© 2026 YunaMyst. Todos os direitos reservados.<span class="ym-footer-spark">✦</span></div></div></footer>
 <!-- YUNAMYST BRAND FOOTER END -->
+<script id="yunamyst-active-codes-guard">
+(async()=>{try{const r=await fetch('./codes.json?guard='+Date.now(),{cache:'no-store'});if(!r.ok)return;const d=await r.json();const allowed=new Set((Array.isArray(d.codes)?d.codes:[]).map(x=>String(x).toUpperCase().replace(/[^A-Z0-9]/g,'')));const root=document.getElementById('ativos');if(!root)return;const clean=()=>root.querySelectorAll('.auto-code').forEach(el=>{const code=(el.querySelector('.cinfo strong')?.textContent||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(!allowed.has(code))el.remove()});clean();new MutationObserver(clean).observe(root,{childList:true})}catch(e){}})();
+</script>
 </body>
 </html>
