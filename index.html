@@ -244,6 +244,15 @@ applyLang();load();setInterval(load,600000);
 })();
 </script>\n
 
+<script id="yunamyst-footer-final-js">
+/* YUNAMYST FOOTER FINAL 20260821 */
+document.addEventListener('DOMContentLoaded',function(){
+  var f=document.getElementById('rodape');
+  var layout=document.querySelector('.layout');
+  if(f && layout){ layout.insertAdjacentElement('afterend',f); }
+});
+</script>
+
 <style id="yunamyst-copy-buttons-final">
 /* FINAL: keep both actions fully inside every code card */
 .code{position:relative!important;overflow:hidden!important;box-sizing:border-box!important;padding-right:250px!important;}
@@ -262,14 +271,5 @@ applyLang();load();setInterval(load,600000);
   .code>.copy{grid-area:copy!important;}
   .code>.link{grid-area:link!important;}
 }
-</style>
-<script id="yunamyst-footer-final-js">
-/* YUNAMYST FOOTER FINAL 20260821 */
-document.addEventListener('DOMContentLoaded',function(){
-  var f=document.getElementById('rodape');
-  var layout=document.querySelector('.layout');
-  if(f && layout){ layout.insertAdjacentElement('afterend',f); }
-});
-</script>
-</body>
+</style></body>
 </html>
