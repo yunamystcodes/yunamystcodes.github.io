@@ -1,46 +1,37 @@
 {
-  "updated": "2026-09-01T22:45:00Z",
-  "source_count": 4,
-  "successful_sources": 4,
-  "rule": "somente códigos atualmente confirmados; expirados removidos automaticamente; sem snapshot antigo",
+  "updated": "2026-09-01T21:59:29Z",
+  "source_count": 5,
+  "successful_sources": 5,
+  "rule": "lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo",
   "codes": [
-    "2SOREIKENIPPON6",
-    "2SWCTORONTOTHE6IX",
-    "APAC1K0UB4NGK0K",
-    "AUGSW2026V7N",
-    "LAST4PUNCHIN",
+    "2NEWTOMORROW2",
     "SEPSW2026I8B",
-    "SWCJOAAAKR26",
-    "SWGAJA2BKK",
-    "SWXFRIEREN2026"
+    "SW25HSZN"
   ],
   "rewards": {
-    "2SOREIKENIPPON6": [["mana", "x200000"], ["gold", "x1"]],
-    "2SWCTORONTOTHE6IX": [["energy", "x100"], ["gold", "x1"]],
-    "APAC1K0UB4NGK0K": [["energy", "x100"], ["gold", "x1"]],
-    "AUGSW2026V7N": [["energy", "x100"], ["red", "x3"]],
-    "LAST4PUNCHIN": [["mana", "x200000"], ["gold", "x1"]],
-    "SEPSW2026I8B": [["blue", "x3"], ["mana", "x300000"]],
-    "SWCJOAAAKR26": [["gold", "x1"]],
-    "SWGAJA2BKK": [["mana", "x200000"], ["gold", "x1"]],
-    "SWXFRIEREN2026": [["energy", "x100"], ["mana", "x300000"], ["gold", "x3"]]
+    "2NEWTOMORROW2": [],
+    "SEPSW2026I8B": [
+      [
+        "blue",
+        "x3"
+      ],
+      [
+        "mana",
+        "x300000"
+      ]
+    ],
+    "SW25HSZN": []
   },
   "sources": {
-    "2SOREIKENIPPON6": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
-    "2SWCTORONTOTHE6IX": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
-    "APAC1K0UB4NGK0K": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
-    "AUGSW2026V7N": ["sw-teams", "swcoupon"],
-    "LAST4PUNCHIN": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"],
-    "SEPSW2026I8B": ["official/community current notice"],
-    "SWCJOAAAKR26": ["swcoupon", "summonerswarcodes", "swquery"],
-    "SWGAJA2BKK": ["swcoupon", "summonerswarcodes"],
-    "SWXFRIEREN2026": ["sw-teams", "swcoupon", "summonerswarcodes", "swquery"]
+    "2NEWTOMORROW2": [
+      "swquery"
+    ],
+    "SEPSW2026I8B": [
+      "official-monthly"
+    ],
+    "SW25HSZN": [
+      "swquery"
+    ]
   },
-  "expired": [
-    "9CIRCLE",
-    "CCXQDUIH4A4",
-    "SWC2026",
-    "THE10TH"
-  ],
   "source_errors": []
 }

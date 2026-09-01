@@ -2,7 +2,7 @@
 'use strict';
 const redeem='https://withhive.me/313/';
 const FEEDBACK_API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks';
-const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA','LAST4PUNCHIN']);
+const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA']);
 const SPRITE='/assets/rewards-exact-20260829.webp?v=20260829-4';
 const FALLBACK_REWARDS={'2SOREIKENIPPON6':[['mana','x200000'],['gold','x1']],'4READY4TDOT':[['mana','x200000'],['gold','x1'],['energy','x50']],'AMPRELIMSLEGACYDRP':[['energy','x100'],['gold','x1']],'AUGSW2026V7N':[['red','x3'],['energy','x100']],'LEGENDSWC2026HSL':[['energy','x100'],['gold','x1']],'SWXFRIEREN2026':[['energy','x100'],['mana','x300000'],['gold','x3']],'YIQIZOUGUO10SWC':[['energy','x100'],['gold','x1']],'APAC1K0UB4NGK0K':[['energy','x100'],['gold','x1']]};
 let REWARDS={...FALLBACK_REWARDS};

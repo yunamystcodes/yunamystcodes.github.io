@@ -1,10 +1,8 @@
 {
   "active": [
-    "9CIRCLE",
-    "CCXQDUIH4A4",
+    "2NEWTOMORROW2",
     "SEPSW2026I8B",
-    "SWC2026",
-    "THE10TH"
+    "SW25HSZN"
   ],
   "expired": [
     "000SLOT",
@@ -58,11 +56,13 @@
     "2VS2UNITESEA23",
     "3RDLEGENDOF2023",
     "4BIGBOSS",
+    "4MINGYIDAOXIAN",
     "4P4C15H3R3",
     "4RANGHAESWC",
     "4THLESSON4SWC",
     "4TICKETSLEFT2BR",
     "912XUXIECHUANQI",
+    "9CIRCLE",
     "9OATSUMMONER",
     "9OATSUMMONERBJPANGE",
     "9OATSUMMONERMOAYO",
@@ -90,6 +90,7 @@
     "BETHEBESTLT25",
     "BORASPBRASIL2025",
     "CANNONGIRL333",
+    "CCXQDUIH4A4",
     "CHAMP32B0RN",
     "COL3KY8G1FT15",
     "COMINGUP34LGND",
@@ -127,9 +128,11 @@
     "GOODLUCKFORS23",
     "GUAKAHILISWC23",
     "H1TO33CHAMP",
+    "H4MBURGISWAITING",
     "HAPPYNEWLT20",
     "HENGAPTOKYO1109",
     "HIDINGINPARIS23",
+    "HURRASWC2026",
     "IDTOP8GO",
     "INWZASWC2023",
     "JANSW2026C13",
@@ -273,6 +276,7 @@
     "SWC2022SHUILA",
     "SWC2023LAIDAOSZ",
     "SWC2023ZANZAND",
+    "SWC2026",
     "SWC2026JUELEBA",
     "SWC22CMIEUX",
     "SWC23SHALLRETURN",
@@ -302,6 +306,7 @@
     "SWSTAR1218",
     "SWSTARROUND2",
     "SWXDSHAPPY25",
+    "THE10TH",
     "THX2SUMMONERS2X9L",
     "THX4ENJDSCOLLAB",
     "TOK0916DAEGU",
@@ -319,22 +324,12 @@
     "XMASWITHLTS27",
     "Y0UK0S0SM25",
     "YOUKOSOSWC24WF",
+    "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "missing": {},
-  "updated_at": "2026-09-01T21:42:53Z",
+  "updated_at": "2026-09-01T21:59:29Z",
   "rewards": {
-    "9CIRCLE": [],
-    "CCXQDUIH4A4": [
-      [
-        "crystal",
-        "x500"
-      ],
-      [
-        "gold",
-        "x3"
-      ]
-    ],
+    "2NEWTOMORROW2": [],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -345,68 +340,18 @@
         "x300000"
       ]
     ],
-    "SWC2026": [
-      [
-        "gold",
-        "x1"
-      ]
-    ],
-    "THE10TH": [
-      [
-        "crystal",
-        "x500"
-      ],
-      [
-        "gold",
-        "x3"
-      ]
-    ]
+    "SW25HSZN": []
   },
   "sources": {
-    "9CIRCLE": {
-      "trusted": [
-        "swcoupon"
-      ],
-      "all": [
-        "swcoupon"
-      ]
-    },
-    "CCXQDUIH4A4": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    },
-    "SEPSW2026I8B": {
-      "trusted": [],
-      "all": []
-    },
-    "SWC2026": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    },
-    "THE10TH": {
-      "trusted": [
-        "sw-official"
-      ],
-      "all": [
-        "sw-official"
-      ]
-    }
+    "2NEWTOMORROW2": [
+      "swquery"
+    ],
+    "SEPSW2026I8B": [
+      "official-monthly"
+    ],
+    "SW25HSZN": [
+      "swquery"
+    ]
   },
-  "source_errors": [
-    "gameskinny: HTTP Error 404: Not Found",
-    "pcgamesn: HTTP Error 404: Not Found",
-    "gamezebo: HTTP Error 404: Not Found",
-    "droidgamers: HTTP Error 404: Not Found",
-    "supercheats: HTTP Error 404: Not Found",
-    "mrguider: HTTP Error 403: Forbidden",
-    "progameguides: HTTP Error 403: Forbidden"
-  ]
+  "source_errors": []
 }
