@@ -1,7 +1,7 @@
 {
-  "updated": "2026-09-01T08:34:42Z",
+  "updated": "2026-09-01T08:49:38Z",
   "source_count": 21,
-  "successful_sources": 14,
+  "successful_sources": 15,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "9CIRCLE",
@@ -89,7 +89,6 @@
   },
   "source_errors": [
     "gameskinny: HTTP Error 404: Not Found",
-    "pcgamesn: HTTP Error 404: Not Found",
     "gamezebo: HTTP Error 404: Not Found",
     "droidgamers: HTTP Error 404: Not Found",
     "supercheats: HTTP Error 404: Not Found",
