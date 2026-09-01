@@ -10,7 +10,10 @@ function community(en){
   if(!communityOriginal[a]) communityOriginal[a]={html:a.innerHTML,href:a.getAttribute('href')};
   const label=en?(a.classList.contains('whatsapp')?'WHATSAPP':'PARTNERSHIP'):(a.classList.contains('whatsapp')?'WHATSAPP':'PARCERIA');
   let span=a.querySelector('.community-label');
-  if(!span){span=document.createElement('span');span.className='community-label';a.appendChild(span)}
+  if(!span){
+   a.querySelector('strong')?.remove();
+   span=document.createElement('span');span.className='community-label';a.appendChild(span)
+  }
   span.textContent=label;
   if(communityOriginal[a].href)a.setAttribute('href',communityOriginal[a].href);
   if(a.classList.contains('whatsapp')&&!a.querySelector('svg')){
