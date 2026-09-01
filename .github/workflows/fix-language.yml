@@ -1,0 +1,103 @@
+name: Fix language selector
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index.html
+        env:
+          FILE: index.html
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->'
+          if marker in s:
+              raise SystemExit('already patched')
+          js=r'''<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->
+<script>
+(function(){
+  const pt={
+    'HOME':'INÍCIO','SUMMONERS WAR':'SUMMONERS WAR','HOW TO USE':'COMO USAR',
+    'Always updated!':'Sempre atualizados!','Active code':'Código ativo','Active codes':'Códigos ativos',
+    'Copy the code':'Copie o código','Click COPY on the desired code.':'Clica em COPIAR no código desejado.',
+    'Open the game':'Abra o jogo','Enter Summoners War: Sky Arena.':'Entra no Summoners War: Sky Arena.',
+    'Redeem the code':'Resgata o código','Use the redeem link.':'Usa o link de resgate.',
+    'Enjoy!':'Aproveita!','Receive the reward in the game.':'Recebe a recompensa no jogo.',
+    'HOW TO USE':'COMO USAR','FAQ':'FAQ','Where do I enter the codes?':'Onde coloco os códigos?',
+    'Do the codes expire?':'Os códigos expiram?','Can I use on iPhone?':'Posso usar no iPhone?',
+    'FEEDBACK':'FEEDBACK','Player name (optional)':'Nome de player (opcional)',
+    'How do you rate the site?':'Como você avalia o site?','Your rating':'Sua avaliação',
+    'Message':'Mensagem','Leave your opinion or suggestion...':'Deixa a tua opinião ou sugestão...',
+    'SEND FEEDBACK':'ENVIAR FEEDBACK','VIEW ALL FEEDBACK':'VER TODOS OS FEEDBACKS',
+    'ALL FEEDBACKS':'TODOS OS FEEDBACKS','No feedbacks have been submitted on this browser yet.':'Ainda não há feedbacks enviados neste navegador.',
+    'ABOUT THE SITE':'SOBRE O SITE','Daily Summoners War content!':'Conteúdo diário de Summoners War!',
+    'Here you can find the active Summoners War: Sky Arena codes.':'Aqui encontras os códigos ativos de Summoners War: Sky Arena.',
+    'Save the site and come back always!':'Guarda o site e volta sempre!',
+    'WHATSAPP':'WHATSAPP','PARTNERSHIP':'PARCERIA','COPY':'COPIAR','iOS LINK':'LINK iOS',
+    'Expired codes':'Códigos expirados','ACTIVE CODES':'CÓDIGOS ATIVOS'
+  };
+  const en={}; Object.keys(pt).forEach(k=>en[pt[k]]=k);
+  const originals=new WeakMap();
+  function remember(el){if(!originals.has(el)) originals.set(el,el.textContent);}
+  function translate(root,toEN){
+    const els=root.querySelectorAll('h1,h2,h3,h4,h5,h6,p,a,button,label,small,strong,b,span,div');
+    els.forEach(el=>{
+      if(el.children.length) return;
+      remember(el);
+      const original=originals.get(el);
+      const key=toEN ? (pt[original.trim()]?original.trim():null) : (en[original.trim()]?original.trim():null);
+      if(toEN && key) el.textContent=key;
+      else if(!toEN){ const val=en[original.trim()]; if(val) el.textContent=val; }
+    });
+    document.documentElement.lang=toEN?'en':'pt-BR';
+    const btn=document.getElementById('langToggle');
+    if(btn) btn.textContent=toEN?'🇬🇧 ENG':'🇧🇷 PT/BR';
+    document.getElementById('langPTOption')?.classList.toggle('selected',!toEN);
+    document.getElementById('langENOption')?.classList.toggle('selected',toEN);
+  }
+  function apply(toEN){
+    document.documentElement.dataset.siteLanguage=toEN?'en':'pt';
+    translate(document,toEN);
+    try{localStorage.setItem('yunamyst-language',toEN?'en':'pt');}catch(e){}
+    document.getElementById('langSwitch')?.classList.remove('open');
+  }
+  function setup(){
+    const sw=document.getElementById('langSwitch');
+    const toggle=document.getElementById('langToggle');
+    const ptb=document.getElementById('langPTOption');
+    const enb=document.getElementById('langENOption');
+    if(!sw||!toggle||!ptb||!enb) return;
+    toggle.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();sw.classList.toggle('open');},true);
+    ptb.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();apply(false);},true);
+    enb.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();apply(true);},true);
+    document.addEventListener('click',e=>{if(!sw.contains(e.target)) sw.classList.remove('open');},true);
+    let saved='pt'; try{saved=localStorage.getItem('yunamyst-language')||'pt';}catch(e){}
+    if(saved==='en') setTimeout(()=>apply(true),0);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();
+})();
+</script>'''
+          s=s.replace('</body>',js+'\n</body>',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit index only
+        run: |
+          git config user.name 'YunaMyst'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Fix PT-BR and English language switching' || exit 0
+          git push
+      - name: Remove temporary workflow
+        if: always()
+        run: |
+          git config user.name 'YunaMyst'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -f .github/workflows/fix-language.yml || true
+          git commit -m 'Remove temporary language fix workflow' || true
+          git push || true
