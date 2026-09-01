@@ -1,7 +1,7 @@
 {
-  "updated": "2026-09-01T11:57:36Z",
+  "updated": "2026-09-01T12:19:57Z",
   "source_count": 21,
-  "successful_sources": 13,
+  "successful_sources": 14,
   "trusted_confirmation": "1 trusted OR 2 independent",
   "codes": [
     "9CIRCLE",
@@ -94,7 +94,6 @@
     "droidgamers: HTTP Error 404: Not Found",
     "supercheats: HTTP Error 404: Not Found",
     "mrguider: HTTP Error 403: Forbidden",
-    "tryhardguides: HTTP Error 403: Forbidden",
     "progameguides: HTTP Error 403: Forbidden"
   ]
 }
