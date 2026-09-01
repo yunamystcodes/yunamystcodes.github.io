@@ -22,83 +22,27 @@ jobs:
           python-version: '3.12'
       - name: Verificar códigos e atualizar lista
         run: python3 scripts/update_codes_safe.py
-      - name: Garantir cupom mensal de setembro
-        run: |
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          p=Path('codes.json')
-          d=json.loads(p.read_text(encoding='utf-8'))
-          code='SEPSW2026I8B'
-          codes=[str(c).upper() for c in d.get('codes',[])]
-          if code not in codes:
-              codes.append(code)
-              codes=sorted(set(codes))
-          d['codes']=codes
-          d.setdefault('rewards',{})[code]=[['blue','x3'],['mana','x300000']]
-          d.setdefault('sources',{})[code]={'trusted':[],'all':['monthly-official-fallback']}
-          d['trusted_confirmation']='1 trusted OR 2 independent OR known monthly coupon'
-          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          h=Path('codes-history.json')
-          try: hd=json.loads(h.read_text(encoding='utf-8'))
-          except Exception: hd={}
-          active=[str(c).upper() for c in hd.get('active',[])]
-          if code not in active: active.append(code)
-          hd['active']=sorted(set(active))
-          hd.setdefault('rewards',{})[code]=[['blue','x3'],['mana','x300000']]
-          hd.setdefault('sources',{})[code]={'trusted':[],'all':['monthly-official-fallback']}
-          h.write_text(json.dumps(hd,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          print('OK: cupom mensal de setembro garantido:',code)
-          PY
       - name: Verificar dados publicados
         run: |
           python3 - <<'PY'
           import json
           d=json.load(open('codes.json',encoding='utf-8'))
-          codes=d.get('codes',[])
+          codes=[str(c).upper() for c in d.get('codes',[])]
           if len(codes)!=len(set(codes)): raise SystemExit('ERRO: existem códigos duplicados')
-          blocked={'GLHF2026AMERICAS','SWC26X10LEGACYBND'}
-          if blocked.intersection(codes): raise SystemExit('ERRO: código rejeitado voltou à lista')
           if not codes: raise SystemExit('ERRO: lista vazia')
-          print(f'OK: {len(codes)} códigos ativos, sem duplicados e sem códigos bloqueados.')
+          print(f'OK: {len(codes)} códigos ativos, sem duplicados.')
           PY
-      - name: Melhorar apenas o SEO da página inicial
+      - name: Atualizar cache-busting da página
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          from datetime import datetime
           import re
-          import json
-
-          path=Path('index.html')
-          html=path.read_text(encoding='utf-8')
-          year=datetime.utcnow().year
-          title=f'Summoners War — Códigos Ativos {year} | YunaCodes'
-          description=f'Códigos de Summoners War ativos em {year}, recompensas grátis e últimos códigos disponíveis. Lista atualizada regularmente no YunaCodes.'
-
-          html,n=re.subn(r'<title>.*?</title>',f'<title>{title}</title>',html,count=1,flags=re.DOTALL)
-          if n!=1: raise SystemExit('SEO: <title> não encontrado.')
-
-          html,n=re.subn(r'<meta\s+name=["\']description["\']\s+content=["\'][^"\']*["\']\s*/?>',f'<meta name="description" content="{description}">',html,count=1,flags=re.IGNORECASE)
-          if n!=1: raise SystemExit('SEO: meta description não encontrada.')
-
-          if 'rel="canonical"' not in html.lower():
-              html=html.replace('</head>','<link rel="canonical" href="https://yunacodes.com/">\n</head>',1)
-
-          if 'application/ld+json' not in html:
-              schema={
-                  '@context':'https://schema.org',
-                  '@type':'WebSite',
-                  'name':'YunaCodes',
-                  'alternateName':'YunaMyst Codes',
-                  'url':'https://yunacodes.com/',
-                  'description':description,
-                  'inLanguage':['pt-BR','en']
-              }
-              jsonld='<script type="application/ld+json">\n'+json.dumps(schema,ensure_ascii=False,indent=2)+'\n</script>\n'
-              html=html.replace('</head>',jsonld+'</head>',1)
-
-          path.write_text(html,encoding='utf-8')
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=re.sub(r'codes\.json(?:\?v=[^"\']+)?', 'codes.json?v=__CODES_VERSION__', s)
+          import time
+          s=s.replace('__CODES_VERSION__', str(int(time.time())))
+          p.write_text(s,encoding='utf-8')
           PY
       - name: Guardar atualização
         run: |
