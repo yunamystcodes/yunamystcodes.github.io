@@ -93,6 +93,28 @@
 
 <div class="ym-feedback-modal" id="ym-feedback-modal" aria-hidden="true"><div class="ym-feedback-modal-card" role="dialog" aria-modal="true" aria-labelledby="ym-feedback-modal-title"><button class="ym-feedback-modal-close" id="ym-feedback-modal-close" type="button" aria-label="Fechar">×</button><h3 id="ym-feedback-modal-title">💜 TODOS OS FEEDBACKS</h3><div id="ym-feedback-list" class="ym-feedback-list"></div></div></div>
 <script id="ym-feedback-global-clean-js">(()=>{const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks',root=document.getElementById('ym-feedback'),modal=document.getElementById('ym-feedback-modal'),list=document.getElementById('ym-feedback-list'),open=document.getElementById('ym-feedback-all'),close=document.getElementById('ym-feedback-modal-close');if(!root||!modal||!list||!open||!close)return;let rating=0;const stars=[...root.querySelectorAll('.ym-star')],submit=document.getElementById('ym-feedback-submit');stars.forEach(x=>x.addEventListener('click',()=>{rating=+x.dataset.star||0;stars.forEach(y=>y.classList.toggle('active',+y.dataset.star<=rating))}));async function load(){list.innerHTML='<div class="ym-feedback-empty">A carregar todos os feedbacks...</div>';try{const r=await fetch(API+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const a=await r.json();list.innerHTML='';if(!Array.isArray(a)||!a.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';return}a.forEach(x=>{const b=document.createElement('div');b.className='ym-feedback-item';const h=document.createElement('div');h.className='ym-feedback-item-head';const n=document.createElement('span');n.textContent=x.name||'Jogador';const st=document.createElement('span');st.className='ym-feedback-item-stars';const q=Math.max(0,Math.min(5,+x.rating||0));st.textContent='★'.repeat(q)+'☆'.repeat(5-q);const t=document.createElement('div');t.className='ym-feedback-item-text';t.textContent=x.message||'';h.append(n,st);b.append(h,t);list.append(b)})}catch(e){list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>'}}submit?.addEventListener('click',async()=>{const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador',message=(root.querySelector('.ym-feedback-text')?.value||'').trim();if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return}submit.disabled=true;try{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,rating,message})});if(!r.ok)throw 0;root.querySelector('.ym-feedback-text').value='';stars.forEach(x=>x.classList.remove('active'));rating=0;await load()}catch(e){alert('Não foi possível enviar o feedback. Tenta novamente')}finally{submit.disabled=false}});open.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');load()});close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});modal.addEventListener('click',e=>{if(e.target===modal)close.click()})})()</script>
+<!-- YUNAMYST BRAND FOOTER START -->
+<style id="yunamyst-brand-footer-css">
+.ym-brand-footer{position:relative;margin-top:34px;padding:26px 18px 22px;background:linear-gradient(180deg,rgba(9,5,22,.88),rgba(4,3,13,.98));border-top:1px solid rgba(171,91,255,.45);text-align:center;overflow:hidden}.ym-brand-footer:before{content:"";position:absolute;top:0;left:50%;width:280px;height:1px;transform:translateX(-50%);background:#d7a4ff;box-shadow:0 0 18px rgba(190,102,255,.9)}.ym-footer-inner{position:relative;max-width:900px;margin:auto}.ym-footer-name{display:flex;align-items:center;justify-content:center;gap:12px;color:#d9a8ff;font-family:Georgia,serif;font-style:italic;font-size:26px;line-height:1;text-shadow:0 0 16px rgba(185,93,255,.45);letter-spacing:.4px}.ym-footer-name:before,.ym-footer-name:after{content:"✦";font-family:Arial,sans-serif;font-style:normal;font-size:15px;color:#f1d3ff}.ym-footer-credit{margin:12px 0 16px;color:#b9afc8;font-size:14px;font-weight:700;letter-spacing:.35px}.ym-footer-credit .note{color:#9d70cf}.ym-footer-music{color:#9e78c8;font-size:15px;margin:0 6px}.ym-footer-bottom{margin-top:16px;padding-top:14px;border-top:1px solid rgba(182,92,255,.18);color:#8e879d;font-size:12px}.ym-footer-spark{color:#c894ff;margin:0 8px}@media(max-width:600px){.ym-brand-footer{margin-top:22px;padding:22px 12px 18px}.ym-footer-name{font-size:22px;gap:9px}.ym-footer-credit{font-size:12px;line-height:1.55;margin:10px 0 12px}.ym-footer-music{font-size:13px}.ym-footer-bottom{font-size:11px;margin-top:13px;padding-top:12px}}
+</style>
+<footer class="ym-brand-footer" id="yunamyst-brand-footer"><div class="ym-footer-inner"><div class="ym-footer-name">YunaMyst</div><div class="ym-footer-credit"><span class="ym-footer-music">♫</span> Site e letra de música <span class="note">criados por YunaMyst</span> <span class="ym-footer-music">♫</span></div><div class="ym-footer-bottom"><span class="ym-footer-spark">✦</span>© 2026 YunaMyst. Todos os direitos reservados.<span class="ym-footer-spark">✦</span></div></div></footer>
+<!-- YUNAMYST BRAND FOOTER END -->
+
+<script id="yunamyst-mobile-reward-sprite-fix">
+(function(){
+  const fix=()=>document.querySelectorAll('#ativos .reward img').forEach(img=>{
+    if(img.dataset.spriteFixed)return;
+    const m=(img.style.objectPosition||'').match(/(-?\d+)px\s+0/);
+    if(!m)return;
+    const pos=Math.abs(parseInt(m[1],10)||0);
+    const span=document.createElement('span');
+    span.style.cssText='display:block;width:42px;height:42px;margin:auto;background-image:url("'+img.src+'");background-repeat:no-repeat;background-size:336px 48px;background-position:-'+pos+'px 0;background-color:transparent;';
+    img.replaceWith(span);
+  });
+  const root=document.getElementById('ativos');
+  if(root){new MutationObserver(fix).observe(root,{childList:true,subtree:true});fix();}
+})();
+</script>\n
 <style id="yunamyst-copy-buttons-real-final">
 /* FINAL REAL FIX: code-top, rewards and actions are the actual card wrappers */
 @media(min-width:851px){
@@ -117,26 +139,5 @@
   .code>.actions{display:flex!important;gap:8px!important;width:100%!important;min-width:0!important;}
   .code>.actions>.copy,.code>.actions>.link{position:static!important;transform:none!important;flex:1 1 0!important;width:50%!important;min-width:0!important;max-width:none!important;height:46px!important;padding:0 6px!important;font-size:11px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-sizing:border-box!important;}
 }
-</style><!-- YUNAMYST BRAND FOOTER START -->
-<style id="yunamyst-brand-footer-css">
-.ym-brand-footer{position:relative;margin-top:34px;padding:26px 18px 22px;background:linear-gradient(180deg,rgba(9,5,22,.88),rgba(4,3,13,.98));border-top:1px solid rgba(171,91,255,.45);text-align:center;overflow:hidden}.ym-brand-footer:before{content:"";position:absolute;top:0;left:50%;width:280px;height:1px;transform:translateX(-50%);background:#d7a4ff;box-shadow:0 0 18px rgba(190,102,255,.9)}.ym-footer-inner{position:relative;max-width:900px;margin:auto}.ym-footer-name{display:flex;align-items:center;justify-content:center;gap:12px;color:#d9a8ff;font-family:Georgia,serif;font-style:italic;font-size:26px;line-height:1;text-shadow:0 0 16px rgba(185,93,255,.45);letter-spacing:.4px}.ym-footer-name:before,.ym-footer-name:after{content:"✦";font-family:Arial,sans-serif;font-style:normal;font-size:15px;color:#f1d3ff}.ym-footer-credit{margin:12px 0 16px;color:#b9afc8;font-size:14px;font-weight:700;letter-spacing:.35px}.ym-footer-credit .note{color:#9d70cf}.ym-footer-music{color:#9e78c8;font-size:15px;margin:0 6px}.ym-footer-bottom{margin-top:16px;padding-top:14px;border-top:1px solid rgba(182,92,255,.18);color:#8e879d;font-size:12px}.ym-footer-spark{color:#c894ff;margin:0 8px}@media(max-width:600px){.ym-brand-footer{margin-top:22px;padding:22px 12px 18px}.ym-footer-name{font-size:22px;gap:9px}.ym-footer-credit{font-size:12px;line-height:1.55;margin:10px 0 12px}.ym-footer-music{font-size:13px}.ym-footer-bottom{font-size:11px;margin-top:13px;padding-top:12px}}
-</style>
-<footer class="ym-brand-footer" id="yunamyst-brand-footer"><div class="ym-footer-inner"><div class="ym-footer-name">YunaMyst</div><div class="ym-footer-credit"><span class="ym-footer-music">♫</span> Site e letra de música <span class="note">criados por YunaMyst</span> <span class="ym-footer-music">♫</span></div><div class="ym-footer-bottom"><span class="ym-footer-spark">✦</span>© 2026 YunaMyst. Todos os direitos reservados.<span class="ym-footer-spark">✦</span></div></div></footer>
-<!-- YUNAMYST BRAND FOOTER END -->
-
-<script id="yunamyst-mobile-reward-sprite-fix">
-(function(){
-  const fix=()=>document.querySelectorAll('#ativos .reward img').forEach(img=>{
-    if(img.dataset.spriteFixed)return;
-    const m=(img.style.objectPosition||'').match(/(-?\d+)px\s+0/);
-    if(!m)return;
-    const pos=Math.abs(parseInt(m[1],10)||0);
-    const span=document.createElement('span');
-    span.style.cssText='display:block;width:42px;height:42px;margin:auto;background-image:url("'+img.src+'");background-repeat:no-repeat;background-size:336px 48px;background-position:-'+pos+'px 0;background-color:transparent;';
-    img.replaceWith(span);
-  });
-  const root=document.getElementById('ativos');
-  if(root){new MutationObserver(fix).observe(root,{childList:true,subtree:true});fix();}
-})();
-</script>\n</body>
+</style></body>
 </html>
