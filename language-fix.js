@@ -22,34 +22,31 @@ function fixFAQ(en){
   faq.style.display='block';
   faq.style.width='100%';
   clean.forEach(item=>{item.style.display='block';item.style.width='100%';item.style.float='none';});
+  const styleId='yunamyst-faq-identical-layout-v2';
+  if(!document.getElementById(styleId)){
+    const s=document.createElement('style');
+    s.id=styleId;
+    s.textContent=`
+      .faq{display:block!important;width:100%!important;max-width:100%!important;overflow:hidden!important;box-sizing:border-box!important}
+      .faq h2{display:flex!important;align-items:center!important;width:100%!important;height:54px!important;min-height:54px!important;margin:0!important;padding:18px!important;box-sizing:border-box!important}
+      .faq .faq-item{display:block!important;width:100%!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;float:none!important;box-sizing:border-box!important}
+      .faq .faq-q{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;height:52px!important;min-height:52px!important;margin:0!important;padding:15px!important;box-sizing:border-box!important;gap:10px!important;line-height:22px!important;white-space:nowrap!important;overflow:hidden!important}
+      .faq .faq-q span{display:block!important;flex:0 0 18px!important;width:18px!important;height:22px!important;margin:0!important;text-align:center!important;line-height:22px!important}
+      .faq .faq-a{display:none;width:100%!important;box-sizing:border-box!important;margin:0!important}
+      .faq .faq-item.active .faq-a{display:block!important}
+      @media(max-width:850px){
+        .right .faq{width:100%!important;max-width:100%!important}
+        .faq h2{height:52px!important;min-height:52px!important;padding:16px 14px!important}
+        .faq .faq-q{height:52px!important;min-height:52px!important;padding:15px 14px!important;font-size:13px!important}
+      }
+    `;
+    document.head.appendChild(s);
+  }
 }
 function translate(en){const map=en?PT_EN:EN_PT;const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const nodes=[];while(w.nextNode())nodes.push(w.currentNode);nodes.forEach(n=>{if(skip(n))return;const raw=n.nodeValue||'',t=raw.trim();if(!t)return;const out=map[t];if(out&&out!==t)n.nodeValue=raw.replace(t,out)});document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{const t=el.getAttribute('placeholder')||'',out=map[t];if(out&&out!==t)el.setAttribute('placeholder',out)});community(en);fixFAQ(en);document.documentElement.lang=en?'en':'pt-BR';document.documentElement.dataset.siteLanguage=en?'en':'pt';const b=document.getElementById('langToggle');if(b)b.textContent=en?'🇬🇧 ENG':'🇧🇷 PT/BR';document.getElementById('langPTOption')?.classList.toggle('selected',!en);document.getElementById('langENOption')?.classList.toggle('selected',en);try{localStorage.setItem('yunamyst-language',en?'en':'pt');localStorage.setItem('yunamyst-lang',en?'en':'pt')}catch(e){}}
 function apply(en){en=!!en;translate(en);document.getElementById('langSwitch')?.classList.remove('open');requestAnimationFrame(()=>{translate(en);community(en);fixFAQ(en)});setTimeout(()=>{translate(en);community(en);fixFAQ(en)},100)}
-function enforceActiveCodes(root,allowed){
-  if(!root)return;
-  root.querySelectorAll('.code, .auto-code, article.code').forEach(el=>{
-    const code=(el.querySelector('.cinfo strong')?.textContent||el.dataset.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-    if(!allowed.has(code))el.remove();
-  });
-  document.querySelectorAll('.expired-list,.tab.expired').forEach(el=>el.remove());
-}
-async function activeCodesGuard(){
-  const root=document.getElementById('ativos');
-  if(!root)return;
-  try{
-    const r=await fetch('./codes.json?active-guard='+Date.now(),{cache:'no-store'});
-    if(!r.ok)throw new Error('codes.json unavailable');
-    const d=await r.json();
-    const codes=Array.isArray(d.codes)?d.codes:[];
-    const allowed=new Set(codes.map(x=>String(x).toUpperCase().replace(/[^A-Z0-9]/g,'')));
-    enforceActiveCodes(root,allowed);
-    new MutationObserver(()=>enforceActiveCodes(root,allowed)).observe(root,{childList:true,subtree:true});
-  }catch(e){
-    root.querySelectorAll('.code, .auto-code, article.code').forEach(el=>el.remove());
-    document.querySelectorAll('.expired-list,.tab.expired').forEach(el=>el.remove());
-  }
-}
-function setup(){const sw=document.getElementById('langSwitch');if(!sw)return;activeCodesGuard();document.addEventListener('click',e=>{const t=e.target?.closest?.('#langENOption,#langPTOption,#langToggle');if(!t)return;e.preventDefault();e.stopImmediatePropagation();if(t.id==='langENOption')apply(true);else if(t.id==='langPTOption')apply(false);else sw.classList.toggle('open')},true);document.addEventListener('click',e=>{if(!sw.contains(e.target))sw.classList.remove('open')},false);let saved='pt';try{saved=localStorage.getItem('yunamyst-language')||localStorage.getItem('yunamyst-lang')||'pt'}catch(e){}apply(saved==='en');const root=document.getElementById('ativos')||document.body;let timer=0;new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(()=>{const en=document.documentElement.lang==='en';translate(en);community(en);fixFAQ(en)},30)}).observe(root,{childList:true,subtree:true});}
-(function(){const originalFetch=window.fetch;if(typeof originalFetch!=='function')return;window.fetch=function(input,init){return originalFetch.apply(this,arguments).then(response=>{try{const url=typeof input==='string'?input:(input&&input.url)||'',method=init&&init.method?String(init.method).toUpperCase():'GET';if(!url.includes('/functions/v1/feedbacks')||method!=='GET')return response;return response.clone().json().then(data=>{if(!Array.isArray(data))return response;const dated=data.map(item=>{if(!item||typeof item!=='object')return item;const raw=item.created_at||item.createdAt||item.date||item.created||null;if(!raw)return item;const d=new Date(raw);if(Number.isNaN(d.getTime()))return item;const date=new Intl.DateTimeFormat('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Europe/Lisbon'}).format(d);const name=String(item.name||'Jogador').replace(/^\(\d{2}\/\d{2}\/\d{4}\)\s*/,'');return Object.assign({},item,{name:name+' ('+date+')'})});return new Response(JSON.stringify(dated),{status:response.status,statusText:response.statusText,headers:{'Content-Type':'application/json'}})}).catch(()=>response)}catch(e){return response}})}})();
+function enforceActiveCodes(root,allowed){if(!root)return;root.querySelectorAll('.code, .auto-code, article.code').forEach(el=>{const code=(el.querySelector('.cinfo strong')?.textContent||el.dataset.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(!allowed.has(code))el.remove()});document.querySelectorAll('.expired-list,.tab.expired').forEach(el=>el.remove())}
+async function activeCodesGuard(){const root=document.getElementById('ativos');if(!root)return;try{const r=await fetch('./codes.json?active-guard='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('codes.json unavailable');const d=await r.json();const codes=Array.isArray(d.codes)?d.codes:[];const allowed=new Set(codes.map(x=>String(x).toUpperCase().replace(/[^A-Z0-9]/g,'')));enforceActiveCodes(root,allowed);new MutationObserver(()=>enforceActiveCodes(root,allowed)).observe(root,{childList:true,subtree:true})}catch(e){root.querySelectorAll('.code, .auto-code, article.code').forEach(el=>el.remove());document.querySelectorAll('.expired-list,.tab.expired').forEach(el=>el.remove())}}
+function setup(){const sw=document.getElementById('langSwitch');if(!sw)return;activeCodesGuard();document.addEventListener('click',e=>{const t=e.target?.closest?.('#langENOption,#langPTOption,#langToggle');if(!t)return;e.preventDefault();e.stopImmediatePropagation();if(t.id==='langENOption')apply(true);else if(t.id==='langPTOption')apply(false);else sw.classList.toggle('open')},true);document.addEventListener('click',e=>{if(!sw.contains(e.target))sw.classList.remove('open')},false);let saved='pt';try{saved=localStorage.getItem('yunamyst-language')||localStorage.getItem('yunamyst-lang')||'pt'}catch(e){}apply(saved==='en');const root=document.getElementById('ativos')||document.body;let timer=0;new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(()=>{const en=document.documentElement.lang==='en';translate(en);community(en);fixFAQ(en)},30)}).observe(root,{childList:true,subtree:true})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
 })();
