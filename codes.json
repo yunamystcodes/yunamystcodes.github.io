@@ -1,27 +1,28 @@
 {
-  "updated": "2026-09-02T10:24:19Z",
-  "source_count": 5,
-  "successful_sources": 5,
-  "rule": "lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo",
+  "updated": "2026-09-02T10:30:00Z",
+  "source_count": 6,
+  "successful_sources": 6,
+  "rule": "lista ativa protegida por baseline; novos códigos adicionados; remoção somente com confirmação; recompensas e imagens preservadas",
   "codes": [
-    "SEPSW2026I8B"
+    "2SOREIKENIPPON6",
+    "2SWCTORONTOTHE6IX",
+    "APAC1K0UB4NGK0K",
+    "AUGSW2026V7N",
+    "LAST4PUNCHIN",
+    "SEPSW2026I8B",
+    "SWCJOAAAKR26",
+    "SWGAJA2BKK"
   ],
   "rewards": {
-    "SEPSW2026I8B": [
-      [
-        "blue",
-        "x3"
-      ],
-      [
-        "mana",
-        "x300000"
-      ]
-    ]
+    "2SOREIKENIPPON6": [["mana","x200000"],["yellow","x1"]],
+    "2SWCTORONTOTHE6IX": [["energy","x100"],["yellow","x1"]],
+    "APAC1K0UB4NGK0K": [["energy","x100"],["yellow","x1"]],
+    "AUGSW2026V7N": [["energy","x100"],["red","x3"]],
+    "LAST4PUNCHIN": [["mana","x200000"],["yellow","x1"]],
+    "SEPSW2026I8B": [["blue","x3"],["mana","x300000"]],
+    "SWCJOAAAKR26": [["yellow","x1"]],
+    "SWGAJA2BKK": [["mana","x200000"],["yellow","x1"]]
   },
-  "sources": {
-    "SEPSW2026I8B": [
-      "official-monthly"
-    ]
-  },
+  "sources": {},
   "source_errors": []
 }
