@@ -12,7 +12,7 @@
 @media(max-width:850px){.container{width:calc(100% - 18px)}.top{height:72px}.logo{font-size:25px}.navlinks{display:none}.hero{padding:22px 0 10px}.hero h1{font-size:43px}.community-links{width:min(330px,calc(100% - 24px));flex-direction:column;gap:8px;margin:0 auto 14px}.community-tab{width:100%;min-height:42px;padding:8px 12px}.community-tab.whatsapp{gap:7px}.whatsapp-icon{width:18px;height:18px}.layout{display:flex;flex-direction:column;gap:12px}.layout>.panel#codigos{order:1;width:100%;min-width:0}.layout>.left{order:2;width:100%;margin:0}.layout>.right{order:3;width:100%;margin:0}.left .profile{padding:18px 12px 14px}.left .about{display:none}.right .panel{width:100%}.section-head{font-size:19px;padding:16px 14px}.code-list{padding:10px}.code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;min-height:174px!important;width:100%!important}.code>.gift{grid-area:gift;width:44px;height:44px}.code>.cinfo{grid-area:info}.cinfo strong{font-size:15px}.cinfo small{font-size:9px}.code>.reward:nth-child(3){grid-area:r1}.code>.reward:nth-child(4){grid-area:r2}.code>.reward:nth-child(5){grid-area:r3}.copy{grid-area:copy}.link{grid-area:link}.expired-code{grid-template-columns:44px minmax(0,1fr)!important;grid-template-rows:48px 42px!important;grid-template-areas:'gift info' 'badge badge'!important;min-height:100px!important}.expired-code .gift{grid-area:gift;width:40px;height:40px}.expired-code .cinfo{grid-area:info}.expired-code .badge-expired{grid-area:badge;width:100%;padding:8px}.lang-btn{padding:8px 11px;font-size:10px}.sound-control{margin-right:4px}.sound-btn{width:38px;height:38px;font-size:17px}.footer{font-size:9px;padding:12px 8px 20px}.partnership-card{width:calc(100% - 18px);padding:25px 16px 18px}.partnership-card h3{font-size:16px}.partnership-card p{font-size:12px;padding-right:10px}.contact-box{margin-top:15px;padding-top:13px}.contact-link{min-height:46px;padding:7px 10px}.contact-link strong{font-size:11px}.contact-link small{font-size:9px}}
 .top .nav{position:relative!important}.top .navlinks{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:24px!important;margin:0!important}.top .navlinks a{white-space:nowrap!important}@media(max-width:850px){.top .navlinks{display:none!important}}
 </style>
-<link rel="stylesheet" href="./assets/header-final.css?v=20260826">
+<link rel="stylesheet" href="./assets/header-final.css?v=20260902-duplicate-fix">
 <style id="yunamyst-header-nav-centered">
 /* HEADER NAV CENTRALIZADA - YunaMyst */
 .top .nav{position:relative!important}
@@ -107,6 +107,11 @@
 </style>
 <style id="yunamyst-howto-exact-index-fix">
 .step>div:last-child{display:block!important;min-width:0!important}.step b{display:block!important;margin:0 0 3px!important;line-height:1.25!important}.step .step-answer{display:block!important;color:#cfc7d7!important;line-height:1.4!important}.step .num{display:grid!important;place-items:center!important;flex:0 0 28px!important;width:28px!important;height:28px!important;font-size:13px!important;color:#fff!important;font-weight:900!important}@media(max-width:850px){.step{display:flex!important;align-items:flex-start!important}.step>div:last-child{flex:1!important}.step b{display:block!important}.step .step-answer{display:block!important}}
+</style>
+<style id="yunamyst-subtitle-duplicate-final">
+/* One subtitle only: disable every generated duplicate. */
+.logo small::before,.logo small::after{content:none!important;display:none!important;}
+.logo small{display:block!important;font-size:8px!important;line-height:1!important;letter-spacing:3px!important;margin-top:5px!important;text-align:center!important;white-space:nowrap!important;}
 </style>
 </head>
 <body>
