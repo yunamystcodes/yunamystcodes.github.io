@@ -1,0 +1,34 @@
+name: Fix FAQ final
+on:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, '[skip faq]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix FAQ in index
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('assets/header-final.css?v=20260902-duplicate-fix', 'assets/header-final.css?v=20260904-faq-final')
+          css = '''\n<style id="yunamyst-faq-final-hard-fix">\n/* FINAL FAQ: exactly 3 questions on PC and mobile. */\n.faq .faq-item:nth-of-type(n+4){display:none!important;}\n.faq .faq-item:nth-of-type(-n+3){display:block!important;width:100%!important;float:none!important;margin:0!important;padding:0!important;}\n.faq .faq-q{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;min-height:52px!important;height:52px!important;box-sizing:border-box!important;}\nhtml[lang="en"] .faq-q{font-size:0!important;}\nhtml[lang="en"] .faq-item:nth-of-type(1) .faq-q::before{content:'Where do I enter the codes?'!important;font-size:13px!important;}\nhtml[lang="en"] .faq-item:nth-of-type(2) .faq-q::before{content:'Do the codes expire?'!important;font-size:13px!important;}\nhtml[lang="en"] .faq-item:nth-of-type(3) .faq-q::before{content:'Can I use it on iPhone?'!important;font-size:13px!important;}\nhtml[lang="en"] .faq-q span{font-size:13px!important;}\n@media(max-width:850px){.faq .faq-item:nth-of-type(n+4){display:none!important}.faq .faq-item:nth-of-type(-n+3){display:block!important;width:100%!important}.faq .faq-q{width:100%!important;height:52px!important;min-height:52px!important;padding:15px 14px!important;box-sizing:border-box!important;}}\n</style>\n'''
+          marker='</head>'
+          if 'id="yunamyst-faq-final-hard-fix"' in s:
+              import re
+              s=re.sub(r'\\n<style id="yunamyst-faq-final-hard-fix">.*?</style>\\n', '\\n', s, flags=re.S)
+          s=s.replace(marker, css+marker, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit FAQ fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Fix FAQ three questions on PC and mobile [skip faq]"
+          git push
