@@ -1,6 +1,8 @@
 name: Atualizar códigos ativos - YunaCodes v2
 
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: '*/10 * * * *'
   workflow_dispatch:
@@ -14,6 +16,7 @@ concurrency:
 
 jobs:
   update:
+    if: github.event_name != 'push' || github.event.head_commit.message != 'Mostrar somente códigos ativos automaticamente'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,23 +29,31 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
+
+          # Cache-buster: garante que PC e telemóvel usam o carregador mais recente.
+          s=re.sub(r'\./auto-codes\.js\?v=[^"\']+', './auto-codes.js?v=20260904', s)
           if 'auto-codes.js' not in s:
-              s=s.replace('</body>','<script src="./auto-codes.js?v=20260902"></script>\n</body>',1)
-          # O site mostra SOMENTE o conteúdo de codes.json.
-          # Remove cartões antigos/expirados, inclusive os cartões estáticos do index.
-          # A aba/lista de expirados também fica escondida: não queremos códigos expirados no site.
-          guard="""<script id=\"yunamyst-active-codes-guard\">\n(async()=>{\n  try{\n    const r=await fetch('./codes.json?guard='+Date.now(),{cache:'no-store'});\n    if(!r.ok)return;\n    const d=await r.json();\n    const allowed=new Set((Array.isArray(d.codes)?d.codes:[]).map(x=>String(x).toUpperCase().replace(/[^A-Z0-9]/g,'')));\n    const root=document.getElementById('ativos');\n    if(!root)return;\n    const clean=()=>{\n      root.querySelectorAll('.code').forEach(el=>{\n        const code=(el.querySelector('.cinfo strong')?.textContent||'').toUpperCase().replace(/[^A-Z0-9]/g,'');\n        if(!allowed.has(code))el.remove();\n      });\n      document.querySelectorAll('.expired-list,.tab.expired').forEach(el=>{el.style.display='none';});\n      document.querySelectorAll('.tabs .tab.expired').forEach(el=>el.remove());\n    };\n    clean();\n    new MutationObserver(clean).observe(root,{childList:true,subtree:true});\n  }catch(e){}\n})();\n</script>\n"""
-          if 'yunamyst-active-codes-guard' not in s:
+              s=s.replace('</body>','<script src="./auto-codes.js?v=20260904"></script>\n</body>',1)
+
+          # O site deve mostrar SOMENTE códigos presentes em codes.json.
+          # Remove cartões antigos/expirados mesmo que algum script os injete depois.
+          guard="""<script id=\"yunamyst-active-codes-guard\">\n(async()=>{\n  try{\n    const r=await fetch('./codes.json?guard='+Date.now(),{cache:'no-store'});\n    if(!r.ok)return;\n    const d=await r.json();\n    const allowed=new Set((Array.isArray(d.codes)?d.codes:[]).map(x=>String(x).toUpperCase().replace(/[^A-Z0-9]/g,'')));\n    const root=document.getElementById('ativos');\n    if(!root)return;\n    const clean=()=>{\n      root.querySelectorAll('.code, .auto-code, article.code').forEach(el=>{\n        const code=(el.querySelector('.cinfo strong')?.textContent||'').toUpperCase().replace(/[^A-Z0-9]/g,'');\n        if(!allowed.has(code))el.remove();\n      });\n      document.querySelectorAll('.expired-list,.tab.expired').forEach(el=>el.remove());\n    };\n    clean();\n    new MutationObserver(clean).observe(root,{childList:true,subtree:true});\n  }catch(e){}\n})();\n</script>\n"""
+          pattern=r'<script id="yunamyst-active-codes-guard">.*?</script>\s*'
+          if re.search(pattern,s,re.S):
+              s=re.sub(pattern,guard,s,count=1,flags=re.S)
+          else:
               s=s.replace('</body>',guard+'</body>',1)
+
           p.write_text(s,encoding='utf-8')
           PY
       - name: Publicar alterações
         run: |
           git config user.name 'YunaMyst Codes Bot'
           git config user.email 'actions@github.com'
-          git add codes.json codes-history.json index.html auto-codes.js .github/workflows/update-codes-v2.yml
+          git add codes.json codes-history.json index.html auto-codes.js
           if ! git diff --cached --quiet; then
             git commit -m 'Mostrar somente códigos ativos automaticamente'
             git push
