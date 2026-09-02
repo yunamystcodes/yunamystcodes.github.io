@@ -29,9 +29,9 @@ jobs:
 
           marker_logo = '<style id="yunamyst-final-subtitle-spacing">'
           css_logo = '''<style id="yunamyst-final-subtitle-spacing">
-.logo small{display:block!important;margin-top:10px!important;font-size:8px!important;letter-spacing:3px!important;line-height:1!important;white-space:nowrap!important;text-align:center!important;}
-.logo small::after{font-size:8px!important;letter-spacing:3px!important;}
-@media(max-width:850px){.logo small{margin-top:10px!important;font-size:8px!important;letter-spacing:3px!important}.logo small::after{font-size:8px!important;letter-spacing:3px!important}}
+.logo small{display:block!important;margin-top:5px!important;font-size:7px!important;letter-spacing:3px!important;line-height:1!important;white-space:nowrap!important;text-align:center!important;}
+.logo small::after{font-size:7px!important;letter-spacing:3px!important;}
+@media(max-width:850px){.logo small{margin-top:5px!important;font-size:7px!important;letter-spacing:3px!important}.logo small::after{font-size:7px!important;letter-spacing:3px!important}}
 </style>'''
           if marker_logo in s:
               s = re.sub(re.escape(marker_logo) + r'.*?</style>', css_logo.rstrip('</style>') + '</style>', s, count=1, flags=re.S)
@@ -93,7 +93,7 @@ html[lang="en"] #como .step > div:last-child::after{content:none!important;displ
             echo 'No index change needed.'
             exit 0
           fi
-          git commit -m 'Fix subtitle and HOW TO USE layout [skip header]'
+          git commit -m 'Match subtitle to reference on PC and mobile [skip header]'
           git fetch origin main
           git rebase origin/main
           git push
