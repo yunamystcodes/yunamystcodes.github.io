@@ -28,11 +28,14 @@ jobs:
           s = re.sub(r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>', '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>', s, count=1, flags=re.S)
 
           marker_logo = '<style id="yunamyst-final-subtitle-spacing">'
-          if marker_logo not in s:
-              css_logo = '''<style id="yunamyst-final-subtitle-spacing">
-.logo small{margin-top:10px!important}
-@media(max-width:850px){.logo small{margin-top:10px!important}}
+          css_logo = '''<style id="yunamyst-final-subtitle-spacing">
+.logo small{display:block!important;margin-top:10px!important;font-size:8px!important;letter-spacing:3px!important;line-height:1!important;white-space:nowrap!important;text-align:center!important;}
+.logo small::after{font-size:8px!important;letter-spacing:3px!important;}
+@media(max-width:850px){.logo small{margin-top:10px!important;font-size:8px!important;letter-spacing:3px!important}.logo small::after{font-size:8px!important;letter-spacing:3px!important}}
 </style>'''
+          if marker_logo in s:
+              s = re.sub(re.escape(marker_logo) + r'.*?</style>', css_logo.rstrip('</style>') + '</style>', s, count=1, flags=re.S)
+          else:
               s = s.replace('</head>', css_logo + '\n</head>', 1)
 
           # Remove every embedded English HOW TO USE pseudo-translation. The
@@ -54,10 +57,18 @@ jobs:
           marker = '<style id="yunamyst-index-howto-final">'
           css = '''<style id="yunamyst-index-howto-final">
 /* HOW TO USE — single content, stacked title + explanation on PC and mobile. */
-#como .step{display:flex!important;align-items:flex-start!important;gap:10px!important;}
+#como .step{display:flex!important;align-items:flex-start!important;gap:10px!important;font-size:13px!important;}
 #como .step > div:last-child{display:block!important;flex:1!important;min-width:0!important;font-size:13px!important;line-height:1.4!important;}
 #como .step > div:last-child b{display:block!important;font-size:13px!important;line-height:1.25!important;margin:0 0 3px!important;color:#dda1ff!important;}
+#como .step > div:last-child b::after{display:none!important;content:none!important;}
+#como .step::after{display:none!important;content:none!important;}
 #como .step > div:last-child::after{display:none!important;content:none!important;}
+html[lang="en"] #como .step{font-size:13px!important;}
+html[lang="en"] #como .step > div:last-child{font-size:13px!important;}
+html[lang="en"] #como .step > div:last-child b{font-size:13px!important;}
+html[lang="en"] #como .step > div:last-child b::after{content:none!important;display:none!important;}
+html[lang="en"] #como .step::after{content:none!important;display:none!important;}
+html[lang="en"] #como .step > div:last-child::after{content:none!important;display:none!important;}
 @media(max-width:850px){
 #como .step{padding:15px 14px!important;gap:10px!important;}
 #como .step > div:last-child{font-size:13px!important;line-height:1.4!important;}
@@ -82,7 +93,7 @@ jobs:
             echo 'No index change needed.'
             exit 0
           fi
-          git commit -m 'Remove duplicate HOW TO USE content [skip header]'
+          git commit -m 'Fix subtitle and HOW TO USE layout [skip header]'
           git fetch origin main
           git rebase origin/main
           git push
