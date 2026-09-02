@@ -9,7 +9,7 @@ SOURCES = {
     'sw-teams': 'https://sw-teams.ovh/codes',
     'swcoupon': 'https://swcoupon.net/',
     'summonerswarcodes': 'https://summonerswarcodes.us/',
-    'swquery': 'https://swquery.net/codes',
+    'swquery': 'https://swquery.net/',
 }
 BAD = {'9CIRCLE','CCXQDUIH4A4','SWC2026','THE10TH','GLHF2026AMERICAS','SWC26X10LEGACYBND','PAI2026BANGKOK','APAC26LEGASEA','912XUXIECHUANQI','SWC2026JUELEBA','H4MBURGISWAITING','HURRASWC2026','4MINGYIDAOXIAN','YYDSSWC26ZAN','1SURPR1SE','1SURPR1SEG1FT','2NEWTOMORROW2','SW25HSZN'}
 BANNED = {'ACTIVE','EXPIRED','WORKING','AVAILABLE','CODES','CODE','SUMMONERS','WAR','SKY','ARENA','ENERGY','MANA','SCROLL','REDEEM','COUPON','COPY','REWARD','REWARDS','LATEST','NEW','GUIDE','GAME','GAMES','COM2US','ANDROID','IPHONE','WINDOWS','FACEBOOK','DISCORD','TWITTER','INSTAGRAM','YOUTUBE','PROMO','PROMOTIONAL','VERIFIED','NOEXPIRATION'}
@@ -26,7 +26,7 @@ REWARD_FALLBACKS = {
 
 def fetch(url):
     req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 YunaMystCodesBot/31.0','Accept-Language':'en-US,en;q=0.9'})
-    with urllib.request.urlopen(req,timeout=30) as r: return r.read().decode('utf-8','ignore')
+    with urllib.request.urlopen(url,timeout=30) as r: return r.read().decode('utf-8','ignore')
 
 def lines(raw):
     raw=re.sub(r'<script\b[^>]*>.*?</script>','\n',raw,flags=re.I|re.S)
