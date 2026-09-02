@@ -1,40 +1,27 @@
 {
-  "updated": "2026-09-02T10:55:00Z",
+  "updated": "2026-09-02T10:01:11Z",
   "source_count": 5,
   "successful_sources": 5,
-  "rule": "lista ativa preservada entre atualizações; novos códigos adicionados; remoção somente quando confirmado expirado; recompensas e imagens preservadas",
+  "rule": "lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo",
   "codes": [
-    "SEPSW2026I8B",
-    "SWGAJA2BKK",
-    "SWCJOAAAKR26",
-    "2SWCTORONTOTHE6IX",
-    "LAST4PUNCHIN",
-    "APAC1K0UB4NGK0K",
-    "2SOREIKENIPPON6",
-    "SWXFRIEREN2026",
-    "AUGSW2026V7N"
+    "SEPSW2026I8B"
   ],
   "rewards": {
-    "SEPSW2026I8B": [["blue","x3"],["mana","x300000"]],
-    "SWGAJA2BKK": [["mana","x200000"],["yellow","x1"]],
-    "SWCJOAAAKR26": [["yellow","x1"]],
-    "2SWCTORONTOTHE6IX": [["energy","x100"],["yellow","x1"]],
-    "LAST4PUNCHIN": [["mana","x200000"],["yellow","x1"]],
-    "APAC1K0UB4NGK0K": [["energy","x100"],["yellow","x1"]],
-    "2SOREIKENIPPON6": [["mana","x200000"],["yellow","x1"]],
-    "SWXFRIEREN2026": [["energy","x100"],["mana","x300000"],["yellow","x3"]],
-    "AUGSW2026V7N": [["energy","x100"],["red","x3"]]
+    "SEPSW2026I8B": [
+      [
+        "blue",
+        "x3"
+      ],
+      [
+        "mana",
+        "x300000"
+      ]
+    ]
   },
   "sources": {
-    "SEPSW2026I8B": ["official-monthly","community-confirmed"],
-    "SWGAJA2BKK": ["swquery","swcoupon","swgt"],
-    "SWCJOAAAKR26": ["swquery","swcoupon","swgt"],
-    "2SWCTORONTOTHE6IX": ["swquery","swcoupon","swgt"],
-    "LAST4PUNCHIN": ["swquery","swcoupon","swgt"],
-    "APAC1K0UB4NGK0K": ["swquery","swcoupon","swgt"],
-    "2SOREIKENIPPON6": ["swquery","swcoupon","swgt"],
-    "SWXFRIEREN2026": ["swquery","swcoupon"],
-    "AUGSW2026V7N": ["swquery","swcoupon"]
+    "SEPSW2026I8B": [
+      "official-monthly"
+    ]
   },
   "source_errors": []
 }
