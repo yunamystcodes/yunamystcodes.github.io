@@ -1,6 +1,13 @@
 {
   "active": [
-    "SEPSW2026I8B"
+    "2SOREIKENIPPON6",
+    "2SWCTORONTOTHE6IX",
+    "APAC1K0UB4NGK0K",
+    "AUGSW2026V7N",
+    "LAST4PUNCHIN",
+    "SEPSW2026I8B",
+    "SWCJOAAAKR26",
+    "SWGAJA2BKK"
   ],
   "expired": [
     "000SLOT",
@@ -304,6 +311,7 @@
     "SWSTAR1218",
     "SWSTARROUND2",
     "SWXDSHAPPY25",
+    "SWXFRIEREN2026",
     "THE10TH",
     "THX2SUMMONERS2X9L",
     "THX4ENJDSCOLLAB",
@@ -325,8 +333,58 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-02T10:24:19Z",
+  "updated_at": "2026-09-02T10:41:15Z",
   "rewards": {
+    "2SOREIKENIPPON6": [
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "2SWCTORONTOTHE6IX": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "APAC1K0UB4NGK0K": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "AUGSW2026V7N": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "red",
+        "x3"
+      ]
+    ],
+    "LAST4PUNCHIN": [
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -336,12 +394,49 @@
         "mana",
         "x300000"
       ]
+    ],
+    "SWCJOAAAKR26": [
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "SWGAJA2BKK": [
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
     ]
   },
   "sources": {
+    "2SOREIKENIPPON6": [
+      "sw-teams"
+    ],
+    "2SWCTORONTOTHE6IX": [
+      "sw-teams"
+    ],
+    "APAC1K0UB4NGK0K": [
+      "sw-teams"
+    ],
+    "AUGSW2026V7N": [],
+    "LAST4PUNCHIN": [
+      "sw-teams"
+    ],
     "SEPSW2026I8B": [
       "official-monthly"
+    ],
+    "SWCJOAAAKR26": [
+      "sw-teams"
+    ],
+    "SWGAJA2BKK": [
+      "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
