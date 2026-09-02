@@ -117,11 +117,8 @@ html[lang="en"] .code .link::after{content:'🔗 iOS LINK';font-size:11px!import
 .num{font-size:13px!important;color:#fff!important;line-height:1!important;}
 html[lang="en"] .num{font-size:13px!important;color:#fff!important;line-height:1!important;}
 
-/* Remove the duplicated subtitle globally. Keep only the real SUMMONERS WAR text node. */
-html .logo small::after{content:none!important;display:none!important;}
-
-/* MATCH THE REFERENCE: compact centered SUMMONERS WAR subtitle on PC and mobile. */
+/* FINAL: the logo contains the real subtitle text; never generate another one. */
+html .logo small::before,html .logo small::after{content:none!important;display:none!important;}
+html[lang="en"] .logo small{font-size:8px!important;letter-spacing:3px!important;line-height:1!important;margin-top:5px!important;display:block!important;text-align:center!important;white-space:nowrap!important;}
 .logo small{display:block!important;font-size:8px!important;line-height:1!important;letter-spacing:3px!important;margin-top:5px!important;text-align:center!important;white-space:nowrap!important;}
-@media(max-width:850px){
-  .logo small{font-size:8px!important;letter-spacing:3px!important;margin-top:5px!important;}
-}
+@media(max-width:850px){.logo small{font-size:8px!important;letter-spacing:3px!important;margin-top:5px!important}}
