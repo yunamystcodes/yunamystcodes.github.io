@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-02T05:14:27Z",
+  "updated": "2026-09-02T05:33:58Z",
   "source_count": 5,
   "successful_sources": 5,
   "rule": "lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo",
