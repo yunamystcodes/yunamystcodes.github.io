@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   corrigir:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,7 +33,7 @@ jobs:
           faq = '''<div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q">Os códigos expiram?<span>＋</span></div><div class="faq-a">Sim. Quando expiram, passam para a aba de códigos expirados.</div></div><div class="faq-item"><div class="faq-q">Posso usar no iPhone?<span>＋</span></div><div class="faq-a">Sim. O site funciona normalmente no telemóvel.</div></div></div>'''
           s = s[:start] + faq + s[end:]
 
-          css = '''\n<style id="yunamyst-faq-final-layout">\n.faq{width:100%!important;display:block!important;overflow:hidden!important}\n.faq h2{width:100%!important}\n.faq .faq-item{display:block!important;width:100%!important;grid-column:1/-1!important;float:none!important;margin:0!important}\n.faq .faq-q{display:flex!important;width:100%!important;align-items:center!important;justify-content:space-between!important;padding:15px!important;min-height:52px!important}\n.faq .faq-a{width:100%!important}\n@media(max-width:850px){.right .faq{width:100%!important}.faq .faq-item{width:100%!important}.faq .faq-q{font-size:13px!important;padding:15px 14px!important}}\n</style>\n'''
+          css = '''\n<style id="yunamyst-faq-final-layout">\n/* FAQ FINAL: exatamente 3 perguntas, uma coluna em PC e telemóvel. */\n.faq{width:100%!important;display:block!important;overflow:hidden!important}\n.faq h2{width:100%!important}\n.faq .faq-item{display:block!important;width:100%!important;grid-column:1/-1!important;float:none!important;margin:0!important}\n.faq .faq-item:nth-child(n+4){display:none!important}\n.faq .faq-q{display:flex!important;width:100%!important;align-items:center!important;justify-content:space-between!important;padding:15px!important;min-height:52px!important}\n.faq .faq-a{width:100%!important}\n@media(max-width:850px){.right .faq{width:100%!important}.faq .faq-item{width:100%!important}.faq .faq-item:nth-child(n+4){display:none!important}.faq .faq-q{font-size:13px!important;padding:15px 14px!important}}\n</style>\n'''
           if 'yunamyst-faq-final-layout' in s:
               a = s.find('<style id="yunamyst-faq-final-layout">')
               b = s.find('</style>', a) + len('</style>')
@@ -43,7 +42,9 @@ jobs:
               s = s.replace('</head>', css + '</head>', 1)
 
           s = s.replace('language-fix.js?v=20260902', 'language-fix.js?v=20260903')
-          s = s.replace('faq-final-layout-20260902-v1', 'faq-final-layout-20260903-v2')
+          s = s.replace('language-fix.js?v=20260901', 'language-fix.js?v=20260903')
+          s = s.replace('faq-final-layout-20260902-v1', 'faq-final-layout-20260903-v3')
+          s = s.replace('reward-images-layout-fixed-20260830-v2', 'faq-final-layout-20260903-v3')
           p.write_text(s, encoding='utf-8')
           PY
 
