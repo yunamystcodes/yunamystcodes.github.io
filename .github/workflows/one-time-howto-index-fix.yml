@@ -1,0 +1,35 @@
+name: One-time How To Use index fix
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: ${{ !contains(github.event.head_commit.message, '[skip howto]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix index
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('<div class="step"><div class="num">1</div><div><b>Copie o código</b>Clica em COPIAR no código desejado.</div></div>','<div class="step"><div class="num">1</div><div><b>Copie o código</b><span class="step-answer">Clica em COPIAR no código desejado.</span></div></div>')
+          s=s.replace('<div class="step"><div class="num">2</div><div><b>Abra o jogo</b>Entra no Summoners War: Sky Arena.</div></div>','<div class="step"><div class="num">2</div><div><b>Abra o jogo</b><span class="step-answer">Entra no Summoners War: Sky Arena.</span></div></div>')
+          s=s.replace('<div class="step"><div class="num">3</div><div><b>Resgata o código</b>Usa o link de resgate.</div></div>','<div class="step"><div class="num">3</div><div><b>Resgata o código</b><span class="step-answer">Usa o link de resgate.</span></div></div>')
+          s=s.replace('<div class="step"><div class="num">4</div><div><b>Aproveita!</b>Recebe a recompensa no jogo.</div></div>','<div class="step"><div class="num">4</div><div><b>Aproveita!</b><span class="step-answer">Recebe a recompensa no jogo.</span></div></div>')
+          css='''<style id="yunamyst-howto-exact-index-fix">\n.step>div:last-child{display:block!important;min-width:0!important}.step b{display:block!important;margin:0 0 3px!important;line-height:1.25!important}.step .step-answer{display:block!important;color:#cfc7d7!important;line-height:1.4!important}.step .num{display:grid!important;place-items:center!important;flex:0 0 28px!important;width:28px!important;height:28px!important;font-size:13px!important;color:#fff!important;font-weight:900!important}@media(max-width:850px){.step{display:flex!important;align-items:flex-start!important}.step>div:last-child{flex:1!important}.step b{display:block!important}.step .step-answer{display:block!important}}\n</style>\n'''
+          if 'id="yunamyst-howto-exact-index-fix"' not in s:
+              s=s.replace('</head>',css+'</head>',1)
+          p.write_text(s,encoding='utf-8')
+      - name: Commit index only and remove this workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/one-time-howto-index-fix.yml
+          git add index.html
+          git commit -m 'Fix How To Use layout directly in index [skip howto]'
+          git push
