@@ -1,27 +1,31 @@
 {
-  "updated": "2026-09-02T09:33:09Z",
+  "updated": "2026-09-02T10:00:00Z",
   "source_count": 5,
   "successful_sources": 5,
-  "rule": "lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo",
+  "rule": "lista somente com códigos atualmente ativos e confirmados por fontes atuais; expirados removidos",
   "codes": [
-    "SEPSW2026I8B"
+    "SEPSW2026I8B",
+    "SWGAJA2BKK",
+    "SWCJOAAAKR26",
+    "2SWCTORONTOTHE6IX",
+    "APAC1K0UB4NGK0K",
+    "2SOREIKENIPPON6"
   ],
   "rewards": {
-    "SEPSW2026I8B": [
-      [
-        "blue",
-        "x3"
-      ],
-      [
-        "mana",
-        "x300000"
-      ]
-    ]
+    "SEPSW2026I8B": [["blue","x3"],["mana","x300000"]],
+    "SWGAJA2BKK": [["mana","x200000"],["yellow","x1"]],
+    "SWCJOAAAKR26": [["yellow","x1"]],
+    "2SWCTORONTOTHE6IX": [["energy","x100"],["yellow","x1"]],
+    "APAC1K0UB4NGK0K": [["energy","x100"],["yellow","x1"]],
+    "2SOREIKENIPPON6": [["mana","x200000"],["yellow","x1"]]
   },
   "sources": {
-    "SEPSW2026I8B": [
-      "official-monthly"
-    ]
+    "SEPSW2026I8B": ["official-monthly"],
+    "SWGAJA2BKK": ["swquery","swgt"],
+    "SWCJOAAAKR26": ["swquery","swgt"],
+    "2SWCTORONTOTHE6IX": ["swquery","swgt"],
+    "APAC1K0UB4NGK0K": ["swquery","swgt"],
+    "2SOREIKENIPPON6": ["swquery","swgt"]
   },
   "source_errors": []
 }
