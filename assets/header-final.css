@@ -116,3 +116,11 @@ html[lang="en"] .code .link::after{content:'🔗 iOS LINK';font-size:11px!import
 /* Restore visible step numbers. The English translation hides the original text, so the number must stay explicit. */
 .num{font-size:13px!important;color:#fff!important;line-height:1!important;}
 html[lang="en"] .num{font-size:13px!important;color:#fff!important;line-height:1!important;}
+
+/* MATCH THE REFERENCE: compact centered SUMMONERS WAR subtitle on PC and mobile. */
+html[lang="en"] .logo small{display:block!important;font-size:8px!important;line-height:1!important;letter-spacing:3px!important;margin-top:10px!important;text-align:center!important;white-space:nowrap!important;}
+html[lang="en"] .logo small::after{font-size:8px!important;letter-spacing:3px!important;}
+@media(max-width:850px){
+  html[lang="en"] .logo small{font-size:8px!important;letter-spacing:3px!important;margin-top:10px!important;}
+  html[lang="en"] .logo small::after{font-size:8px!important;letter-spacing:3px!important;}
+}
