@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-02T09:30:00Z",
+  "updated": "2026-09-02T09:45:00Z",
   "source_count": 5,
   "successful_sources": 5,
   "rule": "lista somente com códigos atualmente ativos e confirmados por fontes atuais; expirados removidos",
@@ -10,8 +10,7 @@
     "2SWCTORONTOTHE6IX",
     "LAST4PUNCHIN",
     "APAC1K0UB4NGK0K",
-    "2SOREIKENIPPON6",
-    "SWXFRIEREN2026"
+    "2SOREIKENIPPON6"
   ],
   "rewards": {
     "SEPSW2026I8B": [["blue","x3"],["mana","x300000"]],
@@ -20,8 +19,7 @@
     "2SWCTORONTOTHE6IX": [["energy","x100"],["scroll","x1"]],
     "LAST4PUNCHIN": [["mana","x200000"],["scroll","x1"]],
     "APAC1K0UB4NGK0K": [["energy","x100"],["scroll","x1"]],
-    "2SOREIKENIPPON6": [["mana","x200000"],["scroll","x1"]],
-    "SWXFRIEREN2026": [["energy","x100"],["mana","x300000"],["scroll","x3"]]
+    "2SOREIKENIPPON6": [["mana","x200000"],["scroll","x1"]]
   },
   "sources": {
     "SEPSW2026I8B": ["official-monthly"],
@@ -30,8 +28,7 @@
     "2SWCTORONTOTHE6IX": ["swquery","swgt"],
     "LAST4PUNCHIN": ["swquery","swgt"],
     "APAC1K0UB4NGK0K": ["swquery","swgt"],
-    "2SOREIKENIPPON6": ["swquery","swgt"],
-    "SWXFRIEREN2026": ["swquery"]
+    "2SOREIKENIPPON6": ["swquery","swgt"]
   },
   "source_errors": []
 }
