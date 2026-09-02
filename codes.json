@@ -1,15 +1,12 @@
 {
-  "updated": "2026-09-02T08:41:31Z",
+  "updated": "2026-09-02T09:00:00Z",
   "source_count": 5,
   "successful_sources": 5,
   "rule": "lista reconstruída somente com códigos atualmente ativos; expirados removidos automaticamente; sem snapshot antigo",
   "codes": [
-    "2NEWTOMORROW2",
-    "SEPSW2026I8B",
-    "SW25HSZN"
+    "SEPSW2026I8B"
   ],
   "rewards": {
-    "2NEWTOMORROW2": [],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -19,18 +16,11 @@
         "mana",
         "x300000"
       ]
-    ],
-    "SW25HSZN": []
+    ]
   },
   "sources": {
-    "2NEWTOMORROW2": [
-      "swquery"
-    ],
     "SEPSW2026I8B": [
       "official-monthly"
-    ],
-    "SW25HSZN": [
-      "swquery"
     ]
   },
   "source_errors": []
