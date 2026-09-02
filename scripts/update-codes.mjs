@@ -9,8 +9,21 @@ const sources = [
   'https://mobi.gg/en/tips/free-summoners-war-codes/'
 ];
 
-// These are codes that have been positively confirmed as expired by the site/source checks.
-// Do NOT put a code here just because one source temporarily stopped listing it.
+// Codes confirmed active/recent. They act as a safety baseline so a source
+// parser/API change can NEVER reduce the published list to one code.
+const knownActive = new Set([
+  'SEPSW2026I8B',
+  'SWGAJA2BKK',
+  'SWCJOAAAKR26',
+  '2SWCTORONTOTHE6IX',
+  'LAST4PUNCHIN',
+  'APAC1K0UB4NGK0K',
+  '2SOREIKENIPPON6',
+  'SWXFRIEREN2026',
+  'AUGSW2026V7N'
+]);
+
+// Only remove codes that are explicitly confirmed expired.
 const confirmedExpired = new Set([
   'GLHF2026AMERICAS','SWC26X10LEGACYBND','PAI2026BANGKOK','APAC26LEGASEA',
   '912XUXIECHUANQI','SWC2026JUELEBA','H4MBURGISWAITING','HURRASWC2026',
@@ -22,8 +35,6 @@ const banned = new Set(['ACTIVE','EXPIRED','AVAILABLE','CODES','CODE','REDEEM','
 const normalize = code => String(code).toUpperCase().replace(/[^A-Z0-9]/g, '');
 const valid = code => {const c=normalize(code);return c.length>=6&&c.length<=32&&/[A-Z]/.test(c)&&/\d/.test(c)&&!banned.has(c)};
 
-// Keep the reward/image mapping. The renderer uses these reward types to show the
-// correct sprite image, so an automatic refresh must never erase this object.
 const knownRewards = {
   SEPSW2026I8B:[['blue','x3'],['mana','x300000']],
   SWGAJA2BKK:[['mana','x200000'],['yellow','x1']],
@@ -48,7 +59,7 @@ let successfulSources = 0;
 
 for (const url of sources) {
   try {
-    const response = await fetch(url,{headers:{'user-agent':'Mozilla/5.0 YunaMystCodesBot/4.0'}});
+    const response = await fetch(url,{headers:{'user-agent':'Mozilla/5.0 YunaMystCodesBot/5.0'}});
     if (!response.ok) continue;
     const html = await response.text();
     successfulSources++;
@@ -63,17 +74,14 @@ for (const url of sources) {
       if(explicitlyExpired){
         if(!expiredBySource.has(code)) expiredBySource.set(code,new Set());
         expiredBySource.get(code).add(url);
-      } else {
-        found.add(code);
-      }
+      } else found.add(code);
     }
   } catch {}
 }
 
-// A code is removed only when it is in the explicit expiry list or multiple
-// independent sources positively mark it expired. A temporary source failure,
-// missing page, or a single inconsistent source can never delete an active code.
-const active = new Set([...found]);
+// Start with known active codes, then add live discoveries and previous codes.
+// This prevents a broken scraper/source from wiping the live list.
+const active = new Set([...knownActive, ...found]);
 for (const code of previousCodes) {
   if (confirmedExpired.has(code)) continue;
   const expiredSources = expiredBySource.get(code)?.size || 0;
@@ -81,8 +89,12 @@ for (const code of previousCodes) {
   active.add(code);
 }
 
+for (const code of [...active]) {
+  if (confirmedExpired.has(code)) active.delete(code);
+}
+
 const codes = [...active].filter(valid).sort();
-if(codes.length < 2) throw new Error('Não foi possível confirmar pelo menos 2 códigos ativos; atualização abortada para não apagar a lista.');
+if(codes.length < knownActive.size) throw new Error('Proteção: a lista de códigos ativos ficou incompleta; atualização abortada.');
 
 const rewards = {};
 const sourcesByCode = {};
@@ -91,6 +103,7 @@ for (const code of codes) {
   const oldSources = Array.isArray(previousSources[code]) ? previousSources[code] : [];
   const freshSources = [];
   if (found.has(code)) freshSources.push('live-source');
+  if (knownActive.has(code)) freshSources.push('known-active');
   sourcesByCode[code] = [...new Set([...oldSources,...freshSources])];
 }
 
@@ -98,7 +111,7 @@ const data = {
   updated:new Date().toISOString(),
   source_count:sources.length,
   successful_sources:successfulSources,
-  rule:'lista ativa preservada entre atualizações; novos códigos adicionados; remoção somente com confirmação explícita; recompensas e imagens preservadas',
+  rule:'lista ativa protegida por baseline; novos códigos adicionados; remoção somente com confirmação; recompensas e imagens preservadas',
   codes,
   rewards,
   sources:sourcesByCode,
