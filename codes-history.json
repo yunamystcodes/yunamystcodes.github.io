@@ -333,7 +333,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-02T13:19:49Z",
+  "updated_at": "2026-09-02T13:35:39Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -414,6 +414,7 @@
   },
   "sources": {
     "2SOREIKENIPPON6": [
+      "summonerswarcodes",
       "sw-teams"
     ],
     "2SWCTORONTOTHE6IX": [
@@ -427,7 +428,8 @@
       "sw-teams"
     ],
     "SEPSW2026I8B": [
-      "official-monthly"
+      "official-monthly",
+      "sw-teams"
     ],
     "SWCJOAAAKR26": [
       "sw-teams"

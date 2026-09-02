@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-02T13:19:49Z",
+  "updated": "2026-09-02T13:35:39Z",
   "source_count": 5,
   "successful_sources": 4,
   "rule": "lista ativa protegida por baseline; novos códigos adicionados; remoção somente após confirmação; recompensas e imagens preservadas",
@@ -93,6 +93,7 @@
   },
   "sources": {
     "2SOREIKENIPPON6": [
+      "summonerswarcodes",
       "sw-teams"
     ],
     "2SWCTORONTOTHE6IX": [
@@ -106,7 +107,8 @@
       "sw-teams"
     ],
     "SEPSW2026I8B": [
-      "official-monthly"
+      "official-monthly",
+      "sw-teams"
     ],
     "SWCJOAAAKR26": [
       "sw-teams"
