@@ -49,6 +49,23 @@ function bind(root){
  });
 }
 
+function forceDesktopButtons(root){
+ const desktop=window.matchMedia('(min-width:851px)').matches;
+ root.querySelectorAll('.code.auto-code').forEach(card=>{
+  const copy=card.querySelector('.copy');
+  const link=card.querySelector('.link');
+  if(desktop){
+   card.style.setProperty('grid-template-columns','58px minmax(120px,1fr) 58px 58px 58px 120px 120px','important');
+   [copy,link].forEach(el=>{if(!el)return;el.style.setProperty('width','120px','important');el.style.setProperty('min-width','120px','important');el.style.setProperty('max-width','120px','important');el.style.setProperty('height','44px','important');el.style.setProperty('margin','0','important');el.style.setProperty('box-sizing','border-box','important');el.style.setProperty('display','flex','important');el.style.setProperty('align-items','center','important');el.style.setProperty('justify-content','center','important');});
+   if(copy)copy.style.setProperty('grid-column','6','important');
+   if(link)link.style.setProperty('grid-column','7','important');
+  }else{
+   card.style.removeProperty('grid-template-columns');
+   [copy,link].forEach(el=>{if(!el)return;['width','min-width','max-width','height','margin','box-sizing','display','align-items','justify-content','grid-column'].forEach(p=>el.style.removeProperty(p));});
+  }
+ });
+}
+
 async function render(){
  const root=document.getElementById('ativos');
  if(!root)return;
@@ -63,13 +80,19 @@ async function render(){
   if(!codes.length)throw new Error('No active codes');
   root.innerHTML=[...new Set(codes)].map(makeCard).join('');
   bind(root);
+  forceDesktopButtons(root);
  }catch(error){
   console.error('[YunaCodes] Falha ao carregar códigos:',error);
   bind(root);
+  forceDesktopButtons(root);
  }
 }
 
-function boot(){addStyles();render();}
+function boot(){
+ addStyles();
+ render();
+ window.addEventListener('resize',()=>forceDesktopButtons(document.getElementById('ativos')), {passive:true});
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
 else boot();
 })();
