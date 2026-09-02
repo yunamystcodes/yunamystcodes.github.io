@@ -1,11 +1,94 @@
 (()=>{
 'use strict';
 const API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks';
-if(window.__YUNA_FEEDBACK_GLOBAL__)return;window.__YUNA_FEEDBACK_GLOBAL__=true;
-const css=`#ymgfb-modal{display:none;position:fixed;inset:0;z-index:999999;align-items:center;justify-content:center;padding:14px;background:rgba(2,1,8,.84);backdrop-filter:blur(7px)}#ymgfb-modal.open{display:flex}#ymgfb-card{position:relative;width:min(650px,100%);max-height:88vh;overflow:auto;padding:22px 18px 18px;border:1px solid #be66ff;border-radius:18px;background:linear-gradient(180deg,#160a28f7,#070412f7);box-shadow:0 25px 90px #000c;color:#fff;font-family:Arial,Helvetica,sans-serif}#ymgfb-card h3{margin:0 42px 14px 0;color:#f0c45c;font-size:18px}#ymgfb-close{position:absolute;top:9px;right:9px;width:32px;height:32px;border:1px solid #fff4;border-radius:50%;background:#12091f;color:#fff;font-size:20px;cursor:pointer}#ymgfb-list{display:flex;flex-direction:column;gap:9px}.ymgfb-item{padding:12px;border:1px solid #be66ff40;border-radius:11px;background:#0a0518cc}.ymgfb-head{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:800}.ymgfb-name{overflow-wrap:anywhere}.ymgfb-stars{color:#f0c45c;white-space:nowrap}.ymgfb-text{margin-top:7px;color:#c9c0d0;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.ymgfb-empty{text-align:center;color:#aaa1b3;font-size:12px;padding:18px 8px}.ymgfb-form{margin-top:16px;padding-top:15px;border-top:1px solid #fff2}.ymgfb-form textarea,.ymgfb-form input{width:100%;box-sizing:border-box;margin-top:7px;border:1px solid #be66ff73;border-radius:10px;background:#070412;color:#fff;padding:10px;font:13px Arial}.ymgfb-stars{display:flex;gap:4px;margin:7px 0}.ymgfb-star{border:0;background:transparent;color:#6f647c;font-size:30px;cursor:pointer}.ymgfb-star.active{color:#f0c45c}.ymgfb-send{width:100%;margin-top:9px;padding:11px;border:1px solid #edbd4e;border-radius:10px;background:linear-gradient(#f6cd70,#bd7d1d);color:#251400;font-weight:900;cursor:pointer}.ymgfb-msg{min-height:18px;margin-top:8px;text-align:center;color:#d99cff;font-size:12px}.ymgfb-open{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 14px;border:1px solid #633487;border-radius:10px;background:linear-gradient(#7e36b5,#4d1b76);color:#fff;font:900 11px Arial;cursor:pointer;text-decoration:none}.ymgfb-floating{position:fixed;right:16px;bottom:16px;z-index:99990;box-shadow:0 8px 25px #0008}@media(max-width:850px){#ymgfb-card{padding:20px 13px 15px}.ymgfb-floating{right:10px;bottom:10px}.ymgfb-open{font-size:10px}.ymgfb-head,.ymgfb-text{font-size:11px}}`;
-function addStyle(){if(document.getElementById('ymgfb-style'))return;const s=document.createElement('style');s.id='ymgfb-style';s.textContent=css;document.head.appendChild(s)}
-function makeModal(){if(document.getElementById('ymgfb-modal'))return document.getElementById('ymgfb-modal');const m=document.createElement('div');m.id='ymgfb-modal';m.innerHTML='<div id="ymgfb-card"><button id="ymgfb-close" type="button" aria-label="Fechar">×</button><h3>💜 TODOS OS FEEDBACKS</h3><div id="ymgfb-list"><div class="ymgfb-empty">A carregar...</div></div><div class="ymgfb-form"><strong>Deixar novo feedback</strong><input id="ymgfb-name" maxlength="80" placeholder="Seu nome (opcional)"><div class="ymgfb-stars" aria-label="Avaliação"><button class="ymgfb-star" data-r="1" type="button">★</button><button class="ymgfb-star" data-r="2" type="button">★</button><button class="ymgfb-star" data-r="3" type="button">★</button><button class="ymgfb-star" data-r="4" type="button">★</button><button class="ymgfb-star" data-r="5" type="button">★</button></div><textarea id="ymgfb-text" maxlength="300" rows="4" placeholder="Conta-nos o que achaste do site..."></textarea><button id="ymgfb-send" class="ymgfb-send" type="button">ENVIAR FEEDBACK</button><div id="ymgfb-msg" class="ymgfb-msg"></div></div></div></div>';document.body.appendChild(m);return m}
-async function load(){const list=document.getElementById('ymgfb-list');if(!list)return;list.innerHTML='<div class="ymgfb-empty">A carregar todos os feedbacks...</div>';try{const r=await fetch(API+'?t='+Date.now(),{cache:'no-store',headers:{Accept:'application/json'}});if(!r.ok)throw new Error('GET '+r.status);const raw=await r.json();const items=Array.isArray(raw)?raw:(Array.isArray(raw?.items)?raw.items:(Array.isArray(raw?.data)?raw.data:[]));list.innerHTML='';if(!items.length){list.innerHTML='<div class="ymgfb-empty">Ainda não há feedbacks enviados.</div>';return}items.forEach(x=>{const box=document.createElement('div');box.className='ymgfb-item';const head=document.createElement('div');head.className='ymgfb-head';const name=document.createElement('span');name.className='ymgfb-name';name.textContent=x.name||x.nome||'Jogador';const stars=document.createElement('span');stars.className='ymgfb-stars';const n=Math.max(0,Math.min(5,Number(x.rating??x.stars)||0));stars.textContent='★'.repeat(n)+'☆'.repeat(5-n);head.append(name,stars);const text=document.createElement('div');text.className='ymgfb-text';text.textContent=x.message||x.mensagem||x.text||'';box.append(head,text);list.append(box)})}catch(e){console.error('[YunaCodes] Feedbacks:',e);list.innerHTML='<div class="ymgfb-empty">Não foi possível carregar os feedbacks agora. Tenta novamente.</div>'}}
-function setup(){addStyle();const modal=makeModal(),openers=[...document.querySelectorAll('#ym-feedback-all,.ym-feedback-all-auto,.ymgfb-open')];let open=document.querySelector('.ymgfb-floating');if(!open){open=document.createElement('button');open.className='ymgfb-open ymgfb-floating';open.type='button';open.textContent='💜 VER FEEDBACKS'}if(!open.isConnected)document.body.appendChild(open);const all=[...new Set([...openers,open])];all.forEach(b=>{if(b.dataset.ymgfbBound)return;b.dataset.ymgfbBound='1';b.addEventListener('click',e=>{e.preventDefault();modal.classList.add('open');load()})});document.getElementById('ymgfb-close').addEventListener('click',()=>modal.classList.remove('open'));modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});let rating=0;document.querySelectorAll('.ymgfb-star').forEach(s=>s.addEventListener('click',()=>{rating=Number(s.dataset.r)||0;document.querySelectorAll('.ymgfb-star').forEach(x=>x.classList.toggle('active',Number(x.dataset.r)<=rating))}));document.getElementById('ymgfb-send').addEventListener('click',async()=>{const name=(document.getElementById('ymgfb-name').value||'').trim()||'Jogador',message=(document.getElementById('ymgfb-text').value||'').trim(),msg=document.getElementById('ymgfb-msg'),send=document.getElementById('ymgfb-send');if(!rating||!message){msg.textContent='Escolhe uma avaliação e escreve a mensagem.';return}send.disabled=true;send.textContent='A ENVIAR...';try{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,rating,message})});if(!r.ok)throw new Error('POST '+r.status);document.getElementById('ymgfb-text').value='';document.getElementById('ymgfb-name').value='';rating=0;document.querySelectorAll('.ymgfb-star').forEach(x=>x.classList.remove('active'));msg.textContent='Feedback enviado com sucesso ✓';await load()}catch(e){console.error('[YunaCodes] Envio:',e);msg.textContent='Não foi possível enviar o feedback.'}finally{send.disabled=false;send.textContent='ENVIAR FEEDBACK'}})}
+if(window.__YUNA_FEEDBACK_GLOBAL__)return;
+window.__YUNA_FEEDBACK_GLOBAL__=true;
+
+const css=`
+.ymgfb-inline{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.ymgfb-inline-title{color:#f0c45c;font-size:14px;font-weight:900;margin-bottom:10px}
+.ymgfb-list{display:flex;flex-direction:column;gap:9px}
+.ymgfb-item{padding:12px;border:1px solid #be66ff40;border-radius:11px;background:#0a0518cc}
+.ymgfb-head{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:800}
+.ymgfb-name{overflow-wrap:anywhere;color:#fff}
+.ymgfb-stars{color:#f0c45c;white-space:nowrap}
+.ymgfb-text{margin-top:7px;color:#c9c0d0;font-size:12px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.ymgfb-empty{text-align:center;color:#aaa1b3;font-size:12px;padding:14px 8px}
+@media(max-width:850px){.ymgfb-head,.ymgfb-text{font-size:11px}.ymgfb-item{padding:10px}}
+`;
+function addStyle(){
+ if(document.getElementById('ymgfb-style'))return;
+ const s=document.createElement('style');s.id='ymgfb-style';s.textContent=css;document.head.appendChild(s)
+}
+function getRoot(){return document.getElementById('ym-feedback')}
+function ensureList(){
+ const root=getRoot();
+ if(!root)return null;
+ let box=document.getElementById('ymgfb-inline');
+ if(box)return box.querySelector('.ymgfb-list');
+ box=document.createElement('div');
+ box.id='ymgfb-inline';
+ box.className='ymgfb-inline';
+ box.innerHTML='<div class="ymgfb-inline-title">💜 FEEDBACKS DOS JOGADORES</div><div id="ymgfb-inline-list" class="ymgfb-list"><div class="ymgfb-empty">A carregar os feedbacks...</div></div>';
+ root.appendChild(box);
+ return box.querySelector('.ymgfb-list')
+}
+async function load(){
+ const list=ensureList();
+ if(!list)return;
+ list.innerHTML='<div class="ymgfb-empty">A carregar os feedbacks...</div>';
+ try{
+  const r=await fetch(API+'?t='+Date.now(),{cache:'no-store',headers:{Accept:'application/json'}});
+  if(!r.ok)throw new Error('GET '+r.status);
+  const raw=await r.json();
+  const items=Array.isArray(raw)?raw:(Array.isArray(raw?.items)?raw.items:(Array.isArray(raw?.data)?raw.data:[]));
+  list.innerHTML='';
+  if(!items.length){list.innerHTML='<div class="ymgfb-empty">Ainda não há feedbacks enviados.</div>';return}
+  items.forEach(x=>{
+   const box=document.createElement('div');box.className='ymgfb-item';
+   const head=document.createElement('div');head.className='ymgfb-head';
+   const name=document.createElement('span');name.className='ymgfb-name';name.textContent=x.name||x.nome||'Jogador';
+   const stars=document.createElement('span');stars.className='ymgfb-stars';
+   const n=Math.max(0,Math.min(5,Number(x.rating??x.stars)||0));
+   stars.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+   head.append(name,stars);
+   const text=document.createElement('div');text.className='ymgfb-text';text.textContent=x.message||x.mensagem||x.text||'';
+   box.append(head,text);list.append(box)
+  })
+ }catch(e){
+  console.error('[YunaCodes] Feedbacks:',e);
+  list.innerHTML='<div class="ymgfb-empty">Não foi possível carregar os feedbacks agora. Tenta novamente.</div>'
+ }
+}
+function bindForm(){
+ const root=getRoot();if(!root)return;
+ const submit=document.getElementById('ym-feedback-submit');
+ if(!submit||submit.dataset.ymgfbBound)return;
+ submit.dataset.ymgfbBound='1';
+ let rating=0;
+ const stars=[...root.querySelectorAll('.ym-star')];
+ stars.forEach(s=>s.addEventListener('click',()=>{
+  rating=Number(s.dataset.star)||0;
+  stars.forEach(x=>x.classList.toggle('active',Number(x.dataset.star)<=rating))
+ }));
+ submit.addEventListener('click',async()=>{
+  const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador';
+  const message=(root.querySelector('.ym-feedback-text')?.value||'').trim();
+  if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return}
+  submit.disabled=true;
+  try{
+   const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,rating,message})});
+   if(!r.ok)throw new Error('POST '+r.status);
+   const field=root.querySelector('.ym-feedback-text');if(field)field.value='';
+   const nameField=root.querySelector('.ym-feedback-name');if(nameField)nameField.value='';
+   rating=0;stars.forEach(x=>x.classList.remove('active'));
+   await load();
+  }catch(e){
+   console.error('[YunaCodes] Envio:',e);
+   alert('Não foi possível enviar o feedback. Tenta novamente')
+  }finally{submit.disabled=false}
+ });
+}
+function setup(){addStyle();if(!getRoot())return;ensureList();bindForm();load()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
 })();
