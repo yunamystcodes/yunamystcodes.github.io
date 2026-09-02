@@ -19,6 +19,7 @@ jobs:
         run: |
           python3 <<'PY'
           from pathlib import Path
+          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
@@ -33,9 +34,36 @@ jobs:
           faq = '''<div class="panel faq"><h2>❔ FAQ</h2><div class="faq-item"><div class="faq-q">Onde coloco os códigos?<span>＋</span></div><div class="faq-a">Copia o código e usa o link de resgate.</div></div><div class="faq-item"><div class="faq-q">Os códigos expiram?<span>＋</span></div><div class="faq-a">Sim. Quando expiram, passam para a aba de códigos expirados.</div></div><div class="faq-item"><div class="faq-q">Posso usar no iPhone?<span>＋</span></div><div class="faq-a">Sim. O site funciona normalmente no telemóvel.</div></div></div>'''
           s = s[:start] + faq + s[end:]
 
-          css = '''\n<style id="yunamyst-faq-final-layout">\n/* FAQ FINAL: exatamente 3 perguntas, uma coluna em PC e telemóvel. */\n.faq{width:100%!important;display:block!important;overflow:hidden!important}\n.faq h2{width:100%!important}\n.faq .faq-item{display:block!important;width:100%!important;grid-column:1/-1!important;float:none!important;margin:0!important}\n.faq .faq-item:nth-child(n+4){display:none!important}\n.faq .faq-q{display:flex!important;width:100%!important;align-items:center!important;justify-content:space-between!important;padding:15px!important;min-height:52px!important}\n.faq .faq-a{width:100%!important}\n@media(max-width:850px){.right .faq{width:100%!important}.faq .faq-item{width:100%!important}.faq .faq-item:nth-child(n+4){display:none!important}.faq .faq-q{font-size:13px!important;padding:15px 14px!important}}\n</style>\n'''
-          if 'yunamyst-faq-final-layout' in s:
-              a = s.find('<style id="yunamyst-faq-final-layout">')
+          css = '''
+          <style id="yunamyst-faq-final-layout">
+          /* FAQ FINAL: exatamente 3 perguntas, uma coluna em PC e telemóvel. */
+          .faq{width:100%!important;display:block!important;overflow:hidden!important}
+          .faq h2{width:100%!important}
+          .faq .faq-item{display:block!important;width:100%!important;grid-column:1/-1!important;float:none!important;margin:0!important;padding:0!important}
+          .faq .faq-item:nth-of-type(n+4){display:none!important}
+          .faq .faq-item:nth-of-type(-n+3){display:block!important}
+          .faq .faq-q{display:flex!important;width:100%!important;align-items:center!important;justify-content:space-between!important;padding:15px!important;min-height:52px!important;height:52px!important;box-sizing:border-box!important}
+          .faq .faq-a{width:100%!important}
+          html[lang="en"] .faq .faq-q{font-size:0!important}
+          html[lang="en"] .faq .faq-item:nth-of-type(1) .faq-q::before{content:'Where do I enter the codes?'!important;font-size:13px!important}
+          html[lang="en"] .faq .faq-item:nth-of-type(2) .faq-q::before{content:'Do the codes expire?'!important;font-size:13px!important}
+          html[lang="en"] .faq .faq-item:nth-of-type(3) .faq-q::before{content:'Can I use it on iPhone?'!important;font-size:13px!important}
+          html[lang="en"] .faq .faq-q span{font-size:13px!important}
+          html[lang="en"] .faq .faq-item:nth-of-type(1) .faq-a::after{content:'Copy the code and use the redemption link.'!important;font-size:12px!important}
+          html[lang="en"] .faq .faq-item:nth-of-type(2) .faq-a::after{content:'Yes. When they expire, they are moved to the expired codes section.'!important;font-size:12px!important}
+          html[lang="en"] .faq .faq-item:nth-of-type(3) .faq-a::after{content:'Yes. The site works normally on mobile.'!important;font-size:12px!important}
+          html[lang="en"] .faq .faq-a{font-size:0!important}
+          @media(max-width:850px){
+            .right .faq{width:100%!important}
+            .faq .faq-item{width:100%!important}
+            .faq .faq-item:nth-of-type(n+4){display:none!important}
+            .faq .faq-item:nth-of-type(-n+3){display:block!important}
+            .faq .faq-q{width:100%!important;padding:15px 14px!important;height:52px!important;min-height:52px!important}
+          }
+          </style>
+          '''
+          a = s.find('<style id="yunamyst-faq-final-layout">')
+          if a >= 0:
               b = s.find('</style>', a) + len('</style>')
               s = s[:a] + css.strip() + s[b:]
           else:
@@ -43,8 +71,8 @@ jobs:
 
           s = s.replace('language-fix.js?v=20260902', 'language-fix.js?v=20260903')
           s = s.replace('language-fix.js?v=20260901', 'language-fix.js?v=20260903')
-          s = s.replace('faq-final-layout-20260902-v1', 'faq-final-layout-20260903-v3')
-          s = s.replace('reward-images-layout-fixed-20260830-v2', 'faq-final-layout-20260903-v3')
+          s = s.replace('faq-final-layout-20260902-v1', 'faq-final-layout-20260904-v4')
+          s = s.replace('reward-images-layout-fixed-20260830-v2', 'faq-final-layout-20260904-v4')
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -54,5 +82,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Remover duplicados do FAQ no PC e telemóvel"
+          git commit -m "Fix FAQ three questions on PC and mobile [skip faq]"
           git push
