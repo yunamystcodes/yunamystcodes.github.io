@@ -1,0 +1,51 @@
+name: Remove duplicated YunaMyst subtitle
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove duplicated subtitle and bust CSS cache
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Keep exactly one real subtitle in the logo.
+          s = re.sub(r'<div class="logo">.*?</div>', '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>', s, count=1, flags=re.S)
+
+          # Force the browser to load the corrected stylesheet version.
+          s = re.sub(r'header-final\.css\?v=[^"\']+', 'header-final.css?v=20260902-duplicate-fix', s, count=1)
+
+          marker = '<style id="yunamyst-subtitle-duplicate-final">'
+          css = '''<style id="yunamyst-subtitle-duplicate-final">
+          /* One subtitle only: disable every generated duplicate. */
+          .logo small::before,.logo small::after{content:none!important;display:none!important;}
+          .logo small{display:block!important;font-size:8px!important;line-height:1!important;letter-spacing:3px!important;margin-top:5px!important;text-align:center!important;white-space:nowrap!important;}
+          </style>'''
+          if marker in s:
+              s = re.sub(re.escape(marker) + r'.*?</style>', css.rstrip('</style>') + '</style>', s, count=1, flags=re.S)
+          else:
+              s = s.replace('</head>', css + '\n</head>', 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit index.html
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Remove duplicated SUMMONERS WAR subtitle [skip subtitle cleanup]'
+          git push
