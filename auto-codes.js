@@ -1,42 +1,75 @@
 (()=>{
 'use strict';
-const redeem='https://withhive.me/313/';
-const FEEDBACK_API='https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks';
-const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA']);
+
+const REDEEM='https://withhive.me/313/';
 const SPRITE='/assets/rewards-exact-20260829.webp?v=20260829-4';
-const FALLBACK_REWARDS={
- 'SEPSW2026I8B':[['blue','x3'],['mana','x300000']],
- 'SWGAJA2BKK':[['mana','x200000'],['yellow','x1']],
- 'SWCJOAAAKR26':[['yellow','x1']],
- '2SWCTORONTOTHE6IX':[['energy','x100'],['yellow','x1']],
- 'LAST4PUNCHIN':[['mana','x200000'],['yellow','x1']],
- 'APAC1K0UB4NGK0K':[['energy','x100'],['yellow','x1']],
- '2SOREIKENIPPON6':[['mana','x200000'],['yellow','x1']],
- 'SWXFRIEREN2026':[['energy','x100'],['mana','x300000'],['yellow','x3']],
- 'AUGSW2026V7N':[['energy','x100'],['red','x3']],
- '4READY4TDOT':[['mana','x200000'],['yellow','x1'],['energy','x50']],
- 'AMPRELIMSLEGACYDRP':[['energy','x100'],['yellow','x1']],
- 'LEGENDSWC2026HSL':[['energy','x100'],['yellow','x1']],
- 'YIQIZOUGUO10SWC':[['energy','x100'],['yellow','x1']]
+const FALLBACK={
+  SEPSW2026I8B:[['blue','x3'],['mana','x300000']],
+  SWGAJA2BKK:[['mana','x200000'],['yellow','x1']],
+  SWCJOAAAKR26:[['yellow','x1']],
+  '2SWCTORONTOTHE6IX':[['energy','x100'],['yellow','x1']],
+  LAST4PUNCHIN:[['mana','x200000'],['yellow','x1']],
+  APAC1K0UB4NGK0K:[['energy','x100'],['yellow','x1']],
+  '2SOREIKENIPPON6':[['mana','x200000'],['yellow','x1']],
+  SWXFRIEREN2026:[['energy','x100'],['mana','x300000'],['yellow','x3']],
+  AUGSW2026V7N:[['energy','x100'],['red','x3']]
 };
-let REWARDS={...FALLBACK_REWARDS};
-const norm=c=>String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-const valid=c=>{c=norm(c);return /^[A-Z0-9]{6,32}$/.test(c)&&/[A-Z]/.test(c)&&/\d/.test(c)&&!blocked.has(c)};
-const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function styles(){if(document.getElementById('yunamyst-auto-links'))return;const s=document.createElement('style');s.id='yunamyst-auto-links';s.textContent=`
-.code.auto-code .reward{min-width:0!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:2px!important;overflow:visible!important}.code.auto-code .reward-icon{width:48px;height:48px;display:block;background-image:url('${SPRITE}');background-repeat:no-repeat;background-size:336px 48px;background-color:transparent;margin:auto}.reward-icon.energy{background-position:0 0}.reward-icon.yellow{background-position:-48px 0}.reward-icon.blue{background-position:-96px 0}.reward-icon.red{background-position:-144px 0}.reward-icon.crystal{background-position:-192px 0}.reward-icon.gold{background-position:-240px 0}.reward-icon.mana{background-position:-288px 0}.code.auto-code .reward b{display:block!important;font-size:13px!important;line-height:1!important;margin-top:1px!important;color:#fff!important;white-space:nowrap!important}.copy,.link{height:44px!important;min-width:128px!important;width:128px!important;border-radius:9px!important;font-weight:900!important;font-size:11px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-decoration:none!important;cursor:pointer!important;touch-action:manipulation!important;white-space:nowrap!important;box-sizing:border-box!important}.ym-feedback-all-auto{width:100%;height:42px;margin-top:9px;border:1px solid #633487;border-radius:10px;background:linear-gradient(#7e36b5,#4d1b76);color:#fff;font-weight:900;font-size:10px;cursor:pointer}.ym-feedback-modal{display:none!important;position:fixed!important;inset:0!important;z-index:99999!important;align-items:center!important;justify-content:center!important;padding:18px!important;background:rgba(2,1,8,.84)!important;backdrop-filter:blur(7px)!important}.ym-feedback-modal.open{display:flex!important}.ym-feedback-modal-card{position:relative!important;width:min(620px,calc(100% - 20px))!important;max-height:min(78vh,620px)!important;overflow:auto!important;padding:24px 20px 18px!important;border:1px solid #be66ff!important;border-radius:18px!important;background:linear-gradient(180deg,#160a28f7,#070412f7)!important;box-shadow:0 25px 90px #000c!important;color:#fff!important}.ym-feedback-modal-close{position:absolute!important;top:10px!important;right:10px!important;width:32px!important;height:32px!important;border:1px solid #fff4!important;border-radius:50%!important;background:#12091f!important;color:#fff!important;font-size:20px!important;cursor:pointer!important}.ym-feedback-list{display:flex!important;flex-direction:column!important;gap:9px!important}.ym-feedback-empty{text-align:center!important;color:#aaa1b3!important;font-size:12px!important;padding:18px 8px!important}.ym-feedback-item{padding:12px!important;border:1px solid #be66ff40!important;border-radius:11px!important;background:#0a0518cc!important}.ym-feedback-item-head{display:flex!important;justify-content:space-between!important;gap:10px!important;font-size:12px!important;font-weight:800!important}.ym-feedback-item-stars{color:#f0c45c!important;white-space:nowrap!important}.ym-feedback-item-text{margin-top:7px!important;color:#c9c0d0!important;font-size:12px!important;line-height:1.5!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important}@media(min-width:851px){.code.auto-code.reward-count-0{grid-template-columns:58px minmax(0,1fr) 128px 128px!important}.code.auto-code.reward-count-1{grid-template-columns:58px minmax(150px,1fr) 72px 128px 128px!important}.code.auto-code.reward-count-2{grid-template-columns:58px minmax(120px,1fr) 72px 72px 128px 128px!important}.code.auto-code.reward-count-3{grid-template-columns:58px minmax(105px,1fr) 64px 64px 64px 128px 128px!important}.code.auto-code .reward{width:100%!important}}@media(max-width:850px){.code.auto-code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 68px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;gap:7px!important;padding:11px 8px!important;min-height:180px!important}.code.auto-code.reward-count-0{grid-template-rows:56px 44px!important;grid-template-areas:'gift info info info' 'copy copy link link'!important;min-height:120px!important}.code>.gift{grid-area:gift}.code>.cinfo{grid-area:info}.code>.reward:nth-child(3){grid-area:r1}.code>.reward:nth-child(4){grid-area:r2}.code>.reward:nth-child(5){grid-area:r3}.copy{grid-area:copy}.link{grid-area:link}.copy,.link{width:100%!important;min-width:0!important}.reward-icon{width:42px!important;height:42px!important;background-size:294px 42px!important}.reward-icon.energy{background-position:0 0}.reward-icon.yellow{background-position:-42px 0}.reward-icon.blue{background-position:-84px 0}.reward-icon.red{background-position:-126px 0}.reward-icon.crystal{background-position:-168px 0}.reward-icon.gold{background-position:-210px 0}.reward-icon.mana{background-position:-252px 0}.code.auto-code .reward b{font-size:12px!important}.ym-feedback-modal{padding:10px!important}.ym-feedback-modal-card{width:calc(100% - 4px)!important;max-height:82vh!important;padding:20px 14px 15px!important}}`;document.head.appendChild(s)}
-function rewardHtml(data){return data.map(([kind,qty])=>`<div class="reward"><span class="reward-icon ${esc(kind)}" aria-hidden="true"></span><b>${esc(qty)}</b></div>`).join('')}
-function card(code){const data=REWARDS[code]||[];return `<article class="code auto-code reward-count-${Math.min(data.length,3)}"><div class="gift">🎁</div><div class="cinfo"><strong>${esc(code)}</strong><small>🔄 Código ativo</small></div>${rewardHtml(data)}<button class="copy" type="button" data-code="${esc(code)}">▣ COPIAR</button><a class="link" href="${redeem}${encodeURIComponent(code)}" target="_blank" rel="noopener noreferrer">🔗 LINK iOS</a></article>`}
-function copy(code,b){const old=b.textContent,done=()=>{b.textContent='✓ COPIADO!';setTimeout(()=>b.textContent=old,1500)};if(navigator.clipboard&&isSecureContext)navigator.clipboard.writeText(code).then(done).catch(()=>fallback(code,b));else fallback(code,b)}
-function fallback(code,b){try{const t=document.createElement('textarea');t.value=code;t.style.cssText='position:fixed;opacity:0';document.body.appendChild(t);t.select();if(document.execCommand('copy')){b.textContent='✓ COPIADO!';setTimeout(()=>b.textContent='▣ COPIAR',1500)}t.remove()}catch(e){window.prompt('Copie o código:',code)}}
-function bind(root=document){root.querySelectorAll('.copy[data-code]').forEach(b=>{if(b.dataset.bound)return;b.dataset.bound='1';b.addEventListener('click',e=>{e.preventDefault();copy(b.dataset.code,b)})})}
-const PT_EN={'Início':'HOME','COMO USAR':'HOW TO USE','Sempre atualizados!':'Always updated!','Código ativo':'Active code','COPIAR':'COPY','LINK iOS':'iOS LINK','Conteúdo diário de Summoners War!':'Daily Summoners War content!','SOBRE O SITE':'ABOUT THE SITE','Aqui encontras os códigos ativos':'Here you can find the active codes','Códigos ativos':'Active codes','Como você avalia o site?':'How do you rate the site?','Sua avaliação':'Your rating','Mensagem':'Message','Nome de player (opcional)':'Player name (optional)','Deixa tua opinião ou sugestão...':'Leave your opinion or suggestion...','Enviar feedback':'Send feedback','ENVIAR FEEDBACK':'SEND FEEDBACK','VER TODOS OS FEEDBACKS':'VIEW ALL FEEDBACK','TODOS OS FEEDBACKS':'ALL FEEDBACK','Onde coloco os códigos?':'Where do I enter the codes?','Os códigos expiram?':'Do the codes expire?','Posso usar no iPhone?':'Can I use them on iPhone?','Copie o código':'Copy the code','Clique em COPIAR no código desejado.':'Click COPY on the desired code.','Abra o jogo':'Open the game','Entra no Summoners War: Sky Arena.':'Enter Summoners War: Sky Arena.','Resgata o código':'Redeem the code','Usa a link de resgate.':'Use the redemption link.','Aproveita!':'Enjoy!','Recebe a tua recompensa no jogo.':'Receive your reward in the game.','Parceria':'Partnership'};
-function applyLanguage(isEN){if(!isEN)return;const nodes=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentElement;if(!p||['SCRIPT','STYLE','NOSCRIPT'].includes(p.tagName)||p.closest('.auto-code .cinfo strong'))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT}});while(nodes.nextNode()){const n=nodes.currentNode,raw=n.nodeValue,trim=raw.trim(),target=PT_EN[trim];if(target)n.nodeValue=raw.replace(trim,target)}document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{const p=el.getAttribute('placeholder');if(PT_EN[p])el.setAttribute('placeholder',PT_EN[p])});document.querySelectorAll('[aria-label]').forEach(el=>{const a=el.getAttribute('aria-label');if(PT_EN[a])el.setAttribute('aria-label',PT_EN[a])})}
-function render(codes,root){const unique=[...new Set(codes.map(norm).filter(valid))];root.innerHTML=unique.map(card).join('');bind(root);applyLanguage(document.documentElement.lang==='en')}
-function profileFix(){const p=document.querySelector('.left .profile');if(!p)return;p.querySelectorAll('*').forEach(el=>{const txt=(el.childNodes.length===1?el.textContent:'').trim();if(/^https?:\/\//i.test(txt)||/^www\./i.test(txt))el.remove()})}
-async function load(){const root=document.getElementById('ativos');if(!root)return;try{const r=await fetch('./codes.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();if(d.rewards&&typeof d.rewards==='object')Object.keys(d.rewards).forEach(c=>{if(Array.isArray(d.rewards[c])&&d.rewards[c].length)REWARDS[norm(c)]=d.rewards[c]});const codes=Array.isArray(d.codes)?d.codes:[];if(!codes.length)throw 0;render(codes,root)}catch(e){root.innerHTML='';}profileFix()}
-async function feedback(){const root=document.getElementById('ym-feedback');if(!root)return;let modal=document.getElementById('ym-feedback-modal');if(!modal){modal=document.createElement('div');modal.id='ym-feedback-modal';modal.className='ym-feedback-modal';modal.setAttribute('aria-hidden','true');modal.innerHTML='<div class="ym-feedback-modal-card" role="dialog" aria-modal="true"><button class="ym-feedback-modal-close" type="button" aria-label="Fechar">×</button><h3>💜 TODOS OS FEEDBACKS</h3><div id="ym-feedback-list" class="ym-feedback-list"></div></div>';document.body.appendChild(modal)}else if(modal.parentElement!==document.body)document.body.appendChild(modal);const list=modal.querySelector('#ym-feedback-list');let open=document.getElementById('ym-feedback-all');if(!open){open=document.createElement('button');open.id='ym-feedback-all';open.type='button';open.className='ym-feedback-all-auto';open.textContent='VER TODOS OS FEEDBACKS';root.appendChild(open)}const close=modal.querySelector('.ym-feedback-modal-close');if(modal.dataset.bound==='1')return;modal.dataset.bound='1';async function loadFeedbacks(){list.innerHTML='<div class="ym-feedback-empty">A carregar todos os feedbacks...</div>';try{const r=await fetch(FEEDBACK_API+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const items=await r.json();list.innerHTML='';if(!Array.isArray(items)||!items.length){list.innerHTML='<div class="ym-feedback-empty">Ainda não há feedbacks enviados.</div>';return}items.forEach(x=>{const b=document.createElement('div');b.className='ym-feedback-item';const h=document.createElement('div');h.className='ym-feedback-item-head';const n=document.createElement('span');n.textContent=x.name||'Jogador';const st=document.createElement('span');st.className='ym-feedback-item-stars';const q=Math.max(0,Math.min(5,Number(x.rating)||0));st.textContent='★'.repeat(q)+'☆'.repeat(5-q);const t=document.createElement('div');t.className='ym-feedback-item-text';t.textContent=x.message||'';h.append(n,st);b.append(h,t);list.append(b)})}catch(e){list.innerHTML='<div class="ym-feedback-empty">Não foi possível carregar os feedbacks. Tenta novamente.</div>'}}open.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');loadFeedbacks()});close.addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});modal.addEventListener('click',e=>{if(e.target===modal)close.click()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close.click()});const submit=document.getElementById('ym-feedback-submit');let rating=0;root.querySelectorAll('.ym-star').forEach(x=>x.addEventListener('click',()=>{rating=Number(x.dataset.star)||0;root.querySelectorAll('.ym-star').forEach(y=>y.classList.toggle('active',Number(y.dataset.star)<=rating))}));if(submit&&!submit.dataset.bound){submit.dataset.bound='1';submit.addEventListener('click',async()=>{const name=(root.querySelector('.ym-feedback-name')?.value||'').trim()||'Jogador';const message=(root.querySelector('.ym-feedback-text')?.value||'').trim();if(!rating||!message){alert('Escolhe uma avaliação e escreve uma mensagem.');return}submit.disabled=true;try{const r=await fetch(FEEDBACK_API,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,rating,message})});if(!r.ok)throw 0;const text=root.querySelector('.ym-feedback-text');if(text)text.value='';rating=0;root.querySelectorAll('.ym-star').forEach(x=>x.classList.remove('active'));await loadFeedbacks()}catch(e){alert('Não foi possível enviar o feedback. Tenta novamente')}finally{submit.disabled=false}})}}
-function language(){const ls=document.getElementById('langSwitch'),toggle=document.getElementById('langToggle'),pt=document.getElementById('langPT'),en=document.getElementById('langEN');if(!ls||!toggle)return;toggle.addEventListener('click',()=>ls.classList.toggle('open'));pt?.addEventListener('click',()=>{document.documentElement.lang='pt-BR';localStorage.setItem('ym-lang','pt');ls.classList.remove('open');location.reload()});en?.addEventListener('click',()=>{document.documentElement.lang='en';localStorage.setItem('ym-lang','en');ls.classList.remove('open');location.reload()});const saved=localStorage.getItem('ym-lang');if(saved==='en')document.documentElement.lang='en'}
-function boot(){styles();language();load();feedback()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA']);
+let rewards={...FALLBACK};
+const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const valid=s=>{const c=norm(s);return c.length>=6&&c.length<=32&&/[A-Z]/.test(c)&&/\d/.test(c)&&!blocked.has(c)};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function addStyles(){
+ if(document.getElementById('ym-auto-code-style'))return;
+ const style=document.createElement('style');
+ style.id='ym-auto-code-style';
+ style.textContent=`
+.code.auto-code .reward{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;min-width:0!important}.code.auto-code .reward-icon{display:block;width:48px;height:48px;background-image:url('${SPRITE}');background-repeat:no-repeat;background-size:336px 48px}.reward-icon.energy{background-position:0 0}.reward-icon.yellow{background-position:-48px 0}.reward-icon.blue{background-position:-96px 0}.reward-icon.red{background-position:-144px 0}.reward-icon.crystal{background-position:-192px 0}.reward-icon.gold{background-position:-240px 0}.reward-icon.mana{background-position:-288px 0}.code.auto-code .reward b{display:block!important;font-size:13px!important;color:#fff!important;margin-top:2px!important}.code.auto-code .copy,.code.auto-code .link{height:44px!important;width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important}@media(max-width:850px){.code.auto-code{grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:56px 62px 44px!important;grid-template-areas:'gift info info info' 'gift r1 r2 r3' 'copy copy link link'!important;min-height:174px!important}.code.auto-code>.gift{grid-area:gift}.code.auto-code>.cinfo{grid-area:info}.code.auto-code>.reward:nth-child(3){grid-area:r1}.code.auto-code>.reward:nth-child(4){grid-area:r2}.code.auto-code>.reward:nth-child(5){grid-area:r3}.code.auto-code>.copy{grid-area:copy}.code.auto-code>.link{grid-area:link}.code.auto-code .reward-icon{width:42px;height:42px;background-size:294px 42px}.code.auto-code .reward-icon.yellow{background-position:-42px 0}.code.auto-code .reward-icon.blue{background-position:-84px 0}.code.auto-code .reward-icon.red{background-position:-126px 0}.code.auto-code .reward-icon.crystal{background-position:-168px 0}.code.auto-code .reward-icon.gold{background-position:-210px 0}.code.auto-code .reward-icon.mana{background-position:-252px 0}}
+`;
+ document.head.appendChild(style);
+}
+
+function makeCard(code){
+ const list=Array.isArray(rewards[code])?rewards[code]:[];
+ const reward=list.map(x=>`<div class="reward"><span class="reward-icon ${esc(x[0])}"></span><b>${esc(x[1])}</b></div>`).join('');
+ return `<article class="code auto-code reward-count-${Math.min(list.length,3)}"><div class="gift">🎁</div><div class="cinfo"><strong>${esc(code)}</strong><small>🔄 Código ativo</small></div>${reward}<button class="copy" type="button" data-code="${esc(code)}">▣ COPIAR</button><a class="link" href="${REDEEM}${encodeURIComponent(code)}" target="_blank" rel="noopener noreferrer">🔗 LINK iOS</a></article>`;
+}
+
+function bind(root){
+ root.querySelectorAll('.copy[data-code]').forEach(button=>{
+  if(button.dataset.ymBound)return;
+  button.dataset.ymBound='1';
+  button.addEventListener('click',async()=>{
+   const code=button.dataset.code;
+   try{await navigator.clipboard.writeText(code)}catch(e){const t=document.createElement('textarea');t.value=code;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}
+   const old=button.textContent;button.textContent='✓ COPIADO!';setTimeout(()=>button.textContent=old,1400);
+  });
+ });
+}
+
+async function render(){
+ const root=document.getElementById('ativos');
+ if(!root)return;
+ try{
+  const response=await fetch('./codes.json?nocache='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('codes.json '+response.status);
+  const data=await response.json();
+  if(data.rewards&&typeof data.rewards==='object'){
+   for(const key of Object.keys(data.rewards))if(Array.isArray(data.rewards[key])&&data.rewards[key].length)rewards[norm(key)]=data.rewards[key];
+  }
+  const codes=Array.isArray(data.codes)?data.codes.map(norm).filter(valid):[];
+  if(!codes.length)throw new Error('No active codes');
+  root.innerHTML=[...new Set(codes)].map(makeCard).join('');
+  bind(root);
+ }catch(error){
+  console.error('[YunaCodes] Falha ao carregar códigos:',error);
+  // Do not destroy the server-rendered list when the JSON request fails.
+  bind(root);
+ }
+}
+
+function boot(){addStyles();render();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
+else boot();
 })();
