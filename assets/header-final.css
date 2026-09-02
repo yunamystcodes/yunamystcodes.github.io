@@ -51,17 +51,24 @@ html[lang="en"] .ym-feedback-submit{font-size:0!important}
 html[lang="en"] .ym-feedback-submit::after{content:'SEND FEEDBACK';font-size:10px!important}
 html[lang="en"] .ym-feedback-all{font-size:0!important}
 html[lang="en"] .ym-feedback-all::after{content:'VIEW ALL FEEDBACK';font-size:10px!important}
-html[lang="en"] .step{font-size:0!important}
-html[lang="en"] .step b{font-size:0!important}
-html[lang="en"] .step b::after{font-size:13px!important;color:#dda1ff}
-html[lang="en"] .step:nth-child(2) b::after{content:'Copy the code'}
-html[lang="en"] .step:nth-child(3) b::after{content:'Open the game'}
-html[lang="en"] .step:nth-child(4) b::after{content:'Redeem the code'}
-html[lang="en"] .step:nth-child(5) b::after{content:'Enjoy!'}
-html[lang="en"] .step:nth-child(2)::after{content:'Click COPY on the desired code.';font-size:13px!important;color:#cfc7d7}
-html[lang="en"] .step:nth-child(3)::after{content:'Enter Summoners War: Sky Arena.';font-size:13px!important;color:#cfc7d7}
-html[lang="en"] .step:nth-child(4)::after{content:'Use the redemption link.';font-size:13px!important;color:#cfc7d7}
-html[lang="en"] .step:nth-child(5)::after{content:'Receive your reward in the game.';font-size:13px!important;color:#cfc7d7}
+
+/* HOW TO USE: keep each English title and its explanation inside the same content column. */
+html[lang="en"] .step{font-size:13px!important;display:flex!important;align-items:flex-start!important;}
+html[lang="en"] .step > div:last-child{display:block!important;flex:1!important;min-width:0!important;font-size:13px!important;line-height:1.35!important;}
+html[lang="en"] .step > div:last-child b{display:block!important;font-size:0!important;line-height:1.25!important;margin:0 0 2px!important;}
+html[lang="en"] .step > div:last-child b::after{display:block!important;font-size:13px!important;color:#dda1ff!important;}
+html[lang="en"] .step:nth-child(2) > div:last-child b::after{content:'Copy the code'}
+html[lang="en"] .step:nth-child(3) > div:last-child b::after{content:'Open the game'}
+html[lang="en"] .step:nth-child(4) > div:last-child b::after{content:'Redeem the code'}
+html[lang="en"] .step:nth-child(5) > div:last-child b::after{content:'Enjoy!'}
+html[lang="en"] .step > div:last-child::after{display:block!important;font-size:13px!important;color:#cfc7d7!important;line-height:1.35!important;margin:0!important;}
+html[lang="en"] .step:nth-child(2) > div:last-child::after{content:'Click COPY on the desired code.'}
+html[lang="en"] .step:nth-child(3) > div:last-child::after{content:'Enter Summoners War: Sky Arena.'}
+html[lang="en"] .step:nth-child(4) > div:last-child::after{content:'Use the redemption link.'}
+html[lang="en"] .step:nth-child(5) > div:last-child::after{content:'Receive your reward in the game.'}
+/* Prevent the old response pseudo-elements from becoming separate flex columns. */
+html[lang="en"] .step::after{content:none!important;display:none!important;}
+
 html[lang="en"] .faq-q{font-size:0!important}
 html[lang="en"] .faq-q span{font-size:13px!important}
 html[lang="en"] .faq-item:nth-child(1) .faq-q::before{content:'Where do I enter the codes?';font-size:13px!important}
