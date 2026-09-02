@@ -12,17 +12,10 @@
 .top .navlinks{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:24px!important;white-space:nowrap!important;}
 .top .navlinks a{display:block!important;white-space:nowrap!important;}
 @media(max-width:850px){
-  .left .social-links{height:30px!important;min-height:30px!important;overflow:hidden!important;margin:8px auto 0!important}.left .social-links a{font-size:0!important;color:transparent!important}.left .profile{font-size:0!important}.left .profile h3{font-size:17px!important;line-height:1.1!important;margin:4px 0!important}.left .profile p{font-size:10px!important;line-height:1.25!important;margin:0 auto!important}
-  .top .navlinks{display:none!important;}
+.left .social-links{height:30px!important;min-height:30px!important;overflow:hidden!important;margin:8px auto 0!important}.left .social-links a{font-size:0!important;color:transparent!important}.left .profile{font-size:0!important}.left .profile h3{font-size:17px!important;line-height:1.1!important;margin:4px 0!important}.left .profile p{font-size:10px!important;line-height:1.25!important;margin:0 auto!important}.top .navlinks{display:none!important;}
 }
-
-/* Prevent WhatsApp/Partnership labels from appearing twice if the language script has already added a label span. */
-.community-tab.whatsapp strong + .community-label,
-.community-tab.partnership strong + .community-label{display:none!important;}
-.community-tab.whatsapp .community-label,
-.community-tab.partnership .community-label{font-weight:900!important;}
-
-/* YUNAMYST ENGLISH LANGUAGE DISPLAY FIX */
+.community-tab.whatsapp strong + .community-label,.community-tab.partnership strong + .community-label{display:none!important;}
+.community-tab.whatsapp .community-label,.community-tab.partnership .community-label{font-weight:900!important;}
 html[lang="en"] .logo small{font-size:0!important}
 html[lang="en"] .logo small::after{content:'SUMMONERS WAR';font-size:9px!important}
 html[lang="en"] .navlinks a{font-size:0!important}
@@ -98,43 +91,21 @@ html[lang="en"] .code .copy{font-size:0!important}
 html[lang="en"] .code .copy::after{content:'▣ COPY';font-size:11px!important}
 html[lang="en"] .code .link{font-size:0!important}
 html[lang="en"] .code .link::after{content:'🔗 iOS LINK';font-size:11px!important}
-
-/* LANGUAGE MENU: keep both PT/BR and ENG accessible on PC and mobile. */
 .lang-switch{position:relative!important;z-index:10050!important}
 .lang-switch .lang-menu{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;z-index:10060!important}
 .lang-switch.open .lang-menu,.lang-switch:focus-within .lang-menu{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;z-index:10060!important}
 .lang-switch .lang-option{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;min-height:36px!important}
 @media(max-width:850px){.lang-switch .lang-menu{right:0!important;min-width:120px!important;position:absolute!important}.lang-switch.open .lang-menu,.lang-switch:focus-within .lang-menu{display:block!important}}
-@media(max-width:850px){
- html[lang="en"] .section-head::before{font-size:19px!important}
- html[lang="en"] .profile h3::after{font-size:17px!important}
- html[lang="en"] .profile p::after{font-size:10px!important}
- html[lang="en"] .right h2::after{font-size:18px!important}
- html[lang="en"] .ym-feedback h2::after{font-size:17px!important}
- html[lang="en"] .code .cinfo small::after{font-size:9px!important}
+@media(max-width:850px){html[lang="en"] .section-head::before{font-size:19px!important}html[lang="en"] .profile h3::after{font-size:17px!important}html[lang="en"] .profile p::after{font-size:10px!important}html[lang="en"] .right h2::after{font-size:18px!important}html[lang="en"] .ym-feedback h2::after{font-size:17px!important}html[lang="en"] .code .cinfo small::after{font-size:9px!important}}
+
+/* PC ONLY: force the two action buttons to occupy adjacent equal columns. */
+@media(min-width:851px){
+  .code{display:grid!important;grid-template-columns:52px minmax(0,1fr) 46px 46px 46px 120px 120px!important;column-gap:8px!important;}
+  .code>.copy{grid-column:6!important;width:120px!important;min-width:120px!important;max-width:120px!important;height:46px!important;justify-self:start!important;}
+  .code>.link{grid-column:7!important;width:120px!important;min-width:120px!important;max-width:120px!important;height:46px!important;justify-self:start!important;}
 }
 
-/* DESKTOP: COPY and iOS LINK are equal, fixed-width buttons and never squeeze each other. */
-@media(min-width:1051px){
-  .code{
-    grid-template-columns:52px minmax(110px,1fr) 46px 46px 46px 120px 120px!important;
-    gap:8px!important;
-  }
-  .code .copy,.code .link{
-    box-sizing:border-box!important;
-    width:120px!important;
-    min-width:120px!important;
-    max-width:120px!important;
-    height:46px!important;
-    margin:0!important;
-    padding:0 10px!important;
-    white-space:nowrap!important;
-    display:flex!important;
-    align-items:center!important;
-    justify-content:center!important;
-    justify-self:stretch!important;
-    align-self:center!important;
-  }
-  .code .copy{grid-column:6!important}
-  .code .link{grid-column:7!important}
+/* Keep the existing mobile layout completely unchanged. */
+@media(max-width:850px){
+  .code>.copy,.code>.link{width:100%!important;min-width:0!important;max-width:none!important;height:44px!important;}
 }
