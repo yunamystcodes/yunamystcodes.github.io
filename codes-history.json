@@ -1,8 +1,6 @@
 {
   "active": [
-    "2NEWTOMORROW2",
-    "SEPSW2026I8B",
-    "SW25HSZN"
+    "SEPSW2026I8B"
   ],
   "expired": [
     "000SLOT",
@@ -327,9 +325,8 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-02T08:41:31Z",
+  "updated_at": "2026-09-02T09:17:40Z",
   "rewards": {
-    "2NEWTOMORROW2": [],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -339,18 +336,11 @@
         "mana",
         "x300000"
       ]
-    ],
-    "SW25HSZN": []
+    ]
   },
   "sources": {
-    "2NEWTOMORROW2": [
-      "swquery"
-    ],
     "SEPSW2026I8B": [
       "official-monthly"
-    ],
-    "SW25HSZN": [
-      "swquery"
     ]
   },
   "source_errors": []
