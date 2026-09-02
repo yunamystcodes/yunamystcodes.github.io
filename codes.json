@@ -1,7 +1,7 @@
 {
-  "updated": "2026-09-02T20:32:51Z",
+  "updated": "2026-09-02T20:49:35Z",
   "source_count": 5,
-  "successful_sources": 3,
+  "successful_sources": 4,
   "rule": "lista ativa protegida por baseline; novos códigos adicionados; remoção somente após confirmação; recompensas e imagens preservadas",
   "codes": [
     "2SOREIKENIPPON6",
@@ -118,7 +118,6 @@
     ]
   },
   "source_errors": [
-    "com2us-official: The read operation timed out",
     "swquery: HTTP Error 404: Not Found"
   ]
 }
