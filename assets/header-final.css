@@ -54,7 +54,7 @@ html[lang="en"] .ym-feedback-all::after{content:'VIEW ALL FEEDBACK';font-size:10
 
 /* HOW TO USE: keep each English title and its explanation inside the same content column. */
 html[lang="en"] .step{font-size:13px!important;display:flex!important;align-items:flex-start!important;}
-html[lang="en"] .step > div:last-child{display:block!important;flex:1!important;min-width:0!important;font-size:13px!important;line-height:1.35!important;}
+html[lang="en"] .step > div:last-child{display:block!important;flex:1!important;min-width:0!important;font-size:0!important;line-height:1.35!important;}
 html[lang="en"] .step > div:last-child b{display:block!important;font-size:0!important;line-height:1.25!important;margin:0 0 2px!important;}
 html[lang="en"] .step > div:last-child b::after{display:block!important;font-size:13px!important;color:#dda1ff!important;}
 html[lang="en"] .step:nth-child(2) > div:last-child b::after{content:'Copy the code'}
@@ -66,7 +66,6 @@ html[lang="en"] .step:nth-child(2) > div:last-child::after{content:'Click COPY o
 html[lang="en"] .step:nth-child(3) > div:last-child::after{content:'Enter Summoners War: Sky Arena.'}
 html[lang="en"] .step:nth-child(4) > div:last-child::after{content:'Use the redemption link.'}
 html[lang="en"] .step:nth-child(5) > div:last-child::after{content:'Receive your reward in the game.'}
-/* Prevent the old response pseudo-elements from becoming separate flex columns. */
 html[lang="en"] .step::after{content:none!important;display:none!important;}
 
 html[lang="en"] .faq-q{font-size:0!important}
@@ -124,4 +123,4 @@ html[lang="en"] .code .link::after{content:'🔗 iOS LINK';font-size:11px!import
 
 /* Restore visible step numbers. The English translation hides the original text, so the number must stay explicit. */
 .num{font-size:13px!important;color:#fff!important;line-height:1!important;}
-html[lang="en"] .num{font-size:13px!important;color:#fff!important;}
+html[lang="en"] .num{font-size:13px!important;color:#fff!important;line-height:1!important;}
