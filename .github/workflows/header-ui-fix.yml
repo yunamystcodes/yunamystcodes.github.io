@@ -25,14 +25,8 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Keep the logo text exactly YunaMyst.
-          s = re.sub(
-              r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>',
-              '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>',
-              s, count=1, flags=re.S
-          )
+          s = re.sub(r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>', '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>', s, count=1, flags=re.S)
 
-          # Keep the existing logo spacing fix.
           marker_logo = '<style id="yunamyst-final-subtitle-spacing">'
           if marker_logo not in s:
               css_logo = '''<style id="yunamyst-final-subtitle-spacing">
@@ -41,27 +35,35 @@ jobs:
 </style>'''
               s = s.replace('</head>', css_logo + '\n</head>', 1)
 
-          # Final layout fixes are placed directly in index.html so they win over
-          # older external/header styles on both PC and mobile.
-          marker = '<style id="yunamyst-index-final-layout-v4">'
-          css = '''<style id="yunamyst-index-final-layout-v4">
-/* SUMMONERS WAR title: centered inside the codes panel on every screen. */
-#codigos .section-head{position:relative!important;text-align:center!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:62px!important;padding:16px 170px 16px 16px!important;}
-#codigos .section-head span{position:absolute!important;right:18px!important;top:50%!important;transform:translateY(-50%)!important;float:none!important;margin:0!important;white-space:nowrap!important;}
+          # Remove every embedded English HOW TO USE pseudo-translation. The
+          # actual text is translated by language-fix.js, so these pseudo rules
+          # were the source of the duplicate title/description on PC and mobile.
+          patterns = [
+              r'html\[lang="en"\] \.step\{[^}]*\}',
+              r'html\[lang="en"\] \.step > div:last-child\{[^}]*\}',
+              r'html\[lang="en"\] \.step > div:last-child b\{[^}]*\}',
+              r'html\[lang="en"\] \.step > div:last-child b::after\{[^}]*\}',
+              r'html\[lang="en"\] \.step:nth-child\([2-5]\) > div:last-child b::after\{[^}]*\}',
+              r'html\[lang="en"\] \.step > div:last-child::after\{[^}]*\}',
+              r'html\[lang="en"\] \.step:nth-child\([2-5]\) > div:last-child::after\{[^}]*\}',
+              r'html\[lang="en"\] \.step::after\{[^}]*\}',
+          ]
+          for pat in patterns:
+              s = re.sub(pat, '', s, flags=re.S)
 
-/* HOW TO USE: force the four numbered circles to display 1, 2, 3, 4. */
-#como .step .num{font-size:0!important;color:#fff!important;text-align:center!important;line-height:28px!important;}
-#como .step:nth-child(2) .num::before{content:'1'!important;font-size:13px!important;color:#fff!important;}
-#como .step:nth-child(3) .num::before{content:'2'!important;font-size:13px!important;color:#fff!important;}
-#como .step:nth-child(4) .num::before{content:'3'!important;font-size:13px!important;color:#fff!important;}
-#como .step:nth-child(5) .num::before{content:'4'!important;font-size:13px!important;color:#fff!important;}
-
+          marker = '<style id="yunamyst-index-howto-final">'
+          css = '''<style id="yunamyst-index-howto-final">
+/* HOW TO USE — single content, stacked title + explanation on PC and mobile. */
+#como .step{display:flex!important;align-items:flex-start!important;gap:10px!important;}
+#como .step > div:last-child{display:block!important;flex:1!important;min-width:0!important;font-size:13px!important;line-height:1.4!important;}
+#como .step > div:last-child b{display:block!important;font-size:13px!important;line-height:1.25!important;margin:0 0 3px!important;color:#dda1ff!important;}
+#como .step > div:last-child::after{display:none!important;content:none!important;}
 @media(max-width:850px){
-  #codigos .section-head{min-height:55px!important;padding:14px 112px 14px 12px!important;font-size:19px!important;}
-  #codigos .section-head span{right:12px!important;font-size:9px!important;}
+#como .step{padding:15px 14px!important;gap:10px!important;}
+#como .step > div:last-child{font-size:13px!important;line-height:1.4!important;}
+#como .step > div:last-child b{font-size:13px!important;}
 }
 </style>'''
-
           if marker in s:
               s = re.sub(re.escape(marker) + r'.*?</style>', css.rstrip('</style>') + '</style>', s, count=1, flags=re.S)
           else:
@@ -80,7 +82,7 @@ jobs:
             echo 'No index change needed.'
             exit 0
           fi
-          git commit -m 'Fix index title and how-to numbers [skip header]'
+          git commit -m 'Remove duplicate HOW TO USE content [skip header]'
           git fetch origin main
           git rebase origin/main
           git push
