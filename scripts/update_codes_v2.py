@@ -19,7 +19,7 @@ EXPIRED = ('expired','no longer working','inactive','not working')
 REWARD_FALLBACKS = {
  'SWGAJA2BKK':[['mana','x200000'],['gold','x1']], 'SWCJOAAAKR26':[['gold','x1']],
  '2SWCTORONTOTHE6IX':[['energy','x100'],['gold','x1']], 'APAC1K0UB4NGK0K':[['energy','x100'],['gold','x1']],
- '2SOREIKENIPPON6':[['mana','x200000'],['gold','x1']], 'AUGSW2026V7N':[['energy','x100'],['gold','x1']],
+ '2SOREIKENIPPON6':[['mana','x200000'],['gold','x1']], 'AUGSW2026V7N':[['red','x3'],['energy','x100']],
  'LAST4PUNCHIN':[['mana','x200000'],['gold','x1']], 'SWXFRIEREN2026':[['energy','x100'],['mana','x300000'],['gold','x3']],
  'SEPSW2026I8B':[['blue','x3'],['mana','x300000']],
 }
