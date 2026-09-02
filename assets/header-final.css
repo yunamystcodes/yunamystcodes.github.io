@@ -114,17 +114,24 @@ html[lang="en"] .code .link::after{content:'🔗 iOS LINK';font-size:11px!import
  html[lang="en"] .code .cinfo small::after{font-size:9px!important}
 }
 
-/* DESKTOP: fix COPY and iOS LINK buttons so they stay aligned and do not squeeze the code row. */
-@media(min-width:851px){
+/* DESKTOP: COPY and iOS LINK are equal, fixed-width buttons and never squeeze each other. */
+@media(min-width:1051px){
   .code{
-    grid-template-columns:52px minmax(110px,1fr) 46px 46px 46px minmax(118px,1fr) minmax(118px,1fr)!important;
+    grid-template-columns:52px minmax(110px,1fr) 46px 46px 46px 120px 120px!important;
     gap:8px!important;
   }
   .code .copy,.code .link{
-    min-width:0!important;
-    width:100%!important;
+    box-sizing:border-box!important;
+    width:120px!important;
+    min-width:120px!important;
+    max-width:120px!important;
     height:46px!important;
+    margin:0!important;
+    padding:0 10px!important;
     white-space:nowrap!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
     justify-self:stretch!important;
     align-self:center!important;
   }
