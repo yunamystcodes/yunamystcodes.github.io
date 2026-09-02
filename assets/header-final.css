@@ -109,3 +109,12 @@ html[lang="en"] .code .link::after{content:'🔗 iOS LINK';font-size:11px!import
 @media(max-width:850px){
   .code>.copy,.code>.link{width:100%!important;min-width:0!important;max-width:none!important;height:44px!important;}
 }
+
+/* Center the Summoners War section title while keeping the update status on the right. */
+.section-head{position:relative!important;text-align:center!important;}
+.section-head span{float:none!important;position:absolute!important;right:18px!important;top:50%!important;transform:translateY(-50%)!important;margin:0!important;}
+@media(max-width:850px){.section-head span{right:14px!important;font-size:9px!important;}}
+
+/* Restore visible step numbers. The English translation hides the original text, so the number must stay explicit. */
+.num{font-size:13px!important;color:#fff!important;line-height:1!important;}
+html[lang="en"] .num{font-size:13px!important;color:#fff!important;}
