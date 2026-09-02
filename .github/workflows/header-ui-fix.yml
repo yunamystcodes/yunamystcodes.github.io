@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Apply final YunaMyst spacing to index.html
+      - name: Apply final YunaMyst layout to index.html
         shell: bash
         run: |
           python - <<'PY'
@@ -32,14 +32,41 @@ jobs:
               s, count=1, flags=re.S
           )
 
-          # Move the subtitle down so the y descender never touches the W.
-          marker = '<style id="yunamyst-final-subtitle-spacing">'
-          if marker not in s:
-              css = '''<style id="yunamyst-final-subtitle-spacing">
-.logo small{margin-top:5px!important}
-@media(max-width:850px){.logo small{margin-top:5px!important}}
+          # Keep the existing logo spacing fix.
+          marker_logo = '<style id="yunamyst-final-subtitle-spacing">'
+          if marker_logo not in s:
+              css_logo = '''<style id="yunamyst-final-subtitle-spacing">
+.logo small{margin-top:10px!important}
+@media(max-width:850px){.logo small{margin-top:10px!important}}
 </style>'''
+              s = s.replace('</head>', css_logo + '\n</head>', 1)
+
+          # Final layout fixes are placed directly in index.html so they win over
+          # older external/header styles on both PC and mobile.
+          marker = '<style id="yunamyst-index-final-layout-v4">'
+          css = '''<style id="yunamyst-index-final-layout-v4">
+/* SUMMONERS WAR title: centered inside the codes panel on every screen. */
+#codigos .section-head{position:relative!important;text-align:center!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:62px!important;padding:16px 170px 16px 16px!important;}
+#codigos .section-head span{position:absolute!important;right:18px!important;top:50%!important;transform:translateY(-50%)!important;float:none!important;margin:0!important;white-space:nowrap!important;}
+
+/* HOW TO USE: force the four numbered circles to display 1, 2, 3, 4. */
+#como .step .num{font-size:0!important;color:#fff!important;text-align:center!important;line-height:28px!important;}
+#como .step:nth-child(2) .num::before{content:'1'!important;font-size:13px!important;color:#fff!important;}
+#como .step:nth-child(3) .num::before{content:'2'!important;font-size:13px!important;color:#fff!important;}
+#como .step:nth-child(4) .num::before{content:'3'!important;font-size:13px!important;color:#fff!important;}
+#como .step:nth-child(5) .num::before{content:'4'!important;font-size:13px!important;color:#fff!important;}
+
+@media(max-width:850px){
+  #codigos .section-head{min-height:55px!important;padding:14px 112px 14px 12px!important;font-size:19px!important;}
+  #codigos .section-head span{right:12px!important;font-size:9px!important;}
+}
+</style>'''
+
+          if marker in s:
+              s = re.sub(re.escape(marker) + r'.*?</style>', css.rstrip('</style>') + '</style>', s, count=1, flags=re.S)
+          else:
               s = s.replace('</head>', css + '\n</head>', 1)
+
           p.write_text(s, encoding='utf-8')
           PY
 
@@ -53,7 +80,7 @@ jobs:
             echo 'No index change needed.'
             exit 0
           fi
-          git commit -m 'Fix YunaMyst y overlap [skip header]'
+          git commit -m 'Fix index title and how-to numbers [skip header]'
           git fetch origin main
           git rebase origin/main
           git push
