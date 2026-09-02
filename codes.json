@@ -1,8 +1,8 @@
 {
-  "updated": "2026-09-02T10:01:11Z",
+  "updated": "2026-09-02T10:30:00Z",
   "source_count": 6,
   "successful_sources": 6,
-  "rule": "lista ativa protegida por baseline; novos códigos adicionados; remoção somente com confirmação; recompensas e imagens preservadas",
+  "rule": "somente códigos atualmente ativos; expirados removidos",
   "codes": [
     "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
@@ -11,8 +11,7 @@
     "LAST4PUNCHIN",
     "SEPSW2026I8B",
     "SWCJOAAAKR26",
-    "SWGAJA2BKK",
-    "SWXFRIEREN2026"
+    "SWGAJA2BKK"
   ],
   "rewards": {
     "2SOREIKENIPPON6": [["mana","x200000"],["yellow","x1"]],
@@ -22,8 +21,7 @@
     "LAST4PUNCHIN": [["mana","x200000"],["yellow","x1"]],
     "SEPSW2026I8B": [["blue","x3"],["mana","x300000"]],
     "SWCJOAAAKR26": [["yellow","x1"]],
-    "SWGAJA2BKK": [["mana","x200000"],["yellow","x1"]],
-    "SWXFRIEREN2026": [["energy","x100"],["mana","x300000"],["yellow","x3"]]
+    "SWGAJA2BKK": [["mana","x200000"],["yellow","x1"]]
   },
   "sources": {},
   "source_errors": []
