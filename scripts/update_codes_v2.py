@@ -19,14 +19,14 @@ EXPIRED = ('expired','no longer working','inactive','not working')
 REWARD_FALLBACKS = {
  'SWGAJA2BKK':[['mana','x200000'],['gold','x1']], 'SWCJOAAAKR26':[['gold','x1']],
  '2SWCTORONTOTHE6IX':[['energy','x100'],['gold','x1']], 'APAC1K0UB4NGK0K':[['energy','x100'],['gold','x1']],
- '2SOREIKENIPPON6':[['mana','x200000'],['gold','x1']], 'AUGSW2026V7N':[['energy','x100'],['red','x3']],
+ '2SOREIKENIPPON6':[['mana','x200000'],['gold','x1']], 'AUGSW2026V7N':[['energy','x100'],['gold','x1']],
  'LAST4PUNCHIN':[['mana','x200000'],['gold','x1']], 'SWXFRIEREN2026':[['energy','x100'],['mana','x300000'],['gold','x3']],
  'SEPSW2026I8B':[['blue','x3'],['mana','x300000']],
 }
 
 def fetch(url):
     req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 YunaMystCodesBot/31.0','Accept-Language':'en-US,en;q=0.9'})
-    with urllib.request.urlopen(url,timeout=30) as r: return r.read().decode('utf-8','ignore')
+    with urllib.request.urlopen(req,timeout=30) as r: return r.read().decode('utf-8','ignore')
 
 def lines(raw):
     raw=re.sub(r'<script\b[^>]*>.*?</script>','\n',raw,flags=re.I|re.S)
