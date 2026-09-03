@@ -1,0 +1,33 @@
+name: Atualizar códigos automaticamente
+
+on:
+  schedule:
+    # Verifica novos códigos a cada 30 minutos.
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-codes
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar site
+        uses: actions/checkout@v4
+
+      - name: Atualizar códigos
+        run: python3 scripts/update_codes.py
+
+      - name: Publicar alterações
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html codes.json codes-history.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Atualizar códigos automaticamente'
+          git push
