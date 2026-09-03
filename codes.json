@@ -1,31 +1,120 @@
 {
-  "updated": "2026-09-03T00:00:00Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-09-03T22:46:52Z",
+  "source_count": 5,
+  "successful_sources": 4,
+  "rule": "lista ativa protegida por baseline; novos códigos adicionados; remoção somente após confirmação; recompensas e imagens preservadas",
   "codes": [
+    "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
+    "AUGSW2026V7N",
     "LAST4PUNCHIN",
     "SEPSW2026I8B",
     "SWCJOAAAKR26",
     "SWGAJA2BKK"
   ],
   "rewards": {
-    "2SWCTORONTOTHE6IX": [["energy", "x100"], ["yellow", "x1"]],
-    "APAC1K0UB4NGK0K": [["energy", "x100"], ["yellow", "x1"]],
-    "LAST4PUNCHIN": [["mana", "x200000"], ["yellow", "x1"]],
-    "SEPSW2026I8B": [["blue", "x3"], ["mana", "x300000"]],
-    "SWCJOAAAKR26": [["yellow", "x1"]],
-    "SWGAJA2BKK": [["mana", "x200000"], ["yellow", "x1"]]
+    "2SOREIKENIPPON6": [
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "2SWCTORONTOTHE6IX": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "APAC1K0UB4NGK0K": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "AUGSW2026V7N": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "red",
+        "x3"
+      ]
+    ],
+    "LAST4PUNCHIN": [
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "SEPSW2026I8B": [
+      [
+        "blue",
+        "x3"
+      ],
+      [
+        "mana",
+        "x300000"
+      ]
+    ],
+    "SWCJOAAAKR26": [
+      [
+        "yellow",
+        "x1"
+      ]
+    ],
+    "SWGAJA2BKK": [
+      [
+        "mana",
+        "x200000"
+      ],
+      [
+        "yellow",
+        "x1"
+      ]
+    ]
   },
   "sources": {
-    "2SWCTORONTOTHE6IX": ["sw-teams"],
-    "APAC1K0UB4NGK0K": ["sw-teams"],
-    "LAST4PUNCHIN": ["sw-teams"],
-    "SEPSW2026I8B": ["official-monthly", "sw-teams"],
-    "SWCJOAAAKR26": ["sw-teams"],
-    "SWGAJA2BKK": ["sw-teams"]
+    "2SOREIKENIPPON6": [],
+    "2SWCTORONTOTHE6IX": [
+      "sw-teams"
+    ],
+    "APAC1K0UB4NGK0K": [
+      "sw-teams"
+    ],
+    "AUGSW2026V7N": [],
+    "LAST4PUNCHIN": [
+      "sw-teams"
+    ],
+    "SEPSW2026I8B": [
+      "official-monthly",
+      "sw-teams"
+    ],
+    "SWCJOAAAKR26": [
+      "sw-teams"
+    ],
+    "SWGAJA2BKK": [
+      "sw-teams"
+    ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
