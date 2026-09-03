@@ -1,10 +1,9 @@
 {
-  "updated": "2026-09-03T22:30:50Z",
+  "updated": "2026-09-03T00:00:00Z",
   "source_count": 2,
   "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; código expirado removido; recompensas não são inventadas",
+  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
   "codes": [
-    "2SOREIKENIPPON6",
     "2SWCTORONTOTHE6IX",
     "APAC1K0UB4NGK0K",
     "LAST4PUNCHIN",
@@ -13,7 +12,6 @@
     "SWGAJA2BKK"
   ],
   "rewards": {
-    "2SOREIKENIPPON6": [["mana", "x200000"], ["yellow", "x1"]],
     "2SWCTORONTOTHE6IX": [["energy", "x100"], ["yellow", "x1"]],
     "APAC1K0UB4NGK0K": [["energy", "x100"], ["yellow", "x1"]],
     "LAST4PUNCHIN": [["mana", "x200000"], ["yellow", "x1"]],
@@ -22,7 +20,6 @@
     "SWGAJA2BKK": [["mana", "x200000"], ["yellow", "x1"]]
   },
   "sources": {
-    "2SOREIKENIPPON6": ["summonerswarcodes", "sw-teams"],
     "2SWCTORONTOTHE6IX": ["sw-teams"],
     "APAC1K0UB4NGK0K": ["sw-teams"],
     "LAST4PUNCHIN": ["sw-teams"],
