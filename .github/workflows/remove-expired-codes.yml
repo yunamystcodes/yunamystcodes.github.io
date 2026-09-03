@@ -1,0 +1,70 @@
+name: Remover códigos expirados
+
+on:
+  schedule:
+    - cron: '5 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  remove-expired:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar site
+        uses: actions/checkout@v4
+
+      - name: Remover códigos expirados
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from datetime import date
+          import re
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          hoje = date.today()
+          original = html
+
+          # Remove qualquer <article class="code" ... data-expira="AAAA-MM-DD">...</article>
+          # quando a data de validade já passou.
+          pattern = re.compile(
+              r'<article\b(?=[^>]*\bclass=["\'][^"\']*\bcode\b[^"\']*["\'])[^>]*\bdata-expira=["\'](\d{4}-\d{2}-\d{2})["\'][^>]*>.*?</article>',
+              re.IGNORECASE | re.DOTALL,
+          )
+
+          def remove_expired(match):
+              try:
+                  validade = date.fromisoformat(match.group(1))
+              except ValueError:
+                  return match.group(0)
+              return '' if validade < hoje else match.group(0)
+
+          html = pattern.sub(remove_expired, html)
+
+          # Compatibilidade com o código de agosto que já estava no site antes
+          # da adoção do atributo data-expira.
+          if hoje > date(2026, 8, 31):
+              html = re.sub(
+                  r'<article\b(?=[^>]*\bclass=["\'][^"\']*\bcode\b[^"\']*["\'])[^>]*>.*?AUGSW2026V7N.*?</article>',
+                  '',
+                  html,
+                  flags=re.IGNORECASE | re.DOTALL,
+              )
+
+          if html != original:
+              path.write_text(html, encoding='utf-8')
+              print('Códigos expirados removidos.')
+          else:
+              print('Nenhum código expirado encontrado.')
+          PY
+
+      - name: Publicar alterações
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Remover códigos expirados automaticamente'
+          git push
