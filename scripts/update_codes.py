@@ -16,6 +16,16 @@ LABEL = re.compile(r'(?:Coupon Code|Coupon Codes|Código do Cupom|Códigos do Cu
 ANDROID = re.compile(r'\[(?:Android|ANDROID)\]\s*([A-Z0-9]{6,32})')
 BAD = {'ANDROID','COUPON','CUPOM','SUMMONERS','WAR','SKYARENA','SKY','ARENA','COM2US','CODE','CODES','REWARD','REWARDS','ACTIVE','EXPIRED'}
 
+# Known expiry times published for the current SWC 2026 coupon set (JST = UTC+9).
+EXPIRY_UTC = {
+    '2SOREIKENIPPON6': '2026-09-03T14:59:00Z',
+    'APAC1K0UB4NGK0K': '2026-09-03T14:59:00Z',
+    '2SWCTORONTOTHE6IX': '2026-09-04T07:00:00Z',
+    'LAST4PUNCHIN': '2026-09-04T07:00:00Z',
+    'SWCJOAAAKR26': '2026-09-04T15:00:00Z',
+    'SWGAJA2BKK': '2026-09-04T15:00:00Z',
+}
+
 
 def fetch(url):
     req = urllib.request.Request(url, headers=HEADERS)
@@ -45,13 +55,12 @@ def published(text):
     m = DATE.search(text)
     if not m:
         return None
-    try:
-        return datetime.strptime(m.group(), '%Y-%m-%d').replace(tzinfo=timezone.utc)
-    except ValueError:
+    for fmt in ('%Y-%m-%d', '%Y/%m/%d', '%Y.%m.%d'):
         try:
-            return datetime.strptime(m.group(), '%Y/%m/%d').replace(tzinfo=timezone.utc)
+            return datetime.strptime(m.group(), fmt).replace(tzinfo=timezone.utc)
         except ValueError:
-            return None
+            pass
+    return None
 
 
 def parse_page(url, raw):
@@ -65,9 +74,9 @@ def parse_page(url, raw):
     for m in LABEL.finditer(text):
         found += CODE.findall(m.group(1).upper())
     found += ANDROID.findall(text.upper())
-    # Some official SWC posts place Android codes directly after a reward section.
     for c in CODE.findall(text.upper()):
-        around = text[max(0, text.upper().find(c)-80):text.upper().find(c)+len(c)+80]
+        pos = text.upper().find(c)
+        around = text[max(0, pos-80):pos+len(c)+80]
         if '[ANDROID]' in around.upper() and c not in found:
             found.append(c)
     result = []
@@ -98,34 +107,36 @@ def main():
             except Exception as exc:
                 errors.append(f'{base.format(page)}: {exc}')
 
-    # Only official Com2uS coupon pages can add a new code.
+    # Add only codes discovered on official Com2uS pages.
     additions = [c for c in found if c not in existing]
     existing.extend(additions)
 
-    # Confirmed expired legacy code from the previous site data.
-    if datetime.now(timezone.utc).date() > datetime(2026, 8, 31):
-        existing = [c for c in existing if c != 'AUGSW2026V7N']
-        rewards.pop('AUGSW2026V7N', None)
-        sources.pop('AUGSW2026V7N', None)
+    # Remove every code whose known validity window has ended.
+    now = datetime.now(timezone.utc)
+    expired = [c for c in existing if c in EXPIRY_UTC and now >= datetime.fromisoformat(EXPIRY_UTC[c].replace('Z', '+00:00'))]
+    for c in expired:
+        existing.remove(c)
+        rewards.pop(c, None)
+        sources.pop(c, None)
 
     existing = list(dict.fromkeys(existing))
     for c in additions:
         sources[c] = ['official-com2us']
         rewards.setdefault(c, [])
 
-    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+    now_text = now.replace(microsecond=0).isoformat().replace('+00:00', 'Z')
     data.update({
-        'updated': now,
+        'updated': now_text,
         'source_count': len(OFFICIAL_LISTS),
         'successful_sources': len(OFFICIAL_LISTS) - sum('/page=' in e for e in errors),
-        'rule': 'apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; código expirado removido; recompensas não são inventadas',
+        'rule': 'apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas',
         'codes': existing,
         'rewards': rewards,
         'sources': sources,
         'source_errors': errors[:20],
     })
     CODES.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(f'Oficiais encontrados: {len(found)} | novos: {len(additions)} | ativos: {len(existing)}')
+    print(f'Oficiais encontrados: {len(found)} | novos: {len(additions)} | expirados removidos: {len(expired)} | ativos: {len(existing)}')
 
 
 if __name__ == '__main__':
