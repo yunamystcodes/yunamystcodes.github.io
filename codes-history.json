@@ -333,7 +333,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-03T20:47:44Z",
+  "updated_at": "2026-09-03T20:58:45Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -439,7 +439,6 @@
     ]
   },
   "source_errors": [
-    "com2us-official: The read operation timed out",
     "swquery: HTTP Error 404: Not Found"
   ]
 }
