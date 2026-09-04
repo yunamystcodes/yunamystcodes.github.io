@@ -333,7 +333,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-04T16:58:43Z",
+  "updated_at": "2026-09-04T17:16:32Z",
   "rewards": {
     "2SOREIKENIPPON6": [
       [
@@ -422,12 +422,8 @@
       "official-monthly",
       "sw-teams"
     ],
-    "SWCJOAAAKR26": [
-      "sw-teams"
-    ],
-    "SWGAJA2BKK": [
-      "sw-teams"
-    ]
+    "SWCJOAAAKR26": [],
+    "SWGAJA2BKK": []
   },
   "source_errors": [
     "swquery: HTTP Error 404: Not Found"
