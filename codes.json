@@ -1,49 +1,13 @@
 {
-  "updated": "2026-09-05T06:35:48Z",
-  "source_count": 5,
-  "successful_sources": 4,
-  "rule": "lista ativa protegida por baseline; novos códigos adicionados; remoção somente após confirmação; recompensas e imagens preservadas",
+  "updated": "2026-09-05T06:44:23Z",
+  "source_count": 2,
+  "successful_sources": 2,
+  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
   "codes": [
-    "2SOREIKENIPPON6",
-    "2SWCTORONTOTHE6IX",
-    "APAC1K0UB4NGK0K",
     "AUGSW2026V7N",
-    "LAST4PUNCHIN",
-    "SEPSW2026I8B",
-    "SWCJOAAAKR26",
-    "SWGAJA2BKK"
+    "SEPSW2026I8B"
   ],
   "rewards": {
-    "2SOREIKENIPPON6": [
-      [
-        "mana",
-        "x200000"
-      ],
-      [
-        "yellow",
-        "x1"
-      ]
-    ],
-    "2SWCTORONTOTHE6IX": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "yellow",
-        "x1"
-      ]
-    ],
-    "APAC1K0UB4NGK0K": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "yellow",
-        "x1"
-      ]
-    ],
     "AUGSW2026V7N": [
       [
         "energy",
@@ -52,16 +16,6 @@
       [
         "red",
         "x3"
-      ]
-    ],
-    "LAST4PUNCHIN": [
-      [
-        "mana",
-        "x200000"
-      ],
-      [
-        "yellow",
-        "x1"
       ]
     ],
     "SEPSW2026I8B": [
@@ -73,38 +27,14 @@
         "mana",
         "x300000"
       ]
-    ],
-    "SWCJOAAAKR26": [
-      [
-        "yellow",
-        "x1"
-      ]
-    ],
-    "SWGAJA2BKK": [
-      [
-        "mana",
-        "x200000"
-      ],
-      [
-        "yellow",
-        "x1"
-      ]
     ]
   },
   "sources": {
-    "2SOREIKENIPPON6": [],
-    "2SWCTORONTOTHE6IX": [],
-    "APAC1K0UB4NGK0K": [],
     "AUGSW2026V7N": [],
-    "LAST4PUNCHIN": [],
     "SEPSW2026I8B": [
       "official-monthly",
       "sw-teams"
-    ],
-    "SWCJOAAAKR26": [],
-    "SWGAJA2BKK": []
+    ]
   },
-  "source_errors": [
-    "swquery: HTTP Error 404: Not Found"
-  ]
+  "source_errors": []
 }
