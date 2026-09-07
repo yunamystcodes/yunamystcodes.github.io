@@ -12,8 +12,9 @@ SOURCES = {
     'swquery': 'https://swquery.net/codes',
 }
 BASELINE_CODES = {'2SOREIKENIPPON6','2SWCTORONTOTHE6IX','APAC1K0UB4NGK0K','AUGSW2026V7N','LAST4PUNCHIN','SEPSW2026I8B','SWCJOAAAKR26','SWGAJA2BKK'}
-# Datas de validade conhecidas publicadas para o conjunto SWC 2026 (UTC).
+# Datas de validade conhecidas/publicadas para os códigos de eventos e mensais (UTC).
 EXPIRY_UTC = {
+    'AUGSW2026V7N': '2026-08-31T23:59:59Z',
     '2SOREIKENIPPON6': '2026-09-03T14:59:00Z',
     'APAC1K0UB4NGK0K': '2026-09-03T14:59:00Z',
     '2SWCTORONTOTHE6IX': '2026-09-04T07:00:00Z',
@@ -79,11 +80,10 @@ def main():
     confirmed_expired={c for c,sources in expired_by_source.items() if len(sources)>=2}
     current-=confirmed_expired
 
-    # Este é o código mensal atual; mantém-se apenas até à data definida acima.
+    # Código mensal de setembro: válido até 30/09/2026.
     if now < datetime(2026,10,1,tzinfo=timezone.utc) and 'SEPSW2026I8B' not in confirmed_expired:
         current.add('SEPSW2026I8B')
 
-    # Segurança: o conjunto baseline, depois de aplicar datas de validade, é o mínimo esperado.
     expected_baseline=BASELINE_CODES-expired_by_date
     if not expected_baseline.issubset(current):
         raise SystemExit('Proteção: a lista ativa ficou incompleta; atualização cancelada para não apagar códigos válidos.')
