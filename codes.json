@@ -1,23 +1,12 @@
 {
-  "updated": "2026-09-07T15:43:57Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-09-07T16:45:00Z",
+  "source_count": 5,
+  "successful_sources": 5,
+  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
-    "AUGSW2026V7N",
     "SEPSW2026I8B"
   ],
   "rewards": {
-    "AUGSW2026V7N": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "red",
-        "x3"
-      ]
-    ],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -30,7 +19,6 @@
     ]
   },
   "sources": {
-    "AUGSW2026V7N": [],
     "SEPSW2026I8B": [
       "official-monthly",
       "sw-teams"
