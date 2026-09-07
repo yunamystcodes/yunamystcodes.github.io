@@ -1,7 +1,7 @@
 {
-  "updated": "2026-09-07T16:45:00Z",
+  "updated": "2026-09-07T15:49:53Z",
   "source_count": 5,
-  "successful_sources": 5,
+  "successful_sources": 4,
   "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
     "SEPSW2026I8B"
@@ -24,5 +24,7 @@
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
