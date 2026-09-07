@@ -12,6 +12,15 @@ SOURCES = {
     'swquery': 'https://swquery.net/codes',
 }
 BASELINE_CODES = {'2SOREIKENIPPON6','2SWCTORONTOTHE6IX','APAC1K0UB4NGK0K','AUGSW2026V7N','LAST4PUNCHIN','SEPSW2026I8B','SWCJOAAAKR26','SWGAJA2BKK'}
+# Datas de validade conhecidas publicadas para o conjunto SWC 2026 (UTC).
+EXPIRY_UTC = {
+    '2SOREIKENIPPON6': '2026-09-03T14:59:00Z',
+    'APAC1K0UB4NGK0K': '2026-09-03T14:59:00Z',
+    '2SWCTORONTOTHE6IX': '2026-09-04T07:00:00Z',
+    'LAST4PUNCHIN': '2026-09-04T07:00:00Z',
+    'SWCJOAAAKR26': '2026-09-04T15:00:00Z',
+    'SWGAJA2BKK': '2026-09-04T15:00:00Z',
+}
 BAD = {'9CIRCLE','CCXQDUIH4A4','SWC2026','THE10TH','GLHF2026AMERICAS','SWC26X10LEGACYBND','PAI2026BANGKOK','APAC26LEGASEA','912XUXIECHUANQI','SWC2026JUELEBA','H4MBURGISWAITING','HURRASWC2026','4MINGYIDAOXIAN','YYDSSWC26ZAN','1SURPR1SE','1SURPR1SEG1FT','2NEWTOMORROW2','SW25HSZN','SWXFRIEREN2026'}
 BANNED = {'ACTIVE','EXPIRED','WORKING','AVAILABLE','CODES','CODE','SUMMONERS','WAR','SKY','ARENA','ENERGY','MANA','SCROLL','REDEEM','COUPON','COPY','REWARD','REWARDS','LATEST','NEW','GUIDE','GAME','GAMES','COM2US','ANDROID','IPHONE','WINDOWS','FACEBOOK','DISCORD','TWITTER','INSTAGRAM','YOUTUBE','PROMO','PROMOTIONAL','VERIFIED','NOEXPIRATION'}
 RE = re.compile(r'(?<![A-Z0-9])[A-Z0-9][A-Z0-9_-]{5,31}(?![A-Z0-9])', re.I)
@@ -62,13 +71,24 @@ def main():
             for c in active: found.setdefault(c,set()).add(name)
             for c in dead: expired_by_source.setdefault(c,set()).add(name)
         except Exception as e: errors.append(f'{name}: {e}')
-    current=(previous_codes|BASELINE_CODES|set(found))-BAD
+
+    now=datetime.now(timezone.utc)
+    # Nunca reintroduzir um código cujo prazo conhecido já terminou.
+    expired_by_date={c for c,stamp in EXPIRY_UTC.items() if now >= datetime.fromisoformat(stamp.replace('Z','+00:00'))}
+    current=(previous_codes|BASELINE_CODES|set(found))-BAD-expired_by_date
     confirmed_expired={c for c,sources in expired_by_source.items() if len(sources)>=2}
     current-=confirmed_expired
-    today=datetime.now(timezone.utc)
-    if today < datetime(2026,10,1,tzinfo=timezone.utc) and 'SEPSW2026I8B' not in confirmed_expired: current.add('SEPSW2026I8B')
-    if len(current)<len(BASELINE_CODES): raise SystemExit('Proteção: a lista ativa ficou incompleta; atualização cancelada para não apagar códigos.')
-    now=today.replace(microsecond=0).isoformat().replace('+00:00','Z')
+
+    # Este é o código mensal atual; mantém-se apenas até à data definida acima.
+    if now < datetime(2026,10,1,tzinfo=timezone.utc) and 'SEPSW2026I8B' not in confirmed_expired:
+        current.add('SEPSW2026I8B')
+
+    # Segurança: o conjunto baseline, depois de aplicar datas de validade, é o mínimo esperado.
+    expected_baseline=BASELINE_CODES-expired_by_date
+    if not expected_baseline.issubset(current):
+        raise SystemExit('Proteção: a lista ativa ficou incompleta; atualização cancelada para não apagar códigos válidos.')
+
+    now_text=now.replace(microsecond=0).isoformat().replace('+00:00','Z')
     rewards={}; sources={}
     for c in sorted(current):
         old_reward=previous_rewards.get(c) or previous_rewards.get(c.upper())
@@ -77,11 +97,13 @@ def main():
         src.update(found.get(c,set()))
         if not src and c=='SEPSW2026I8B': src.add('official-monthly')
         sources[c]=sorted(src)
-    payload={'updated':now,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'lista ativa protegida por baseline; novos códigos adicionados; remoção somente após confirmação; recompensas e imagens preservadas','codes':sorted(current),'rewards':rewards,'sources':sources,'source_errors':errors}
+
+    payload={'updated':now_text,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas','codes':sorted(current),'rewards':rewards,'sources':sources,'source_errors':errors}
     CODES.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     old_history=load_json(HISTORY,{})
     old_dead=set(old_history.get('expired',[])) if isinstance(old_history.get('expired',[]),list) else set()
-    HISTORY.write_text(json.dumps({'active':sorted(current),'expired':sorted(old_dead|confirmed_expired|BAD),'updated_at':now,'rewards':rewards,'sources':sources,'source_errors':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    HISTORY.write_text(json.dumps({'active':sorted(current),'expired':sorted(old_dead|confirmed_expired|expired_by_date|BAD),'updated_at':now_text,'rewards':rewards,'sources':sources,'source_errors':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('Ativos:',', '.join(sorted(current)))
+    print('Expirados removidos por data:',', '.join(sorted(expired_by_date)))
 
 if __name__=='__main__': main()
