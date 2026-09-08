@@ -19,9 +19,9 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           s = re.sub(r'\s*<!-- YUNAMYST-LANGUAGE-FIX-20260901 -->\s*<script>.*?</script>', '', s, flags=re.S)
-          s = re.sub(r'<script\s+src=["\']\./language-fix\.js(?:\?v=[^"\']*)?["\']\s*></script>', '<script src="./language-fix.js?v=20260903"></script>', s)
-          if './language-fix.js?v=20260903' not in s:
-              s = s.replace('</body>', '<script src="./language-fix.js?v=20260903"></script>\n</body>', 1)
+          s = re.sub(r'<script\s+src=["\']\./language-fix\.js(?:\?v=[^"\']*)?["\']\s*></script>', '<script src="./language-fix.js?v=20260908"></script>', s)
+          if './language-fix.js?v=20260908' not in s:
+              s = s.replace('</body>', '<script src="./language-fix.js?v=20260908"></script>\n</body>', 1)
           p.write_text(s, encoding='utf-8')
           PY
           git config user.name github-actions[bot]
