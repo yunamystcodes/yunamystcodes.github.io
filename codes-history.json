@@ -328,7 +328,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-11T20:16:39Z",
+  "updated_at": "2026-09-11T20:33:08Z",
   "rewards": {
     "SEPSW2026I8B": [
       [
@@ -352,6 +352,7 @@
     ]
   },
   "source_errors": [
+    "com2us-official: The read operation timed out",
     "swquery: HTTP Error 404: Not Found"
   ]
 }
