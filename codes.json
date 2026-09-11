@@ -1,8 +1,8 @@
 {
-  "updated": "2026-09-11T19:14:10Z",
-  "source_count": 5,
-  "successful_sources": 4,
-  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
+  "updated": "2026-09-11T19:15:02Z",
+  "source_count": 2,
+  "successful_sources": 2,
+  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
   "codes": [
     "SEPSW2026I8B",
     "TOURNEY10SEP2026PUN"
@@ -29,7 +29,5 @@
       "sw-teams"
     ]
   },
-  "source_errors": [
-    "swquery: HTTP Error 404: Not Found"
-  ]
+  "source_errors": []
 }
