@@ -1,11 +1,12 @@
 {
-  "updated": "2026-09-12T07:50:44Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-09-12T08:35:21Z",
+  "source_count": 5,
+  "successful_sources": 4,
+  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
     "SEPSW2026I8B",
-    "TOURNEY10SEP2026PUN"
+    "TOURNEY10SEP2026PUN",
+    "XI4NHUANYINGN1"
   ],
   "rewards": {
     "SEPSW2026I8B": [
@@ -18,7 +19,8 @@
         "x300000"
       ]
     ],
-    "TOURNEY10SEP2026PUN": []
+    "TOURNEY10SEP2026PUN": [],
+    "XI4NHUANYINGN1": []
   },
   "sources": {
     "SEPSW2026I8B": [
@@ -27,7 +29,12 @@
     ],
     "TOURNEY10SEP2026PUN": [
       "sw-teams"
+    ],
+    "XI4NHUANYINGN1": [
+      "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }

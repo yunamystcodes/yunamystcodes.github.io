@@ -1,7 +1,8 @@
 {
   "active": [
     "SEPSW2026I8B",
-    "TOURNEY10SEP2026PUN"
+    "TOURNEY10SEP2026PUN",
+    "XI4NHUANYINGN1"
   ],
   "expired": [
     "000SLOT",
@@ -328,7 +329,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-12T04:00:03Z",
+  "updated_at": "2026-09-12T08:35:21Z",
   "rewards": {
     "SEPSW2026I8B": [
       [
@@ -340,7 +341,8 @@
         "x300000"
       ]
     ],
-    "TOURNEY10SEP2026PUN": []
+    "TOURNEY10SEP2026PUN": [],
+    "XI4NHUANYINGN1": []
   },
   "sources": {
     "SEPSW2026I8B": [
@@ -348,6 +350,9 @@
       "sw-teams"
     ],
     "TOURNEY10SEP2026PUN": [
+      "sw-teams"
+    ],
+    "XI4NHUANYINGN1": [
       "sw-teams"
     ]
   },
