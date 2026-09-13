@@ -1,18 +1,21 @@
 {
-  "updated": "2026-09-13T05:55:28Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-09-13T09:48:12Z",
+  "source_count": 5,
+  "successful_sources": 4,
+  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
     "11DINGSHANGJIAN14",
     "9CHONGYASWC12",
+    "F3V3RNEWB1E",
     "SEPSW2026I8B",
+    "SKYF3V3RW1NN3R",
     "TOURNEY10SEP2026PUN",
     "XI4NHUANYINGN1"
   ],
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
+    "F3V3RNEWB1E": [],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -23,6 +26,7 @@
         "x300000"
       ]
     ],
+    "SKYF3V3RW1NN3R": [],
     "TOURNEY10SEP2026PUN": [],
     "XI4NHUANYINGN1": []
   },
@@ -33,8 +37,14 @@
     "9CHONGYASWC12": [
       "sw-teams"
     ],
+    "F3V3RNEWB1E": [
+      "sw-teams"
+    ],
     "SEPSW2026I8B": [
       "official-monthly",
+      "sw-teams"
+    ],
+    "SKYF3V3RW1NN3R": [
       "sw-teams"
     ],
     "TOURNEY10SEP2026PUN": [
@@ -44,5 +54,7 @@
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }

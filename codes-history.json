@@ -2,7 +2,9 @@
   "active": [
     "11DINGSHANGJIAN14",
     "9CHONGYASWC12",
+    "F3V3RNEWB1E",
     "SEPSW2026I8B",
+    "SKYF3V3RW1NN3R",
     "TOURNEY10SEP2026PUN",
     "XI4NHUANYINGN1"
   ],
@@ -331,10 +333,11 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-13T04:47:37Z",
+  "updated_at": "2026-09-13T09:48:12Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
+    "F3V3RNEWB1E": [],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -345,6 +348,7 @@
         "x300000"
       ]
     ],
+    "SKYF3V3RW1NN3R": [],
     "TOURNEY10SEP2026PUN": [],
     "XI4NHUANYINGN1": []
   },
@@ -355,8 +359,14 @@
     "9CHONGYASWC12": [
       "sw-teams"
     ],
+    "F3V3RNEWB1E": [
+      "sw-teams"
+    ],
     "SEPSW2026I8B": [
       "official-monthly",
+      "sw-teams"
+    ],
+    "SKYF3V3RW1NN3R": [
       "sw-teams"
     ],
     "TOURNEY10SEP2026PUN": [
