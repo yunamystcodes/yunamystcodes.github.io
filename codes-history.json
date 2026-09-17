@@ -5,6 +5,7 @@
     "F3V3RNEWB1E",
     "SEPSW2026I8B",
     "SKYF3V3RW1NN3R",
+    "SKYFEVER26WEEK1",
     "TOURNEY10SEP2026PUN",
     "XI4NHUANYINGN1"
   ],
@@ -333,7 +334,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-16T23:55:10Z",
+  "updated_at": "2026-09-17T04:00:00Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
@@ -349,6 +350,7 @@
       ]
     ],
     "SKYF3V3RW1NN3R": [],
+    "SKYFEVER26WEEK1": [],
     "TOURNEY10SEP2026PUN": [],
     "XI4NHUANYINGN1": []
   },
@@ -367,6 +369,9 @@
       "sw-teams"
     ],
     "SKYF3V3RW1NN3R": [
+      "sw-teams"
+    ],
+    "SKYFEVER26WEEK1": [
       "sw-teams"
     ],
     "TOURNEY10SEP2026PUN": [
