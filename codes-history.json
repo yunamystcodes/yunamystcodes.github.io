@@ -335,7 +335,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-21T06:30:52Z",
+  "updated_at": "2026-09-21T13:20:26Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
@@ -388,6 +388,6 @@
   },
   "source_errors": [
     "swcoupon: The read operation timed out",
-    "swquery: HTTP Error 404: Not Found"
+    "swquery: HTTP Error 522: <none>"
   ]
 }
