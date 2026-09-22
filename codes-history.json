@@ -2,11 +2,13 @@
   "active": [
     "11DINGSHANGJIAN14",
     "9CHONGYASWC12",
+    "DNL22SKYFEVER",
     "F3V3RNEWB1E",
     "S38L3GENDLEGGO",
     "SEPSW2026I8B",
     "SKYF3V3RW1NN3R",
     "SKYFEVER26WEEK1",
+    "SWCSKYFEVER26",
     "TOURNEY10SEP2026PUN",
     "XI4NHUANYINGN1"
   ],
@@ -335,10 +337,11 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-22T15:43:42Z",
+  "updated_at": "2026-09-22T19:17:00Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
+    "DNL22SKYFEVER": [],
     "F3V3RNEWB1E": [],
     "S38L3GENDLEGGO": [],
     "SEPSW2026I8B": [
@@ -353,6 +356,7 @@
     ],
     "SKYF3V3RW1NN3R": [],
     "SKYFEVER26WEEK1": [],
+    "SWCSKYFEVER26": [],
     "TOURNEY10SEP2026PUN": [],
     "XI4NHUANYINGN1": []
   },
@@ -361,6 +365,9 @@
       "sw-teams"
     ],
     "9CHONGYASWC12": [
+      "sw-teams"
+    ],
+    "DNL22SKYFEVER": [
       "sw-teams"
     ],
     "F3V3RNEWB1E": [
@@ -379,6 +386,9 @@
     "SKYFEVER26WEEK1": [
       "sw-teams"
     ],
+    "SWCSKYFEVER26": [
+      "sw-teams"
+    ],
     "TOURNEY10SEP2026PUN": [
       "sw-teams"
     ],
@@ -387,7 +397,6 @@
     ]
   },
   "source_errors": [
-    "swcoupon: HTTP Error 522: <none>",
-    "swquery: HTTP Error 522: <none>"
+    "swquery: HTTP Error 404: Not Found"
   ]
 }
