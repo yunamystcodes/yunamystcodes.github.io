@@ -337,7 +337,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-22T19:17:00Z",
+  "updated_at": "2026-09-22T22:18:33Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
@@ -397,6 +397,7 @@
     ]
   },
   "source_errors": [
+    "sw-teams: HTTP Error 404: Not Found",
     "swquery: HTTP Error 404: Not Found"
   ]
 }
