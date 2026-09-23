@@ -337,7 +337,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-23T05:16:38Z",
+  "updated_at": "2026-09-23T10:06:24Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
@@ -397,7 +397,7 @@
     ]
   },
   "source_errors": [
-    "sw-teams: HTTP Error 404: Not Found",
+    "swcoupon: <urlopen error [Errno -2] Name or service not known>",
     "swquery: HTTP Error 404: Not Found"
   ]
 }
