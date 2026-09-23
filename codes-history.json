@@ -337,7 +337,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-23T10:06:24Z",
+  "updated_at": "2026-09-23T14:59:31Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
@@ -398,6 +398,6 @@
   },
   "source_errors": [
     "swcoupon: <urlopen error [Errno -2] Name or service not known>",
-    "swquery: HTTP Error 404: Not Found"
+    "swquery: The read operation timed out"
   ]
 }
