@@ -1,17 +1,19 @@
 {
-  "updated": "2026-09-24T13:29:16Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-09-24T15:24:57Z",
+  "source_count": 5,
+  "successful_sources": 3,
+  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
     "11DINGSHANGJIAN14",
     "9CHONGYASWC12",
     "DNL22SKYFEVER",
     "F3V3RNEWB1E",
+    "R3ADY439",
     "S38L3GENDLEGGO",
     "SEPSW2026I8B",
     "SKYF3V3RW1NN3R",
     "SKYFEVER26WEEK1",
+    "ST4RS381D",
     "SWCSKYFEVER26",
     "TOURNEY10SEP2026PUN",
     "WEEK2SKYFEVER26",
@@ -22,6 +24,7 @@
     "9CHONGYASWC12": [],
     "DNL22SKYFEVER": [],
     "F3V3RNEWB1E": [],
+    "R3ADY439": [],
     "S38L3GENDLEGGO": [],
     "SEPSW2026I8B": [
       [
@@ -35,6 +38,7 @@
     ],
     "SKYF3V3RW1NN3R": [],
     "SKYFEVER26WEEK1": [],
+    "ST4RS381D": [],
     "SWCSKYFEVER26": [],
     "TOURNEY10SEP2026PUN": [],
     "WEEK2SKYFEVER26": [],
@@ -53,6 +57,9 @@
     "F3V3RNEWB1E": [
       "sw-teams"
     ],
+    "R3ADY439": [
+      "sw-teams"
+    ],
     "S38L3GENDLEGGO": [
       "sw-teams"
     ],
@@ -64,6 +71,9 @@
       "sw-teams"
     ],
     "SKYFEVER26WEEK1": [
+      "sw-teams"
+    ],
+    "ST4RS381D": [
       "sw-teams"
     ],
     "SWCSKYFEVER26": [
@@ -79,5 +89,8 @@
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swcoupon: <urlopen error [Errno -2] Name or service not known>",
+    "swquery: HTTP Error 522: <none>"
+  ]
 }

@@ -4,10 +4,12 @@
     "9CHONGYASWC12",
     "DNL22SKYFEVER",
     "F3V3RNEWB1E",
+    "R3ADY439",
     "S38L3GENDLEGGO",
     "SEPSW2026I8B",
     "SKYF3V3RW1NN3R",
     "SKYFEVER26WEEK1",
+    "ST4RS381D",
     "SWCSKYFEVER26",
     "TOURNEY10SEP2026PUN",
     "WEEK2SKYFEVER26",
@@ -338,12 +340,13 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-24T10:22:41Z",
+  "updated_at": "2026-09-24T15:24:57Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
     "DNL22SKYFEVER": [],
     "F3V3RNEWB1E": [],
+    "R3ADY439": [],
     "S38L3GENDLEGGO": [],
     "SEPSW2026I8B": [
       [
@@ -357,6 +360,7 @@
     ],
     "SKYF3V3RW1NN3R": [],
     "SKYFEVER26WEEK1": [],
+    "ST4RS381D": [],
     "SWCSKYFEVER26": [],
     "TOURNEY10SEP2026PUN": [],
     "WEEK2SKYFEVER26": [],
@@ -375,6 +379,9 @@
     "F3V3RNEWB1E": [
       "sw-teams"
     ],
+    "R3ADY439": [
+      "sw-teams"
+    ],
     "S38L3GENDLEGGO": [
       "sw-teams"
     ],
@@ -386,6 +393,9 @@
       "sw-teams"
     ],
     "SKYFEVER26WEEK1": [
+      "sw-teams"
+    ],
+    "ST4RS381D": [
       "sw-teams"
     ],
     "SWCSKYFEVER26": [
@@ -403,6 +413,6 @@
   },
   "source_errors": [
     "swcoupon: <urlopen error [Errno -2] Name or service not known>",
-    "swquery: HTTP Error 404: Not Found"
+    "swquery: HTTP Error 522: <none>"
   ]
 }
