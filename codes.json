@@ -1,8 +1,8 @@
 {
-  "updated": "2026-09-24T00:48:52Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-09-24T05:22:20Z",
+  "source_count": 5,
+  "successful_sources": 3,
+  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
     "11DINGSHANGJIAN14",
     "9CHONGYASWC12",
@@ -14,6 +14,7 @@
     "SKYFEVER26WEEK1",
     "SWCSKYFEVER26",
     "TOURNEY10SEP2026PUN",
+    "WEEK2SKYFEVER26",
     "XI4NHUANYINGN1"
   ],
   "rewards": {
@@ -36,6 +37,7 @@
     "SKYFEVER26WEEK1": [],
     "SWCSKYFEVER26": [],
     "TOURNEY10SEP2026PUN": [],
+    "WEEK2SKYFEVER26": [],
     "XI4NHUANYINGN1": []
   },
   "sources": {
@@ -70,9 +72,15 @@
     "TOURNEY10SEP2026PUN": [
       "sw-teams"
     ],
+    "WEEK2SKYFEVER26": [
+      "sw-teams"
+    ],
     "XI4NHUANYINGN1": [
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swcoupon: <urlopen error [Errno -2] Name or service not known>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
