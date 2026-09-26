@@ -2,8 +2,10 @@
   "active": [
     "11DINGSHANGJIAN14",
     "9CHONGYASWC12",
+    "AUF20NACH26SEOUL",
     "DNL22SKYFEVER",
     "F3V3RNEWB1E",
+    "LOS20GEHTS26EU",
     "R3ADY439",
     "REGARDEZ20LE26SWC",
     "S38L3GENDLEGGO",
@@ -341,12 +343,14 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-26T15:08:29Z",
+  "updated_at": "2026-09-26T18:36:36Z",
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
+    "AUF20NACH26SEOUL": [],
     "DNL22SKYFEVER": [],
     "F3V3RNEWB1E": [],
+    "LOS20GEHTS26EU": [],
     "R3ADY439": [],
     "REGARDEZ20LE26SWC": [],
     "S38L3GENDLEGGO": [],
@@ -375,10 +379,16 @@
     "9CHONGYASWC12": [
       "sw-teams"
     ],
+    "AUF20NACH26SEOUL": [
+      "sw-teams"
+    ],
     "DNL22SKYFEVER": [
       "sw-teams"
     ],
     "F3V3RNEWB1E": [
+      "sw-teams"
+    ],
+    "LOS20GEHTS26EU": [
       "sw-teams"
     ],
     "R3ADY439": [

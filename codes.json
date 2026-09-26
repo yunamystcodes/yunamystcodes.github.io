@@ -1,13 +1,15 @@
 {
-  "updated": "2026-09-26T17:42:37Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-09-26T18:36:36Z",
+  "source_count": 5,
+  "successful_sources": 3,
+  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
     "11DINGSHANGJIAN14",
     "9CHONGYASWC12",
+    "AUF20NACH26SEOUL",
     "DNL22SKYFEVER",
     "F3V3RNEWB1E",
+    "LOS20GEHTS26EU",
     "R3ADY439",
     "REGARDEZ20LE26SWC",
     "S38L3GENDLEGGO",
@@ -23,8 +25,10 @@
   "rewards": {
     "11DINGSHANGJIAN14": [],
     "9CHONGYASWC12": [],
+    "AUF20NACH26SEOUL": [],
     "DNL22SKYFEVER": [],
     "F3V3RNEWB1E": [],
+    "LOS20GEHTS26EU": [],
     "R3ADY439": [],
     "REGARDEZ20LE26SWC": [],
     "S38L3GENDLEGGO": [],
@@ -53,10 +57,16 @@
     "9CHONGYASWC12": [
       "sw-teams"
     ],
+    "AUF20NACH26SEOUL": [
+      "sw-teams"
+    ],
     "DNL22SKYFEVER": [
       "sw-teams"
     ],
     "F3V3RNEWB1E": [
+      "sw-teams"
+    ],
+    "LOS20GEHTS26EU": [
       "sw-teams"
     ],
     "R3ADY439": [
@@ -94,5 +104,8 @@
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swcoupon: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1010)>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
