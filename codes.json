@@ -1,8 +1,8 @@
 {
-  "updated": "2026-09-27T16:45:00Z",
-  "source_count": 5,
-  "successful_sources": 3,
-  "rule": "lista ativa: apenas códigos confirmados como ativos; códigos expirados são removidos e não são exibidos",
+  "updated": "2026-09-27T17:55:14Z",
+  "source_count": 2,
+  "successful_sources": 2,
+  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
   "codes": [
     "SEPSW2026I8B"
   ],
@@ -11,8 +11,14 @@
   },
   "rewards": {
     "SEPSW2026I8B": [
-      ["blue", "x3"],
-      ["mana", "x300000"]
+      [
+        "blue",
+        "x3"
+      ],
+      [
+        "mana",
+        "x300000"
+      ]
     ]
   },
   "sources": {
@@ -21,8 +27,5 @@
       "sw-teams"
     ]
   },
-  "source_errors": [
-    "swcoupon: SSL handshake failure",
-    "swquery: HTTP 404"
-  ]
+  "source_errors": []
 }
