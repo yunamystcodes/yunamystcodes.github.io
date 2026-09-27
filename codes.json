@@ -1,15 +1,18 @@
 {
-  "updated": "2026-09-27T18:14:51Z",
-  "source_count": 2,
+  "updated": "2026-09-27T18:58:59Z",
+  "source_count": 5,
   "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
+    "AUF20NACH26SEOUL",
+    "LOS20GEHTS26EU",
+    "REGARDEZ20LE26SWC",
     "SEPSW2026I8B"
   ],
-  "expires": {
-    "SEPSW2026I8B": "2026-09-30T17:59:00+03:00"
-  },
   "rewards": {
+    "AUF20NACH26SEOUL": [],
+    "LOS20GEHTS26EU": [],
+    "REGARDEZ20LE26SWC": [],
     "SEPSW2026I8B": [
       [
         "blue",
@@ -22,10 +25,23 @@
     ]
   },
   "sources": {
+    "AUF20NACH26SEOUL": [
+      "sw-teams"
+    ],
+    "LOS20GEHTS26EU": [
+      "sw-teams"
+    ],
+    "REGARDEZ20LE26SWC": [
+      "sw-teams"
+    ],
     "SEPSW2026I8B": [
       "official-monthly",
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "swcoupon: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1010)>",
+    "summonerswarcodes: HTTP Error 526: <none>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
