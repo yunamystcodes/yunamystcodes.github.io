@@ -1,111 +1,28 @@
 {
-  "updated": "2026-09-27T15:08:55Z",
+  "updated": "2026-09-27T16:45:00Z",
   "source_count": 5,
   "successful_sources": 3,
-  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
+  "rule": "lista ativa: apenas códigos confirmados como ativos; códigos expirados são removidos e não são exibidos",
   "codes": [
-    "11DINGSHANGJIAN14",
-    "9CHONGYASWC12",
-    "AUF20NACH26SEOUL",
-    "DNL22SKYFEVER",
-    "F3V3RNEWB1E",
-    "LOS20GEHTS26EU",
-    "R3ADY439",
-    "REGARDEZ20LE26SWC",
-    "S38L3GENDLEGGO",
-    "SEPSW2026I8B",
-    "SKYF3V3RW1NN3R",
-    "SKYFEVER26WEEK1",
-    "ST4RS381D",
-    "SWCSKYFEVER26",
-    "TOURNEY10SEP2026PUN",
-    "WEEK2SKYFEVER26",
-    "XI4NHUANYINGN1"
+    "SEPSW2026I8B"
   ],
+  "expires": {
+    "SEPSW2026I8B": "2026-09-30T17:59:00+03:00"
+  },
   "rewards": {
-    "11DINGSHANGJIAN14": [],
-    "9CHONGYASWC12": [],
-    "AUF20NACH26SEOUL": [],
-    "DNL22SKYFEVER": [],
-    "F3V3RNEWB1E": [],
-    "LOS20GEHTS26EU": [],
-    "R3ADY439": [],
-    "REGARDEZ20LE26SWC": [],
-    "S38L3GENDLEGGO": [],
     "SEPSW2026I8B": [
-      [
-        "blue",
-        "x3"
-      ],
-      [
-        "mana",
-        "x300000"
-      ]
-    ],
-    "SKYF3V3RW1NN3R": [],
-    "SKYFEVER26WEEK1": [],
-    "ST4RS381D": [],
-    "SWCSKYFEVER26": [],
-    "TOURNEY10SEP2026PUN": [],
-    "WEEK2SKYFEVER26": [],
-    "XI4NHUANYINGN1": []
+      ["blue", "x3"],
+      ["mana", "x300000"]
+    ]
   },
   "sources": {
-    "11DINGSHANGJIAN14": [
-      "sw-teams"
-    ],
-    "9CHONGYASWC12": [
-      "sw-teams"
-    ],
-    "AUF20NACH26SEOUL": [
-      "sw-teams"
-    ],
-    "DNL22SKYFEVER": [
-      "sw-teams"
-    ],
-    "F3V3RNEWB1E": [
-      "sw-teams"
-    ],
-    "LOS20GEHTS26EU": [
-      "sw-teams"
-    ],
-    "R3ADY439": [
-      "sw-teams"
-    ],
-    "REGARDEZ20LE26SWC": [
-      "sw-teams"
-    ],
-    "S38L3GENDLEGGO": [
-      "sw-teams"
-    ],
     "SEPSW2026I8B": [
       "official-monthly",
-      "sw-teams"
-    ],
-    "SKYF3V3RW1NN3R": [
-      "sw-teams"
-    ],
-    "SKYFEVER26WEEK1": [
-      "sw-teams"
-    ],
-    "ST4RS381D": [
-      "sw-teams"
-    ],
-    "SWCSKYFEVER26": [
-      "sw-teams"
-    ],
-    "TOURNEY10SEP2026PUN": [
-      "sw-teams"
-    ],
-    "WEEK2SKYFEVER26": [
-      "sw-teams"
-    ],
-    "XI4NHUANYINGN1": [
       "sw-teams"
     ]
   },
   "source_errors": [
-    "swcoupon: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1010)>",
-    "swquery: HTTP Error 404: Not Found"
+    "swcoupon: SSL handshake failure",
+    "swquery: HTTP 404"
   ]
 }
