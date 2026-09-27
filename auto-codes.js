@@ -3,19 +3,9 @@
 
 const REDEEM='https://withhive.me/313/';
 const SPRITE='/assets/rewards-exact-20260829.webp?v=20260829-4';
-const FALLBACK={
-  SEPSW2026I8B:[['blue','x3'],['mana','x300000']],
-  SWGAJA2BKK:[['mana','x200000'],['yellow','x1']],
-  SWCJOAAAKR26:[['yellow','x1']],
-  '2SWCTORONTOTHE6IX':[['energy','x100'],['yellow','x1']],
-  LAST4PUNCHIN:[['mana','x200000'],['yellow','x1']],
-  APAC1K0UB4NGK0K:[['energy','x100'],['yellow','x1']],
-  '2SOREIKENIPPON6':[['mana','x200000'],['yellow','x1']],
-  SWXFRIEREN2026:[['energy','x100'],['mana','x300000'],['yellow','x3']],
-  AUGSW2026V7N:[['energy','x100'],['red','x3']]
-};
+const FALLBACK={};
 const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA']);
-let rewards={...FALLBACK};
+let rewards={};
 const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const valid=s=>{const c=norm(s);return c.length>=6&&c.length<=32&&/[A-Z]/.test(c)&&/\d/.test(c)&&!blocked.has(c)};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
