@@ -76,7 +76,12 @@ async function render(){
   if(data.rewards&&typeof data.rewards==='object'){
    for(const key of Object.keys(data.rewards))if(Array.isArray(data.rewards[key])&&data.rewards[key].length)rewards[norm(key)]=data.rewards[key];
   }
-  const codes=Array.isArray(data.codes)?data.codes.map(norm).filter(valid):[];
+  const now=Date.now();
+  const expires=(data.expires&&typeof data.expires==='object')?data.expires:{};
+  const codes=Array.isArray(data.codes)?data.codes.map(norm).filter(valid).filter(c=>{
+    const expiry=expires[c];
+    return !expiry || Number.isNaN(Date.parse(expiry)) || Date.parse(expiry)>now;
+  }):[];
   if(!codes.length)throw new Error('No active codes');
   root.innerHTML=[...new Set(codes)].map(makeCard).join('');
   bind(root);
