@@ -1,6 +1,7 @@
 {
   "active": [
     "AUF20NACH26SEOUL",
+    "LETSGOSKYFEVER26",
     "LOS20GEHTS26EU",
     "OCTSW2026O7J",
     "REGARDEZ20LE26SWC",
@@ -332,9 +333,10 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-09-30T22:50:45Z",
+  "updated_at": "2026-10-01T01:51:14Z",
   "rewards": {
     "AUF20NACH26SEOUL": [],
+    "LETSGOSKYFEVER26": [],
     "LOS20GEHTS26EU": [],
     "OCTSW2026O7J": [],
     "REGARDEZ20LE26SWC": [],
@@ -352,6 +354,9 @@
   },
   "sources": {
     "AUF20NACH26SEOUL": [
+      "sw-teams"
+    ],
+    "LETSGOSKYFEVER26": [
       "sw-teams"
     ],
     "LOS20GEHTS26EU": [
