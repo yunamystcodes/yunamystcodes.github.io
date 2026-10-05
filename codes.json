@@ -1,53 +1,23 @@
 {
-  "updated": "2026-10-05T08:56:03Z",
+  "updated": "2026-10-05T10:03:11Z",
   "source_count": 5,
   "successful_sources": 3,
-  "rule": "lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
+  "rule": "lista ativa protegida por datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
   "codes": [
-    "AUF20NACH26SEOUL",
     "LETSGOSKYFEVER26",
-    "LOS20GEHTS26EU",
     "OCTSW2026O7J",
-    "REGARDEZ20LE26SWC",
-    "SEPSW2026I8B",
     "SKYFEVER26US"
   ],
   "rewards": {
-    "AUF20NACH26SEOUL": [],
     "LETSGOSKYFEVER26": [],
-    "LOS20GEHTS26EU": [],
     "OCTSW2026O7J": [],
-    "REGARDEZ20LE26SWC": [],
-    "SEPSW2026I8B": [
-      [
-        "blue",
-        "x3"
-      ],
-      [
-        "mana",
-        "x300000"
-      ]
-    ],
     "SKYFEVER26US": []
   },
   "sources": {
-    "AUF20NACH26SEOUL": [
-      "sw-teams"
-    ],
     "LETSGOSKYFEVER26": [
       "sw-teams"
     ],
-    "LOS20GEHTS26EU": [
-      "sw-teams"
-    ],
     "OCTSW2026O7J": [
-      "sw-teams"
-    ],
-    "REGARDEZ20LE26SWC": [
-      "sw-teams"
-    ],
-    "SEPSW2026I8B": [
-      "official-monthly",
       "sw-teams"
     ],
     "SKYFEVER26US": [
