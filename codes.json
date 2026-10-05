@@ -1,26 +1,19 @@
 {
-  "updated": "2026-10-05T10:03:11Z",
+  "updated": "2026-10-05T10:11:45.160Z",
   "source_count": 5,
   "successful_sources": 3,
-  "rule": "lista ativa protegida por datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas",
+  "rule": "somente códigos atualmente confirmados; códigos expirados removidos automaticamente",
   "codes": [
-    "LETSGOSKYFEVER26",
     "OCTSW2026O7J",
-    "SKYFEVER26US"
+    "CUAPAC17OCT",
+    "GOFORGLORYS38",
+    "RTAS38MAG4CUP"
   ],
   "rewards": {
-    "LETSGOSKYFEVER26": [],
-    "OCTSW2026O7J": [],
-    "SKYFEVER26US": []
+    "OCTSW2026O7J": []
   },
   "sources": {
-    "LETSGOSKYFEVER26": [
-      "sw-teams"
-    ],
     "OCTSW2026O7J": [
-      "sw-teams"
-    ],
-    "SKYFEVER26US": [
       "sw-teams"
     ]
   },
