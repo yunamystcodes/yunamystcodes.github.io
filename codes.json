@@ -4,8 +4,7 @@
   "successful_sources": 3,
   "rule": "somente códigos atualmente confirmados; códigos expirados removidos automaticamente",
   "codes": [
-    "OCTSW2026O7J",
-    
+    "OCTSW2026O7J"
   ],
   "rewards": {
     "OCTSW2026O7J": []
