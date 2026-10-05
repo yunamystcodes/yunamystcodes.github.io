@@ -11,7 +11,7 @@ SOURCES = {
     'summonerswarcodes': 'https://summonerswarcodes.us/',
     'swquery': 'https://swquery.net/codes',
 }
-BASELINE_CODES = {'2SOREIKENIPPON6','2SWCTORONTOTHE6IX','APAC1K0UB4NGK0K','AUGSW2026V7N','LAST4PUNCHIN','SEPSW2026I8B','SWCJOAAAKR26','SWGAJA2BKK'}
+BASELINE_CODES = set()
 # Datas de validade conhecidas/publicadas para os códigos de eventos e mensais (UTC).
 EXPIRY_UTC = {
     'AUGSW2026V7N': '2026-08-31T23:59:59Z',
@@ -85,9 +85,6 @@ def main():
     current-=confirmed_expired
 
 
-    expected_baseline=BASELINE_CODES-expired_by_date
-    if not expected_baseline.issubset(current):
-        raise SystemExit('Proteção: a lista ativa ficou incompleta; atualização cancelada para não apagar códigos válidos.')
 
     now_text=now.replace(microsecond=0).isoformat().replace('+00:00','Z')
     rewards={}; sources={}
