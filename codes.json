@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-05T10:11:45.160Z",
-  "source_count": 5,
-  "successful_sources": 3,
-  "rule": "somente códigos atualmente confirmados; códigos expirados removidos automaticamente",
+  "updated": "2026-10-05T14:22:52Z",
+  "source_count": 2,
+  "successful_sources": 2,
+  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
   "codes": [
     "OCTSW2026O7J"
   ],
@@ -14,8 +14,5 @@
       "sw-teams"
     ]
   },
-  "source_errors": [
-    "summonerswarcodes: HTTP Error 526: <none>",
-    "swquery: HTTP Error 404: Not Found"
-  ]
+  "source_errors": []
 }
