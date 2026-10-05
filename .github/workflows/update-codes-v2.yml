@@ -34,7 +34,7 @@ jobs:
           s=p.read_text(encoding='utf-8')
 
           # Cache-buster: garante que PC e telemóvel usam o carregador mais recente.
-          s=re.sub(r'\./auto-codes\.js\?v=[^"\']+', './auto-codes.js?v=20260904', s)
+          s=re.sub(r'\./auto-codes\.js\?v=[^"\']+', './auto-codes.js?v=20261005', s)
           if 'auto-codes.js' not in s:
               s=s.replace('</body>','<script src="./auto-codes.js?v=20260904"></script>\n</body>',1)
 
