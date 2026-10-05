@@ -4,7 +4,7 @@
 const REDEEM='https://withhive.me/313/';
 const SPRITE='/assets/rewards-exact-20260829.webp?v=20260829-4';
 const FALLBACK={};
-const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA']);
+const blocked=new Set(['GLHF2026AMERICAS','SWC26X10LEGACYBND','912XUXIECHUANQI','SWC2026JUELEBA','PAI2026BANGKOK','APAC26LEGASEA','AUF20NACH26SEOUL','LOS20GEHTS26EU','REGARDEZ20LE26SWC','SEPSW2026I8B','AUGSW2026V7N','2SOREIKENIPPON6','APAC1K0UB4NGK0K','2SWCTORONTOTHE6IX','LAST4PUNCHIN','SWCJOAAAKR26','SWGAJA2BKK']);
 let rewards={};
 const norm=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const valid=s=>{const c=norm(s);return c.length>=6&&c.length<=32&&/[A-Z]/.test(c)&&/\d/.test(c)&&!blocked.has(c)};
@@ -60,7 +60,7 @@ async function render(){
  const root=document.getElementById('ativos');
  if(!root)return;
  try{
-  const response=await fetch('./codes.json?nocache='+Date.now(),{cache:'no-store'});
+  const response=await fetch('./codes.json?v=20261005&nocache='+Date.now(),{cache:'no-store'});
   if(!response.ok)throw new Error('codes.json '+response.status);
   const data=await response.json();
   if(data.rewards&&typeof data.rewards==='object'){
