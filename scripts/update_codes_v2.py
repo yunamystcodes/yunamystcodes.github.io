@@ -96,7 +96,7 @@ def main():
         if not src and c=='SEPSW2026I8B': src.add('official-monthly')
         sources[c]=sorted(src)
 
-    payload={'updated':now_text,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'lista ativa protegida por baseline e datas de validade; novos códigos adicionados; códigos expirados removidos automaticamente; recompensas e imagens preservadas','codes':sorted(current),'rewards':rewards,'sources':sources,'source_errors':errors}
+    payload={'updated':now_text,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada','codes':sorted(current),'rewards':rewards,'sources':sources,'source_errors':errors}
     CODES.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     old_history=load_json(HISTORY,{})
     old_dead=set(old_history.get('expired',[])) if isinstance(old_history.get('expired',[]),list) else set()
