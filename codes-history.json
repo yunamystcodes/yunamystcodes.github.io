@@ -1,12 +1,6 @@
 {
   "active": [
-    "AUF20NACH26SEOUL",
-    "LETSGOSKYFEVER26",
-    "LOS20GEHTS26EU",
-    "OCTSW2026O7J",
-    "REGARDEZ20LE26SWC",
-    "SEPSW2026I8B",
-    "SKYFEVER26US"
+    "OCTSW2026O7J"
   ],
   "expired": [
     "000SLOT",
@@ -87,6 +81,7 @@
     "APRSW2026M08",
     "ARENAMASTER22",
     "ATSUMARE2022",
+    "AUF20NACH26SEOUL",
     "AUFLOSGEHTSLOS22",
     "AUFNACHJAPAN24",
     "AUGSW2026V7N",
@@ -159,6 +154,7 @@
     "LETSFETZEU2021",
     "LETSGO16FINAL",
     "LETSGOSWC22",
+    "LOS20GEHTS26EU",
     "LOTR4CO11ABON",
     "LT21WILLBACK",
     "LTISBACKS17",
@@ -191,6 +187,7 @@
     "READY2BAMCHAMP",
     "READY4LT17",
     "READY4SWC",
+    "REGARDEZ20LE26SWC",
     "RINGFREISWC2024",
     "ROCKWITHSWC2021",
     "RONGY4OZH1LUSWC",
@@ -202,6 +199,7 @@
     "SEAUINAPACCUP23",
     "SECRETMYSTIC22",
     "SEEU1N26AGA1N",
+    "SEPSW2026I8B",
     "SHOBUAPAC20",
     "SIGNUPSC23",
     "SOARUP4CHAMPION",
@@ -333,46 +331,12 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-05T08:56:03Z",
+  "updated_at": "2026-10-05T18:10:20Z",
   "rewards": {
-    "AUF20NACH26SEOUL": [],
-    "LETSGOSKYFEVER26": [],
-    "LOS20GEHTS26EU": [],
-    "OCTSW2026O7J": [],
-    "REGARDEZ20LE26SWC": [],
-    "SEPSW2026I8B": [
-      [
-        "blue",
-        "x3"
-      ],
-      [
-        "mana",
-        "x300000"
-      ]
-    ],
-    "SKYFEVER26US": []
+    "OCTSW2026O7J": []
   },
   "sources": {
-    "AUF20NACH26SEOUL": [
-      "sw-teams"
-    ],
-    "LETSGOSKYFEVER26": [
-      "sw-teams"
-    ],
-    "LOS20GEHTS26EU": [
-      "sw-teams"
-    ],
     "OCTSW2026O7J": [
-      "sw-teams"
-    ],
-    "REGARDEZ20LE26SWC": [
-      "sw-teams"
-    ],
-    "SEPSW2026I8B": [
-      "official-monthly",
-      "sw-teams"
-    ],
-    "SKYFEVER26US": [
       "sw-teams"
     ]
   },
