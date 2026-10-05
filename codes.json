@@ -5,9 +5,9 @@
   "rule": "somente códigos atualmente confirmados; códigos expirados removidos automaticamente",
   "codes": [
     "OCTSW2026O7J",
-    "CUAPAC17OCT",
-    "GOFORGLORYS38",
-    "RTAS38MAG4CUP"
+    
+    
+  
   ],
   "rewards": {
     "OCTSW2026O7J": []
