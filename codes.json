@@ -1,18 +1,26 @@
 {
-  "updated": "2026-10-07T20:32:51Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-10-07T21:23:06Z",
+  "source_count": 5,
+  "successful_sources": 3,
+  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
+    "GUARDIAN26TOURNEYOCT",
     "OCTSW2026O7J"
   ],
   "rewards": {
+    "GUARDIAN26TOURNEYOCT": [],
     "OCTSW2026O7J": []
   },
   "sources": {
+    "GUARDIAN26TOURNEYOCT": [
+      "sw-teams"
+    ],
     "OCTSW2026O7J": [
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "summonerswarcodes: HTTP Error 526: <none>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }

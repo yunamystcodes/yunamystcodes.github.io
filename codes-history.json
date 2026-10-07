@@ -1,5 +1,6 @@
 {
   "active": [
+    "GUARDIAN26TOURNEYOCT",
     "OCTSW2026O7J"
   ],
   "expired": [
@@ -331,11 +332,15 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-07T16:16:52Z",
+  "updated_at": "2026-10-07T21:23:06Z",
   "rewards": {
+    "GUARDIAN26TOURNEYOCT": [],
     "OCTSW2026O7J": []
   },
   "sources": {
+    "GUARDIAN26TOURNEYOCT": [
+      "sw-teams"
+    ],
     "OCTSW2026O7J": [
       "sw-teams"
     ]
