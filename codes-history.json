@@ -1,7 +1,12 @@
 {
   "active": [
+    "555CHALLENGEISEZ",
+    "B3STNEWCOMER",
     "GUARDIAN26TOURNEYOCT",
-    "OCTSW2026O7J"
+    "NEWER4ISHERE",
+    "OCTSW2026O7J",
+    "SWC1017APACGO",
+    "UGOTITSDVOL3"
   ],
   "expired": [
     "000SLOT",
@@ -332,16 +337,36 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-08T07:30:20Z",
+  "updated_at": "2026-10-08T14:55:29Z",
   "rewards": {
+    "555CHALLENGEISEZ": [],
+    "B3STNEWCOMER": [],
     "GUARDIAN26TOURNEYOCT": [],
-    "OCTSW2026O7J": []
+    "NEWER4ISHERE": [],
+    "OCTSW2026O7J": [],
+    "SWC1017APACGO": [],
+    "UGOTITSDVOL3": []
   },
   "sources": {
+    "555CHALLENGEISEZ": [
+      "sw-teams"
+    ],
+    "B3STNEWCOMER": [
+      "sw-teams"
+    ],
     "GUARDIAN26TOURNEYOCT": [
       "sw-teams"
     ],
+    "NEWER4ISHERE": [
+      "sw-teams"
+    ],
     "OCTSW2026O7J": [
+      "sw-teams"
+    ],
+    "SWC1017APACGO": [
+      "sw-teams"
+    ],
+    "UGOTITSDVOL3": [
       "sw-teams"
     ]
   },

@@ -1,23 +1,51 @@
 {
-  "updated": "2026-10-08T14:51:32Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-10-08T14:55:29Z",
+  "source_count": 5,
+  "successful_sources": 3,
+  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
+    "555CHALLENGEISEZ",
+    "B3STNEWCOMER",
     "GUARDIAN26TOURNEYOCT",
-    "OCTSW2026O7J"
+    "NEWER4ISHERE",
+    "OCTSW2026O7J",
+    "SWC1017APACGO",
+    "UGOTITSDVOL3"
   ],
   "rewards": {
+    "555CHALLENGEISEZ": [],
+    "B3STNEWCOMER": [],
     "GUARDIAN26TOURNEYOCT": [],
-    "OCTSW2026O7J": []
+    "NEWER4ISHERE": [],
+    "OCTSW2026O7J": [],
+    "SWC1017APACGO": [],
+    "UGOTITSDVOL3": []
   },
   "sources": {
+    "555CHALLENGEISEZ": [
+      "sw-teams"
+    ],
+    "B3STNEWCOMER": [
+      "sw-teams"
+    ],
     "GUARDIAN26TOURNEYOCT": [
+      "sw-teams"
+    ],
+    "NEWER4ISHERE": [
       "sw-teams"
     ],
     "OCTSW2026O7J": [
       "sw-teams"
+    ],
+    "SWC1017APACGO": [
+      "sw-teams"
+    ],
+    "UGOTITSDVOL3": [
+      "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "summonerswarcodes: HTTP Error 526: <none>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
