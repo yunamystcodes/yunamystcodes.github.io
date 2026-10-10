@@ -5,6 +5,7 @@
     "GUARDIAN26TOURNEYOCT",
     "NEWER4ISHERE",
     "OCTSW2026O7J",
+    "RISINGSTARS2026",
     "SWC1017APACGO",
     "UGOTITSDVOL3"
   ],
@@ -337,13 +338,14 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-10T08:58:29Z",
+  "updated_at": "2026-10-10T15:13:36Z",
   "rewards": {
     "555CHALLENGEISEZ": [],
     "B3STNEWCOMER": [],
     "GUARDIAN26TOURNEYOCT": [],
     "NEWER4ISHERE": [],
     "OCTSW2026O7J": [],
+    "RISINGSTARS2026": [],
     "SWC1017APACGO": [],
     "UGOTITSDVOL3": []
   },
@@ -361,6 +363,9 @@
       "sw-teams"
     ],
     "OCTSW2026O7J": [
+      "sw-teams"
+    ],
+    "RISINGSTARS2026": [
       "sw-teams"
     ],
     "SWC1017APACGO": [
