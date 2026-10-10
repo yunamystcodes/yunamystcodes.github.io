@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-09T23:20:26Z",
-  "source_count": 5,
-  "successful_sources": 3,
-  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
+  "updated": "2026-10-10T00:16:52Z",
+  "source_count": 2,
+  "successful_sources": 2,
+  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
   "codes": [
     "555CHALLENGEISEZ",
     "B3STNEWCOMER",
@@ -44,8 +44,5 @@
       "sw-teams"
     ]
   },
-  "source_errors": [
-    "summonerswarcodes: HTTP Error 526: <none>",
-    "swquery: HTTP Error 404: Not Found"
-  ]
+  "source_errors": []
 }
