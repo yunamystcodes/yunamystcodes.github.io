@@ -1,26 +1,30 @@
 {
-  "updated": "2026-10-10T21:30:54Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-10-10T22:50:15Z",
+  "source_count": 5,
+  "successful_sources": 3,
+  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
     "555CHALLENGEISEZ",
     "B3STNEWCOMER",
+    "FOR3TICKETS2SEOUL",
     "GUARDIAN26TOURNEYOCT",
     "NEWER4ISHERE",
     "OCTSW2026O7J",
     "RISINGSTARS2026",
     "SWC1017APACGO",
+    "SWC1SHERETORONTO",
     "UGOTITSDVOL3"
   ],
   "rewards": {
     "555CHALLENGEISEZ": [],
     "B3STNEWCOMER": [],
+    "FOR3TICKETS2SEOUL": [],
     "GUARDIAN26TOURNEYOCT": [],
     "NEWER4ISHERE": [],
     "OCTSW2026O7J": [],
     "RISINGSTARS2026": [],
     "SWC1017APACGO": [],
+    "SWC1SHERETORONTO": [],
     "UGOTITSDVOL3": []
   },
   "sources": {
@@ -28,6 +32,9 @@
       "sw-teams"
     ],
     "B3STNEWCOMER": [
+      "sw-teams"
+    ],
+    "FOR3TICKETS2SEOUL": [
       "sw-teams"
     ],
     "GUARDIAN26TOURNEYOCT": [
@@ -45,9 +52,15 @@
     "SWC1017APACGO": [
       "sw-teams"
     ],
+    "SWC1SHERETORONTO": [
+      "sw-teams"
+    ],
     "UGOTITSDVOL3": [
       "sw-teams"
     ]
   },
-  "source_errors": []
+  "source_errors": [
+    "summonerswarcodes: HTTP Error 526: <none>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }

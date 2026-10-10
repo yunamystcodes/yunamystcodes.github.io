@@ -2,11 +2,13 @@
   "active": [
     "555CHALLENGEISEZ",
     "B3STNEWCOMER",
+    "FOR3TICKETS2SEOUL",
     "GUARDIAN26TOURNEYOCT",
     "NEWER4ISHERE",
     "OCTSW2026O7J",
     "RISINGSTARS2026",
     "SWC1017APACGO",
+    "SWC1SHERETORONTO",
     "UGOTITSDVOL3"
   ],
   "expired": [
@@ -338,15 +340,17 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-10T19:20:36Z",
+  "updated_at": "2026-10-10T22:50:15Z",
   "rewards": {
     "555CHALLENGEISEZ": [],
     "B3STNEWCOMER": [],
+    "FOR3TICKETS2SEOUL": [],
     "GUARDIAN26TOURNEYOCT": [],
     "NEWER4ISHERE": [],
     "OCTSW2026O7J": [],
     "RISINGSTARS2026": [],
     "SWC1017APACGO": [],
+    "SWC1SHERETORONTO": [],
     "UGOTITSDVOL3": []
   },
   "sources": {
@@ -354,6 +358,9 @@
       "sw-teams"
     ],
     "B3STNEWCOMER": [
+      "sw-teams"
+    ],
+    "FOR3TICKETS2SEOUL": [
       "sw-teams"
     ],
     "GUARDIAN26TOURNEYOCT": [
@@ -369,6 +376,9 @@
       "sw-teams"
     ],
     "SWC1017APACGO": [
+      "sw-teams"
+    ],
+    "SWC1SHERETORONTO": [
       "sw-teams"
     ],
     "UGOTITSDVOL3": [
