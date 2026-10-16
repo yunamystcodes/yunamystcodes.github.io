@@ -1,8 +1,6 @@
 name: Atualizar códigos ativos - YunaCodes v2
 
 on:
-  push:
-    branches: [main]
   schedule:
     - cron: '*/10 * * * *'
   workflow_dispatch:
