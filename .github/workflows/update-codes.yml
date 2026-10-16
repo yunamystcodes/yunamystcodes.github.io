@@ -1,9 +1,6 @@
 name: Atualizar códigos automaticamente
 
 on:
-  schedule:
-    # Verifica novos códigos a cada 30 minutos.
-    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 permissions:
