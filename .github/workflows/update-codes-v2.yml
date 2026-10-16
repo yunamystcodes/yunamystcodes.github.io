@@ -34,9 +34,9 @@ jobs:
           s=p.read_text(encoding='utf-8')
 
           # Cache-buster: garante que PC e telemóvel usam o carregador mais recente.
-          s=re.sub(r'\./auto-codes\.js\?v=[^"\']+', './auto-codes.js?v=20261005', s)
+          s=re.sub(r'\./auto-codes\.js\?v=[^"\']+', './auto-codes.js?v=20261016-expiry-auto', s)
           if 'auto-codes.js' not in s:
-              s=s.replace('</body>','<script src="./auto-codes.js?v=20260904"></script>\n</body>',1)
+              s=s.replace('</body>','<script src="./auto-codes.js?v=20261016-expiry-auto"></script>\n</body>',1)
 
           # O site deve mostrar SOMENTE códigos presentes em codes.json.
           # Remove cartões antigos/expirados mesmo que algum script os injete depois.
