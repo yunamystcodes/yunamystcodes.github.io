@@ -67,6 +67,10 @@ def load_json(path, default):
 def main():
     previous=load_json(CODES,{})
     previous_codes={norm(c) for c in previous.get('codes',[]) if norm(c)}
+    # A lista histórica é a memória permanente dos códigos já confirmados como expirados.
+    # Impede que um código antigo volte à lista ativa só porque continua no JSON anterior.
+    old_history=load_json(HISTORY,{})
+    old_dead={norm(c) for c in old_history.get('expired',[]) if norm(c)} if isinstance(old_history.get('expired',[]),list) else set()
     previous_rewards=previous.get('rewards',{}) if isinstance(previous.get('rewards',{}),dict) else {}
     previous_sources=previous.get('sources',{}) if isinstance(previous.get('sources',{}),dict) else {}
     found={}; expired_by_source={}; errors=[]
@@ -80,9 +84,10 @@ def main():
     now=datetime.now(timezone.utc)
     # Nunca reintroduzir um código cujo prazo conhecido já terminou.
     expired_by_date={c for c,stamp in EXPIRY_UTC.items() if now >= datetime.fromisoformat(stamp.replace('Z','+00:00'))}
-    current=(previous_codes|BASELINE_CODES|set(found))-BAD-expired_by_date
     confirmed_expired={c for c,sources in expired_by_source.items() if len(sources)>=2}
-    current-=confirmed_expired
+    # Não conservar códigos que desapareceram da lista ativa e foram confirmados como expirados.
+    # Mantém os códigos anteriores apenas quando não há evidência de expiração.
+    current=(previous_codes|BASELINE_CODES|set(found))-BAD-expired_by_date-confirmed_expired-old_dead
 
 
 
@@ -98,8 +103,6 @@ def main():
 
     payload={'updated':now_text,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada','codes':sorted(current),'rewards':rewards,'sources':sources,'source_errors':errors}
     CODES.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    old_history=load_json(HISTORY,{})
-    old_dead=set(old_history.get('expired',[])) if isinstance(old_history.get('expired',[]),list) else set()
     HISTORY.write_text(json.dumps({'active':sorted(current),'expired':sorted(old_dead|confirmed_expired|expired_by_date|BAD),'updated_at':now_text,'rewards':rewards,'sources':sources,'source_errors':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('Ativos:',', '.join(sorted(current)))
     print('Expirados removidos por data:',', '.join(sorted(expired_by_date)))
