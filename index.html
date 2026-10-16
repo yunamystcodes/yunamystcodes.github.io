@@ -183,30 +183,34 @@ html[lang="en"] .faq .faq-q span{font-size:13px!important;}
 })();
 </script>
 
-<script src="./auto-codes.js?v=20261016-expired-cleanup2"></script>
+<script src="./auto-codes.js?v=20261016-expired-cleanup32"></script>
 <script src="./language-fix.js?v=20260908"></script>
 
 
 
-<script id="yunamyst-active-codes-guard">
+<script id="yunamyst-active-codes-guard-v2">
 (async()=>{
+  const norm=x=>String(x||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
   try{
-    const r=await fetch('./codes.json?guard='+Date.now(),{cache:'no-store'});
+    const r=await fetch('./codes.json?active-only='+Date.now(),{cache:'no-store'});
     if(!r.ok)return;
     const d=await r.json();
-    const allowed=new Set((Array.isArray(d.codes)?d.codes:[]).map(x=>String(x).toUpperCase().replace(/[^A-Z0-9]/g,'')));
-    const root=document.getElementById('ativos');
-    if(!root)return;
+    const allowed=new Set((Array.isArray(d.codes)?d.codes:[]).map(norm));
     const clean=()=>{
-      root.querySelectorAll('.code, .auto-code, article.code').forEach(el=>{
-        const code=(el.querySelector('.cinfo strong')?.textContent||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-        if(!allowed.has(code))el.remove();
+      document.querySelectorAll('#ativos .code, #ativos .auto-code, #ativos article, .expired-list, .tab.expired').forEach(el=>{
+        if(el.matches('.expired-list,.tab.expired')){el.remove();return;}
+        const label=el.querySelector('.cinfo strong, strong');
+        const code=norm(label&&label.textContent);
+        if(!code||!allowed.has(code))el.remove();
       });
-      document.querySelectorAll('.expired-list,.tab.expired').forEach(el=>el.remove());
     };
     clean();
-    new MutationObserver(clean).observe(root,{childList:true,subtree:true});
-  }catch(e){}
+    const root=document.getElementById('ativos');
+    if(root)new MutationObserver(clean).observe(root,{childList:true,subtree:true});
+    setTimeout(clean,250);
+    setTimeout(clean,1000);
+    setTimeout(clean,2500);
+  }catch(e){console.error('[YunaCodes] active-only cleanup failed',e);}
 })();
 </script>
 <script src="./feedback-global.js?v=20260902"></script>
