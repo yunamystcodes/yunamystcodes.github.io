@@ -25,6 +25,9 @@ EXPIRY_UTC = {
     'LOS20GEHTS26EU': '2026-10-04T00:00:00Z',
     'REGARDEZ20LE26SWC': '2026-10-04T00:00:00Z',
     'SEPSW2026I8B': '2026-10-01T00:00:00Z',
+    'FOR3TICKETS2SEOUL': '2026-10-18T04:00:00Z',
+    'OURTURNFORLEGACY': '2026-10-18T04:00:00Z',
+    'SWC1SHERETORONTO': '2026-10-18T04:00:00Z',
 }
 BAD = {'9CIRCLE','CCXQDUIH4A4','SWC2026','THE10TH','GLHF2026AMERICAS','SWC26X10LEGACYBND','PAI2026BANGKOK','APAC26LEGASEA','912XUXIECHUANQI','SWC2026JUELEBA','H4MBURGISWAITING','HURRASWC2026','4MINGYIDAOXIAN','YYDSSWC26ZAN','1SURPR1SE','1SURPR1SEG1FT','2NEWTOMORROW2','SW25HSZN','SWXFRIEREN2026'}
 BANNED = {'ACTIVE','EXPIRED','WORKING','AVAILABLE','CODES','CODE','SUMMONERS','WAR','SKY','ARENA','ENERGY','MANA','SCROLL','REDEEM','COUPON','COPY','REWARD','REWARDS','LATEST','NEW','GUIDE','GAME','GAMES','COM2US','ANDROID','IPHONE','WINDOWS','FACEBOOK','DISCORD','TWITTER','INSTAGRAM','YOUTUBE','PROMO','PROMOTIONAL','VERIFIED','NOEXPIRATION'}
@@ -82,8 +85,17 @@ def main():
         except Exception as e: errors.append(f'{name}: {e}')
 
     now=datetime.now(timezone.utc)
+    # Preservar prazos já publicados e acrescentar os prazos conhecidos neste script.
+    previous_expiry=previous.get('expires',{}) if isinstance(previous.get('expires',{}),dict) else {}
+    expiry_map={**previous_expiry, **EXPIRY_UTC}
     # Nunca reintroduzir um código cujo prazo conhecido já terminou.
-    expired_by_date={c for c,stamp in EXPIRY_UTC.items() if now >= datetime.fromisoformat(stamp.replace('Z','+00:00'))}
+    expired_by_date=set()
+    for code, stamp in expiry_map.items():
+        try:
+            if now >= datetime.fromisoformat(str(stamp).replace('Z','+00:00')):
+                expired_by_date.add(norm(code))
+        except (ValueError, TypeError):
+            pass
     confirmed_expired={c for c,sources in expired_by_source.items() if len(sources)>=2}
     # Não conservar códigos que desapareceram da lista ativa e foram confirmados como expirados.
     # Mantém os códigos anteriores apenas quando não há evidência de expiração.
@@ -101,7 +113,8 @@ def main():
         if not src and c=='SEPSW2026I8B': src.add('official-monthly')
         sources[c]=sorted(src)
 
-    payload={'updated':now_text,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada','codes':sorted(current),'rewards':rewards,'sources':sources,'source_errors':errors}
+    expires={c: expiry_map[c] for c in sorted(current) if c in expiry_map}
+    payload={'updated':now_text,'source_count':len(SOURCES),'successful_sources':len(SOURCES)-len(errors),'rule':'somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada','codes':sorted(current),'rewards':rewards,'sources':sources,'expires':expires,'source_errors':errors}
     CODES.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     HISTORY.write_text(json.dumps({'active':sorted(current),'expired':sorted(old_dead|confirmed_expired|expired_by_date|BAD),'updated_at':now_text,'rewards':rewards,'sources':sources,'source_errors':errors},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print('Ativos:',', '.join(sorted(current)))
