@@ -1,12 +1,11 @@
 {
-  "updated": "2026-10-16T22:34:22.677Z",
+  "updated": "2026-10-16T23:36:13Z",
   "source_count": 5,
   "successful_sources": 3,
-  "rule": "somente códigos atualmente ativos; códigos com prazo vencido removidos; revisão manual baseada em fontes atualizadas",
+  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
     "FOR3TICKETS2SEOUL",
     "OCTSW2026O7J",
-    "OURTURNFORLEGACY",
     "SWC1SHERETORONTO"
   ],
   "rewards": {
@@ -26,16 +25,6 @@
         "x3"
       ]
     ],
-    "OURTURNFORLEGACY": [
-      [
-        "energy",
-        "x100"
-      ],
-      [
-        "yellow",
-        "x3"
-      ]
-    ],
     "SWC1SHERETORONTO": [
       [
         "mana",
@@ -49,26 +38,27 @@
   },
   "sources": {
     "FOR3TICKETS2SEOUL": [
+      "sw-teams",
       "swgt.io",
       "swquery.net"
     ],
     "OCTSW2026O7J": [
-      "swgt.io",
-      "swquery.net"
-    ],
-    "OURTURNFORLEGACY": [
+      "sw-teams",
       "swgt.io",
       "swquery.net"
     ],
     "SWC1SHERETORONTO": [
+      "sw-teams",
       "swgt.io",
       "swquery.net"
     ]
   },
-  "source_errors": [],
   "expires": {
     "FOR3TICKETS2SEOUL": "2026-10-18T04:00:00Z",
-    "OURTURNFORLEGACY": "2026-10-18T04:00:00Z",
     "SWC1SHERETORONTO": "2026-10-18T04:00:00Z"
-  }
+  },
+  "source_errors": [
+    "summonerswarcodes: HTTP Error 526: <none>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }

@@ -1,15 +1,8 @@
 {
   "active": [
-    "555CHALLENGEISEZ",
-    "B3STNEWCOMER",
     "FOR3TICKETS2SEOUL",
-    "GUARDIAN26TOURNEYOCT",
-    "NEWER4ISHERE",
     "OCTSW2026O7J",
-    "RISINGSTARS2026",
-    "SWC1017APACGO",
-    "SWC1SHERETORONTO",
-    "UGOTITSDVOL3"
+    "SWC1SHERETORONTO"
   ],
   "expired": [
     "000SLOT",
@@ -204,7 +197,6 @@
     "S4RTARGS0312",
     "SARABASWC2024",
     "SAWASDEESWC23",
-    "SCHOENHIERSWC",
     "SEAUINAPACCUP23",
     "SECRETMYSTIC22",
     "SEEU1N26AGA1N",
@@ -303,7 +295,6 @@
     "SWCHZHU4NYINGNI25",
     "SWCJADUGWAJA23",
     "SWCJOAAAKR26",
-    "SWCPARISNOUSVOILA",
     "SWCREED23",
     "SWCWANNAGO2VEGAS",
     "SWCZANZAN2021",
@@ -340,49 +331,50 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-16T21:09:44Z",
+  "updated_at": "2026-10-16T23:36:13Z",
   "rewards": {
-    "555CHALLENGEISEZ": [],
-    "B3STNEWCOMER": [],
-    "FOR3TICKETS2SEOUL": [],
-    "GUARDIAN26TOURNEYOCT": [],
-    "NEWER4ISHERE": [],
-    "OCTSW2026O7J": [],
-    "RISINGSTARS2026": [],
-    "SWC1017APACGO": [],
-    "SWC1SHERETORONTO": [],
-    "UGOTITSDVOL3": []
-  },
-  "sources": {
-    "555CHALLENGEISEZ": [
-      "sw-teams"
-    ],
-    "B3STNEWCOMER": [
-      "sw-teams"
-    ],
     "FOR3TICKETS2SEOUL": [
-      "sw-teams"
-    ],
-    "GUARDIAN26TOURNEYOCT": [
-      "sw-teams"
-    ],
-    "NEWER4ISHERE": [
-      "sw-teams"
+      [
+        "crystal",
+        "x100"
+      ],
+      [
+        "red",
+        "x3"
+      ]
     ],
     "OCTSW2026O7J": [
-      "sw-teams"
-    ],
-    "RISINGSTARS2026": [
-      "sw-teams"
-    ],
-    "SWC1017APACGO": [
-      "sw-teams"
+      [
+        "yellow",
+        "x3"
+      ]
     ],
     "SWC1SHERETORONTO": [
-      "sw-teams"
+      [
+        "mana",
+        "x500000"
+      ],
+      [
+        "red",
+        "x2"
+      ]
+    ]
+  },
+  "sources": {
+    "FOR3TICKETS2SEOUL": [
+      "sw-teams",
+      "swgt.io",
+      "swquery.net"
     ],
-    "UGOTITSDVOL3": [
-      "sw-teams"
+    "OCTSW2026O7J": [
+      "sw-teams",
+      "swgt.io",
+      "swquery.net"
+    ],
+    "SWC1SHERETORONTO": [
+      "sw-teams",
+      "swgt.io",
+      "swquery.net"
     ]
   },
   "source_errors": [
