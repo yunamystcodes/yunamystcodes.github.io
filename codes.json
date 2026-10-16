@@ -1,66 +1,74 @@
 {
-  "updated": "2026-10-16T21:09:44Z",
+  "updated": "2026-10-16T22:34:22.677Z",
   "source_count": 5,
   "successful_sources": 3,
-  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
+  "rule": "somente códigos atualmente ativos; códigos com prazo vencido removidos; revisão manual baseada em fontes atualizadas",
   "codes": [
-    "555CHALLENGEISEZ",
-    "B3STNEWCOMER",
     "FOR3TICKETS2SEOUL",
-    "GUARDIAN26TOURNEYOCT",
-    "NEWER4ISHERE",
     "OCTSW2026O7J",
-    "RISINGSTARS2026",
-    "SWC1017APACGO",
-    "SWC1SHERETORONTO",
-    "UGOTITSDVOL3"
+    "OURTURNFORLEGACY",
+    "SWC1SHERETORONTO"
   ],
   "rewards": {
-    "555CHALLENGEISEZ": [],
-    "B3STNEWCOMER": [],
-    "FOR3TICKETS2SEOUL": [],
-    "GUARDIAN26TOURNEYOCT": [],
-    "NEWER4ISHERE": [],
-    "OCTSW2026O7J": [],
-    "RISINGSTARS2026": [],
-    "SWC1017APACGO": [],
-    "SWC1SHERETORONTO": [],
-    "UGOTITSDVOL3": []
-  },
-  "sources": {
-    "555CHALLENGEISEZ": [
-      "sw-teams"
-    ],
-    "B3STNEWCOMER": [
-      "sw-teams"
-    ],
     "FOR3TICKETS2SEOUL": [
-      "sw-teams"
-    ],
-    "GUARDIAN26TOURNEYOCT": [
-      "sw-teams"
-    ],
-    "NEWER4ISHERE": [
-      "sw-teams"
+      [
+        "crystal",
+        "x100"
+      ],
+      [
+        "red",
+        "x3"
+      ]
     ],
     "OCTSW2026O7J": [
-      "sw-teams"
+      [
+        "yellow",
+        "x3"
+      ]
     ],
-    "RISINGSTARS2026": [
-      "sw-teams"
-    ],
-    "SWC1017APACGO": [
-      "sw-teams"
+    "OURTURNFORLEGACY": [
+      [
+        "energy",
+        "x100"
+      ],
+      [
+        "yellow",
+        "x3"
+      ]
     ],
     "SWC1SHERETORONTO": [
-      "sw-teams"
-    ],
-    "UGOTITSDVOL3": [
-      "sw-teams"
+      [
+        "mana",
+        "x500000"
+      ],
+      [
+        "red",
+        "x2"
+      ]
     ]
   },
-  "source_errors": [
-    "summonerswarcodes: HTTP Error 526: <none>",
-    "swquery: HTTP Error 404: Not Found"
-  ]
+  "sources": {
+    "FOR3TICKETS2SEOUL": [
+      "swgt.io",
+      "swquery.net"
+    ],
+    "OCTSW2026O7J": [
+      "swgt.io",
+      "swquery.net"
+    ],
+    "OURTURNFORLEGACY": [
+      "swgt.io",
+      "swquery.net"
+    ],
+    "SWC1SHERETORONTO": [
+      "swgt.io",
+      "swquery.net"
+    ]
+  },
+  "source_errors": [],
+  "expires": {
+    "FOR3TICKETS2SEOUL": "2026-10-18T04:00:00Z",
+    "OURTURNFORLEGACY": "2026-10-18T04:00:00Z",
+    "SWC1SHERETORONTO": "2026-10-18T04:00:00Z"
+  }
 }
