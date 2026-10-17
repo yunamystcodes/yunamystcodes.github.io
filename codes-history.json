@@ -2,6 +2,7 @@
   "active": [
     "FOR3TICKETS2SEOUL",
     "GAOTO10THSWC2026",
+    "L3TSGO2SEOUL14NOV",
     "OCTSW2026O7J",
     "SWC1SHERETORONTO",
     "WELCOME2KRNGTHP"
@@ -333,7 +334,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-17T10:44:50Z",
+  "updated_at": "2026-10-17T13:57:54Z",
   "rewards": {
     "FOR3TICKETS2SEOUL": [
       [
@@ -346,6 +347,7 @@
       ]
     ],
     "GAOTO10THSWC2026": [],
+    "L3TSGO2SEOUL14NOV": [],
     "OCTSW2026O7J": [
       [
         "yellow",
@@ -371,6 +373,9 @@
       "swquery.net"
     ],
     "GAOTO10THSWC2026": [
+      "sw-teams"
+    ],
+    "L3TSGO2SEOUL14NOV": [
       "sw-teams"
     ],
     "OCTSW2026O7J": [

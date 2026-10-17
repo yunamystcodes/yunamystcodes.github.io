@@ -1,11 +1,12 @@
 {
-  "updated": "2026-10-17T10:44:50Z",
+  "updated": "2026-10-17T13:57:54Z",
   "source_count": 5,
   "successful_sources": 3,
   "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
     "FOR3TICKETS2SEOUL",
     "GAOTO10THSWC2026",
+    "L3TSGO2SEOUL14NOV",
     "OCTSW2026O7J",
     "SWC1SHERETORONTO",
     "WELCOME2KRNGTHP"
@@ -22,6 +23,7 @@
       ]
     ],
     "GAOTO10THSWC2026": [],
+    "L3TSGO2SEOUL14NOV": [],
     "OCTSW2026O7J": [
       [
         "yellow",
@@ -47,6 +49,9 @@
       "swquery.net"
     ],
     "GAOTO10THSWC2026": [
+      "sw-teams"
+    ],
+    "L3TSGO2SEOUL14NOV": [
       "sw-teams"
     ],
     "OCTSW2026O7J": [
