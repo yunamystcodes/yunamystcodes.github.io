@@ -1,8 +1,10 @@
 {
   "active": [
     "FOR3TICKETS2SEOUL",
+    "GAOTO10THSWC2026",
     "OCTSW2026O7J",
-    "SWC1SHERETORONTO"
+    "SWC1SHERETORONTO",
+    "WELCOME2KRNGTHP"
   ],
   "expired": [
     "000SLOT",
@@ -331,7 +333,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-17T06:09:36Z",
+  "updated_at": "2026-10-17T10:44:50Z",
   "rewards": {
     "FOR3TICKETS2SEOUL": [
       [
@@ -343,6 +345,7 @@
         "x3"
       ]
     ],
+    "GAOTO10THSWC2026": [],
     "OCTSW2026O7J": [
       [
         "yellow",
@@ -358,13 +361,17 @@
         "red",
         "x2"
       ]
-    ]
+    ],
+    "WELCOME2KRNGTHP": []
   },
   "sources": {
     "FOR3TICKETS2SEOUL": [
       "sw-teams",
       "swgt.io",
       "swquery.net"
+    ],
+    "GAOTO10THSWC2026": [
+      "sw-teams"
     ],
     "OCTSW2026O7J": [
       "sw-teams",
@@ -375,6 +382,9 @@
       "sw-teams",
       "swgt.io",
       "swquery.net"
+    ],
+    "WELCOME2KRNGTHP": [
+      "sw-teams"
     ]
   },
   "source_errors": [
