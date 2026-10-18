@@ -1,13 +1,12 @@
 {
   "active": [
-    "FOR3TICKETS2SEOUL",
     "GAOTO10THSWC2026",
     "L3TSGO2SEOUL14NOV",
     "OCTSW2026O7J",
-    "SWC1SHERETORONTO",
     "WELCOME2KRNGTHP"
   ],
   "expired": [
+    "",
     "000SLOT",
     "0SUNDAYSMON22",
     "1008NYCAMERICAS",
@@ -121,6 +120,7 @@
     "FIGHTING4GLORY",
     "FINDELLIA030",
     "FOLLOWUSNOW1",
+    "FOR3TICKETS2SEOUL",
     "G3TSWMYTG1FT",
     "GAMESCOM2US2025",
     "GAMESECRET23",
@@ -275,6 +275,7 @@
     "SW2923THANKYOU",
     "SW7THTK887",
     "SW8THBIRTHDAY",
+    "SWC1SHERETORONTO",
     "SWC20207777",
     "SWC2020AINI",
     "SWC2020DAEBAK",
@@ -334,18 +335,8 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-18T01:24:27Z",
+  "updated_at": "2026-10-18T06:25:12Z",
   "rewards": {
-    "FOR3TICKETS2SEOUL": [
-      [
-        "crystal",
-        "x100"
-      ],
-      [
-        "red",
-        "x3"
-      ]
-    ],
     "GAOTO10THSWC2026": [],
     "L3TSGO2SEOUL14NOV": [],
     "OCTSW2026O7J": [
@@ -354,24 +345,9 @@
         "x3"
       ]
     ],
-    "SWC1SHERETORONTO": [
-      [
-        "mana",
-        "x500000"
-      ],
-      [
-        "red",
-        "x2"
-      ]
-    ],
     "WELCOME2KRNGTHP": []
   },
   "sources": {
-    "FOR3TICKETS2SEOUL": [
-      "sw-teams",
-      "swgt.io",
-      "swquery.net"
-    ],
     "GAOTO10THSWC2026": [
       "sw-teams"
     ],
@@ -379,11 +355,6 @@
       "sw-teams"
     ],
     "OCTSW2026O7J": [
-      "sw-teams",
-      "swgt.io",
-      "swquery.net"
-    ],
-    "SWC1SHERETORONTO": [
       "sw-teams",
       "swgt.io",
       "swquery.net"

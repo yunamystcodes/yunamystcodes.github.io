@@ -1,27 +1,15 @@
 {
-  "updated": "2026-10-18T01:24:27Z",
+  "updated": "2026-10-18T06:25:12Z",
   "source_count": 5,
   "successful_sources": 3,
   "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
-    "FOR3TICKETS2SEOUL",
     "GAOTO10THSWC2026",
     "L3TSGO2SEOUL14NOV",
     "OCTSW2026O7J",
-    "SWC1SHERETORONTO",
     "WELCOME2KRNGTHP"
   ],
   "rewards": {
-    "FOR3TICKETS2SEOUL": [
-      [
-        "crystal",
-        "x100"
-      ],
-      [
-        "red",
-        "x3"
-      ]
-    ],
     "GAOTO10THSWC2026": [],
     "L3TSGO2SEOUL14NOV": [],
     "OCTSW2026O7J": [
@@ -30,24 +18,9 @@
         "x3"
       ]
     ],
-    "SWC1SHERETORONTO": [
-      [
-        "mana",
-        "x500000"
-      ],
-      [
-        "red",
-        "x2"
-      ]
-    ],
     "WELCOME2KRNGTHP": []
   },
   "sources": {
-    "FOR3TICKETS2SEOUL": [
-      "sw-teams",
-      "swgt.io",
-      "swquery.net"
-    ],
     "GAOTO10THSWC2026": [
       "sw-teams"
     ],
@@ -59,19 +32,11 @@
       "swgt.io",
       "swquery.net"
     ],
-    "SWC1SHERETORONTO": [
-      "sw-teams",
-      "swgt.io",
-      "swquery.net"
-    ],
     "WELCOME2KRNGTHP": [
       "sw-teams"
     ]
   },
-  "expires": {
-    "FOR3TICKETS2SEOUL": "2026-10-18T04:00:00Z",
-    "SWC1SHERETORONTO": "2026-10-18T04:00:00Z"
-  },
+  "expires": {},
   "source_errors": [
     "summonerswarcodes: HTTP Error 526: <none>",
     "swquery: HTTP Error 404: Not Found"
