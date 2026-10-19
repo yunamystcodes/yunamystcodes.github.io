@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-19T17:00:59Z",
+  "updated": "2026-10-19T21:29:50Z",
   "source_count": 5,
   "successful_sources": 3,
   "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
