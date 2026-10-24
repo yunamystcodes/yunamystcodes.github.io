@@ -111,13 +111,31 @@ def main():
     additions = [c for c in found if c not in existing]
     existing.extend(additions)
 
-    # Remove every code whose known validity window has ended.
+    # Remove codes whose expiry is known either from the built-in official list
+    # or from the per-code `expires` map in codes.json. Accept ISO-8601 timestamps
+    # and date-only values; keep codes when an expiry value is malformed.
     now = datetime.now(timezone.utc)
-    expired = [c for c in existing if c in EXPIRY_UTC and now >= datetime.fromisoformat(EXPIRY_UTC[c].replace('Z', '+00:00'))]
+    expiry_map = data.get('expires', {})
+    expired = []
+    for c in existing:
+        raw_expiry = EXPIRY_UTC.get(c) or expiry_map.get(c)
+        if not raw_expiry:
+            continue
+        try:
+            value = str(raw_expiry).strip()
+            expiry = datetime.fromisoformat(value.replace('Z', '+00:00'))
+            if expiry.tzinfo is None:
+                expiry = expiry.replace(tzinfo=timezone.utc)
+            if now >= expiry:
+                expired.append(c)
+        except (TypeError, ValueError):
+            errors.append(f'{c}: data de expiração inválida ({raw_expiry})')
     for c in expired:
-        existing.remove(c)
+        if c in existing:
+            existing.remove(c)
         rewards.pop(c, None)
         sources.pop(c, None)
+        expiry_map.pop(c, None)
 
     existing = list(dict.fromkeys(existing))
     for c in additions:
@@ -133,6 +151,7 @@ def main():
         'codes': existing,
         'rewards': rewards,
         'sources': sources,
+        'expires': expiry_map,
         'source_errors': errors[:20],
     })
     CODES.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
