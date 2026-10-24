@@ -5,6 +5,7 @@ from urllib.parse import urljoin
 
 ROOT = Path(__file__).resolve().parents[1]
 CODES = ROOT / 'codes.json'
+HISTORY = ROOT / 'codes-history.json'
 OFFICIAL_LISTS = [
     'https://www.summonerswar.com/pt/skyarena/news/list?page={}',
     'https://www.summonerswar.com/en/skyarena/news/list?page={}',
@@ -89,6 +90,13 @@ def parse_page(url, raw):
 def main():
     data = json.loads(CODES.read_text(encoding='utf-8')) if CODES.exists() else {}
     existing = [str(c).upper() for c in data.get('codes', [])]
+    # The history file is the site's persistent record of codes already confirmed expired.
+    # Never publish a historically expired code again from a stale listing scrape.
+    try:
+        history = json.loads(HISTORY.read_text(encoding='utf-8')) if HISTORY.exists() else {}
+    except (OSError, json.JSONDecodeError):
+        history = {}
+    history_expired = {str(c).upper() for c in history.get('expired', []) if str(c).strip()}
     rewards = data.get('rewards', {})
     sources = data.get('sources', {})
     found = {}
@@ -107,8 +115,17 @@ def main():
             except Exception as exc:
                 errors.append(f'{base.format(page)}: {exc}')
 
-    # Add only codes discovered on official Com2uS pages.
-    additions = [c for c in found if c not in existing]
+    # Remove codes already confirmed expired in the history before processing new findings.
+    history_removed = [c for c in existing if c in history_expired]
+    existing = [c for c in existing if c not in history_expired]
+    for c in history_removed:
+        rewards.pop(c, None)
+        data.get('sources', {}).pop(c, None)
+        data.get('expires', {}).pop(c, None)
+
+    # Add only codes discovered on official Com2uS pages, excluding codes already
+    # recorded as expired in the history so stale pages cannot resurrect them.
+    additions = [c for c in found if c not in existing and c not in history_expired]
     existing.extend(additions)
 
     # Remove codes whose expiry is known either from the built-in official list
@@ -155,7 +172,7 @@ def main():
         'source_errors': errors[:20],
     })
     CODES.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(f'Oficiais encontrados: {len(found)} | novos: {len(additions)} | expirados removidos: {len(expired)} | ativos: {len(existing)}')
+    print(f'Oficiais encontrados: {len(found)} | novos: {len(additions)} | expirados removidos: {len(expired) + len(history_removed)} | ativos: {len(existing)}')
 
 
 if __name__ == '__main__':
