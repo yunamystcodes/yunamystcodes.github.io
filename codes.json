@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-26T01:17:18Z",
-  "source_count": 2,
+  "updated": "2026-10-26T05:17:57Z",
+  "source_count": 5,
   "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
     "GAOTO10THSWC2026",
     "L3TSGO2SEOUL14NOV",
@@ -37,5 +37,9 @@
     ]
   },
   "expires": {},
-  "source_errors": []
+  "source_errors": [
+    "sw-teams: The read operation timed out",
+    "summonerswarcodes: HTTP Error 526: <none>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
