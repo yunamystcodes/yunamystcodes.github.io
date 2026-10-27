@@ -1,9 +1,6 @@
 {
   "active": [
-    "GAOTO10THSWC2026",
-    "L3TSGO2SEOUL14NOV",
-    "OCTSW2026O7J",
-    "WELCOME2KRNGTHP"
+    "OCTSW2026O7J"
   ],
   "expired": [
     "",
@@ -335,32 +332,20 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-27T12:04:19Z",
+  "updated_at": "2026-10-27T17:57:33Z",
   "rewards": {
-    "GAOTO10THSWC2026": [],
-    "L3TSGO2SEOUL14NOV": [],
     "OCTSW2026O7J": [
       [
         "yellow",
         "x3"
       ]
-    ],
-    "WELCOME2KRNGTHP": []
+    ]
   },
   "sources": {
-    "GAOTO10THSWC2026": [
-      "sw-teams"
-    ],
-    "L3TSGO2SEOUL14NOV": [
-      "sw-teams"
-    ],
     "OCTSW2026O7J": [
       "sw-teams",
       "swgt.io",
       "swquery.net"
-    ],
-    "WELCOME2KRNGTHP": [
-      "sw-teams"
     ]
   },
   "source_errors": [
