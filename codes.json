@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-30T13:54:06Z",
-  "source_count": 5,
+  "updated": "2026-10-30T18:40:16Z",
+  "source_count": 2,
   "successful_sources": 2,
-  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
+  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
   "codes": [
     "OCTSW2026O7J"
   ],
@@ -22,9 +22,5 @@
     ]
   },
   "expires": {},
-  "source_errors": [
-    "swcoupon: <urlopen error [Errno -2] Name or service not known>",
-    "summonerswarcodes: HTTP Error 526: <none>",
-    "swquery: HTTP Error 404: Not Found"
-  ]
+  "source_errors": []
 }
