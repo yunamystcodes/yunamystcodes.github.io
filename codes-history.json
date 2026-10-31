@@ -1,5 +1,6 @@
 {
   "active": [
+    "NOVSW2026T3V",
     "OCTSW2026O7J"
   ],
   "expired": [
@@ -332,8 +333,9 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-10-31T14:44:39Z",
+  "updated_at": "2026-10-31T18:50:24Z",
   "rewards": {
+    "NOVSW2026T3V": [],
     "OCTSW2026O7J": [
       [
         "yellow",
@@ -342,6 +344,9 @@
     ]
   },
   "sources": {
+    "NOVSW2026T3V": [
+      "sw-teams"
+    ],
     "OCTSW2026O7J": [
       "sw-teams",
       "swgt.io",
@@ -349,7 +354,6 @@
     ]
   },
   "source_errors": [
-    "sw-teams: The read operation timed out",
     "swcoupon: <urlopen error [Errno -2] Name or service not known>",
     "summonerswarcodes: HTTP Error 526: <none>",
     "swquery: HTTP Error 404: Not Found"

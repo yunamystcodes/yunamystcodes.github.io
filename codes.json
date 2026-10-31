@@ -1,12 +1,14 @@
 {
-  "updated": "2026-10-31T15:46:33Z",
-  "source_count": 2,
+  "updated": "2026-10-31T18:50:24Z",
+  "source_count": 5,
   "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
   "codes": [
+    "NOVSW2026T3V",
     "OCTSW2026O7J"
   ],
   "rewards": {
+    "NOVSW2026T3V": [],
     "OCTSW2026O7J": [
       [
         "yellow",
@@ -15,6 +17,9 @@
     ]
   },
   "sources": {
+    "NOVSW2026T3V": [
+      "sw-teams"
+    ],
     "OCTSW2026O7J": [
       "sw-teams",
       "swgt.io",
@@ -22,5 +27,9 @@
     ]
   },
   "expires": {},
-  "source_errors": []
+  "source_errors": [
+    "swcoupon: <urlopen error [Errno -2] Name or service not known>",
+    "summonerswarcodes: HTTP Error 526: <none>",
+    "swquery: HTTP Error 404: Not Found"
+  ]
 }
