@@ -18,7 +18,9 @@ jobs:
       - name: Verificar integração Supabase
         shell: bash
         run: |
+          set -euo pipefail
           grep -qF 'https://uxwbbaeupemihonwyszu.supabase.co/functions/v1/feedbacks' index.html
-          grep -qF 'id="yunamyst-feedback-central-js"' index.html
+          grep -qF 'id="ym-feedback-global-clean-js"' index.html
+          grep -qF 'id="ym-feedback-modal"' index.html
           ! grep -qF 'yunamyst_feedbacks_v2' index.html
-          echo 'OK: feedbacks usam uma base online central e não localStorage.'
+          echo 'OK: feedbacks usam Supabase e o script global atual.'
