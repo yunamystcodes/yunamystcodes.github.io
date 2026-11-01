@@ -38,4 +38,15 @@ jobs:
           git add index.html codes.json codes-history.json
           git diff --cached --quiet && exit 0
           git commit -m 'Atualizar códigos e remover expirados automaticamente'
-          git push
+          # Other site workflows may publish at the same time. Rebase on the
+          # latest main before pushing, retrying if another commit wins the race.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Não foi possível publicar após três tentativas." >&2
+          exit 1
