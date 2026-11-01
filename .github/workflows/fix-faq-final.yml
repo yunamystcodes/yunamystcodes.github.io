@@ -50,5 +50,25 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Fix FAQ three questions on PC and mobile [skip faq]"
-          git push
+          if git diff --cached --quiet; then
+            echo 'FAQ já está corrigida; não há alterações para publicar.'
+            exit 0
+          fi
+          git commit -m "Fix FAQ three questions on PC and mobile [skip faq]"
+          # Keep this maintenance workflow safe when other jobs publish index.html.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+            else
+              git rebase --abort || true
+              git reset --hard origin/main
+              echo 'A FAQ foi atualizada por outro workflow; a próxima execução revalidará o estado atual.'
+              exit 0
+            fi
+            sleep 2
+          done
+          echo 'Não foi possível publicar a correção da FAQ após três tentativas.' >&2
+          exit 1
