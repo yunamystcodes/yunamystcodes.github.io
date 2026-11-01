@@ -1,29 +1,17 @@
 {
-  "updated": "2026-11-01T20:22:16Z",
+  "updated": "2026-11-01T20:30:55Z",
   "source_count": 12,
   "successful_sources": 10,
-  "rule": "códigos expirados removidos por data de validade ou confirmação em pelo menos duas fontes independentes; histórico impede que códigos expirados reapareçam",
+  "rule": "códigos expirados removidos da lista ativa e bloqueados no histórico para não reaparecerem; estados divergentes são revistos antes da remoção",
   "codes": [
-    "NOVSW2026T3V",
-    "OCTSW2026O7J"
+    "NOVSW2026T3V"
   ],
   "rewards": {
-    "NOVSW2026T3V": [],
-    "OCTSW2026O7J": [
-      [
-        "yellow",
-        "x3"
-      ]
-    ]
+    "NOVSW2026T3V": []
   },
   "sources": {
     "NOVSW2026T3V": [
       "sw-teams"
-    ],
-    "OCTSW2026O7J": [
-      "sw-teams",
-      "swgt.io",
-      "swquery.net"
     ]
   },
   "expires": {},

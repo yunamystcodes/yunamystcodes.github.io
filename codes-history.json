@@ -1,7 +1,6 @@
 {
   "active": [
-    "NOVSW2026T3V",
-    "OCTSW2026O7J"
+    "NOVSW2026T3V"
   ],
   "expired": [
     "000SLOT",
@@ -179,6 +178,7 @@
     "NEXTWF25PARISA1GA",
     "NIJINBANG66SWC",
     "OCT22SWCAPAC",
+    "OCTSW2026O7J",
     "OSAKAK1T3YA314",
     "OSINOSWC2023",
     "PAI2026BANGKOK",
@@ -332,24 +332,13 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-11-01T20:22:16Z",
+  "updated_at": "2026-11-01T20:30:55Z",
   "rewards": {
-    "NOVSW2026T3V": [],
-    "OCTSW2026O7J": [
-      [
-        "yellow",
-        "x3"
-      ]
-    ]
+    "NOVSW2026T3V": []
   },
   "sources": {
     "NOVSW2026T3V": [
       "sw-teams"
-    ],
-    "OCTSW2026O7J": [
-      "sw-teams",
-      "swgt.io",
-      "swquery.net"
     ]
   },
   "source_errors": [
