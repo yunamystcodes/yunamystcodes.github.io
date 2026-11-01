@@ -1,99 +1,14 @@
-name: Fix YunaMyst header on PC and mobile
+name: Fix YunaMyst header on PC and mobile (legacy)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  fix-header:
-    if: ${{ !contains(github.event.head_commit.message, '[skip header]') }}
+  retired:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Apply final YunaMyst layout to index.html
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-
-          s = re.sub(r'<div class="logo">.*?<small>SUMMONERS WAR</small></div>', '<div class="logo">YunaMyst<small>SUMMONERS WAR</small></div>', s, count=1, flags=re.S)
-
-          marker_logo = '<style id="yunamyst-final-subtitle-spacing">'
-          css_logo = '''<style id="yunamyst-final-subtitle-spacing">
-.logo small{display:block!important;margin-top:5px!important;font-size:7px!important;letter-spacing:3px!important;line-height:1!important;white-space:nowrap!important;text-align:center!important;}
-.logo small::after{font-size:7px!important;letter-spacing:3px!important;}
-@media(max-width:850px){.logo small{margin-top:5px!important;font-size:7px!important;letter-spacing:3px!important}.logo small::after{font-size:7px!important;letter-spacing:3px!important}}
-</style>'''
-          if marker_logo in s:
-              s = re.sub(re.escape(marker_logo) + r'.*?</style>', css_logo.rstrip('</style>') + '</style>', s, count=1, flags=re.S)
-          else:
-              s = s.replace('</head>', css_logo + '\n</head>', 1)
-
-          # Remove every embedded English HOW TO USE pseudo-translation. The
-          # actual text is translated by language-fix.js, so these pseudo rules
-          # were the source of the duplicate title/description on PC and mobile.
-          patterns = [
-              r'html\[lang="en"\] \.step\{[^}]*\}',
-              r'html\[lang="en"\] \.step > div:last-child\{[^}]*\}',
-              r'html\[lang="en"\] \.step > div:last-child b\{[^}]*\}',
-              r'html\[lang="en"\] \.step > div:last-child b::after\{[^}]*\}',
-              r'html\[lang="en"\] \.step:nth-child\([2-5]\) > div:last-child b::after\{[^}]*\}',
-              r'html\[lang="en"\] \.step > div:last-child::after\{[^}]*\}',
-              r'html\[lang="en"\] \.step:nth-child\([2-5]\) > div:last-child::after\{[^}]*\}',
-              r'html\[lang="en"\] \.step::after\{[^}]*\}',
-          ]
-          for pat in patterns:
-              s = re.sub(pat, '', s, flags=re.S)
-
-          marker = '<style id="yunamyst-index-howto-final">'
-          css = '''<style id="yunamyst-index-howto-final">
-/* HOW TO USE — single content, stacked title + explanation on PC and mobile. */
-#como .step{display:flex!important;align-items:flex-start!important;gap:10px!important;font-size:13px!important;}
-#como .step > div:last-child{display:block!important;flex:1!important;min-width:0!important;font-size:13px!important;line-height:1.4!important;}
-#como .step > div:last-child b{display:block!important;font-size:13px!important;line-height:1.25!important;margin:0 0 3px!important;color:#dda1ff!important;}
-#como .step > div:last-child b::after{display:none!important;content:none!important;}
-#como .step::after{display:none!important;content:none!important;}
-#como .step > div:last-child::after{display:none!important;content:none!important;}
-html[lang="en"] #como .step{font-size:13px!important;}
-html[lang="en"] #como .step > div:last-child{font-size:13px!important;}
-html[lang="en"] #como .step > div:last-child b{font-size:13px!important;}
-html[lang="en"] #como .step > div:last-child b::after{content:none!important;display:none!important;}
-html[lang="en"] #como .step::after{content:none!important;display:none!important;}
-html[lang="en"] #como .step > div:last-child::after{content:none!important;display:none!important;}
-@media(max-width:850px){
-#como .step{padding:15px 14px!important;gap:10px!important;}
-#como .step > div:last-child{font-size:13px!important;line-height:1.4!important;}
-#como .step > div:last-child b{font-size:13px!important;}
-}
-</style>'''
-          if marker in s:
-              s = re.sub(re.escape(marker) + r'.*?</style>', css.rstrip('</style>') + '</style>', s, count=1, flags=re.S)
-          else:
-              s = s.replace('</head>', css + '\n</head>', 1)
-
-          p.write_text(s, encoding='utf-8')
-          PY
-
-      - name: Commit index.html only
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          if git diff --cached --quiet; then
-            echo 'No index change needed.'
-            exit 0
-          fi
-          git commit -m 'Match subtitle to reference on PC and mobile [skip header]'
-          git fetch origin main
-          git rebase origin/main
-          git push
+      - name: Workflow antigo desativado
+        run: echo 'O cabeçalho atual já está integrado no index.html. Este patch antigo foi retirado para evitar reescritas automáticas do site.'
