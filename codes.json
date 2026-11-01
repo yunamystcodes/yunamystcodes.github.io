@@ -1,8 +1,8 @@
 {
-  "updated": "2026-11-01T19:45:32Z",
-  "source_count": 2,
-  "successful_sources": 2,
-  "rule": "apenas fontes oficiais Com2uS; novos códigos adicionados automaticamente; códigos expirados removidos por data de validade; recompensas não são inventadas",
+  "updated": "2026-11-01T20:22:16Z",
+  "source_count": 12,
+  "successful_sources": 10,
+  "rule": "códigos expirados removidos por data de validade ou confirmação em pelo menos duas fontes independentes; histórico impede que códigos expirados reapareçam",
   "codes": [
     "NOVSW2026T3V",
     "OCTSW2026O7J"
@@ -27,5 +27,8 @@
     ]
   },
   "expires": {},
-  "source_errors": []
+  "source_errors": [
+    "https://swcoupon.net/: <urlopen error [Errno -2] Name or service not known>",
+    "https://summonerswarcodes.us/: HTTP Error 526: <none>"
+  ]
 }
