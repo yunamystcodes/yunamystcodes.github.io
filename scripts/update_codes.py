@@ -20,15 +20,15 @@ STATUS_SOURCES = [
     'https://mobi.gg/en/tips/free-summoners-war-codes/',
 ]
 HEADERS = {'User-Agent': 'Mozilla/5.0 (YunaCodes automatic-code-maintenance)'}
-CODE = re.compile(r'\\b[A-Z0-9]{6,32}\\b')
-DATE = re.compile(r'20\\d{2}[-/.]\\d{1,2}[-/.]\\d{1,2}')
-LABEL = re.compile(r'(?:Coupon Code|Coupon Codes|Código do Cupom|Códigos do Cupom)\\s*[:：]\\s*([^<]{0,300})', re.I)
-ANDROID = re.compile(r'\\[(?:Android|ANDROID)\\]\\s*([A-Z0-9]{6,32})')
+CODE = re.compile(r'\b[A-Z0-9]{6,32}\b')
+DATE = re.compile(r'20\d{2}[-/.]\d{1,2}[-/.]\d{1,2}')
+LABEL = re.compile(r'(?:Coupon Code|Coupon Codes|Código do Cupom|Códigos do Cupom)\s*[:：]\s*([^<]{0,300})', re.I)
+ANDROID = re.compile(r'\[(?:Android|ANDROID)\]\s*([A-Z0-9]{6,32})')
 BAD = {'ANDROID','COUPON','CUPOM','SUMMONERS','WAR','SKYARENA','SKY','ARENA','COM2US','CODE','CODES','REWARD','REWARDS','ACTIVE','EXPIRED'}
 EXPIRED_SIGNAL = re.compile(
-    r'\\b(expired|expirad[oa]s?|expirou|inactive|invalid code|not valid|'
+    r'\b(expired|expirad[oa]s?|expirou|inactive|invalid code|not valid|'
     r'no longer works?|no longer working|not working|does not work|'
-    r'doesn.t work|ended|already used up)\\b', re.I
+    r'doesn.t work|ended|already used up)\b', re.I
 )
 
 # Official expiry timestamps already verified for specific SWC coupons.
@@ -52,19 +52,19 @@ def fetch(url):
 
 
 def clean(raw):
-    raw = re.sub(r'<script\\b[^>]*>.*?</script>|<style\\b[^>]*>.*?</style>', ' ', raw, flags=re.I|re.S)
-    return re.sub(r'\\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', raw))).strip()
+    raw = re.sub(r'<script\b[^>]*>.*?</script>|<style\b[^>]*>.*?</style>', ' ', raw, flags=re.I|re.S)
+    return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', raw))).strip()
 
 
 def code_ok(code):
     return (6 <= len(code) <= 32 and code not in BAD
-            and re.search(r'[A-Z]', code) and re.search(r'\\d', code))
+            and re.search(r'[A-Z]', code) and re.search(r'\d', code))
 
 
 def links(raw):
     out = set()
-    for href in re.findall(r'href=["\\']([^"\\']+)["\\']', raw, re.I):
-        if re.search(r'/skyarena/news/list/\\d+', href):
+    for href in re.findall(r'href=["\']([^"\']+)["\']', raw, re.I):
+        if re.search(r'/skyarena/news/list/\d+', href):
             out.add(urljoin('https://www.summonerswar.com', href.split('?')[0]))
     return out
 
@@ -127,7 +127,7 @@ def confirmed_expired_codes(candidates, errors):
 def expiry_has_passed(raw_expiry, now):
     value = str(raw_expiry).strip()
     # A date without a time means valid through the end of that UTC date.
-    if re.fullmatch(r'20\\d{2}-\\d{2}-\\d{2}', value):
+    if re.fullmatch(r'20\d{2}-\d{2}-\d{2}', value):
         expiry = datetime.fromisoformat(value).replace(hour=23, minute=59, second=59, tzinfo=timezone.utc)
     else:
         expiry = datetime.fromisoformat(value.replace('Z', '+00:00'))
@@ -212,7 +212,7 @@ def main():
     history['updated_at'] = now.replace(microsecond=0).isoformat().replace('+00:00', 'Z')
     history['rewards'] = {code: rewards.get(code, []) for code in existing}
     history['sources'] = {code: sources.get(code, []) for code in existing}
-    HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8')
+    HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
     now_text = now.replace(microsecond=0).isoformat().replace('+00:00', 'Z')
     data.update({
@@ -226,7 +226,7 @@ def main():
         'expires': expiry_map,
         'source_errors': errors[:20],
     })
-    CODES.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8')
+    CODES.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     confirmed_count = len(source_expired)
     print(
         f'Novos códigos oficiais: {len(additions)} | expirados por data: {len(date_expired)} '
