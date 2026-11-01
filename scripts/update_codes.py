@@ -171,6 +171,10 @@ def main():
     # Remove anything already recorded as expired, even if a stale source republishes it.
     history_removed = [code for code in existing if code in history_expired]
     existing = [code for code in existing if code not in history_expired]
+    for code in history_removed:
+        rewards.pop(code, None)
+        sources.pop(code, None)
+        expiry_map.pop(code, None)
 
     additions = [code for code in found if code not in existing and code not in history_expired]
     existing.extend(additions)
