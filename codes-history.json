@@ -5,6 +5,7 @@
     "S11GOWINNERGO"
   ],
   "expired": [
+    "",
     "000SLOT",
     "0SUNDAYSMON22",
     "1008NYCAMERICAS",
@@ -334,7 +335,7 @@
     "YYDSSWC26ZAN",
     "ZANLA2022SWC"
   ],
-  "updated_at": "2026-11-10T10:02:00Z",
+  "updated_at": "2026-11-10T10:30:59Z",
   "rewards": {
     "2611RTABATTLE08": [],
     "NOVSW2026T3V": [],
@@ -352,6 +353,7 @@
     ]
   },
   "source_errors": [
+    "sw-teams: The read operation timed out",
     "swcoupon: <urlopen error [Errno -2] Name or service not known>",
     "summonerswarcodes: HTTP Error 526: <none>",
     "swquery: HTTP Error 404: Not Found"
