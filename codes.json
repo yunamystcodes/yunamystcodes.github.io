@@ -1,8 +1,8 @@
 {
-  "updated": "2026-11-12T22:24:06Z",
-  "source_count": 5,
-  "successful_sources": 2,
-  "rule": "somente códigos atualmente ativos; novos códigos adicionados automaticamente; códigos expirados removidos automaticamente; se todas as fontes falharem, a última lista válida é preservada",
+  "updated": "2026-11-13T01:55:00Z",
+  "source_count": 12,
+  "successful_sources": 9,
+  "rule": "códigos expirados removidos por data de validade ou confirmação em pelo menos duas fontes independentes; histórico impede que códigos expirados reapareçam",
   "codes": [
     "2611RTABATTLE08",
     "NOVSW2026T3V",
@@ -26,8 +26,8 @@
   },
   "expires": {},
   "source_errors": [
-    "swcoupon: <urlopen error [Errno -2] Name or service not known>",
-    "summonerswarcodes: HTTP Error 526: <none>",
-    "swquery: HTTP Error 404: Not Found"
+    "https://sw-teams.ovh/codes: The read operation timed out",
+    "https://swcoupon.net/: <urlopen error [Errno -2] Name or service not known>",
+    "https://summonerswarcodes.us/: HTTP Error 526: <none>"
   ]
 }
