@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-14T06:25:26Z",
+  "updated": "2026-11-14T06:39:40Z",
   "source_count": 12,
-  "successful_sources": 10,
+  "successful_sources": 9,
   "rule": "códigos expirados removidos por data de validade ou confirmação em pelo menos duas fontes independentes; histórico impede que códigos expirados reapareçam",
   "codes": [
     "2611RTABATTLE08",
@@ -26,6 +26,7 @@
   },
   "expires": {},
   "source_errors": [
+    "https://sw-teams.ovh/codes: The read operation timed out",
     "https://swcoupon.net/: <urlopen error [Errno -2] Name or service not known>",
     "https://summonerswarcodes.us/: HTTP Error 526: <none>"
   ]
