@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-21T02:31:38Z",
+  "updated": "2026-11-21T07:10:07Z",
   "source_count": 12,
   "successful_sources": 9,
   "rule": "códigos expirados removidos por data de validade ou confirmação em pelo menos duas fontes independentes; histórico impede que códigos expirados reapareçam",
@@ -48,6 +48,6 @@
   "source_errors": [
     "https://swcoupon.net/: <urlopen error [Errno -2] Name or service not known>",
     "https://summonerswarcodes.us/: HTTP Error 526: <none>",
-    "https://swquery.net/: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1147)>"
+    "https://swquery.net/: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1081)>"
   ]
 }
